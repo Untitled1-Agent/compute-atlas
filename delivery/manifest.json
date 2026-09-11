@@ -1,0 +1,192 @@
+{
+  "format": 1,
+  "zip_filename": "compute_atlas_complete_app.zip",
+  "zip_sha256": "266de2553d5205c3905f0f4127d8fbaee529a22fa3b0c564b35222cfd5d6482b",
+  "coverage": {
+    "sites": 79,
+    "companies": 29,
+    "sources": 64
+  },
+  "files": [
+    {
+      "member": "compute_atlas/compute_atlas.html",
+      "path": "compute_atlas.html",
+      "bytes": 12520866,
+      "sha256": "c425c6d0b4e16e571bb2feebd99dd3edac63093496c9cd34840131755c9bdadf"
+    },
+    {
+      "member": "compute_atlas/README.md",
+      "path": "docs/compute_atlas_guide.md",
+      "bytes": 12654,
+      "sha256": "61c298dbed2806d0ee2f4d66f1bb4cfeed33a174b22b164717afa10931e10b62"
+    },
+    {
+      "member": "compute_atlas/src/styles.css",
+      "path": "src/styles.css",
+      "bytes": 34512,
+      "sha256": "f58171bc73fa7cedf7a947c804624b2f0460e6d6ad58f9e2369e164a545970d5"
+    },
+    {
+      "member": "compute_atlas/src/extract_sources.py",
+      "path": "src/extract_sources.py",
+      "bytes": 6631,
+      "sha256": "771a57f3827cc76dd24674d6ef076024baf41726356610f35a98ec79393c16c3"
+    },
+    {
+      "member": "compute_atlas/src/app.js",
+      "path": "src/app.js",
+      "bytes": 125346,
+      "sha256": "680429f240d8e27d22e810284db264548190b7fc5cc87652f5ba7652a7d93d4e"
+    },
+    {
+      "member": "compute_atlas/src/build.py",
+      "path": "src/build.py",
+      "bytes": 1732,
+      "sha256": "c39ce0fd4d596294a06f2597ce6e508032ec8361b6f9498ce6bbe29497b57aeb"
+    },
+    {
+      "member": "compute_atlas/src/build_data.py",
+      "path": "src/build_data.py",
+      "bytes": 38856,
+      "sha256": "8cc3192ae15d9e210ae5ee17caac2697b6660d2b9fda815b2df746b6f30f4e1c"
+    },
+    {
+      "member": "compute_atlas/src/index.html",
+      "path": "src/index.html",
+      "bytes": 3234,
+      "sha256": "55d44b480a50db03fb8bc5f3013bc3540f1df3b5c8cc588e44449515497d4217"
+    },
+    {
+      "member": "compute_atlas/data/world.json",
+      "path": "data/world.json",
+      "bytes": 187697,
+      "sha256": "754cae21c93a941338ccfe1bfb1088a22a994906d53bb891968d243a1bfba29e"
+    },
+    {
+      "member": "compute_atlas/data/atlas.json",
+      "path": "data/atlas.json",
+      "bytes": 200431,
+      "sha256": "da643ec94ff9db4dcacacf34ea6cc8fb56278fb96e0c62fcb41fd0bc923a3ae2"
+    },
+    {
+      "member": "compute_atlas/data/archive.json",
+      "path": "data/archive.json",
+      "bytes": 3103589,
+      "sha256": "852b5fe8fb7ab7a056602b5b2dec91561e637a9dad650578c369ee0059c11ef5"
+    },
+    {
+      "member": "compute_atlas/data/report_text.txt",
+      "path": "data/report_text.txt",
+      "bytes": 22721,
+      "sha256": "975e6d42da3d0d2cf77d37dd55279d9349877399f391a0dc60937474c26ac61a"
+    },
+    {
+      "member": "compute_atlas/data/manifest.json",
+      "path": "data/manifest.json",
+      "bytes": 1628,
+      "sha256": "4f3749e533122b1acafc18842b68ec632ed8057a07f5d38d229ec4c3cf3247d5"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report_per_gw_costs.docx",
+      "path": "originals/compute_infrastructure_report_per_gw_costs.docx",
+      "bytes": 776176,
+      "sha256": "76f0891d95b6dfbe54a4943eaaafedbf1cf52d5ba9569cebffd8b22d2fad4edd"
+    },
+    {
+      "member": "compute_atlas/originals/compute_model_data_per_gw_costs.json",
+      "path": "originals/compute_model_data_per_gw_costs.json",
+      "bytes": 98894,
+      "sha256": "fddd8c63a89e84cdd60a76c9aa24625460d408d7f73a91e5bf95d96e69a3b029"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report.xlsx",
+      "path": "originals/compute_infrastructure_report.xlsx",
+      "bytes": 49234,
+      "sha256": "298d241277947be0c7e35b5f8f6f787356c70d34840fb518b92ae257e2bc782b"
+    },
+    {
+      "member": "compute_atlas/originals/compute_model_data.json",
+      "path": "originals/compute_model_data.json",
+      "bytes": 75716,
+      "sha256": "0f8b1fab0e3720ecb6a6a3a27b1918271972eaa10444006ba40167b3727768bb"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report_per_gw_costs.xlsx",
+      "path": "originals/compute_infrastructure_report_per_gw_costs.xlsx",
+      "bytes": 63715,
+      "sha256": "5eac719653307b86285933e5ec0ee41252aef18570af096cfc78215402851c7e"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report_per_gw_costs.pdf",
+      "path": "originals/compute_infrastructure_report_per_gw_costs.pdf",
+      "bytes": 2450836,
+      "sha256": "71f583fa3798e125045f2dbc5df1448266f7b8a9989563e400ec839c88967e96"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report.pdf",
+      "path": "originals/compute_infrastructure_report.pdf",
+      "bytes": 2363967,
+      "sha256": "dcd15bc29b801b9d49bf97c96758b84ec745bffb655b7522176492bb3befab42"
+    },
+    {
+      "member": "compute_atlas/originals/compute_infrastructure_report.docx",
+      "path": "originals/compute_infrastructure_report.docx",
+      "bytes": 770732,
+      "sha256": "11475ff15ddbc4faf9a77670025531a8bc787d22c31e05e7a5fde81b6777a8bc"
+    },
+    {
+      "member": "compute_atlas/qa/functional.py",
+      "path": "qa/functional.py",
+      "bytes": 10371,
+      "sha256": "b21fcbbdbb36dca0f4bd108595a485874ca23451852d2f3579babadb806566a9"
+    },
+    {
+      "member": "compute_atlas/qa/functional_results.json",
+      "path": "qa/functional_results.json",
+      "bytes": 5494,
+      "sha256": "2d0b3e01fc17bbc257758d3644162a54e239e46c2456390f208ea0e7008178aa"
+    },
+    {
+      "member": "compute_atlas/qa/smoke.py",
+      "path": "qa/smoke.py",
+      "bytes": 3715,
+      "sha256": "d827362171dc5fef8b57493da8d30ca45354727e1f94a21f2646c926369681b3"
+    },
+    {
+      "member": "compute_atlas/qa/smoke_results.json",
+      "path": "qa/smoke_results.json",
+      "bytes": 1315,
+      "sha256": "b3f1fc70bd9387a3f5a452ce2b4a3d3045d67d5d6d22835635a4a1613e76ae84"
+    },
+    {
+      "member": "compute_atlas/qa/overview.png",
+      "path": "qa/overview.png",
+      "bytes": 515749,
+      "sha256": "eda35760f3da3ef73e06bcc699518041796bc5393bdd549e025c3e3bd1bea299"
+    },
+    {
+      "member": "compute_atlas/qa/globe.png",
+      "path": "qa/globe.png",
+      "bytes": 665763,
+      "sha256": "80bbf7c96b252e3f17d3185408daf5b3f9a7e306b690c8e91debba15cd038191"
+    },
+    {
+      "member": "compute_atlas/qa/facility.png",
+      "path": "qa/facility.png",
+      "bytes": 294770,
+      "sha256": "63194da93c343800cbc2946ed7c92a2b96f94fd169e6d5415dbe73de2e874fe2"
+    },
+    {
+      "member": "compute_atlas/qa/costs.png",
+      "path": "qa/costs.png",
+      "bytes": 212849,
+      "sha256": "bde46fd636becd31b37cfd66f387cc3a734b309c3fa3612fa8ef190d95964d2c"
+    },
+    {
+      "member": "compute_atlas/qa/mobile.png",
+      "path": "qa/mobile.png",
+      "bytes": 286744,
+      "sha256": "2939d8094ce177acc37b2880eae1335c4c5e83bae7a3e2612ce85f0bbb46c412"
+    }
+  ]
+}

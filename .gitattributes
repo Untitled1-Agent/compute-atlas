@@ -1,0 +1,6 @@
+# Keep source editable; identify the standalone HTML as a generated artifact.
+compute_atlas.html linguist-generated=true
+originals/*.pdf binary
+originals/*.docx binary
+originals/*.xlsx binary
+qa/*.png binary

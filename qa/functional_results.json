@@ -1,0 +1,266 @@
+{
+  "checks": [
+    {
+      "test": "all 92 original facility-phase rows preserved",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "both full report versions available",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "all 101 original report tables retained",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "all 5938 populated/formula workbook cells preserved",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "eleven Chinese companies included",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "native-unit China records are not forced to zero/GW",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "New Carlisle reviewed target",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "Fairwater Wisconsin reviewed target",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "Stargate Abilene reviewed target",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "Helios reviewed target",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "globe visibly rendered, not blank",
+      "pass_": true,
+      "detail": [
+        24,
+        49,
+        62,
+        255
+      ]
+    },
+    {
+      "test": "pointer dragging rotates globe",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "zoom button changes globe scale",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "China facility has a selectable marker",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "actual canvas marker opens matching dossier",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "country filter reaches all seven China dossiers",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "linked facility scatter shows two quantified China sites",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "scatter point opens facility dossier",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "comparison capped at four",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "comparison table displays four companies",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "all 199 entity/source/cost/contract dossiers render",
+      "pass_": true,
+      "detail": []
+    },
+    {
+      "test": "global search returns facility and report records",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "search opens correct facility",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "watchlist star updates session",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "saved note and site visible on research shelf",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "original PDF retrieval is byte-for-byte identical",
+      "pass_": true,
+      "detail": {
+        "name": "compute_infrastructure_report_per_gw_costs.pdf",
+        "sha256": "71f583fa3798e125045f2dbc5df1448266f7b8a9989563e400ec839c88967e96"
+      }
+    },
+    {
+      "test": "every report section and original sheet renders",
+      "pass_": true,
+      "detail": {
+        "bad": [],
+        "sections": 108,
+        "sheets": 23
+      }
+    },
+    {
+      "test": "Excel cell drilldown exposes exact formula",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "cost view benchmarks",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "cost view scenario",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "cost view hardware",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "cost view company",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "shorter equipment life and lower utilization raise unit cost",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "investment sensitivity is live",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "guided tour starts on globe",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "tour ends in interactive cost model",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "tour exits cleanly",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "all mobile main views avoid page-wide overflow",
+      "pass_": true,
+      "detail": [
+        [
+          "overview",
+          true
+        ],
+        [
+          "globe",
+          true
+        ],
+        [
+          "facilities",
+          true
+        ],
+        [
+          "companies",
+          true
+        ],
+        [
+          "contracts",
+          true
+        ],
+        [
+          "costs",
+          true
+        ],
+        [
+          "investment",
+          true
+        ],
+        [
+          "reports",
+          true
+        ],
+        [
+          "data",
+          true
+        ],
+        [
+          "stories",
+          true
+        ],
+        [
+          "watchlist",
+          true
+        ]
+      ]
+    },
+    {
+      "test": "no uncaught JavaScript errors",
+      "pass_": true,
+      "detail": []
+    },
+    {
+      "test": "zero network requests",
+      "pass_": true,
+      "detail": []
+    }
+  ],
+  "passed": 40,
+  "total": 40,
+  "errors": [],
+  "network_requests": [],
+  "execution": "Exact built HTML rendered in managed Chromium via set_content (file/localhost navigation disabled by environment policy)."
+}

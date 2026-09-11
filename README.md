@@ -92,7 +92,7 @@ Facility enrichment identifies Epoch AI and links exact site pages. Natural Eart
 **Private repository.** Current contents:
 
 - `docs/compute_atlas_guide.md` — the full delivery guide (what ships, how to use and rebuild it)
-- App source (`src/`, `data/`, `originals/`, `qa/`, built `compute_atlas.html`) — pending upload
+- App source, full dataset, original attachments, QA files, and built `compute_atlas.html` — included
 
 ## License
 

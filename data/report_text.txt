@@ -1,0 +1,218 @@
+THE AI COMPUTE
+CAPITAL STACK
+Capacity, signed pipeline, data-center atlas, cost curves and equity implications
+____________________________________________________________________________________
+Research-grade source-led assessment
+Cut-off: 1 September 2026 | Market data: 31 August 2026 close
+
+
+Prepared by OpenAI. Analytical research, not investment advice. Estimates are labeled; disclosures retain qualifiers such as “up to,” “more than,” and undisclosed overlap.
+
+Executive summary
+
+Google leads the comparable modeled fleet. The Q4 2025 chip-owner model estimates 5.04M H100e and 2.947 GW of accelerator TDP, implying approximately 4.72 GW IT under the central fleet bridge. Microsoft follows at 3.50M H100e, Amazon at 2.46M and Meta at 2.42M. [S04,S05; Model]
+The named-site database is a floor. It covers 86 campuses, 13.3 GW IT and 14.6M H100e, but estimates only 46% coverage of deployed global AI compute at end-June 2026. [S01,S02]
+A complete GB200-class IT GW costs $37.883B upfront and $8.514B/year in the common model. Company-linked evidence spans Meta facility assets at $5.4B/IT-GW, Amazon campus infrastructure at $7.81B/IT-GW after IT-power normalization, a Google-backed facility at $9B-$11B/IT-GW, Microsoft GPU hardware at $29B/IT-GW, CoreWeave powered-shell leases at $1.44B-$2.34B/IT-GW-year, and full GPU service near $9.7B-$10.9B/IT-GW-year. These are different layers, not an additive stack. [S03,S17,S24,S26,S28,S29,S33,S34,S37,S39-S46,S49; Model]
+Signed and contracted demand is larger than recognized assets. Amazon/Anthropic announced more than $100B over ten years and up to 5 GW; Oracle/OpenAI announced 4.5 GW additional; Google described a 5 GW TPU program from 2027; CoreWeave disclosed 3.7 GW contracted. [S21,S22,S24,S33,S38]
+The footnotes are the real capacity map. Microsoft disclosed $329.1B of mostly data-center uncommenced leases, Meta $346.99B post-period, Oracle $260B and CoreWeave $35.5B. These figures are not directly additive with capex or purchase obligations. [S12,S27,S31,S37]
+Equity exposure bifurcates. Google has the best modeled compute-to-valuation combination among hyperscalers; Oracle and CoreWeave offer greater AI-capacity torque but carry much larger obligations relative to market capitalization. [S31,S37,S38,S48; Model]
+
+Sources: current compute [S01,S04,S05,S37,S47; Model]; future [S16-S24,S28,S33,S38,S47]; financials [S12,S20,S23,S27,S31,S37,S47]; per-GW costs [S03,S17,S24,S26,S28,S29,S33,S34,S37,S39-S46,S49; Model]; market data [S48].
+
+Figure 1. Reconciled current IT-power floor. Sources: [S01,S04,S05,S37,S47; Model].
+
+Contents and source conventions
+
+
+
+
+1. Measurement framework
+1.1 There is no single meaningful “gigawatt”
+Accelerator TDP is the summed design power of chips. IT load includes host CPUs, memory, networking and storage. Facility load adds cooling, pumps, power conversion and redundancy. Utility or campus capacity can include spare blocks and non-AI loads. Treating these as interchangeable can overstate or understate comparable compute by 20%-100%. [S01,S02,S05-S11]
+
+For fleet estimates based on accelerator TDP, the central bridge is facility power = 2.0x accelerator TDP and IT power = facility power / 1.25 PUE = 1.6x TDP. Sensitivity ranges are 1.7x-2.3x for facility/TDP and 1.18x-1.35x for PUE. [S05; Model]
+1.2 H100-equivalent normalization
+
+
+1.3 Counting and uncertainty rules
+Current named-site capacity is counted once at the attributed vendor roll-up, including dedicated third-party supply where the customer is named. [S01]
+Fleet chip-owner estimates are not added to named sites. Reconciled current compute takes the maximum of the site floor, chip-owner model and later direct disclosure. [S01,S04,S05; Model]
+Target-state sites are separate from signed contracts. A target may lack binding customer demand; a contract may be served across multiple sites. [S16-S34]
+The site database estimates 46% coverage and reports material uncertainty. This report uses floors and ranges rather than false precision. [S01,S02]
+
+2. Current compute: comparable fleet view
+
+Figure 2. Reconciled current H100-equivalent compute. Sources: [S01,S04,S05,S37,S38,S47; Model].
+2.1 Modeled full-fleet leadership
+
+Sources: [S04,S05]. IT/facility power use 1.6x and 2.0x accelerator TDP.
+Google is the modeled leader at 5.04M H100e, driven by 3.81M TPU-equivalents plus 1.22M NVIDIA-equivalents. Microsoft follows at 3.50M, mostly NVIDIA. Amazon reaches 2.46M through 1.02M Trainium-equivalents and 1.44M NVIDIA-equivalents. Meta reaches 2.42M through NVIDIA and AMD. [S04,S05]
+2.2 Reconciled public-company floor
+
+For Google, Microsoft and Amazon, the Q4 2025 fleet model exceeds the named-site floor, consistent with legacy and smaller-region capacity outside the database. Meta is the reverse: its later named-site floor exceeds the older chip-owner model. CoreWeave uses its disclosed 1.5 GW active power, while Tesla uses a direct cluster floor above 205 MW. [S01,S04,S05,S37,S47; Model]
+
+3. Data-center atlas: current and target sites
+3.1 Current named-site roll-up
+
+Google has the largest identifiable site floor at approximately 3.30 GW IT and 4.61M H100e. Meta has 2.38 GW and 2.69M. Amazon, including dedicated Anthropic capacity, has 1.74 GW and 1.35M. Microsoft has 1.57 GW and 1.74M including a 50 MW Nebius site attributed to dedicated supply. [S01,S02; Model roll-up]
+3.2 Twenty largest current sites
+
+
+3.3 Planned and target-state roll-up
+
+The selected planned-site inventory is dominated by OpenAI/Stargate at approximately 9.99 GW of incremental target capacity, followed by Meta at 3.31 GW, Amazon at 3.01 GW, Microsoft at 2.47 GW and Google at 2.28 GW. These are target estimates and not necessarily signed. [S01,S02; Model matching]
+3.4 Largest target-state campuses
+
+Targets above 2 GW IT include Microsoft Fairwater Wisconsin, OpenAI Stargate New Mexico, Amazon/Anthropic New Carlisle, Meta Hyperion and xAI Colossus 2. Epoch assigns 80% confidence intervals of roughly 1.4x for site IT power, 1.5x for compute and 1.6x for cost. [S01,S02]
+
+4. Signed and contracted pipeline
+
+Figure 3. Future capacity indicators. Categories are not additive. Sources: [S16-S24,S28,S33,S38,S47].
+
+4.1 Amazon / Anthropic
+Anthropic and Amazon announced an expansion above $100B over ten years for up to 5 GW of new AWS capacity. Nearly 1 GW of Trainium2/Trainium3 capacity is expected by end-2026, and Anthropic stated that more than one million Trainium2 chips were already in use. The hybrid ratio is above $2B/GW-year, but it is not a tariff because value is a floor, capacity an upper bound and the ramp undisclosed. [S24; Model]
+Project Rainier was fully operational in June 2025 with nearly 500,000 Trainium2 chips and an expected expansion above one million. New Carlisle is the second-largest tracked live AI site at 910 MW IT. [S01,S25]
+4.2 Google / Anthropic
+Anthropic announced up to one million Google TPUs, tens of billions of dollars of services and well over 1 GW online in 2026. A separate announcement describes a 5 GW Google/Broadcom program beginning in 2027. Because overlap is undisclosed, this report shows 1 GW as a milestone and 5 GW as the program envelope rather than summing them. [S21,S22]
+4.3 Microsoft: demand versus supply
+Microsoft and Anthropic announced a $30B Azure purchase commitment and up to 1 GW of additional capacity. Separately, Microsoft contracted 200 MW IT from IREN for $9.7B over five years, approximately 200,000 GB300 GPUs from Nscale, and a $17.4B five-year GPU-services agreement with Nebius whose MW is undisclosed. Applying Nscale Texas disclosure of 240 MW for 104,000 GPUs to the total GPU count implies approximately 462 MW IT; a 700 MW option is excluded. [S16-S19; Model]
+
+4.4 Oracle / OpenAI and CoreWeave
+OpenAI announced 4.5 GW of additional Oracle capacity, bringing the Oracle-linked program above 5 GW under development and above two million chips. A linked announcement referenced more than $300B and more than 5.5 GW; dividing those values produces a rough $10.9B/GW-year over five years, but it is not a clean tariff. [S33,S34; Model]
+CoreWeave disclosed 1.5 GW active and 3.7 GW contracted, so the simple incremental bridge is 2.2 GW. Its $104B backlog divided by contracted capacity is $28.1B/GW, but duration and service mix vary. [S38; Model]
+
+5. Footnote archaeology and capital commitments
+
+Figure 4. Capex relative to operating cash flow. Period definitions differ. Sources: [S12,S20,S23,S27,S31,S37,S47].
+
+Cash capex understates asset formation when finance leases, OEM financing, prepayments or JVs fund the build. Gross obligations can overstate AI exposure because they may include fulfillment, office, content, energy and general cloud assets. [S12,S20,S23,S27,S31,S37]
+5.1 Microsoft
+Microsoft reported FY2026 additions to PPE of $115.948B, net PPE of $313.076B and construction commitments of $34.566B. Total disclosed obligations were $743.821B, including $443.506B of leases including interest and $194.060B of purchase commitments. Uncommenced leases, mostly data centers, were $329.1B and begin FY2027-FY2033 with 1-20 year terms. RPO was $684B. [S12]
+5.2 Alphabet
+Alphabet spent $80.598B of first-half capex against $84.859B of OCF. Net PPE was $321.212B, including $122.814B of assets not yet in service. Uncommenced leases were $85.2B, primarily data centers starting in 2026-2031. Purchase commitments and other obligations were $811.0B; the filing also disclosed $24.1B of estimated data-center/energy backstops and $20B of private-company capital commitments. Cloud RPO was $513.9B. [S20]
+5.3 Amazon
+Amazon reported $98.411B of first-half cash PPE purchases against $71.419B of OCF. AWS net PPE was $263.750B and first-half AWS net additions were $90.120B. AWS RPO was $496B with a 6.4-year average duration. Amazon disclosed $137.214B of uncommenced leases and $650.034B of total commitments, but these totals include non-data-center categories. [S23]
+5.4 Meta
+Meta reported first-half capex including finance-lease principal of $50.920B against $64.088B of OCF. Net PPE was $225.724B and construction in progress $80.345B. Uncommenced leases were $278.99B at quarter-end; another $68B of data-center leases signed in July took the post-period figure to $346.99B. Contractual commitments were $349.31B; the totals likely overlap and are not added. [S27]
+The Blue Owl Hyperion JV is an 80/20 structure covering approximately $27B of long-lived facility assets. Blue Owl contributed approximately $7B cash, Meta received a $3B distribution and Meta leases the facilities with a 16-year residual-value guarantee. [S29]
+5.5 Oracle
+Oracle FY2026 capex was $55.663B against $31.977B of OCF. Customer prepayments with a financing component contributed $4.592B to OCF; short-term capex financing added $3.345B and debt issuance was $46.093B. Net PPE was $99.957B and construction in progress $39.973B. [S31]
+Oracle disclosed $260B of uncommenced leases, substantially all data centers, beginning FY2027-FY2029 with 15-19 year terms and including a $3.3B lessor guarantee. Other purchase obligations were $13.309B. RPO reached $638B. [S31,S32]
+5.6 CoreWeave
+CoreWeave reported net PPE of $46.736B and operating-lease ROU assets of $16.595B. First-half cash PPE purchases were $14.117B, while $9.796B of PPE liabilities/OEM financing and $8.359B of ROU additions were noncash. Uncommenced leases were $35.5B; one undelivered 393 MW site carried up to $14.7B of payments over 16 years. Debt principal was $35.551B. [S37]
+CoreWeave had $103.7B of unsatisfied RPO in the 10-Q and approximately $104B of reported backlog; 1.5 GW active and 3.7 GW contracted. Its three largest Q2 customers represented 36%, 26% and 10% of revenue. [S37,S38]
+
+6. Vendor dossiers
+6.1 Amazon / AWS
+
+AWS has the strongest vertically integrated named anchor: customer, ten-year minimum value, up-to-5-GW envelope and in-house Trainium roadmap. Trainium is approximately 41% of modeled Amazon H100e. [S04,S05,S24,S25]
+The cost is cash intensity. First-half cash PPE exceeded OCF by 38%, and AWS added $90.120B of net PPE in six months. The Indiana program is $6.25B per disclosed data-center/facility GW and approximately $7.81B per modeled IT GW at 1.25 PUE. It is campus/infrastructure scope, not a clean full-stack accelerator bill. [S23,S26; Model]
+
+6.2 Microsoft
+
+Microsoft combines a large owned fleet with a broad outsourced network. IREN, Nscale and Nebius shift some construction, power and hardware financing to suppliers while reserving capacity for Azure. [S13-S18]
+The benefit is speed and diversification; the cost is margin sharing and a complex stack. Microsoft had $329.1B of mostly data-center uncommenced leases and $743.821B of obligations, alongside $684B of RPO. [S12]
+
+6.3 Alphabet / Google
+
+Google is the compute leader under both the chip-owner model and the site floor. Approximately 76% of modeled H100e comes from TPUs, creating the strongest custom-silicon position. H100e does not capture TPU workload fit or fungibility. [S01,S04,S05]
+Alphabet has $122.814B of assets not in service, versus $247.177B of technical infrastructure in service. Cloud RPO is $513.9B, while the $811B broad commitment total makes the forward envelope less transparent. [S20]
+The Hut 8 River Bend filing supplies a cleaner, though indirect, denominator: $9M-$11M per contracted IT MW for facility construction and a $7.0B 15-year base lease on 245 MW of IT capacity, equal to approximately $1.90B/IT-GW-year. A Google subsidiary backstops the contract; Fluidstack is the tenant, so this is not Alphabet-owned capex. [S49; Model]
+
+6.4 Meta
+
+Meta monetizes compute through recommendation, advertising and model capability rather than external cloud contracts. There is no independently priced tariff to validate unit economics. [S27,S28]
+The balance-sheet strategy mixes direct construction, leases and Blue Owl JV financing. The raw $27B / 5 GW = $5.4B/GW ratio covers long-lived facilities, not servers, and scope/timing are mismatched. [S28,S29; Model]
+
+6.5 Oracle
+
+Oracle has the most concentrated public AI demand bet. The OpenAI program adds 4.5 GW and a linked >$300B commitment, creating exceptional visibility and exceptional sensitivity to execution and financing. [S31-S34]
+FY2026 capex was 174% of OCF. Customer prepayments and debt funded the build, while $260B of uncommenced data-center leases equals approximately 60% of market cap. [S31,S48; Model]
+
+6.6 CoreWeave
+
+CoreWeave is the purest public compute exposure; its landlord network reveals powered-shell pricing that hyperscaler filings obscure. [S37-S46]
+Debt and uncommenced leases each equal roughly three-quarters of market cap; net PPE approximates market cap; and three customers represented 72% of Q2 revenue. Short hardware life amplifies utilization and renewal risk. [S37,S38,S48; Model]
+
+6.7 Tesla
+
+Tesla compute supports autonomy, robotics and model development; it is not sold as general-purpose cloud. Q2 company-wide capex of $5.789B exceeded OCF of $4.697B, but compute is only one capital use. [S47]
+At $37.883B/GW, 205 MW implies approximately $7.8B of replacement capex, below 1% of market cap. A 400 MW target is approximately $15.2B, around 1.2% of market cap. [S03,S47,S48; Model]
+
+
+7. Counterparty chain and market pricing
+
+Figure 5. Upfront cost layers per comparable IT GW. Sources: [S03,S17,S26,S28,S29,S40,S46; Model].
+Hyperscaler filings aggregate data centers with broader PPE and commitments. Counterparty disclosures provide the missing denominator: critical IT MW, term, contract value, power pass-through and buildout responsibility. [S16-S19,S29,S37,S39-S46]
+7.1 Powered-shell lease market
+
+The disclosed powered-shell range is approximately $120-$195/kW-month, or $1.44B-$2.34B/IT-GW-year. The Google-backed River Bend base lease sits near $159/kW-month and $1.90B/IT-GW-year. These arrangements generally exclude tenant GPU hardware and often pass through electricity. [S37,S39-S44,S49; Model]
+7.2 Full service and customer commitments
+
+Figure 6. Contract-value benchmarks per GW-year. Sources: [S17,S24,S33,S34,S37,S39-S44; Model].
+IREN's 200 MW Microsoft contract is approximately $808/kW-month and $9.7B/GW-year for a full GPU service, versus $29B/GW of separately disclosed Dell hardware capex. The spread over powered-shell pricing reflects accelerators, refresh, operations, financing and service margin. [S17; Model]
+A rough Oracle/OpenAI cross-announcement ratio is $10.9B/GW-year, slightly above the $8.514B/GW annual TCO reference. It is illustrative because the numerator and denominator come from linked rather than identical disclosures. [S03,S33,S34; Model]
+7.3 Financing migration
+
+
+7.4 Per-company cost per comparable IT GW
+Per-company cost requires two lenses. The comparable engineering lens holds installed cost per IT watt constant at the Epoch base case—$37.883B upfront and $8.514B/year per IT GW—and applies each company's reconciled H100e density. The observed lens uses project, lease, hardware or service transactions and retains each transaction's scope. [S02,S03; Model]
+Sources: compute [S01,S04,S05,S37,S38,S47]; common cost model [S02,S03]; future-capacity basis [S16-S24,S28,S33,S38,S47]; calculations [Model]. The future indicator is not uniformly incremental or signed.
+On the common model, Google has the largest current replacement stack at $178.6B and the largest annual TCO at $40.1B. Meta has the highest current replacement-to-market-cap ratio among the four large hyperscalers at 6.1%. CoreWeave's modeled current replacement stack is $56.8B, or 121.5% of equity market value; debt and lease claims sit ahead of equity. [S03,S48; Model]
+The layer distinction changes the apparent ranking. Meta's $5.4B/IT-GW and the Google-backed $9B-$11B/IT-GW observations are facility-layer figures. Microsoft's $29B/IT-GW is hardware. CoreWeave's $1.44B-$2.34B/IT-GW-year is a recurring facility lease. The $9.7B-$10.9B/IT-GW-year Microsoft and Oracle observations are integrated service economics. [S17,S28,S29,S33,S34,S37,S39-S46,S49; Model]
+
+8. One-GW cost curves
+8.1 Published base case
+
+Epoch AI one-GW GB200-class model [S03]. Five-year IT life and 14-year facility life.
+Servers and network are 69% of upfront cost and about 73% of annualized TCO. Extending useful IT life from three to seven years lowers annual TCO from approximately $12B to $7B/GW; hardware refresh dominates land and power. [S03]
+8.2 Utilization and refresh
+
+Figure 7. Cost per utilized IT-kWh versus utilization and IT asset life. [S03; Model].
+
+At 71% utilization, the base model costs approximately $1.37 per utilized IT-kWh and $0.99 per GB200-density H100e-hour. A 25% operating margin requires approximately $1.32/H100e-hour before corporate SG&A, taxes and financing. [S03,S09-S11; Model]
+8.3 Power-price sensitivity
+
+Raising electricity from $0.05 to $0.20/kWh increases annual TCO by approximately $1.12B/GW at 71% utilization and 1.20 PUE. Changing IT asset life from seven to three years changes annual TCO by approximately $5B. [S03; Model]
+8.4 Price-to-cost reading
+
+
+9. Equity-market implications
+
+Figure 8. Uncommenced leases relative to market capitalization. [S12,S20,S23,S27,S31,S37,S48; Model].
+
+Market data [S48]; compute and RPO [S01,S04,S05,S12,S20,S23,S27,S31,S32,S37,S38,S47; Model].
+
+Figure 9. Whole-company equity value versus compute floor; not a data-center appraisal. [S01,S04,S05,S37,S47,S48; Model].
+9.1 Hyperscalers
+Alphabet has the best headline combination: the largest modeled compute fleet and the lowest P/E among Amazon, Microsoft, Alphabet and Meta. Market cap per H100e is approximately $824,000, versus $1.08M for Microsoft and $1.15M for Amazon. Meta is lower at about $547,000 because its site floor is large relative to market cap, but capacity is internally monetized. [S01,S04,S05,S48; Model]
+Microsoft deserves a premium for RPO visibility and enterprise distribution, but its 30.2x P/E and $329.1B uncommenced leases require strong utilization. Amazon has a lower 20.9x P/E and the strongest explicit vertical anchor but weaker near-term cash conversion. Meta's ads cash flows fund the build, while lease and residual commitments make its capital structure less asset-light than headline capex suggests. [S12,S23,S27,S48]
+9.2 Oracle and CoreWeave
+One modeled installed GW equals 8.7% of Oracle market cap and 81.0% of CoreWeave market cap, versus approximately 0.9%-2.6% for the hyperscalers. Incremental capacity therefore has much greater equity beta at Oracle and CoreWeave. [S03,S31,S37,S48; Model]
+Oracle RPO is 147% of market cap and CoreWeave backlog 222%; these are exceptional demand indicators. Oracle uncommenced leases are approximately 60% of market cap, while CoreWeave debt and uncommenced leases are each approximately 76%. [S31,S32,S37,S38,S48; Model]
+9.3 Scorecard
+
+
+
+9.4 Replacement-cost bridge to equity value
+Replacement cost is neither liquidation value nor a price target. It measures the modeled physical stack against whole-company equity value. The future column is a full-stack equivalent for the disclosed indicator and does not assert that the issuer funds every layer or that every target is signed. [S03,S48; Model]
+Sources: company compute and future basis [S01,S04,S05,S16-S24,S28,S33,S37,S38,S47]; cost model [S03]; market capitalization [S48]; calculations [Model].
+
+10. Risks, uncertainty and what would change the conclusions
+
+The most useful future disclosures would be accelerator and IT MW by generation; active versus reserved capacity; lease starts by site; customer ramp and utilization; power pass-through; refresh responsibility; and cloud gross margin after depreciation and financing. Until then, ranges and layer-specific comparisons are more defensible than single-point fleet values.
+
+Appendix A. Normalization detail
+
+Formula: IT kW/GPU = system kW / GPUs per system x (1 + external overhead). Facility values divide by PUE. B100 power uses an explicit H100-compatible air-cooled approximation. [S05-S11; Model]
+
+Appendix B. Current site-level table
+
+The appendix contains the 55 major-vendor current rows used in the report, not all 86 campuses in the underlying database. Modeled cost is a common replacement-cost estimate. [S01,S02]
+
+Appendix C. Planned / target site-level table
+
+Incremental capacity subtracts an exact same-name current site within the same vendor roll-up. It does not prove signing, financing, interconnect completion or final delivery. [S01,S02; Model]
+
+Appendix D. Source register
+All sources were retrieved or verified for this report on 1 September 2026. S48 records the finance snapshot by ticker and date; S49 adds the Hut 8 River Bend counterparty filing used for Google-linked facility and lease economics.

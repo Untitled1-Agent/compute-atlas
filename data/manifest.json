@@ -1,0 +1,50 @@
+[
+  {
+    "filename": "compute_infrastructure_report_per_gw_costs.pdf",
+    "bytes": 2450836,
+    "sha256": "71f583fa3798e125045f2dbc5df1448266f7b8a9989563e400ec839c88967e96",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_infrastructure_report.pdf",
+    "bytes": 2363967,
+    "sha256": "dcd15bc29b801b9d49bf97c96758b84ec745bffb655b7522176492bb3befab42",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_infrastructure_report_per_gw_costs.xlsx",
+    "bytes": 63715,
+    "sha256": "5eac719653307b86285933e5ec0ee41252aef18570af096cfc78215402851c7e",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_infrastructure_report.xlsx",
+    "bytes": 49234,
+    "sha256": "298d241277947be0c7e35b5f8f6f787356c70d34840fb518b92ae257e2bc782b",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_infrastructure_report_per_gw_costs.docx",
+    "bytes": 776176,
+    "sha256": "76f0891d95b6dfbe54a4943eaaafedbf1cf52d5ba9569cebffd8b22d2fad4edd",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_infrastructure_report.docx",
+    "bytes": 770732,
+    "sha256": "11475ff15ddbc4faf9a77670025531a8bc787d22c31e05e7a5fde81b6777a8bc",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_model_data_per_gw_costs.json",
+    "bytes": 98894,
+    "sha256": "fddd8c63a89e84cdd60a76c9aa24625460d408d7f73a91e5bf95d96e69a3b029",
+    "status": "Archived original"
+  },
+  {
+    "filename": "compute_model_data.json",
+    "bytes": 75716,
+    "sha256": "0f8b1fab0e3720ecb6a6a3a27b1918271972eaa10444006ba40167b3727768bb",
+    "status": "Archived original"
+  }
+]

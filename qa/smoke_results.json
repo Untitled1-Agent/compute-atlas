@@ -1,0 +1,81 @@
+{
+  "tests": [
+    {
+      "test": "initial boot",
+      "pass": true
+    },
+    {
+      "test": "route globe",
+      "pass": true
+    },
+    {
+      "test": "route facilities",
+      "pass": true
+    },
+    {
+      "test": "route companies",
+      "pass": true
+    },
+    {
+      "test": "route contracts",
+      "pass": true
+    },
+    {
+      "test": "route costs",
+      "pass": true
+    },
+    {
+      "test": "route investment",
+      "pass": true
+    },
+    {
+      "test": "route reports",
+      "pass": true
+    },
+    {
+      "test": "route data",
+      "pass": true
+    },
+    {
+      "test": "route stories",
+      "pass": true
+    },
+    {
+      "test": "route watchlist",
+      "pass": true
+    },
+    {
+      "test": "globe fly Asia",
+      "pass": true
+    },
+    {
+      "test": "facility full dossier",
+      "pass": true
+    },
+    {
+      "test": "cost sensitivity changes",
+      "pass": true,
+      "before": "$1.08 / productive H100e-hour",
+      "after": "$1.93 / productive H100e-hour"
+    },
+    {
+      "test": "mobile no page-wide horizontal overflow",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "counts": {
+    "sites": 79,
+    "companies": 29,
+    "sources": 64,
+    "reportSections": [
+      55,
+      53
+    ],
+    "workbooks": [
+      12,
+      11
+    ]
+  }
+}
