@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Compute Atlas — Infrastructure & Capital</title><link rel="stylesheet" href="src/styles.css">
+<link rel="stylesheet" href="src/enhancements.css"></head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
+<div class="app-shell"><header class="topbar"><button class="icon-button mobile-menu" data-action="menu" aria-label="Open navigation">☰</button><div id="breadcrumb">The landscape</div><button class="search-trigger" data-action="search"><span>Search a company, site, source…</span><kbd>⌘ K</kbd></button><div class="top-date">DATASET <b>11 SEP 2026</b></div><button class="icon-button" data-action="help" aria-label="Help">?</button></header><main id="content" tabindex="-1"></main><footer class="app-footer"><span>Compute Atlas · Evidence before aggregation.</span><button class="text-button" data-action="nav" data-id="data">Sources, coverage & audit trail ↗</button></footer></div>
+<div id="toast" role="status" aria-live="polite"></div><div id="tooltip" role="tooltip"></div>
+<div class="scrim" id="drawer-scrim" hidden></div><aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Research detail" hidden><div class="drawer-head"><button class="text-button" data-action="drawer-back" id="drawer-back">← Back</button><span id="drawer-type">RESEARCH DOSSIER</span><button class="icon-button" data-action="close-drawer" aria-label="Close detail">✕</button></div><div id="drawer-content"></div></aside>
+<div id="search-modal" class="modal-scrim" hidden><section class="command" role="dialog" aria-modal="true" aria-label="Search the entire atlas"><div class="command-input"><span>⌕</span><input id="global-search" placeholder="Search every facility, company, report paragraph, source…" autocomplete="off" aria-label="Global search"><button class="icon-button" data-action="close-search">Esc</button></div><div class="command-hint">Type a place, company, contract, chip or source ID. Results open the underlying record.</div><div id="search-results"></div></section></div>
+<div id="tour" hidden></div>
+<script type="application/json" id="original-files">{}</script>
+<script>
+(()=>{
+ const content=document.getElementById('content');
+ content.innerHTML='<div class="boot-screen"><div class="eyebrow">LOADING RESEARCH GRAPH</div><h1>Opening the atlas…</h1><p>Facilities, companies, source archive and world geometry are loading from the repository.</p></div>';
+ const fail=err=>{
+   content.innerHTML='<div class="empty boot-error"><h1>Could not open Compute Atlas</h1><p id="boot-error-message"></p><p>Serve this repository over HTTP (for example GitHub Pages or a local web server). The offline standalone build remains available as <code>compute_atlas.html</code>.</p></div>';
+   const message=document.getElementById('boot-error-message');
+   if(message)message.textContent=String(err?.message||err||'Unknown loading error');
+ };
+ const load=(id,url)=>fetch(url,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(url+' · HTTP '+r.status);return r.text()}).then(text=>{JSON.parse(text);const el=document.createElement('script');el.type='application/json';el.id=id;el.textContent=text;document.body.appendChild(el)});
+ Promise.all([load('atlas-data','data/atlas.json'),load('archive-data','data/archive.json'),load('world-data','data/world.json')]).then(()=>{
+   const js=document.createElement('script');
+   js.src='src/app.js';
+   js.onload=()=>{
+     const extra=document.createElement('script');
+     extra.src='src/enhancements.js';
+     extra.onload=()=>document.documentElement.classList.add('atlas-ready');
+     extra.onerror=()=>fail(new Error('Could not load src/enhancements.js'));
+     document.body.appendChild(extra);
+   };
+   js.onerror=()=>fail(new Error('Could not load src/app.js'));
+   document.body.appendChild(js);
+ }).catch(fail);
+})();
+</script>
+</body></html>

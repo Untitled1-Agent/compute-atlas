@@ -1,8 +1,9 @@
-"""Offline in-memory browser tests, including interaction and original-file fidelity.
-The managed browser in this environment disallows file/localhost navigation;
-set_content exercises the exact built HTML without any external request.
+"""Browser tests for the standalone build and repository-native entrypoint.
+The managed browser blocks localhost navigation, so the standalone build is loaded
+in-memory and the hosted entrypoint is exercised with intercepted repository assets.
 """
 import json,hashlib,math
+from urllib.parse import urlparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1]
@@ -24,6 +25,8 @@ with sync_playwright() as p:
  check('all 101 original report tables retained',sum(r['table_count'] for r in arc['reports'])==101)
  check('all 5938 populated/formula workbook cells preserved',sum(len(s['cells']) for w in arc['workbooks'] for s in w['sheets'])==5938)
  check('eleven Chinese companies included',sum(c['region']=='China' for c in d['companies'])==11)
+ check('overview exposes four evidence lanes',page.locator('.evidence-lane').count()==4)
+ check('overview capital dashboard covers seven matched issuers',page.locator('.investor-table tbody tr').count()==7)
  check('native-unit China records are not forced to zero/GW',next(s for s in d['sites'] if s['name'].startswith('Qianhai'))['snapshot'] is None)
  for name,expected in [('New Carlisle',1925),('Fairwater Wisconsin',2263),('Stargate Abilene',843),('Helios',528)]:check(name+' reviewed target',next(s for s in d['sites'] if s['name']==name)['target']['it_mw']==expected)
  # A nonblack canvas is required; route boot alone would miss a blank globe.
@@ -42,7 +45,18 @@ with sync_playwright() as p:
  page.evaluate("ATLAS.navigate('facilities')");page.locator('[data-filter="country"]').select_option('China');check('country filter reaches all seven China dossiers',page.locator('#content tbody tr').count()==7)
  page.locator('[data-action="site-layout"][data-id="chart"]').click();check('linked facility scatter shows two quantified China sites',page.locator('.scatter-point').count()==2)
  page.locator('.scatter-point circle').first.click();check('scatter point opens facility dossier',page.locator('#drawer').is_visible());page.locator('[data-action="close-drawer"]').click()
+ page.evaluate("ATLAS.openDrawer('site','amazon-anthropic-new-carlisle')")
+ check('facility dossier includes snapshot-to-target power ladder',page.locator('.phase-row').count()==2 and '+1,015 MW' in page.locator('.phase-card').inner_text())
+ page.locator('[data-action="close-drawer"]').click()
+ page.evaluate("ATLAS.openDrawer('company','amazon')")
+ check('company dossier separates capital and demand categories',page.locator('.capital-row').count()==4 and 'RPO / backlog' in page.locator('.capital-stack').inner_text())
+ page.locator('[data-action="close-drawer"]').click()
+ page.evaluate("ATLAS.openDrawer('company','tesla')")
+ check('undisclosed capital categories are omitted instead of rendered as zero',page.locator('.capital-row').count()==1 and 'Not disclosed' not in page.locator('.capital-stack').inner_text())
+ page.locator('[data-action="close-drawer"]').click()
  page.evaluate("ATLAS.navigate('companies')")
+ amazon_card=page.locator('.company-card',has_text='Amazon / AWS')
+ check('company cards show actual named-site and capex/OCF KPIs','1.743 GW' in amazon_card.inner_text() and '1.38×' in amazon_card.inner_text())
  for id in ['amazon','google','microsoft','alibaba']:page.locator('[data-compare="'+id+'"]').check()
  page.locator('[data-compare="meta"]').click();check('comparison capped at four',page.evaluate('ATLAS.state.compare.length')==4)
  page.locator('.compare-dock [data-action="nav"]').click();check('comparison table displays four companies',page.locator('.compare-table thead th').count()==5)
@@ -82,7 +96,24 @@ with sync_playwright() as p:
  check('all mobile main views avoid page-wide overflow',all(ok for _,ok in mobile),mobile)
  check('no uncaught JavaScript errors',not errs,errs)
  check('zero network requests',not requests,requests)
+ # Repository-native entrypoint: emulate same-origin hosting with intercepted checked-in assets.
+ hosted_html=(ROOT/'index.html').read_text().replace('<head>','<head><base href="https://atlas.test/">',1)
+ mime={'.json':'application/json','.js':'text/javascript','.css':'text/css','.html':'text/html'}
+ def serve(route,break_enhancements=False):
+  path=urlparse(route.request.url).path.lstrip('/')
+  if break_enhancements and path=='src/enhancements.js':route.fulfill(status=404,body='not found',content_type='text/plain');return
+  f=ROOT/path
+  if f.exists() and f.is_file():route.fulfill(status=200,body=f.read_bytes(),content_type=mime.get(f.suffix,'application/octet-stream'))
+  else:route.fulfill(status=404,body='not found',content_type='text/plain')
+ web=b.new_page(viewport={'width':1400,'height':900});web_errs=[];web.on('pageerror',lambda e:web_errs.append(str(e)));web.route('https://atlas.test/**',lambda r:serve(r))
+ web.set_content(hosted_html,wait_until='load');web.wait_for_selector('.evidence-lane')
+ check('repository-native entrypoint boots from checked-in assets',web.locator('.evidence-lane').count()==4 and web.locator('.investor-table tbody tr').count()==7 and 'WEB · REPOSITORY DATA' in web.locator('.side-status').inner_text(),web_errs)
+ web.close()
+ broken=b.new_page(viewport={'width':1200,'height':800});broken_errs=[];broken.on('pageerror',lambda e:broken_errs.append(str(e)));broken.route('https://atlas.test/**',lambda r:serve(r,True))
+ broken.set_content(hosted_html,wait_until='load');broken.wait_for_selector('.boot-error')
+ check('repository-native entrypoint surfaces asset-load failures cleanly','Could not load src/enhancements.js' in broken.locator('.boot-error').inner_text() and not broken_errs,broken_errs)
+ broken.close()
  b.close()
-res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Exact built HTML rendered in managed Chromium via set_content (file/localhost navigation disabled by environment policy).'}
+res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy.'}
 (ROOT/'qa/functional_results.json').write_text(json.dumps(res,indent=2))
 print(json.dumps(res,indent=2))

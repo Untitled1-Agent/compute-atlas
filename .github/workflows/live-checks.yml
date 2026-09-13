@@ -1,0 +1,86 @@
+name: Compute Atlas live checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: compute-atlas-live-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright and Chromium
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright==1.62.0
+          python -m playwright install --with-deps chromium
+          CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
+          test -n "$CHROMIUM_PATH"
+          sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+          /usr/bin/chromium --version
+
+      - name: Research and archive integrity audit
+        run: python qa/integrity.py
+
+      - name: Verify generated standalone is synchronized
+        run: |
+          python src/build.py
+          git diff --exit-code -- compute_atlas.html
+
+      - name: JavaScript syntax checks
+        run: |
+          node --check src/app.js
+          node --check src/enhancements.js
+
+      - name: Functional suite
+        run: python qa/functional.py
+
+      - name: Authoritative smoke suite
+        run: python qa/smoke.py
+
+      - name: Live HTTP browser audit
+        run: python qa/live.py
+
+      - name: Summarize QA
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          print('## Compute Atlas QA')
+          for name in ('integrity_results.json','functional_results.json','smoke_results.json','live_results.json'):
+              path=Path('qa')/name
+              if not path.exists():
+                  print(f'- `{name}`: not produced')
+                  continue
+              data=json.loads(path.read_text())
+              if name=='smoke_results.json':
+                  passed=data.get('passed',sum(bool(x.get('pass')) for x in data.get('tests',[])))
+                  total=data.get('total',len(data.get('tests',[])))
+              else:
+                  passed=data.get('passed')
+                  total=data.get('total')
+              print(f'- `{name}`: **{passed}/{total} passed**')
+          print('- Generated standalone synchronization: checked before browser tests')
+          print('- Detailed logs remain in this workflow run; artifact upload is intentionally not required because account storage quota can be exhausted independently of test health.')
+          PY

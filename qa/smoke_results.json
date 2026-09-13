@@ -46,7 +46,8 @@
     },
     {
       "test": "globe fly Asia",
-      "pass": true
+      "pass": true,
+      "longitude": 106.01848351621472
     },
     {
       "test": "facility full dossier",
@@ -77,5 +78,7 @@
       12,
       11
     ]
-  }
+  },
+  "passed": 15,
+  "total": 15
 }
