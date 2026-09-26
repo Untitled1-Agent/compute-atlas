@@ -1,0 +1,35 @@
+name: Capture spatial research sources
+on:
+  push:
+    branches: [feat/full-compute-atlas-delivery]
+    paths: [.github/workflows/capture-spatial-sources.yml, tools/capture_map_sources.py]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: capture-spatial-sources
+  cancel-in-progress: false
+jobs:
+  capture:
+    if: github.ref == 'refs/heads/feat/full-compute-atlas-delivery'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/full-compute-atlas-delivery
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Capture public Epoch CSV snapshots and source metadata
+        run: python tools/capture_map_sources.py
+      - name: Commit source snapshot, preserving concurrent edits
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/vendor/epoch
+          if ! git diff --cached --quiet; then
+            git commit -m 'Capture attributed Epoch spatial research snapshot'
+            git pull --rebase origin feat/full-compute-atlas-delivery
+            git push origin HEAD:feat/full-compute-atlas-delivery
+          fi
