@@ -21,12 +21,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-
       - name: Install Playwright and Chromium
         shell: bash
         run: |
@@ -37,34 +35,31 @@ jobs:
           test -n "$CHROMIUM_PATH"
           sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
           /usr/bin/chromium --version
-
       - name: Research and archive integrity audit
         run: python qa/integrity.py
-
       - name: Verify generated standalone is synchronized
+        timeout-minutes: 2
         run: |
           python src/build.py
-          git diff --exit-code -- compute_atlas.html
-
+          if ! git diff --quiet -- compute_atlas.html; then
+            echo '::error::Standalone artifact is stale. Run python src/build.py and commit compute_atlas.html.'
+            git diff --stat -- compute_atlas.html
+            exit 1
+          fi
       - name: JavaScript syntax checks
         run: |
           node --check src/spatial-math.js
           node --check src/app.js
           node --check src/enhancements.js
           node --check src/zoom-explorer.js
-
       - name: Functional suite
         run: python qa/functional.py
-
       - name: Six-scale semantic map suite
         run: python qa/zoom-explorer.py
-
       - name: Authoritative smoke suite
         run: python qa/smoke.py
-
       - name: Live HTTP browser audit
         run: python qa/live.py
-
       - name: Summarize QA
         if: always()
         shell: bash
@@ -86,6 +81,6 @@ jobs:
                   passed=data.get('passed')
                   total=data.get('total')
               print(f'- `{name}`: **{passed}/{total} passed**')
-          print('- Generated standalone synchronization: checked before browser tests')
-          print('- Detailed logs remain in this workflow run; artifact upload is intentionally not required because account storage quota can be exhausted independently of test health.')
+          print('- Consult the synchronization step for build status; missing test output does not imply a pass.')
+          print('- Detailed logs remain in this workflow run. The independent review-bundle workflow publishes short-lived source artifacts, not pass certificates.')
           PY
