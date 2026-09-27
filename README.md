@@ -1,5 +1,11 @@
 # Compute Atlas
 
+A source-cited, six-scale research atlas. Open `index.html` through a local HTTP server, or open the self-contained `compute_atlas.html` directly.
+
+[Interface & evidence boundaries](docs/atlas-interface.md) · [Approved visual references](docs/mockups/README.md) · [Master implementation issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2)
+
+## Original research delivery
+
 A standalone research app connecting AI infrastructure, facility-level evidence, contracting relationships, cost layers and investment questions — rendered as an interactive globe-plus-dossier experience.
 
 Two entrypoints are included:
