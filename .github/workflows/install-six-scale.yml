@@ -1,0 +1,71 @@
+name: Install six-scale map shell
+
+on:
+  push:
+    branches:
+      - feat/six-scale-map-shell
+    paths:
+      - delivery/six-scale-payload.tar.gz.b64
+      - .github/workflows/install-six-scale.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: install-six-scale-map-shell
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/six-scale-map-shell
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Decode and verify implementation payload
+        shell: bash
+        run: |
+          base64 -d delivery/six-scale-payload.tar.gz.b64 > /tmp/six-scale-payload.tar.gz
+          echo "a0c362657cb8b016abedd4a19ab99c3ea6c03292140c9284e6381b274b818393  /tmp/six-scale-payload.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/six-scale-payload.tar.gz -C .
+
+      - name: Install semantic map source
+        run: python tools/install_six_scale.py
+
+      - name: Rebuild standalone application
+        run: python src/build.py
+
+      - name: Source syntax checks
+        run: |
+          node --check src/spatial-math.js
+          node --check src/zoom-explorer.js
+          python -m py_compile qa/zoom-explorer.py
+
+      - name: Remove one-time transport files
+        shell: bash
+        run: |
+          rm -f delivery/six-scale-payload.tar.gz.b64
+          rm -f tools/install_six_scale.py
+          rm -f .github/workflows/install-six-scale.yml
+
+      - name: Commit installed implementation
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No implementation changes to commit."
+            exit 0
+          fi
+          git commit -m "Implement six-scale semantic map explorer"
+          git pull --rebase origin feat/six-scale-map-shell
+          git push origin HEAD:feat/six-scale-map-shell
