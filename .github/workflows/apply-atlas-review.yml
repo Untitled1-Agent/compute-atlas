@@ -1,0 +1,84 @@
+name: Apply verified Atlas UI review
+on:
+  push:
+    branches: [feat/atlas-cartography]
+    paths: [.review-transport/ui-manifest.json]
+permissions:
+  contents: write
+concurrency:
+  group: atlas-ui-review-import
+  cancel-in-progress: false
+jobs:
+  import-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/atlas-cartography
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify and apply the local review tree
+        run: |
+          python - <<'PY'
+          import base64, hashlib, json, lzma
+          from pathlib import Path
+          root=Path('.')
+          folder=root/'.review-transport'
+          manifest=json.loads((folder/'ui-manifest.json').read_text())
+          encoded=''.join((folder/f'ui-{i}.b64').read_text() for i in range(1,manifest['parts']+1))
+          payload=base64.b64decode(encoded,validate=True)
+          assert hashlib.sha256(payload).hexdigest()==manifest['sha256'], 'Transport checksum mismatch'
+          decoder=lzma.LZMADecompressor(memlimit=128*1024*1024)
+          raw=decoder.decompress(payload,max_length=500000)
+          assert decoder.eof and not decoder.unused_data and len(raw)==manifest['expanded_bytes']
+          files=json.loads(raw)
+          assert set(files)==set(manifest['paths']) and len(files)<=25
+          for name,content in files.items():
+              path=Path(name)
+              assert not path.is_absolute() and '..' not in path.parts and '\\' not in name
+              assert path.parts[0] in ('src','data','qa','docs') or name in ('README.md','index.html')
+              assert path.suffix in ('.js','.css','.py','.html','.json','.md')
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content)
+              print(name,hashlib.sha256(content.encode()).hexdigest())
+          for item in folder.glob('ui-*'):
+              item.unlink()
+          PY
+      - name: Build and publish reviewable source, removing transport payloads
+        run: |
+          python src/build.py
+          git config user.name 'Compute Atlas review import'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add src data/evidence.json qa/*.py docs README.md index.html compute_atlas.html .review-transport
+          git commit -m 'feat: rebuild six-scale research atlas with attributed cartography and reviewed evidence'
+          git push origin HEAD:feat/atlas-cartography
+      - name: Install browser
+        run: |
+          pip install playwright==1.62.0
+          python -m playwright install --with-deps chromium
+          CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
+          test -n "$CHROMIUM_PATH"
+          sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+      - name: Fresh archive, functional, semantic, smoke and HTTP audits
+        run: |
+          node --check src/cartography.js
+          node --check src/zoom-explorer.js
+          python qa/integrity.py
+          python qa/functional.py
+          python qa/zoom-explorer.py
+          python qa/smoke.py
+          python qa/live.py
+          python src/build.py
+          git diff --quiet -- compute_atlas.html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atlas-ui-review-evidence
+          retention-days: 7
+          path: |
+            qa/*_results.json
+            qa/screenshots/*.png
+            qa/overview.png
+            qa/mobile.png
