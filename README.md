@@ -17,6 +17,14 @@ The web entrypoint falls back to repository attachment links for original PDFs/X
 
 China coverage includes Alibaba, Tencent, Baidu, ByteDance, Huawei, China Mobile, China Telecom, China Unicom, GDS, VNET and SenseTime. Unknown is not zero — some companies have coverage cards but no defensibly quantified accelerator inventory.
 
+## Six-scale spatial explorer
+
+The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.
+
+At each scale the app recomputes the visible research scope from the checked-in facility graph. Comparable power totals include only finite IT-MW values from reviewed or imported site estimates; native-unit disclosures and contract-only records remain visible without being forced into a false GW total.
+
+The finest scale deliberately distinguishes sourced facility facts from physical geometry. When parcel/building boundaries are not present in the research package, the UI renders an **evidence schematic explicitly labeled as not a parcel/building survey** rather than inventing site plans from the design mockups.
+
 ## How to explore
 
 Open `index.html` from a web server for the repository-native app, or open `compute_atlas.html` directly for the offline build. Two routes in:
