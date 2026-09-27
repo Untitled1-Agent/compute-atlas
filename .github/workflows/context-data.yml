@@ -1,0 +1,38 @@
+name: Capture attributed reference geography
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/atlas-cartography]
+    paths: [tools/capture_context.py, .github/workflows/context-data.yml]
+permissions:
+  contents: write
+concurrency:
+  group: context-capture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install pyshp==2.3.1
+      - run: python tools/capture_context.py
+      - name: Publish reference layer to the requested branch
+        run: |
+          git config user.name 'Compute Atlas data capture'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add data/context.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: capture attributed public-domain reference geography'
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: attributed-geography
+          path: data/context.json
+          retention-days: 2
