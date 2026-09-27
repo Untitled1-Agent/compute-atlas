@@ -3,8 +3,7 @@ name: Compute Atlas live checks
 on:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -24,11 +23,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - name: Install Playwright and Chromium
-        shell: bash
         run: |
-          python -m pip install --upgrade pip
           python -m pip install playwright==1.62.0
           python -m playwright install --with-deps chromium
           CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
@@ -51,10 +48,11 @@ jobs:
           node --check src/spatial-math.js
           node --check src/app.js
           node --check src/enhancements.js
+          node --check src/cartography.js
           node --check src/zoom-explorer.js
       - name: Functional suite
         run: python qa/functional.py
-      - name: Six-scale semantic map suite
+      - name: Six-scale semantic map suite over real HTTP
         run: python qa/zoom-explorer.py
       - name: Authoritative smoke suite
         run: python qa/smoke.py
@@ -62,7 +60,6 @@ jobs:
         run: python qa/live.py
       - name: Summarize QA
         if: always()
-        shell: bash
         run: |
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
@@ -74,13 +71,18 @@ jobs:
                   print(f'- `{name}`: not produced')
                   continue
               data=json.loads(path.read_text())
-              if name=='smoke_results.json':
-                  passed=data.get('passed',sum(bool(x.get('pass')) for x in data.get('tests',[])))
-                  total=data.get('total',len(data.get('tests',[])))
-              else:
-                  passed=data.get('passed')
-                  total=data.get('total')
-              print(f'- `{name}`: **{passed}/{total} passed**')
-          print('- Consult the synchronization step for build status; missing test output does not imply a pass.')
-          print('- Detailed logs remain in this workflow run. The independent review-bundle workflow publishes short-lived source artifacts, not pass certificates.')
+              print(f'- `{name}`: **{data.get("passed")}/{data.get("total")} passed**')
+          print('- Missing output is not a pass. The build-synchronization step remains mandatory.')
           PY
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compute-atlas-browser-evidence
+          retention-days: 7
+          if-no-files-found: warn
+          path: |
+            qa/*_results.json
+            qa/screenshots/*.png
+            qa/overview.png
+            qa/mobile.png
