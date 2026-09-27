@@ -17,7 +17,7 @@ with sync_playwright() as p:
  page.set_content((ROOT/'compute_atlas.html').read_text(),wait_until='load')
  page.wait_for_timeout(1500)
  page.screenshot(path=str(ROOT/'qa/overview.png'),full_page=True)
- record('initial boot',page.locator('h1').inner_text().startswith('Where compute'))
+ record('initial boot',page.locator('h1').inner_text().startswith('A global view'))
  counts=page.evaluate('({sites:ATLAS.data.sites.length,companies:ATLAS.data.companies.length,sources:ATLAS.data.sources.length,reportSections:ATLAS.archive.reports.map(x=>x.sections.length),workbooks:ATLAS.archive.workbooks.map(x=>x.sheets.length)})')
  for route in ['globe','facilities','companies','contracts','costs','investment','reports','data','stories','watchlist']:
   page.evaluate('(route)=>ATLAS.navigate(route)',route)
@@ -26,9 +26,9 @@ with sync_playwright() as p:
  page.evaluate("ATLAS.navigate('globe')")
  page.wait_for_timeout(250)
  page.screenshot(path=str(ROOT/'qa/globe.png'),full_page=True)
- page.locator('[data-action="fly"][data-id="asia"]').click()
+ page.locator('[data-atlas-action="fly"][data-id="asia"]').click()
  try:
-  page.wait_for_function("Math.abs((((ATLAS.getGlobe().lon-109)+540)%360)-180)<3",timeout=4000)
+  page.wait_for_function("Math.abs((((ATLAS.getGlobe().lon-105)+540)%360)-180)<3",timeout=4000)
   asia_ok=True
  except PlaywrightTimeoutError:
   asia_ok=False

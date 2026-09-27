@@ -36,12 +36,13 @@ with sync_playwright() as p:
  old=page.evaluate('ATLAS.getGlobe().lon');canvas=page.locator('#globe-canvas');box=canvas.bounding_box()
  page.mouse.move(box['x']+box['width']*.55,box['y']+box['height']*.65);page.mouse.down();page.mouse.move(box['x']+box['width']*.55+70,box['y']+box['height']*.65,steps=6);page.mouse.up();page.wait_for_timeout(100)
  check('pointer dragging rotates globe',abs(page.evaluate('ATLAS.getGlobe().lon')-old)>5)
- old=page.evaluate('ATLAS.getGlobe().zoom');page.locator('[data-action="zoom"][data-id="in"]').click();check('zoom button changes globe scale',page.evaluate('ATLAS.getGlobe().zoom')>old)
- page.locator('[data-action="fly"][data-id="asia"]').click();page.wait_for_timeout(950)
- g=page.evaluate("(()=>{let g=ATLAS.getGlobe(),p=g.groups.find(p=>p.sites.length===1&&p.sites[0].name==='Zhangbei');return p?{x:p.x,y:p.y}:null})()")
- check('China facility has a selectable marker',g is not None)
+ old=page.evaluate('ATLAS.state.spatialLevel');page.locator('[data-spatial-action="zoom-in"]').click();check('zoom button changes semantic scale',page.evaluate('ATLAS.state.spatialLevel')==old+1)
+ page.locator('[data-spatial-action="stage"][data-id="0"]').click()
+ page.locator('[data-atlas-action="fly"][data-id="asia"]').click();page.wait_for_timeout(950)
+ g=page.evaluate("(()=>{let g=ATLAS.getGlobe(),p=g.groups.find(p=>p.sites.some(s=>s.name==='Zhangbei'));return p?{x:p.x,y:p.y,id:p.sites[0].id}:null})()")
+ check('China facility belongs to a selectable evidence cluster',g is not None)
  if g:
-  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas marker opens matching dossier',page.locator('#drawer-content h1').inner_text()=='Zhangbei');page.locator('[data-action="close-drawer"]').click()
+  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas cluster drills to next semantic scale',page.evaluate('ATLAS.state.spatialLevel')==1)
  page.evaluate("ATLAS.navigate('facilities')");page.locator('[data-filter="country"]').select_option('China');check('country filter reaches all seven China dossiers',page.locator('#content tbody tr').count()==7)
  page.locator('[data-action="site-layout"][data-id="chart"]').click();check('linked facility scatter shows two quantified China sites',page.locator('.scatter-point').count()==2)
  page.locator('.scatter-point circle').first.click();check('scatter point opens facility dossier',page.locator('#drawer').is_visible());page.locator('[data-action="close-drawer"]').click()
@@ -106,8 +107,8 @@ with sync_playwright() as p:
   if f.exists() and f.is_file():route.fulfill(status=200,body=f.read_bytes(),content_type=mime.get(f.suffix,'application/octet-stream'))
   else:route.fulfill(status=404,body='not found',content_type='text/plain')
  web=b.new_page(viewport={'width':1400,'height':900});web_errs=[];web.on('pageerror',lambda e:web_errs.append(str(e)));web.route('https://atlas.test/**',lambda r:serve(r))
- web.set_content(hosted_html,wait_until='load');web.wait_for_selector('.evidence-lane')
- check('repository-native entrypoint boots from checked-in assets',web.locator('.evidence-lane').count()==4 and web.locator('.investor-table tbody tr').count()==7 and 'WEB · REPOSITORY DATA' in web.locator('.side-status').inner_text(),web_errs)
+ web.set_content(hosted_html,wait_until='load');web.wait_for_selector('.evidence-lane',state='attached')
+ check('repository-native entrypoint boots from checked-in assets',web.locator('.evidence-lane').count()==4 and web.locator('.investor-table tbody tr').count()==7 and web.locator('#atlas-monitor-label').count()==1,web_errs)
  web.close()
  broken=b.new_page(viewport={'width':1200,'height':800});broken_errs=[];broken.on('pageerror',lambda e:broken_errs.append(str(e)));broken.route('https://atlas.test/**',lambda r:serve(r,True))
  broken.set_content(hosted_html,wait_until='load');broken.wait_for_selector('.boot-error')
@@ -117,3 +118,6 @@ with sync_playwright() as p:
 res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy.'}
 (ROOT/'qa/functional_results.json').write_text(json.dumps(res,indent=2))
 print(json.dumps(res,indent=2))
+
+if res['passed'] != res['total'] or errs or requests or web_errs:
+ raise SystemExit(1)
