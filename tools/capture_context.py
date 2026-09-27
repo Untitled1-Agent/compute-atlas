@@ -62,6 +62,8 @@ def main():
             reader = shapefile.Reader(**{ext[1:]: io.BytesIO(archive.read(path)) for ext, path in entries.items()}, encoding='utf-8', encodingErrors='replace')
             for record in reader.iterShapeRecords():
                 shape, attrs = record.shape, record.record.as_dict()
+                if not shape.points:
+                    continue
                 if kind == 'places':
                     if not shape.points:
                         continue
