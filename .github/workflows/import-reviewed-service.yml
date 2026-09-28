@@ -1,0 +1,136 @@
+name: Import and test reviewed evidence service
+on:
+  push:
+    branches: [feat/evidence-ledger]
+    paths: ['review-import/service-manifest.json']
+permissions:
+  contents: write
+concurrency:
+  group: reviewed-evidence-import
+  cancel-in-progress: false
+jobs:
+  import-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/evidence-ledger
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify complete delta before applying any change
+        run: |
+          python - <<'PY'
+          import base64,hashlib,json,lzma,subprocess
+          from pathlib import Path
+          folder=Path('review-import')
+          m=json.loads((folder/'service-manifest.json').read_text())
+          encoded=''.join((folder/f'service-{i}.b64').read_text() for i in range(1,m['parts']+1))
+          packed=base64.b64decode(encoded,validate=True)
+          assert hashlib.sha256(packed).hexdigest()==m['sha256']
+          decoder=lzma.LZMADecompressor(memlimit=128*1024*1024)
+          raw=decoder.decompress(packed,max_length=1000000)
+          assert decoder.eof and not decoder.unused_data and len(raw)==m['expanded_bytes']
+          files=json.loads(raw)
+          assert set(files)==set(m['paths']) and len(files)<=35
+          output={}
+          for name,item in files.items():
+              path=Path(name)
+              assert not path.is_absolute() and '..' not in path.parts and '\\' not in name
+              assert path.parts[0] in ('server','tests','src','qa','docs','.github') or name in ('README.md','index.html','requirements.txt','requirements-dev.txt','Dockerfile','compose.yaml','.dockerignore','.gitignore')
+              expected=m['expected'][name]
+              if expected:
+                  assert subprocess.check_output(['git','hash-object',name]).decode().strip()==expected, 'Concurrent source change: '+name
+                  text=path.read_text()
+                  last=len(text)+1
+                  for start,end,replacement in reversed(item['edits']):
+                      assert 0<=start<=end<last
+                      text=text[:start]+replacement+text[end:]
+                      last=start+1
+              else:
+                  assert not path.exists(), 'Unexpected existing file: '+name
+                  text=item['text']
+              assert hashlib.sha256(text.encode()).hexdigest()==item['sha256'], name
+              output[path]=text
+          for path,text in output.items():
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(text)
+          for path in folder.glob('service-*'): path.unlink()
+          Path('.github/workflows/apply-atlas-review.yml').unlink(missing_ok=True)
+          Path('.github/workflows/import-reviewed-service.yml').unlink()
+          PY
+      - name: Build reproducible publication and commit clean source
+        run: |
+          python src/build.py
+          git config user.name 'Compute Atlas verified review'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: add persistent evidence ledger, bounded source acquisition and reviewed publication API'
+          git push origin HEAD:feat/evidence-ledger
+          mkdir -p qa/review
+          git rev-parse HEAD > qa/review/COMMIT.txt
+      - name: Install test environment
+        run: |
+          pip install -r requirements-dev.txt
+          python -m playwright install --with-deps chromium
+          CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
+          test -n "$CHROMIUM_PATH"
+          sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+      - name: Independent backend and browser audits
+        run: |
+          python -m pytest tests -q | tee qa/review/backend.txt
+          for file in src/*.js; do node --check "$file"; done
+          python qa/integrity.py
+          python qa/functional.py
+          python qa/zoom-explorer.py
+          python qa/smoke.py
+          python qa/live.py
+          python qa/service.py
+          python src/build.py
+          git diff --quiet -- compute_atlas.html
+      - name: Acquire real sources without auto-publishing
+        timeout-minutes: 8
+        run: |
+          python -m server export /tmp/before.json
+          python -m server refresh --limit 30 > qa/review/source-capture.json
+          python -m server export /tmp/after.json
+          cmp /tmp/before.json /tmp/after.json
+          python - <<'PY'
+          import json
+          s=json.load(open('qa/review/source-capture.json'))
+          print(json.dumps(s,indent=2))
+          assert s['counts']['source_versions']>0, 'No real source captured; inspect deferred outcomes'
+          PY
+      - name: Exercise deployable container
+        timeout-minutes: 5
+        run: |
+          docker build -t compute-atlas-review .
+          docker run -d --name atlas-review -p 127.0.0.1:18001:8000 compute-atlas-review python -m server serve --host 0.0.0.0 --no-refresh
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:18001/api/health && break || sleep 2; done
+          curl -fsS http://127.0.0.1:18001/api/health
+          docker stop atlas-review
+      - name: Package exact clean source and report
+        if: always()
+        run: |
+          mkdir -p qa/review
+          git archive --format=zip HEAD > qa/review/compute-atlas-source.zip
+          sha256sum qa/review/compute-atlas-source.zip > qa/review/SHA256SUMS
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          print('## Evidence service review — actual results')
+          for p in sorted(Path('qa').glob('*_results.json')):
+              r=json.loads(p.read_text())
+              print(f'- {p.name}: {r.get("passed")}/{r.get("total")}')
+          print('The source bundle identifies the built commit. Missing or failed steps are not passes. Raw third-party captures are not distributed in this artifact.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-service-review
+          retention-days: 7
+          path: |
+            qa/review/
+            qa/*_results.json
+            qa/screenshots/*.png
