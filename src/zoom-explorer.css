@@ -51,3 +51,21 @@ body{background:radial-gradient(ellipse at 55% 0%,#0a1822 0%,#07111a 62%);color:
  .atlas-kpi-grid .metric-label{font-size:11px}.atlas-kpi-grid .metric-note{font-size:10px}
 }
 .atlas-live-review h3{font:23px/1.2 Georgia,serif}.atlas-live-review .atlas-source-observation{padding:16px 0;border-bottom:1px solid var(--atlas-line)}.atlas-queue-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;font-size:12px}.atlas-service-warning{background:#2b2818;border-bottom:1px solid #736237;color:#eee0b2;padding:10px 26px;font-size:12px;line-height:1.5}.atlas-queue-pager button:disabled{opacity:.4}
+
+/* Closed mobile navigation must never cover content, even during resize animation. */
+.nav-backdrop,.nav-close{display:none}
+@media(max-width:640px){
+ .sidebar{visibility:hidden;pointer-events:none;overflow-y:auto;padding-top:46px;transition:transform .18s ease}
+ .sidebar.open{visibility:visible;pointer-events:auto}
+ .nav-backdrop{display:block;position:fixed;inset:0;z-index:39;background:#020912b8;border:0;border-radius:0}
+ .nav-close{display:inline-flex;position:absolute;right:12px;top:10px}
+ body.nav-open{overflow:hidden}
+ .atlas-filterbar input,.atlas-filterbar select{min-height:40px;font-size:12px}
+ .atlas-map-tools .icon-button{width:40px;height:40px}
+ .atlas-source-ref{min-height:28px;padding:5px 7px}
+ .atlas-detail-card,.atlas-insight-card{padding:18px}
+ .atlas-experience p,.atlas-data-row,.atlas-role-row{font-size:12px;line-height:1.6}
+ .atlas-document-row{font-size:12px;gap:9px}
+ .atlas-document-row small,.atlas-document-row time{font-size:10px}
+ .atlas-card-kicker{font-size:10px}
+}

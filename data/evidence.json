@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "published_at": "2026-09-27",
+  "published_at": "2026-09-28",
   "policy": "Primary disclosures are a separately reviewed layer. They do not overwrite historical models. Delivered, contracted, planned, gross and critical IT quantities are not additive. A fresh HTTP fetch does not revalidate a fact.",
   "sources": [
     {
@@ -110,6 +110,39 @@
       "review_status": "reviewed",
       "refresh_hours": 168,
       "rights": "Linked public regulatory record. Registration/review dates are not commissioning evidence. No contact personal data or source imagery redistributed."
+    },
+    {
+      "id": "P10",
+      "title": "Lake Mariner Q2 2026 operating and construction update",
+      "publisher": "TeraWulf",
+      "url": "https://investors.terawulf.com/news-events/press-releases/detail/144/terawulf-reports-second-quarter-2026-results",
+      "published_at": "2026-08-05",
+      "retrieved_at": "2026-09-28",
+      "source_type": "primary_disclosure",
+      "review_status": "reviewed",
+      "notes": "Operational highlights and New York platform sections. Historical quarter-end and subsequent delivery figures overlap. No GPU utilization or site-wide operating electricity measurement is asserted."
+    },
+    {
+      "id": "P11",
+      "title": "Waltham Cross data centre opening",
+      "publisher": "Google",
+      "url": "https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/waltham-cross-data-centre/",
+      "published_at": "2025-09-16",
+      "retrieved_at": "2026-09-28",
+      "source_type": "primary_disclosure",
+      "review_status": "reviewed",
+      "notes": "The UK-wide £5 billion two-year programme includes capex, R&D and engineering; it is not the construction cost of this one site. No IT-MW figure is disclosed."
+    },
+    {
+      "id": "P12",
+      "title": "Nscale infrastructure: Narvik campus",
+      "publisher": "Nscale",
+      "url": "https://www.nscale.com/ai-infrastructure",
+      "published_at": null,
+      "retrieved_at": "2026-09-28",
+      "source_type": "primary_disclosure",
+      "review_status": "reviewed",
+      "notes": "Undated operator page reviewed on retrieval date. Narvik design capacity and additional expansion have no explicit critical-IT / gross-power boundary and are not included in IT-MW totals."
     }
   ],
   "observations": [
@@ -484,6 +517,110 @@
       "review_status": "accepted",
       "confidence": "primary_reported",
       "comparison": "stated"
+    },
+    {
+      "id": "lake-mariner-quarter-end-it",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "metric": "power",
+      "value": 81,
+      "unit": "MW",
+      "boundary": "critical_it",
+      "status": "historical",
+      "scope": "Quarter-end operating capacity",
+      "source_id": "P10",
+      "as_of": "2026-06-30",
+      "qualifier": "Historical subtotal; included in the later 102 MW figure, not additional capacity.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated"
+    },
+    {
+      "id": "lake-mariner-july-it",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "metric": "power",
+      "value": 102,
+      "unit": "MW",
+      "boundary": "critical_it",
+      "status": "operating",
+      "scope": "Revenue-generating capacity",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "qualifier": "Includes CB-3. Revenue-generating capacity, not measured GPU utilization.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated",
+      "period": "Following early July 2026 delivery"
+    },
+    {
+      "id": "lake-mariner-cb45-it",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "metric": "power",
+      "value": 336,
+      "unit": "MW",
+      "boundary": "critical_it",
+      "status": "under_construction",
+      "scope": "CB-4 and CB-5",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "qualifier": "Additional construction; delivery remains prospective.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated",
+      "period": "CB-4: H2 2026; CB-5: early 2027"
+    },
+    {
+      "id": "waltham-cross-it-undisclosed",
+      "site_id": "google-waltham-cross",
+      "metric": "power",
+      "value": null,
+      "unit": "MW",
+      "boundary": "critical_it",
+      "status": "not_disclosed",
+      "scope": "Site IT capacity",
+      "source_id": "P11",
+      "as_of": "2025-09-16",
+      "qualifier": "Opening release gives no comparable IT-MW value. Unknown is not zero.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated"
+    },
+    {
+      "id": "narvik-design-unspecified",
+      "site_id": "microsoft-narvik",
+      "metric": "power",
+      "value": 230,
+      "unit": "MW",
+      "boundary": "unspecified_compute",
+      "status": "planned",
+      "scope": "Campus design capacity",
+      "source_id": "P12",
+      "as_of": "2026-09-28",
+      "qualifier": "Undated operator page. IT/gross boundary unspecified; excluded from critical-IT totals.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated"
+    },
+    {
+      "id": "narvik-expansion-unspecified",
+      "site_id": "microsoft-narvik",
+      "metric": "power",
+      "value": 290,
+      "unit": "MW",
+      "boundary": "unspecified_compute",
+      "status": "planned",
+      "scope": "Additional expansion",
+      "source_id": "P12",
+      "as_of": "2026-09-28",
+      "qualifier": "Prospective additional capacity with unspecified IT/gross boundary. Not operating capacity.",
+      "review_status": "accepted",
+      "supersedes": null,
+      "confidence": "primary_reported",
+      "comparison": "stated"
     }
   ],
   "facts": [
@@ -640,6 +777,72 @@
       "review_status": "accepted",
       "confidence": "primary_reported",
       "as_of": "2025-03-07"
+    },
+    {
+      "id": "lake-mariner-owner",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "label": "Owner / developer",
+      "value": "TeraWulf",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "qualifier": "",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "lake-mariner-google-credit",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "label": "Google role",
+      "value": "Credit support for Fluidstack leases",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "qualifier": "Not an assertion that Google owns or operates the campus.",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "lake-mariner-cost-boundary",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "label": "Construction guidance",
+      "value": "$8–10M / critical IT MW",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "qualifier": "WULF Compute guidance, not a disclosed completed project cost or GPU-inclusive replacement estimate.",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "waltham-cross-opening",
+      "site_id": "google-waltham-cross",
+      "label": "Opening announced",
+      "value": "16 September 2025",
+      "source_id": "P11",
+      "as_of": "2025-09-16",
+      "qualifier": "",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "waltham-cross-investment-scope",
+      "site_id": "google-waltham-cross",
+      "label": "UK investment boundary",
+      "value": "£5B UK programme, not site cost",
+      "source_id": "P11",
+      "as_of": "2025-09-16",
+      "qualifier": "Two-year programme includes capex, R&D, engineering and DeepMind.",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "narvik-power-source",
+      "site_id": "microsoft-narvik",
+      "label": "Operator power description",
+      "value": "Renewable hydropower",
+      "source_id": "P12",
+      "as_of": "2026-09-28",
+      "qualifier": "Operator statement, not traced transmission geometry or independently audited energy use.",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
     }
   ],
   "relationships": [
@@ -752,6 +955,50 @@
       "review_status": "accepted",
       "confidence": "primary_reported",
       "as_of": "2025-10-29"
+    },
+    {
+      "id": "lake-mariner-fluidstack-tenant",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "company_id": "fluidstack",
+      "role": "Lease counterparty",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "status": "disclosed",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "lake-mariner-google-guarantor",
+      "site_id": "anthropic-fluidstack-lake-mariner",
+      "company_id": "google",
+      "role": "Lease credit support",
+      "source_id": "P10",
+      "as_of": "2026-08-05",
+      "status": "disclosed",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "waltham-cross-google-operator",
+      "site_id": "google-waltham-cross",
+      "company_id": "google",
+      "role": "Data centre operator",
+      "source_id": "P11",
+      "as_of": "2025-09-16",
+      "status": "disclosed",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
+    },
+    {
+      "id": "narvik-nscale-developer",
+      "site_id": "microsoft-narvik",
+      "company_id": "nscale",
+      "role": "Data centre developer",
+      "source_id": "P12",
+      "as_of": "2026-09-28",
+      "status": "disclosed",
+      "review_status": "accepted",
+      "confidence": "primary_reported"
     }
   ],
   "discoveries": [
@@ -782,6 +1029,18 @@
       "url": "https://about.fb.com/news/feed/",
       "publisher": "Meta",
       "refresh_hours": 12
+    },
+    {
+      "id": "terawulf-news",
+      "url": "https://investors.terawulf.com/news-events/press-releases/rss",
+      "publisher": "TeraWulf",
+      "refresh_hours": 24
+    },
+    {
+      "id": "google-blog",
+      "url": "https://blog.google/rss/",
+      "publisher": "Google",
+      "refresh_hours": 24
     }
   ]
 }
