@@ -2,7 +2,7 @@ name: Import and test reviewed evidence service
 on:
   push:
     branches: [feat/evidence-ledger]
-    paths: ['review-import/service-manifest.json']
+    paths: ['review-import/service-manifest.json', '.github/workflows/import-reviewed-service.yml']
 permissions:
   contents: write
 concurrency:
@@ -26,8 +26,7 @@ jobs:
           from pathlib import Path
           folder=Path('review-import')
           m=json.loads((folder/'service-manifest.json').read_text())
-          encoded=''.join((folder/f'service-{i}.b64').read_text() for i in range(1,m['parts']+1))
-          packed=base64.b64decode(encoded,validate=True)
+          packed=base64.b64decode(''.join((folder/f'service-{i}.b64').read_text() for i in range(1,m['parts']+1)),validate=True)
           assert hashlib.sha256(packed).hexdigest()==m['sha256']
           decoder=lzma.LZMADecompressor(memlimit=128*1024*1024)
           raw=decoder.decompress(packed,max_length=1000000)
@@ -39,6 +38,9 @@ jobs:
               path=Path(name)
               assert not path.is_absolute() and '..' not in path.parts and '\\' not in name
               assert path.parts[0] in ('server','tests','src','qa','docs','.github') or name in ('README.md','index.html','requirements.txt','requirements-dev.txt','Dockerfile','compose.yaml','.dockerignore','.gitignore')
+              if name.startswith('.github/'):
+                  assert hashlib.sha256(path.read_bytes()).hexdigest()==item['sha256'], 'Workflow must be committed by an authorized editor: '+name
+                  continue
               expected=m['expected'][name]
               if expected:
                   assert subprocess.check_output(['git','hash-object',name]).decode().strip()==expected, 'Concurrent source change: '+name
@@ -57,10 +59,8 @@ jobs:
               path.parent.mkdir(parents=True,exist_ok=True)
               path.write_text(text)
           for path in folder.glob('service-*'): path.unlink()
-          Path('.github/workflows/apply-atlas-review.yml').unlink(missing_ok=True)
-          Path('.github/workflows/import-reviewed-service.yml').unlink()
           PY
-      - name: Build reproducible publication and commit clean source
+      - name: Build reproducible publication and commit source
         run: |
           python src/build.py
           git config user.name 'Compute Atlas verified review'
@@ -70,6 +70,7 @@ jobs:
           git push origin HEAD:feat/evidence-ledger
           mkdir -p qa/review
           git rev-parse HEAD > qa/review/COMMIT.txt
+          rm -f qa/*_results.json
       - name: Install test environment
         run: |
           pip install -r requirements-dev.txt
@@ -79,6 +80,7 @@ jobs:
           sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
       - name: Independent backend and browser audits
         run: |
+          set -o pipefail
           python -m pytest tests -q | tee qa/review/backend.txt
           for file in src/*.js; do node --check "$file"; done
           python qa/integrity.py
@@ -110,7 +112,7 @@ jobs:
           for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:18001/api/health && break || sleep 2; done
           curl -fsS http://127.0.0.1:18001/api/health
           docker stop atlas-review
-      - name: Package exact clean source and report
+      - name: Package exact source and report
         if: always()
         run: |
           mkdir -p qa/review
@@ -119,11 +121,11 @@ jobs:
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
           from pathlib import Path
-          print('## Evidence service review — actual results')
+          print('## Evidence service review — inspect step outcomes as well as these files')
           for p in sorted(Path('qa').glob('*_results.json')):
               r=json.loads(p.read_text())
               print(f'- {p.name}: {r.get("passed")}/{r.get("total")}')
-          print('The source bundle identifies the built commit. Missing or failed steps are not passes. Raw third-party captures are not distributed in this artifact.')
+          print('Missing or failed steps are not passes. Raw third-party captures are not distributed.')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
