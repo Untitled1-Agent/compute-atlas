@@ -1,0 +1,7 @@
+.git
+var
+.review-transport
+qa/screenshots
+__pycache__
+*.pyc
+.env*

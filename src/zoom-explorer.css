@@ -34,3 +34,20 @@ body{background:radial-gradient(ellipse at 55% 0%,#0a1822 0%,#07111a 62%);color:
 
 .atlas-filterbar{flex-wrap:wrap}.atlas-filterbar label{gap:7px}.atlas-filterbar select{max-width:143px}.atlas-filterbar #atlas-country-filter{max-width:120px}
 @media(max-width:760px){.atlas-filterbar label:has(select){flex:1 1 30%;min-width:0}.atlas-filterbar select,.atlas-filterbar #atlas-country-filter{width:100%;max-width:100%}.atlas-filterbar label:has(#atlas-map-query){flex-basis:100%}}
+/* Review pass: readable desktop labels and genuinely distinct source states. */
+@media(min-width:1001px){
+ .atlas-map-head h2{font-size:14px}.atlas-map-head p{font-size:11px}
+ .atlas-map-legend{font-size:11px;gap:8px}.atlas-map-chips button{font-size:10px}
+ .atlas-insight-card p{font-size:12px;line-height:1.55}
+ .atlas-insight-card h2,.atlas-level-0 .atlas-insight-card h2{font-size:27px}
+ .atlas-card-kicker{font-size:10px;letter-spacing:1.3px}
+ .atlas-update-row b{font-size:12px}.atlas-update-row small{font-size:10px}
+ .atlas-card-footnote{font-size:10px!important}
+ .atlas-role-row{font-size:11px}.atlas-data-row{font-size:11px}
+ .atlas-phase-node p{font-size:11px;line-height:1.55}
+ .atlas-node-number{font-size:10px}.atlas-node-status{font-size:11px}
+ .atlas-source-ref{font-size:10px}.atlas-schematic-heading p{font-size:12px}
+ .atlas-insight-card .atlas-coverage span{font-size:10px}
+ .atlas-kpi-grid .metric-label{font-size:11px}.atlas-kpi-grid .metric-note{font-size:10px}
+}
+.atlas-live-review h3{font:23px/1.2 Georgia,serif}.atlas-live-review .atlas-source-observation{padding:16px 0;border-bottom:1px solid var(--atlas-line)}.atlas-queue-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;font-size:12px}.atlas-service-warning{background:#2b2818;border-bottom:1px solid #736237;color:#eee0b2;padding:10px 26px;font-size:12px;line-height:1.5}.atlas-queue-pager button:disabled{opacity:.4}

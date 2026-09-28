@@ -60,6 +60,23 @@ body{background:radial-gradient(ellipse at 55% 0%,#0a1822 0%,#07111a 62%);color:
 
 .atlas-filterbar{flex-wrap:wrap}.atlas-filterbar label{gap:7px}.atlas-filterbar select{max-width:143px}.atlas-filterbar #atlas-country-filter{max-width:120px}
 @media(max-width:760px){.atlas-filterbar label:has(select){flex:1 1 30%;min-width:0}.atlas-filterbar select,.atlas-filterbar #atlas-country-filter{width:100%;max-width:100%}.atlas-filterbar label:has(#atlas-map-query){flex-basis:100%}}
+/* Review pass: readable desktop labels and genuinely distinct source states. */
+@media(min-width:1001px){
+ .atlas-map-head h2{font-size:14px}.atlas-map-head p{font-size:11px}
+ .atlas-map-legend{font-size:11px;gap:8px}.atlas-map-chips button{font-size:10px}
+ .atlas-insight-card p{font-size:12px;line-height:1.55}
+ .atlas-insight-card h2,.atlas-level-0 .atlas-insight-card h2{font-size:27px}
+ .atlas-card-kicker{font-size:10px;letter-spacing:1.3px}
+ .atlas-update-row b{font-size:12px}.atlas-update-row small{font-size:10px}
+ .atlas-card-footnote{font-size:10px!important}
+ .atlas-role-row{font-size:11px}.atlas-data-row{font-size:11px}
+ .atlas-phase-node p{font-size:11px;line-height:1.55}
+ .atlas-node-number{font-size:10px}.atlas-node-status{font-size:11px}
+ .atlas-source-ref{font-size:10px}.atlas-schematic-heading p{font-size:12px}
+ .atlas-insight-card .atlas-coverage span{font-size:10px}
+ .atlas-kpi-grid .metric-label{font-size:11px}.atlas-kpi-grid .metric-note{font-size:10px}
+}
+.atlas-live-review h3{font:23px/1.2 Georgia,serif}.atlas-live-review .atlas-source-observation{padding:16px 0;border-bottom:1px solid var(--atlas-line)}.atlas-queue-pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;font-size:12px}.atlas-service-warning{background:#2b2818;border-bottom:1px solid #736237;color:#eee0b2;padding:10px 26px;font-size:12px;line-height:1.5}.atlas-queue-pager button:disabled{opacity:.4}
 </style></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -798,7 +815,7 @@ const ATLAS_PRIMARY = JSON.parse(document.getElementById('evidence-data')?.textC
 const atlasSpatial = globalThis.AtlasSpatialMath || {};
 const spatialFinite = value => typeof value === 'number' && Number.isFinite(value);
 const primarySource = id => ATLAS_PRIMARY.sources.find(s => s.id === id);
-const effectivePrimary = rows => {const old=new Set(rows.filter(o=>(o.review_status||'accepted')==='accepted').map(o=>o.supersedes));return rows.filter(o=>!old.has(o.id));};
+const effectivePrimary = rows => {const accepted=rows.filter(o=>o.review_status==='accepted'), old=new Set(accepted.map(o=>o.supersedes));return accepted.filter(o=>!old.has(o.id));};
 const primaryObservations = s => effectivePrimary(ATLAS_PRIMARY.observations).filter(o => o.site_id === s?.id && o.review_status === 'accepted');
 const primaryFacts = s => effectivePrimary(ATLAS_PRIMARY.facts).filter(o => o.site_id === s?.id);
 const primaryRelationships = s => effectivePrimary(ATLAS_PRIMARY.relationships).filter(o => o.site_id === s?.id);
@@ -808,7 +825,8 @@ const spatialComparable = (s, phase = spatialState().spatialPhase) => ['reviewed
 const spatialEvidenceLabel = review => ({'reviewed-model':'Reviewed independent model','archive':'Imported estimate','primary-noncomparable':'Native-unit disclosure','contract-record':'Contract record'})[review] || 'Research record';
 const spatialEvidenceClass = review => ({'reviewed-model':'model','archive':'archive','primary-noncomparable':'primary','contract-record':'target'})[review] || '';
 const boundaryLabel = value => ({critical_it:'Critical IT load',gross_facility:'Gross facility power',generation:'Power generation',unspecified_compute:'Unspecified compute power',site_area:'Site area',contract_term:'Lease term',building_count:'Buildings',regional_investment:'Regional investment',construction_cost:'Registered construction cost',building_area:'Registered floor area',equipment_count:'Equipment count'})[value] || value;
-const statusLabel = value => ({delivered:'Delivered',energized:'Energized',contracted:'Contracted',approved:'Approved envelope',under_construction:'Under construction',planned:'Planned',announced:'Announced',disclosed:'Disclosed'})[value] || value;
+const statusLabel = value => ({delivered:'Delivered',energized:'Energized',contracted:'Contracted',approved:'Approved envelope',under_construction:'Under construction',planned:'Planned',announced:'Announced',disclosed:'Disclosed',operating:'Operating',historical:'Historical snapshot',not_disclosed:'Not disclosed'})[value] || value;
+const primaryDate = source => source?.published_at || source?.retrieved_at || '';
 const primaryRef = id => `<button class="atlas-source-ref" data-atlas-action="source" data-id="${esc(id)}" aria-label="Read source ${esc(id)}">${esc(id)} ↗</button>`;
 const atlasKicker = (text, arrow = true) => `<div class="atlas-card-kicker">${esc(text)}${arrow ? '<span aria-hidden="true">↗</span>' : ''}</div>`;
 const atlasRow = (label, value) => `<div class="atlas-data-row"><span>${esc(label)}</span><strong>${value}</strong></div>`;
@@ -926,7 +944,7 @@ function spatialMap(scope,s,level,phase) {
     ${atlasMapControls(level)}<span id="globe-live" class="sr-only" role="status"></span></div>`;
 }
 function observationValue(o){return spatialFinite(o.value)?(o.comparison==='gt'?'> ':o.comparison==='approximate'?'≈ ':'')+fmt(o.value):'Not quantified';}
-function primaryPowerRows(s) {return primaryObservations(s).filter(o=>o.metric==='power'&&spatialFinite(o.value));}
+function primaryPowerRows(s) {const rank={operating:0,delivered:0,under_construction:1,contracted:2,planned:3,announced:3,historical:9};return primaryObservations(s).filter(o=>o.metric==='power'&&spatialFinite(o.value)).sort((a,b)=>(rank[a.status]??5)-(rank[b.status]??5)||String(b.as_of||'').localeCompare(String(a.as_of||''))||a.id.localeCompare(b.id));}
 function spatialFacilitySchematic(s,phase,level=5) {
   if(!s)return '<div class="atlas-evidence-schematic atlas-empty"><h2>No matching facility</h2><p>Clear the filters to return to the collection.</p></div>';
   const primary=primaryPowerRows(s).filter(o=>o.boundary==='critical_it'&&!o.id.endsWith('building-it'));
@@ -935,7 +953,7 @@ function spatialFacilitySchematic(s,phase,level=5) {
   const title=primary.length?'From commitment to delivery.':'What the current evidence establishes.';
   const max=Math.max(...rows.map(o=>o.value||0),1);
   return `<div class="atlas-evidence-schematic" data-level="${level}"><div class="atlas-schematic-badge">EVIDENCE SCHEMATIC · NOT A PARCEL / BUILDING SURVEY</div><div class="atlas-schematic-heading"><span class="atlas-eyebrow">${esc(s.location)} · ${esc(s.country)}</span><h2>${title}</h2><p>${primary.length?'Published critical-IT quantities, kept in their original phase and contract scopes.':'Independent estimates shown as evidence cards, not fictional building footprints.'}</p></div>
-    <div class="atlas-phase-diagram">${rows.length?rows.map((o,i)=>`<article class="atlas-phase-node ${o.status==='delivered'?'delivered':''}"><div class="atlas-node-number">${String(i+1).padStart(2,'0')} / ${esc(o.scope)}</div><strong>${fmt(o.value)} <small>${esc(o.unit)}</small></strong><div class="atlas-node-bar"><i style="width:${Math.max(2,o.value/max*100)}%"></i></div><span class="atlas-node-status">${esc(statusLabel(o.status))}${o.period?' · '+esc(o.period):''}</span><p>${esc(o.qualifier||'Published measurement boundary retained.')}</p>${o.source_id?primaryRef(o.source_id):srefs(s[o.id]?.sources||s.sources)}</article>`).join(''):`<div class="atlas-native-evidence"><span>≠</span><h3>Unknown is not zero.</h3><p>This record has no defensible comparable IT-MW quantity. Its native disclosures and contract evidence remain available in the source dossier.</p></div>`}</div>
+    <div class="atlas-phase-diagram">${rows.length?rows.map((o,i)=>`<article class="atlas-phase-node ${['delivered','operating'].includes(o.status)?'delivered':''}"><div class="atlas-node-number">${String(i+1).padStart(2,'0')} / ${esc(o.scope)}</div><strong>${fmt(o.value)} <small>${esc(o.unit)}</small></strong><div class="atlas-node-bar"><i style="width:${Math.max(2,o.value/max*100)}%"></i></div><span class="atlas-node-status">${esc(statusLabel(o.status))}${o.period?' · '+esc(o.period):''}</span><p>${esc(o.qualifier||'Published measurement boundary retained.')}</p>${o.source_id?primaryRef(o.source_id):srefs(s[o.id]?.sources||s.sources)}</article>`).join(''):`<div class="atlas-native-evidence"><span>≠</span><h3>Unknown is not zero.</h3><p>This record has no defensible comparable IT-MW quantity. Its native disclosures and contract evidence remain available in the source dossier.</p></div>`}</div>
     <div class="atlas-schematic-caption"><span class="atlas-schematic-icon">◇</span><p><b>${primary.length?'These are not additive bars.':'No intermediate phases invented.'}</b> ${primary.length?'A multi-phase commitment can include an already delivered phase. Neither one measures live utilization.':'Snapshot and target describe separate dates; the target is not added to the snapshot.'}</p></div>
     <div class="atlas-schematic-foot"><span>Physical geometry: not established in this source set</span><button data-atlas-action="context" data-id="${esc(s.id)}">View approximate geographic context ↗</button></div>${atlasMapControls(level)}</div>`;
 }
@@ -945,7 +963,7 @@ function atlasRankRows(xs,phase) {
 function spatialRail(level,scope,s,phase) {
   if(level>=4)return spatialFacilityRail(s,phase,level);
   const agg=spatialAggregate(scope.sites,phase), countries=new Set(scope.sites.map(s=>s.country)).size, primaryCount=scope.sites.filter(x=>primarySourceIds(x).length).length;
-  const updates=scope.sites.filter(x=>primarySourceIds(x).length).sort((a,b)=>primarySource(primarySourceIds(b)[0]).published_at.localeCompare(primarySource(primarySourceIds(a)[0]).published_at)).slice(0,3);
+  const updates=scope.sites.filter(x=>primarySourceIds(x).length).sort((a,b)=>Math.max(...primarySourceIds(b).map(id=>Date.parse(primaryDate(primarySource(id)))||0))-Math.max(...primarySourceIds(a).map(id=>Date.parse(primaryDate(primarySource(id)))||0))).slice(0,3);
   if(level===3)return `<div class="atlas-insight-stack"><section class="atlas-insight-card accent">${atlasKicker('01 / SELECTED PROJECT')}<h2>${esc(s?.name||'No matching project')}</h2><p>${esc(s?.location||'')} · ${esc(s?.country||'')}</p><div class="atlas-badge-row"><span>Approximate anchor</span><span>${esc(spatialEvidenceLabel(s?.review))}</span></div>${atlasRow('Snapshot IT estimate',spatialPower(s,'snapshot')==null?'Not quantified':fmt(spatialPower(s,'snapshot'))+' MW')}${atlasRow('Target IT estimate',spatialPower(s,'target')==null?'Not quantified':fmt(spatialPower(s,'target'))+' MW')}${atlasRow('Primary source reviews',String(primarySourceIds(s).length))}<button class="btn primary atlas-wide" data-atlas-action="campus" data-id="${esc(s?.id||'')}">Explore this campus →</button></section><section class="atlas-insight-card">${atlasKicker('02 / NEARBY NAMED PROJECTS')}<p>Within 250 km of the approximate anchor. Proximity does not establish common ownership or a shared power connection.</p>${atlasRankRows(spatialTopSites(scope.sites,phase,3),phase)}</section><section class="atlas-insight-card">${atlasKicker('03 / PHYSICAL INFRASTRUCTURE')}<h2>Context, without invented connections.</h2><p>Roads and boundaries are sourced reference geography. Unverified substations, transmission routes, and parcels are deliberately absent.</p></section></div>`;
   return `<div class="atlas-insight-stack"><section class="atlas-insight-card accent">${atlasKicker('01 / '+(level===0?'THE GLOBAL VIEW':'REGIONAL PERSPECTIVE'))}<h2>${level===0?'Compute is physical.<br>Start with the evidence.':esc(scope.label)+', site by site.'}</h2><p>${agg.count} mapped projects across ${countries} ${countries===1?'country':'countries'}. This is a curated research collection, not a census of installed capacity.</p><div class="atlas-coverage"><span><b>${agg.known}</b> quantified estimates</span><span><b>${agg.unknown}</b> without comparable IT-MW</span></div></section>
     <section class="atlas-insight-card">${atlasKicker('02 / '+(level===0?'RECENT PRIMARY EVIDENCE':'LARGEST NAMED ESTIMATES'))}${level===0?updates.map(x=>{const ids=primarySourceIds(x),src=primarySource(ids[0]);return `<button class="atlas-update-row" data-atlas-action="campus" data-id="${esc(x.id)}"><span class="atlas-update-dot"></span><span><b>${esc(x.name)}</b><small>${esc(src.publisher)} · ${esc(src.published_at)}</small></span><span>↗</span></button>`}).join('')+'<p class="atlas-card-footnote">'+primaryCount+' projects have an additional primary-source layer. Original model records remain unchanged.</p>':atlasRankRows(spatialTopSites(scope.sites,phase,3),phase)+'<p class="atlas-card-footnote">IT estimates only · not issuer-reported live loads</p>'}</section>
@@ -953,7 +971,7 @@ function spatialRail(level,scope,s,phase) {
 }
 function spatialFacilityRail(s,phase,level) {
   if(!s)return '<section class="atlas-insight-card"><h2>No project matches.</h2><p>Clear the filters to continue.</p></section>';
-  const observations=primaryObservations(s), disclosed=observations.find(o=>o.boundary==='critical_it'&&o.status==='delivered'), power=primaryPowerRows(s), relationships=primaryRelationships(s), sources=primarySourceIds(s);
+  const observations=primaryObservations(s), disclosed=primaryPowerRows(s).find(o=>o.boundary==='critical_it'&&['delivered','operating'].includes(o.status)), power=primaryPowerRows(s), relationships=primaryRelationships(s), sources=primarySourceIds(s);
   const primary=disclosed||power.find(o=>o.boundary==='critical_it'&&o.id.endsWith('total-it'))||power[0];
   const value=primary?`${fmt(primary.value)} ${primary.unit}`:spatialPower(s,phase)==null?'Not quantified':fmt(spatialPower(s,phase))+' MW';
   return `<div class="atlas-insight-stack"><section class="atlas-insight-card accent">${atlasKicker('01 / FACILITY DOSSIER')}<div class="atlas-badge-row"><span>${primary?esc(statusLabel(primary.status)):esc(spatialEvidenceLabel(s.review))}</span><span>${primary?'PRIMARY DISCLOSURE':'DATED RESEARCH'}</span></div><h2>${esc(s.name)}</h2><p>${esc(s.location)}, ${esc(s.country)}</p><div class="atlas-feature-number">${value}</div><p class="atlas-number-boundary">${primary?esc(boundaryLabel(primary.boundary))+' · '+esc(primary.scope):'IT power · '+phase+' estimate'}</p>${atlasRow('Reported / modeled date',esc(primary?.as_of||s[phase]?.date||'Not supplied'))}${atlasRow('Primary / archive source links',`${sources.length} / ${(s.sources||[]).length}`)}<button class="btn primary atlas-wide" data-spatial-action="dossier" data-id="${esc(s.id)}">Open full site dossier →</button><button class="atlas-secondary-action" data-atlas-action="export" data-id="${esc(s.id)}">Export cited dossier ↓</button></section>
@@ -964,7 +982,7 @@ function atlasPowerLadder(s) {
   const rows=primaryPowerRows(s), primary=rows.filter(o=>o.boundary==='critical_it'&&!o.id.endsWith('building-it'));
   const display=primary.length?primary:[['snapshot','Snapshot estimate'],['target','Target estimate']].filter(([key])=>spatialPower(s,key)!=null).map(([key,label])=>({scope:label,value:spatialPower(s,key),unit:'MW',status:'model',as_of:s[key].date,source_ids:s[key].sources}));
   const max=Math.max(...display.map(o=>o.value||0),1);
-  return `<section class="atlas-detail-card">${atlasKicker('04 / POWER LADDER',false)}<h3>${primary.length?'Critical IT load by evidence scope':'Independent model: snapshot & target'}</h3>${display.length?display.map(o=>`<div class="atlas-power-row"><span>${esc(o.scope)}<small>${esc(statusLabel(o.status))}</small></span><b>${fmt(o.value)} MW</b><div class="atlas-power-track"><i class="${o.status==='delivered'?'delivered':''}" style="width:${Math.max(2,o.value/max*100)}%"></i></div>${o.source_id?primaryRef(o.source_id):srefs(o.source_ids)}</div>`).join(''):'<p>No comparable IT-MW disclosure. Native quantities have not been converted.</p>'}<p class="atlas-card-footnote">Rows have different scopes or dates. Do not sum them. Gross power and generation are excluded.</p></section>`;
+  return `<section class="atlas-detail-card">${atlasKicker('04 / POWER LADDER',false)}<h3>${primary.length?'Critical IT load by evidence scope':'Independent model: snapshot & target'}</h3>${display.length?display.map(o=>`<div class="atlas-power-row"><span>${esc(o.scope)}<small>${esc(statusLabel(o.status))}</small></span><b>${fmt(o.value)} MW</b><div class="atlas-power-track"><i class="${['delivered','operating'].includes(o.status)?'delivered':''}" style="width:${Math.max(2,o.value/max*100)}%"></i></div>${o.source_id?primaryRef(o.source_id):srefs(o.source_ids)}</div>`).join(''):'<p>No comparable IT-MW disclosure. Native quantities have not been converted.</p>'}<p class="atlas-card-footnote">Rows have different scopes or dates. Do not sum them. Gross power and generation are excluded.</p></section>`;
 }
 function atlasAttributes(s) {
   const facts=primaryFacts(s).slice(0,4), obs=primaryObservations(s).filter(o=>o.metric!=='power').slice(0,3);
@@ -972,7 +990,7 @@ function atlasAttributes(s) {
 }
 function atlasSourcesPanel(s) {
   const fresh=primarySourceIds(s).map(primarySource), historical=(s.sources||[]).map(source).filter(Boolean).slice(0,3);
-  return `<section class="atlas-detail-card">${atlasKicker('06 / SOURCES & EVIDENCE',false)}${fresh.map(x=>`<button class="atlas-document-row" data-atlas-action="source" data-id="${esc(x.id)}"><span>▤</span><span>${esc(x.title)}<small>${esc(x.publisher)} · primary disclosure</small></span><time>${esc(x.published_at)}</time><span>↗</span></button>`).join('')}${historical.map(x=>`<button class="atlas-document-row" data-action="source" data-id="${esc(x.id)}"><span>▤</span><span>${esc(x.title)}<small>${esc(x.issuer)} · historical / model source</small></span><time>${esc(x.date||'Dated source')}</time><span>↗</span></button>`).join('')}<p class="atlas-card-footnote">Review date ${esc(ATLAS_PRIMARY.published_at||D.meta.built)} · click any record to inspect its source and measurement boundaries.</p></section>`;
+  return `<section class="atlas-detail-card">${atlasKicker('06 / SOURCES & EVIDENCE',false)}${fresh.map(x=>`<button class="atlas-document-row" data-atlas-action="source" data-id="${esc(x.id)}"><span>▤</span><span>${esc(x.title)}<small>${esc(x.publisher)} · primary disclosure</small></span><time>${esc(x.published_at||('Retrieved '+x.retrieved_at))}</time><span>↗</span></button>`).join('')}${historical.map(x=>`<button class="atlas-document-row" data-action="source" data-id="${esc(x.id)}"><span>▤</span><span>${esc(x.title)}<small>${esc(x.issuer)} · historical / model source</small></span><time>${esc(x.date||'Dated source')}</time><span>↗</span></button>`).join('')}<p class="atlas-card-footnote">Review date ${esc(ATLAS_PRIMARY.published_at||D.meta.built)} · click any record to inspect its source and measurement boundaries.</p></section>`;
 }
 function atlasNotePanel(s) {
   return `<section class="atlas-detail-card atlas-note-card">${atlasKicker('07 / ANALYST NOTES',false)}<label for="atlas-local-note">Your diligence questions</label><textarea id="atlas-local-note" data-note="${esc(s.id)}" placeholder="What would change your view of this project?" aria-label="Private local research note for ${esc(s.name)}">${esc(saved.notes[s.id]||'')}</textarea><div class="atlas-note-footer"><span>${storageOK?'Private · saved in this browser':'Session-only · storage unavailable'}</span><button class="btn small" data-action="favorite" data-id="${esc(s.id)}">${saved.favorites?.includes(s.id)?'★ On research shelf':'☆ Add to research shelf'}</button></div></section>`;
@@ -1134,8 +1152,68 @@ dataView=()=>`<section class="atlas-publication-banner"><span><b>Reviewed primar
 
 ATLAS.navigate=navigate;ATLAS.openDrawer=openDrawer;ATLAS.primary=ATLAS_PRIMARY;ATLAS.context=ATLAS_CONTEXT;
 ATLAS.spatial={levels:ATLAS_SCALE_LEVELS,state:spatialState,scope:()=>spatialScope(spatialState().spatialLevel,spatialDefaultSite()),aggregate:spatialAggregate,select:id=>{if(site(id))spatialTransition({selected:id});},setLevel:n=>spatialTransition({level:n})};
-const buildDate=document.querySelector('.top-date b');if(buildDate)buildDate.textContent='27 SEP 2026';
+const buildDate=document.querySelector('.top-date b');if(buildDate){const date=new Date((ATLAS_PRIMARY.published_at||'2026-09-11')+'T00:00:00Z');buildDate.textContent=date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}).toUpperCase();}
 routeFromHash();document.documentElement.classList.add('atlas-ready');
-if(globalThis.ATLAS_SERVICE){pollAtlasMonitor();setInterval(()=>{if(!document.hidden)pollAtlasMonitor();},300000);}
+// Optional same-origin monitor startup is owned by service-client.js.
+
+'use strict';
+/* Optional same-origin service. The standalone never probes a network. */
+let atlasQueueOffset=0,atlasQueueNext=null,atlasQueueTotal=0,atlasMonitorBusy=false;
+const monitorTime = value => value ? new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}) : 'Not yet captured';
+const queueURL = value => {try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}};
+pollAtlasMonitor = async function({offset=atlasQueueOffset}={}) {
+  if(!globalThis.ATLAS_SERVICE||atlasMonitorBusy)return;
+  atlasMonitorBusy=true;
+  try{
+    const [status,queue]=await Promise.all([
+      fetch(ATLAS_SERVICE.base+'/status',{cache:'no-store',signal:AbortSignal.timeout(8000)}),
+      fetch(ATLAS_SERVICE.base+'/review-queue?limit=20&offset='+Math.max(0,offset),{cache:'no-store',signal:AbortSignal.timeout(8000)})
+    ]);
+    if(!status.ok||!queue.ok)throw Error('Service HTTP '+(!status.ok?status.status:queue.status));
+    const [s,q]=await Promise.all([status.json(),queue.json()]);
+    if(!s.counts||!Array.isArray(s.jobs)||!Array.isArray(q.items))throw Error('Unexpected monitor response');
+    atlasMonitorStatus=s;atlasMonitorQueue=q.items;atlasQueueNext=q.next_offset;atlasQueueTotal=q.total;atlasQueueOffset=offset;atlasMonitorError=null;
+  }catch(error){atlasMonitorError=String(error.message||error);}
+  finally{atlasMonitorBusy=false;updateMonitorLabel();}
+};
+const originalMonitorDrawer=atlasMonitorDrawer;
+atlasMonitorDrawer=function(){
+  originalMonitorDrawer();
+  const body=$('#drawer-content');
+  if(!globalThis.ATLAS_SERVICE)return;
+  if(atlasMonitorError){
+    const warning=document.createElement('div');warning.className='notice';warning.setAttribute('role','status');
+    warning.textContent='Live monitor unavailable: '+atlasMonitorError+'. The dated publication is still usable. Any status below is from the last successful status check, not a current capture.';
+    body.prepend(warning);
+  }
+  const old=body.querySelector('[data-atlas-action="monitor-refresh"]');
+  if(old){
+    let next=old.nextElementSibling;
+    while(next&&!(next.tagName==='H2'&&next.textContent.startsWith('Research candidates'))){const following=next.nextElementSibling;next.remove();next=following;}
+    const section=document.createElement('section');section.className='atlas-live-review';
+    section.innerHTML=`<h2>Acquisition review queue</h2><p>${atlasQueueTotal} pending items · ${atlasQueueTotal?atlasQueueOffset+1:0}–${atlasQueueOffset+atlasMonitorQueue.length} shown. Acknowledging a capture does not accept a claim.</p>${atlasMonitorQueue.map(q=>{const url=queueURL(q.payload.url);return `<article class="atlas-source-observation"><div class="atlas-card-kicker">${esc(q.kind)} · ${esc(q.source_id)}</div><h3>${esc(q.payload.title||q.payload.name||'Source update')}</h3><p>${esc(q.payload.note||'Pending explicit editorial review')}</p><p>Captured ${esc(monitorTime(q.created_at))}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="text-button">Read publisher source ↗</a>`:''}<p class="atlas-card-footnote">Queue ID: ${esc(q.id)}</p></article>`;}).join('')||'<div class="notice">No items pending in this page of the review queue. This is not a claim that every source is current; inspect the acquisition outcomes above.</div>'}<div class="atlas-queue-pager"><button class="btn small" data-service-page="previous" ${atlasQueueOffset===0?'disabled':''}>← Previous</button><span>${atlasQueueTotal} pending</span><button class="btn small" data-service-page="next" ${atlasQueueNext===null?'disabled':''}>Next →</button></div><h3>Explicit editorial review</h3><p>Review happens through the local command line with an actor and a reason. The public web API is read-only. Captures never automatically become published site facts.</p><pre class="atlas-command">python -m server queue
+python -m server submit observation claim.json --actor analyst
+python -m server review CLAIM_ID accepted --actor analyst --reason "Source and boundary checked"
+python -m server export data/evidence.json</pre>`;
+    old.after(section);
+  }
+  if(atlasMonitorStatus){
+    const stamp=document.createElement('p');stamp.className='atlas-card-footnote';stamp.textContent='Status fetched '+monitorTime(atlasMonitorStatus.checked_at)+'. Worker '+(atlasMonitorStatus.background_refresh?'running':'paused')+'. Source capture time and editorial publication date are deliberately separate.';
+    body.prepend(stamp);
+  }
+};
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-service-page]');if(!button)return;
+  const offset=button.dataset.servicePage==='next'?atlasQueueNext:Math.max(0,atlasQueueOffset-20);
+  if(offset!==null)pollAtlasMonitor({offset}).then(atlasMonitorDrawer);
+});
+// A service publication failure falls back to the checked-in evidence, not an empty graph.
+if(globalThis.ATLAS_SERVICE_WARNING){
+  const banner=document.createElement('div');banner.className='atlas-service-warning';banner.setAttribute('role','status');
+  banner.textContent='Using the checked-in publication because the evidence API did not respond. Source dates remain visible.';
+  document.querySelector('.app-shell')?.prepend(banner);
+}
+
+if(globalThis.ATLAS_SERVICE){pollAtlasMonitor({offset:0});setInterval(()=>{if(!document.hidden)pollAtlasMonitor();},300000);}
 </script>
 </body></html>

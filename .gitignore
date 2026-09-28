@@ -25,3 +25,7 @@ dist/
 
 # Logs
 *.log
+# Private source ledger and raw captures
+var/
+.pytest_cache/
+.review-transport/
