@@ -1,0 +1,58 @@
+name: Source acquisition and review report
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [feat/evidence-ledger]
+    paths: ['server/**', 'data/evidence.json', '.github/workflows/source-monitor.yml']
+permissions:
+  contents: read
+concurrency:
+  group: source-acquisition-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Restore convenience ledger cache
+        uses: actions/cache/restore@v4
+        with:
+          path: var/atlas.sqlite3
+          key: source-ledger-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: source-ledger-${{ github.ref_name }}-
+      - name: Acquire due sources without changing accepted facts
+        run: |
+          mkdir -p qa/capture-report
+          python -m server export /tmp/before.json
+          python -m server refresh --limit 30 > qa/capture-report/status.json
+          python -m server export /tmp/after.json
+          cmp /tmp/before.json /tmp/after.json
+          python -m server backup /tmp/atlas-backup.sqlite3
+          cp /tmp/atlas-backup.sqlite3 var/atlas.sqlite3
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          s=json.load(open('qa/capture-report/status.json'))
+          print('## Source acquisition — not automatic publication')
+          print(f'Captured versions: {s["counts"]["source_versions"]}; pending review: {s["counts"]["pending_review"]}')
+          for j in s['jobs']:
+              print(f'- {j["source_id"]}: {j["last_status"] or "deferred"}; last success {j["last_success"] or "none"}; {j["last_error"] or "no acquisition error"}')
+          print('The accepted publication was unchanged. Actions cache is not a durable backup; use the persistent-volume service for an enduring ledger.')
+          PY
+      - name: Save convenience ledger cache (not raw source bodies)
+        uses: actions/cache/save@v4
+        with:
+          path: var/atlas.sqlite3
+          key: source-ledger-${{ github.ref_name }}-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-capture-status
+          path: qa/capture-report/status.json
+          retention-days: 14
