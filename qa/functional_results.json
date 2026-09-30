@@ -26,6 +26,16 @@
       "detail": null
     },
     {
+      "test": "overview exposes four evidence lanes",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "overview capital dashboard covers seven matched issuers",
+      "pass_": true,
+      "detail": null
+    },
+    {
       "test": "native-unit China records are not forced to zero/GW",
       "pass_": true,
       "detail": null
@@ -92,6 +102,26 @@
     },
     {
       "test": "scatter point opens facility dossier",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "facility dossier includes snapshot-to-target power ladder",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "company dossier separates capital and demand categories",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "undisclosed capital categories are omitted instead of rendered as zero",
+      "pass_": true,
+      "detail": null
+    },
+    {
+      "test": "company cards show actual named-site and capex/OCF KPIs",
       "pass_": true,
       "detail": null
     },
@@ -256,11 +286,21 @@
       "test": "zero network requests",
       "pass_": true,
       "detail": []
+    },
+    {
+      "test": "repository-native entrypoint boots from checked-in assets",
+      "pass_": true,
+      "detail": []
+    },
+    {
+      "test": "repository-native entrypoint surfaces asset-load failures cleanly",
+      "pass_": true,
+      "detail": []
     }
   ],
-  "passed": 40,
-  "total": 40,
+  "passed": 48,
+  "total": 48,
   "errors": [],
   "network_requests": [],
-  "execution": "Exact built HTML rendered in managed Chromium via set_content (file/localhost navigation disabled by environment policy)."
+  "execution": "Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy."
 }
