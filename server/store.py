@@ -47,9 +47,12 @@ WITH RECURSIVE lineage(descendant,ancestor) AS (
 CREATE TABLE IF NOT EXISTS source_versions(id TEXT PRIMARY KEY, source_id TEXT NOT NULL REFERENCES sources(id), sha256 TEXT NOT NULL, semantic_sha256 TEXT NOT NULL, content_type TEXT NOT NULL, final_url TEXT NOT NULL, byte_length INTEGER NOT NULL CHECK(byte_length >= 0), captured_at TEXT NOT NULL, UNIQUE(source_id,sha256));
 CREATE INDEX IF NOT EXISTS versions_source ON source_versions(source_id,captured_at);
 CREATE TABLE IF NOT EXISTS fetch_events(id INTEGER PRIMARY KEY, source_id TEXT NOT NULL REFERENCES sources(id), version_id TEXT REFERENCES source_versions(id), status INTEGER, outcome TEXT NOT NULL, error TEXT, attempted_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS fetch_source_state ON fetch_events(source_id,id DESC) WHERE version_id IS NOT NULL;
 CREATE TABLE IF NOT EXISTS jobs(source_id TEXT PRIMARY KEY REFERENCES sources(id), next_fetch_at TEXT NOT NULL, lease_until TEXT, lease_token TEXT, failures INTEGER NOT NULL DEFAULT 0, etag TEXT, last_modified TEXT, last_status INTEGER, last_success TEXT, last_error TEXT, refresh_hours REAL NOT NULL CHECK(refresh_hours>=1));
 CREATE TABLE IF NOT EXISTS review_queue(id TEXT PRIMARY KEY, source_id TEXT NOT NULL REFERENCES sources(id), version_id TEXT REFERENCES source_versions(id), kind TEXT NOT NULL, fingerprint TEXT NOT NULL UNIQUE, payload TEXT NOT NULL CHECK(json_valid(payload)), status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','acknowledged','rejected')), actor TEXT, reason TEXT, created_at TEXT NOT NULL, resolved_at TEXT);
 CREATE TABLE IF NOT EXISTS audit_log(id INTEGER PRIMARY KEY, action TEXT NOT NULL, actor TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload)), created_at TEXT NOT NULL);
+CREATE TRIGGER IF NOT EXISTS immutable_fetch_update BEFORE UPDATE ON fetch_events BEGIN SELECT RAISE(ABORT,'Fetch events are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_fetch_delete BEFORE DELETE ON fetch_events BEGIN SELECT RAISE(ABORT,'Fetch events are immutable'); END;
 CREATE TRIGGER IF NOT EXISTS immutable_claim_update BEFORE UPDATE ON claims BEGIN SELECT RAISE(ABORT,'Claims are immutable; append a revision'); END;
 CREATE TRIGGER IF NOT EXISTS immutable_claim_delete BEFORE DELETE ON claims BEGIN SELECT RAISE(ABORT,'Claims are immutable'); END;
 CREATE TRIGGER IF NOT EXISTS immutable_version_update BEFORE UPDATE ON source_versions BEGIN SELECT RAISE(ABORT,'Source versions are immutable'); END;
@@ -275,12 +278,67 @@ class Store:
             jobs=[dict(r) for r in db.execute('SELECT source_id,next_fetch_at,last_status,last_success,last_error,failures FROM jobs ORDER BY source_id')]
             return {'schema_version':2,'background_refresh':background,'checked_at':now(),'counts':counts,'jobs':jobs,'publication_date':self.publication().get('published_at'),'policy':'Acquisition is not publication. Changed sources require an explicit editorial decision.'}
 
-    def search(self, query: str, limit: int=30) -> list[dict]:
-        words=query.split()[:12]
-        if not words:return []
-        expression=' AND '.join('"'+w.replace('"','""')+'"*' for w in words)
+    def source_activity(self, limit: int=30, offset: int=0) -> dict:
+        """Capture health, not a score of factual currency or editorial confidence."""
+        checked = now()
+        instant = datetime.fromisoformat(checked)
         with self.connect() as db:
-            return [json.loads(r['payload']) for r in db.execute('SELECT s.payload FROM site_search f JOIN sites s ON s.id=f.id WHERE site_search MATCH ? ORDER BY rank LIMIT ?', (expression,limit))]
+            db.execute('BEGIN')
+            total = db.execute('SELECT COUNT(*) FROM sources').fetchone()[0]
+            rows = db.execute("""
+                SELECT s.id,s.publisher,s.url,s.kind,s.payload,j.refresh_hours,
+                       j.next_fetch_at,j.last_success,j.last_status,j.last_error,j.failures,
+                       f.version_id,f.outcome,f.attempted_at AS observed_at,v.captured_at AS first_captured_at,
+                       v.sha256,v.semantic_sha256,
+                       (SELECT COUNT(*) FROM review_queue q WHERE q.source_id=s.id AND q.status='pending') AS pending_review
+                FROM sources s JOIN jobs j ON j.source_id=s.id
+                LEFT JOIN fetch_events f ON f.id=(SELECT MAX(e.id) FROM fetch_events e WHERE e.source_id=s.id AND e.version_id IS NOT NULL)
+                LEFT JOIN source_versions v ON v.id=f.version_id
+                ORDER BY s.id LIMIT ? OFFSET ?
+            """, (limit,offset)).fetchall()
+            items=[]
+            for row in rows:
+                item=dict(row); payload=json.loads(item.pop('payload'))
+                item['title']=payload.get('title',item['id'])
+                item['published_at']=payload.get('published_at')
+                item['reviewed_retrieval_at']=payload.get('retrieved_at')
+                # A two-interval grace is a scheduling heuristic, not source truth.
+                age=(instant-datetime.fromisoformat(item['last_success'])).total_seconds() if item['last_success'] else None
+                item['capture_state']='never' if age is None else ('stale' if age > 2*item['refresh_hours']*3600 else 'recent')
+                item['fetch_state']='deferred' if item['last_error'] else ('captured' if item['last_success'] else 'waiting')
+                items.append(item)
+        return {'items':items,'total':total,'checked_at':checked,
+                'next_offset':offset+len(items) if offset+len(items)<total else None,
+                'policy':'Recent means a successful fetch within two configured refresh intervals. It does not mean the claims were re-reviewed or the facility facts are current.'}
+
+    def source_events(self, source_id: str, limit: int=30, offset: int=0) -> dict | None:
+        with self.connect() as db:
+            db.execute('BEGIN')
+            if not db.execute('SELECT 1 FROM sources WHERE id=?',(source_id,)).fetchone(): return None
+            total=db.execute('SELECT COUNT(*) FROM fetch_events WHERE source_id=?',(source_id,)).fetchone()[0]
+            rows=[dict(r) for r in db.execute('SELECT id,source_id,version_id,status,outcome,error,attempted_at FROM fetch_events WHERE source_id=? ORDER BY id DESC LIMIT ? OFFSET ?',(source_id,limit,offset))]
+        return {'items':rows,'total':total,'next_offset':offset+len(rows) if offset+len(rows)<total else None}
+
+    def site_page(self, query: str='', country: str | None=None, limit: int=30, offset: int=0) -> dict:
+        # Filter and paginate in SQL, not after a hidden 100-hit truncation.
+        words=query.split()[:12]
+        args=[]; predicates=[]
+        join=' JOIN site_search ON site_search.id=s.id' if words else ''
+        if words:
+            expression=' AND '.join('"'+w.replace('"','""')+'"*' for w in words)
+            predicates.append('site_search MATCH ?'); args.append(expression)
+        if country:
+            predicates.append('s.country=?'); args.append(country)
+        where=' WHERE '+' AND '.join(predicates) if predicates else ''
+        order='rank,s.name,s.id' if words else 's.name,s.id'
+        with self.connect() as db:
+            db.execute('BEGIN')
+            total=db.execute('SELECT COUNT(*) FROM sites s'+join+where,args).fetchone()[0]
+            rows=[json.loads(r['payload']) for r in db.execute('SELECT s.payload FROM sites s'+join+where+' ORDER BY '+order+' LIMIT ? OFFSET ?',[*args,limit,offset])]
+        return {'items':rows,'total':total,'next_offset':offset+len(rows) if offset+len(rows)<total else None}
+
+    def search(self, query: str, limit: int=30) -> list[dict]:
+        return self.site_page(query,limit=limit)['items'] if query.strip() else []
 
     def backup(self, target: Path) -> None:
         target.parent.mkdir(parents=True,exist_ok=True)

@@ -212,7 +212,11 @@ class Monitor:
             db.execute('BEGIN IMMEDIATE')
             live = db.execute('SELECT lease_token FROM jobs WHERE source_id=?',(job['source_id'],)).fetchone()
             if live['lease_token'] != job['lease_token']: return # A recovered worker owns the job now.
-            previous = db.execute('SELECT * FROM source_versions WHERE source_id=? ORDER BY captured_at DESC,rowid DESC LIMIT 1',(job['source_id'],)).fetchone()
+            # A representation may recur (A -> B -> A). Content-addressed versions
+            # retain their *first* capture time; the event ledger records which
+            # representation was most recently observed, including 304 responses.
+            event = db.execute('SELECT id,version_id FROM fetch_events WHERE source_id=? AND version_id IS NOT NULL ORDER BY id DESC LIMIT 1',(job['source_id'],)).fetchone()
+            previous = db.execute('SELECT * FROM source_versions WHERE id=?',(event['version_id'],)).fetchone() if event else None
             vid = previous['id'] if previous else None
             outcome = 'not-modified'
             if status == 304 and not previous: raise AcquisitionError('304 returned without a captured baseline',304)
@@ -222,12 +226,16 @@ class Monitor:
                 meaningful = previous is None or previous['semantic_sha256'] != semantic_hash
                 outcome = 'baseline' if previous is None else ('changed' if meaningful else 'unchanged-content')
                 if meaningful and job['kind']=='page':
-                    self.store.enqueue(db,job['source_id'],vid,outcome,{'title': json_title(job['payload']), 'url':final_url, 'note':'New captured baseline; not retroactive verification of historical claims.' if previous is None else 'Source content changed. Accepted claims remain unchanged until editorial review.', 'previous_version_id': previous['id'] if previous else None, 'sha256':raw_hash,'semantic_sha256':semantic_hash,'excerpt':text[:1200] if 'html' in content_type or content_type.startswith('text/') else 'Binary source retained; document extraction has not been performed.'},digest([job['source_id'],vid,outcome]))
+                    self.store.enqueue(db,job['source_id'],vid,outcome,{'title': json_title(job['payload']), 'url':final_url, 'note':'New captured baseline; not retroactive verification of historical claims.' if previous is None else 'Source content changed. Accepted claims remain unchanged until editorial review.', 'previous_version_id': previous['id'] if previous else None, 'sha256':raw_hash,'semantic_sha256':semantic_hash,'excerpt':text[:1200] if 'html' in content_type or content_type.startswith('text/') else 'Binary source retained; document extraction has not been performed.'},digest([job['source_id'],event['id'] if event else None,vid,outcome]))
                 for item in entries:
                     self.store.enqueue(db,job['source_id'],vid,'discovery',item,digest([job['source_id'],item['url']]))
             db.execute('INSERT INTO fetch_events(source_id,version_id,status,outcome,attempted_at) VALUES(?,?,?,?,?)',(job['source_id'],vid,status,outcome,captured))
             next_time = (datetime.now(timezone.utc)+timedelta(hours=job['refresh_hours'])).isoformat(timespec='seconds')
-            db.execute('UPDATE jobs SET lease_token=NULL,lease_until=NULL,failures=0,last_status=?,last_success=?,last_error=NULL,next_fetch_at=?,etag=COALESCE(?,etag),last_modified=COALESCE(?,last_modified) WHERE source_id=?',(status,captured,next_time,headers.get('etag'),headers.get('last-modified'),job['source_id']))
+            # A full representation replaces validators; missing validators must
+            # not leak from an older body. A 304 revalidates the current body.
+            etag = headers.get('etag',job['etag']) if status == 304 else headers.get('etag')
+            modified = headers.get('last-modified',job['last_modified']) if status == 304 else headers.get('last-modified')
+            db.execute('UPDATE jobs SET lease_token=NULL,lease_until=NULL,failures=0,last_status=?,last_success=?,last_error=NULL,next_fetch_at=?,etag=?,last_modified=? WHERE source_id=?',(status,captured,next_time,etag,modified,job['source_id']))
 
     def _failure(self, job, error):
         failures = job['failures']+1
