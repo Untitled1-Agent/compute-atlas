@@ -76,13 +76,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
 
     @app.get('/api/sites')
     def sites(q:str=Query('',max_length=500),country:str|None=None,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
-        import json
-        with store.connect() as db:
-            # FTS results first; the public archive is deliberately finite and fully searchable.
-            rows=store.search(q,100) if q.strip() else [json.loads(r['payload']) for r in db.execute('SELECT payload FROM sites ORDER BY name')]
-        if country: rows=[r for r in rows if r['country']==country]
-        selected=rows[offset:offset+limit]
-        return {'items':selected,'total':len(rows),'next_offset':offset+len(selected) if offset+len(selected)<len(rows) else None}
+        return store.site_page(q,country,limit,offset)
 
     @app.get('/api/sites/{site_id}')
     def site(site_id:str):
@@ -98,6 +92,16 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         data=store.claim_history(claim_id)
         if not data or not any(x['claim']['id']==claim_id for x in data['items']):
             raise HTTPException(404,'No reviewed claim with this identity')
+        return data
+
+    @app.get('/api/source-activity')
+    def source_activity(limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
+        return store.source_activity(limit,offset)
+
+    @app.get('/api/sources/{source_id}/events')
+    def source_events(source_id:str,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
+        data=store.source_events(source_id,limit,offset)
+        if data is None: raise HTTPException(404,'Unknown source')
         return data
 
     @app.get('/api/sources/{source_id}/versions')

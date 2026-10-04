@@ -141,3 +141,33 @@ preserves the selected facility, filters and private notes. Invalid/unavailable
 responses keep the last loaded evidence and show a retry notice. The standalone
 makes no background requests. The full database decision log remains available
 through the read-only history API and durable backup.
+
+
+## Source activity and recurrence correctness
+
+`GET /api/source-activity?limit=30&offset=0` returns registered publisher sources,
+last successful observation, immutable version hashes, first capture time,
+last fetch error, next attempt and pending-review count. `capture_state` is
+`never`, `recent` or `stale`. “Recent” means a successful fetch within two
+configured refresh intervals; it is **not** an assessment of the currency of
+facility facts. The original editorial retrieval date and publisher date remain
+separate. `GET /api/sources/{id}/events` is the paginated, append-only acquisition
+history. Neither endpoint distributes captured bodies or worker lease tokens.
+
+Content-addressed snapshots are deduplicated, but observations are not: for
+A → B → A, the last successful event points back to A even though A was first
+captured before B. A later 304 revalidates A. Every real transition creates a
+new review item, including a return to a previously acknowledged representation.
+Repeated unchanged responses and feed discoveries still deduplicate correctly.
+A fresh full response replaces its validators, including clearing omitted
+validators; a 304 retains or updates the current validators. See
+[RFC 9110, conditional requests and 304](https://www.rfc-editor.org/rfc/rfc9110.html#name-304-not-modified).
+Failed attempts and stale workers cannot move the last-observed pointer or
+change the published evidence. Fetch events are now immutable at the SQL layer.
+
+Site search applies the literal FTS query and country filter before counting
+and pagination. It no longer silently truncates the result set to 100 matches.
+New regressions cover recurrence, revalidation, validator removal, deferred
+requests, stale leases, append-only events, source-activity semantics and
+pagination beyond 100 matching sites. Synthetic fixtures live only in temporary
+test databases and are never included in the research publication.
