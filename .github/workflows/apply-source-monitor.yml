@@ -1,0 +1,71 @@
+name: Verify source-monitor continuation
+on:
+  push:
+    branches: [fix/source-observation-history]
+    paths: [review-import/source-monitor.patch, .github/workflows/apply-source-monitor.yml]
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: fix/source-observation-history
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Verify and apply the locally tested readable patch
+        run: |
+          echo '2f0615680bbd1a66ab57509c56cd1a70cb42d6aadda0e1fb9036a674d464edb8  review-import/source-monitor.patch' | sha256sum --check
+          git apply --check review-import/source-monitor.patch
+          git apply review-import/source-monitor.patch
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          expected={'docs/evidence-service.md':'5ee24ffc648ecd095eba10a78f7e7bb8f8feb6a675d72adfca7e235138b63412','server/acquire.py':'0f421780d714664f624c10a6a150b794b772e8399636f10dc0632994ac464110','server/app.py':'01a053149ecf1e34d0c3eaa38b9a82772dc921a478632ea21366bd9544a6748c','server/store.py':'4790a599febab84adc64cfbbd5c1ac6c7835a6fa4cb41e4796ff908b3b55fe77','tests/test_acquisition_history.py':'2d2bde1a55731f568bbbe4b37634f3103b6c6baaf501ab37b7a16110a9a005a2'}
+          for p,h in expected.items():
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          for p in ('review-import/source-monitor.patch','.github/workflows/apply-source-monitor.yml','.github/workflows/apply-reviewed-facilities.yml'):
+              Path(p).unlink()
+          PY
+          git config user.name 'Compute Atlas verified review'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add -A
+          git commit -m 'fix: preserve recurrent source observations and expose capture history'
+          git push origin HEAD:fix/source-observation-history
+      - name: Independent backend and real-browser validation
+        run: |
+          pip install -r requirements-dev.txt
+          python -m playwright install --with-deps chromium
+          CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
+          test -n "$CHROMIUM_PATH"
+          sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+          python -m pytest tests -q
+          python qa/integrity.py
+          python src/build.py
+          git diff --quiet -- compute_atlas.html
+          for file in src/*.js; do node --check "$file"; done
+          python qa/functional.py
+          python qa/zoom-explorer.py
+          python qa/evidence-desk.py
+          python qa/smoke.py
+          python qa/live.py
+          python qa/service.py
+      - name: Preserve exact review evidence
+        if: always()
+        run: |
+          mkdir -p qa/review
+          git rev-parse HEAD > qa/review/COMMIT.txt
+          git archive --format=zip HEAD > qa/review/compute-atlas-source.zip
+          sha256sum qa/review/compute-atlas-source.zip > qa/review/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-monitor-review
+          retention-days: 7
+          path: |
+            qa/review/
+            qa/*_results.json
+            qa/screenshots/*.png
