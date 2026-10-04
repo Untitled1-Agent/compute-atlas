@@ -27,10 +27,7 @@ edit('src/build.py',[
 edit('qa/zoom-explorer.py',[("            page.locator('#atlas-country-filter').select_option('China')", "            page.locator('.atlas-filter-toggle').click()\n            check(entry + ' filter panel opens accessibly', page.locator('.atlas-filter-panel').get_attribute('open') is not None)\n            page.locator('#atlas-country-filter').select_option('China')")])
 needle="            page.set_viewport_size({'width':390,'height':844})"
 edit('qa/service.py',[(needle,Path('.review-transport/service-test.txt').read_text()+needle)])
-edit('.github/workflows/live-checks.yml',[
-    ('node --check src/service-client.js','node --check src/service-client.js\n          node --check src/evidence-desk.js'),
-    ('      - name: Authoritative smoke suite','      - name: Analyst evidence desk over real HTTP\n        run: python qa/evidence-desk.py\n      - name: Authoritative smoke suite'),
-    ("'service_results.json')","'service_results.json','evidence_desk_results.json')")
-])
+# The permanent CI workflow was updated through the authorized GitHub connector.
+# Do not request workflow write permission from the source-build runner.
 p=Path('src/service-client.js');p.write_text(p.read_text()+Path('.review-transport/publication-client.js').read_text())
 p=Path('docs/evidence-service.md');p.write_text(p.read_text()+Path('.review-transport/evidence-docs.md').read_text())
