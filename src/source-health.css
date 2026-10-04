@@ -1,0 +1,37 @@
+/* Source acquisition is a separate editorial workflow, never a confidence score. */
+.atlas-health-console{max-width:760px;margin:0 auto;--health-muted:#a4b8ca;--health-line:#263c4a}
+.atlas-health-console h1{font:44px/1.06 Georgia,'Times New Roman',serif;margin:14px 0 18px;letter-spacing:-1px}
+.atlas-health-console h1 span{color:var(--atlas-mint,#87ebce)}
+.atlas-health-console .atlas-health-intro{font-size:14px;line-height:1.65;max-width:590px;color:#c2d0dc}
+.atlas-health-worker{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:20px 0;color:var(--health-muted);font-size:12px}
+.atlas-health-badge{display:inline-flex;border:1px solid #35534f;border-radius:20px;padding:5px 9px;font-size:10px;line-height:1.3;white-space:nowrap;background:#142c2a;color:#a5e8d6}
+.atlas-health-badge[data-state="never"],.atlas-health-badge[data-state="paused"]{background:#152332;color:#b7c9dc;border-color:#33485c}
+.atlas-health-badge[data-state="deferred"],.atlas-health-badge[data-state="stale"]{background:#312719;color:#f0cd99;border-color:#625132}
+.atlas-health-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--health-line);border-radius:8px;overflow:hidden;background:linear-gradient(120deg,#0e222c,#0a1822)}
+.atlas-health-summary>div{padding:16px;border-right:1px solid var(--health-line);display:grid;gap:7px}.atlas-health-summary>div:last-child{border-right:0}
+.atlas-health-summary strong{font:32px/1 Georgia,serif;font-weight:400;color:#f1f5f7}.atlas-health-summary span{font-size:11px;color:var(--health-muted)}
+.atlas-health-console .atlas-health-stamp{color:#8da7bc;font-size:10px;line-height:1.5;margin:12px 0 20px}
+.atlas-health-tabs{display:flex;gap:6px;padding:4px;border:1px solid var(--health-line);border-radius:7px;background:#08151f;margin:20px 0}
+.atlas-health-tabs button{border:0;border-radius:4px;background:transparent;color:#b4c6d5;padding:11px 14px;font-size:12px;flex:1}
+.atlas-health-tabs button[aria-pressed="true"]{background:#1b4239;color:#e5fff5}
+.atlas-health-console button:focus-visible,.atlas-health-console a:focus-visible,.atlas-health-console summary:focus-visible{outline:2px solid #87ebce;outline-offset:4px}
+.atlas-health-console button:disabled{opacity:.45;cursor:default}
+.atlas-health-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin:20px 0 10px}
+.atlas-health-section-head>div{min-width:0;flex:1}.atlas-health-section-head .btn{flex-shrink:0}
+.atlas-health-console h2{font:25px/1.2 Georgia,serif;margin:0 0 8px;overflow-wrap:anywhere}
+.atlas-health-console h3{font-size:15px;line-height:1.45;margin:12px 0}
+.atlas-health-console p{font-size:12px;line-height:1.6;color:#b3c5d5}
+.atlas-health-console .atlas-health-policy{border-left:2px solid #71d2b9;padding:10px 13px;background:#10252a;color:#b6d9d0;font-size:11px}
+.atlas-health-source{border:1px solid var(--health-line);border-radius:7px;margin:12px 0;background:#0b1b26;padding:15px 16px}
+.atlas-health-source header,.atlas-health-source footer{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.atlas-health-source header .atlas-card-kicker{font-size:10px;line-height:1.5;min-width:0;overflow-wrap:anywhere}
+.atlas-health-source h3 button{border:0;padding:0;text-align:left;color:#edf4f6;line-height:1.5;background:transparent;font-size:15px;overflow-wrap:anywhere;width:100%}
+.atlas-health-source h3 button span{color:#87ebce;white-space:nowrap}.atlas-health-source h3 button:hover{color:#87ebce}
+.atlas-health-console dl{margin:12px 0;color:#b3c5d5}.atlas-health-console dl>div{min-width:0}.atlas-health-console dt{font-size:10px;color:#8da7bc;margin-bottom:4px}.atlas-health-console dd{font-size:11px;line-height:1.5;margin:0;overflow-wrap:anywhere}
+.atlas-health-dates{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}.atlas-health-source footer{font-size:10px;color:#8da7bc;border-top:1px solid #1e3542;padding-top:10px;margin-top:14px}.atlas-health-source footer .text-button{font-size:11px;white-space:nowrap}
+.atlas-health-identity{border-top:1px solid #1e3542;padding-top:9px;margin-top:10px;color:#95acbf;font-size:11px}.atlas-health-console summary{cursor:pointer;padding:4px 0}.atlas-health-identity dl{display:grid;grid-template-columns:1fr 1fr;gap:13px}.atlas-health-identity a{color:#87ebce}.atlas-health-console code{font-size:10px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}.atlas-health-identity code{display:block;margin:4px 0;color:#c3d4e1}
+.atlas-health-console .atlas-health-warning{display:block;padding:14px 16px;background:#30271d;border:1px solid #615037;color:#efd6ac;border-radius:7px;font-size:12px;margin:16px 0}.atlas-health-warning .text-button{display:block;margin-top:8px}.atlas-health-console .atlas-health-error-detail{color:#e4bd86;background:#2b231b;border-radius:4px;padding:8px 10px;overflow-wrap:anywhere}
+.atlas-health-pager{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;color:#9db4c6;font-size:11px}
+.atlas-health-timeline{list-style:none;padding:0 0 0 20px;margin:24px 0 0;border-left:1px solid #365454}.atlas-health-timeline li{position:relative;border-bottom:1px solid var(--health-line);padding:0 0 20px;margin:0 0 20px}.atlas-health-timeline li:before{content:'';position:absolute;left:-25px;top:8px;width:8px;height:8px;border-radius:50%;background:#87ebce;border:2px solid #16342f}.atlas-health-timeline li>div{display:flex;justify-content:space-between;align-items:center;gap:12px}.atlas-health-timeline .atlas-card-kicker{font-size:10px;line-height:1.5}.atlas-health-timeline small{font-size:10px;color:#8da7bc}.atlas-health-timeline code{display:block;color:#b8cad9;margin-top:5px}.atlas-health-source-link{margin-top:22px}.atlas-health-console .atlas-command{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px}
+@media(max-width:600px){.atlas-health-console h1{font-size:35px}.atlas-health-console .atlas-health-intro{font-size:13px}.atlas-health-worker{align-items:flex-start;font-size:11px}.atlas-health-summary>div{padding:13px 10px}.atlas-health-summary strong{font-size:27px}.atlas-health-summary span{font-size:10px}.atlas-health-tabs{gap:2px}.atlas-health-tabs button{font-size:11px;padding:11px 7px}.atlas-health-section-head{gap:10px;flex-wrap:wrap}.atlas-health-section-head .btn{font-size:11px}.atlas-health-source{padding:13px}.atlas-health-source header{align-items:flex-start}.atlas-health-source h3 button{font-size:14px}.atlas-health-source footer{align-items:flex-start;flex-wrap:wrap}.atlas-health-dates,.atlas-health-identity dl{grid-template-columns:1fr}.atlas-health-timeline li>div{align-items:flex-start}.atlas-health-badge{white-space:normal;text-align:center;flex-shrink:0;max-width:125px}.atlas-health-pager{gap:8px}}
+@media(prefers-reduced-motion:reduce){.atlas-health-console *{scroll-behavior:auto}}

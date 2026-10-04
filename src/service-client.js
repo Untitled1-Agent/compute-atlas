@@ -47,7 +47,7 @@ python -m server export data/evidence.json</pre>`;
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-service-page]');if(!button)return;
   const offset=button.dataset.servicePage==='next'?atlasQueueNext:Math.max(0,atlasQueueOffset-20);
-  if(offset!==null)pollAtlasMonitor({offset}).then(atlasMonitorDrawer);
+  if(offset!==null)pollAtlasMonitor({offset}).then(()=>{if(state.drawer?.kind==='monitor'&&!$('#drawer').hidden)atlasMonitorDrawer();});
 });
 // A service publication failure falls back to the checked-in evidence, not an empty graph.
 if(globalThis.ATLAS_SERVICE_WARNING){

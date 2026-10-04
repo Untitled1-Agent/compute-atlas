@@ -54,6 +54,7 @@ with tempfile.TemporaryDirectory() as folder:
             page.evaluate('pollAtlasMonitor()')
             check('Paused worker is not labeled live acquisition','Refresh paused' in page.locator('#atlas-monitor-label').inner_text())
             page.locator('[data-atlas-action="monitor"]').click()
+            page.locator('[data-health-tab="queue"]').click()
             check('Monitor queue displays first page',page.locator('.atlas-live-review article').count()==20)
             check('Untrusted source title is escaped',page.evaluate('window.xss !== true'))
             page.locator('[data-service-page="next"]').click(); page.wait_for_function('atlasQueueOffset===20')

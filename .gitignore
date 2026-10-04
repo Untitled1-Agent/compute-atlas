@@ -29,3 +29,8 @@ dist/
 var/
 .pytest_cache/
 .review-transport/
+
+# Reproducible QA outputs are CI artifacts, not source inputs
+qa/screenshots/
+qa/*_results.json
+qa/review/
