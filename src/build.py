@@ -9,8 +9,8 @@ ROOT=Path(__file__).resolve().parents[1]
 def safe_json(x):
     return json.dumps(x,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
 template=(ROOT/'src/index.html').read_text()
-css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css'))
-js='\n'.join((ROOT/p).read_text() for p in ('src/spatial-math.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/responsive-nav.js'))
+css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css','src/source-health.css'))
+js='\n'.join((ROOT/p).read_text() for p in ('src/spatial-math.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/responsive-nav.js'))
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
 for key,path in [('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
