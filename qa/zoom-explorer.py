@@ -96,6 +96,8 @@ try:
             page.locator('[data-spatial-action="phase"][data-id="snapshot"]').click()
             page.wait_for_timeout(100)
             check(entry + ' phase toggle preserves map camera', abs(page.evaluate('ATLAS.getGlobe().lon') - before) < 2)
+            page.locator('.atlas-filter-toggle').click()
+            check(entry + ' filter panel opens accessibly', page.locator('.atlas-filter-panel').get_attribute('open') is not None)
             page.locator('#atlas-country-filter').select_option('China')
             check(entry + ' country filter is visible and scopes records', page.evaluate("ATLAS.spatial.scope().sites.every(s=>s.country==='China')") and page.evaluate('ATLAS.spatial.scope().sites.length') == 7)
             page.locator('#atlas-evidence-filter').select_option('native')
