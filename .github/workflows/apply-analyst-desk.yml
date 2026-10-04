@@ -1,0 +1,54 @@
+name: Apply reviewed analyst desk
+on:
+  push:
+    branches: [feat/analyst-evidence-desk]
+permissions:
+  contents: write
+jobs:
+  integrate-reviewed-source:
+    if: contains(github.event.head_commit.message, 'Apply reviewed analyst desk integration')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/analyst-evidence-desk
+      - name: Apply readable reviewed integration
+        run: python .review-transport/integrate.py
+      - name: Verify exact source reviewed in local Chromium
+        run: |
+          python - <<'PY'
+          import subprocess
+          expected={
+            'src/evidence-desk.js':'8d75f2bd608445aa5a231694d6a7c90e47587d28',
+            'src/evidence-desk.css':'a5fc2e9a8c83f63894f7b7ba1d49764354536aad',
+            'qa/evidence-desk.py':'3d8462766f7456f2922e5eb5b923bc3eab2522ce',
+            'src/zoom-explorer.js':'cfbb833a206bcfc8e480c843342693c4cce2c595',
+            'src/service-client.js':'1d29cb2b02b5f41a2f8b6ccca80ad42d73f7716f',
+            'src/build.py':'ad49871c550335d16169c487cd58e48abecd4942',
+            'index.html':'463ba99c108d8bd4605b7db5f383dc3a55c04962',
+            'qa/zoom-explorer.py':'4907cd9ac21973bd91f7899bdbd6bd337bdcbb91',
+            'qa/service.py':'3e342cf763cf036738e3ab2860793a3d7bb743bc',
+            '.github/workflows/live-checks.yml':'abb23302dcd30b1cd3e462e9585baf903ab7d61e',
+            'docs/evidence-service.md':'f80fe85c0c0e96ff20d966be6d5cd7238c9cadac'}
+          for path,sha in expected.items():
+              actual=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert actual==sha,(path,actual,sha)
+              print(path,actual)
+          PY
+          node --check src/evidence-desk.js
+          node --check src/service-client.js
+          node --check src/zoom-explorer.js
+          python src/build.py
+          python qa/integrity.py
+      - name: Commit clean integrated application
+        run: |
+          git rm -r .review-transport
+          git rm .github/workflows/apply-analyst-desk.yml
+          git config user.name 'Compute Atlas verified review'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add src/evidence-desk.js src/evidence-desk.css qa/evidence-desk.py src/zoom-explorer.js src/service-client.js src/build.py index.html qa/zoom-explorer.py qa/service.py .github/workflows/live-checks.yml docs/evidence-service.md compute_atlas.html
+          git diff --cached --stat
+          git commit -m 'Integrate analyst evidence desk and explicit reviewed publication updates'
+          git push origin HEAD:feat/analyst-evidence-desk
+          git rev-parse HEAD >> "$GITHUB_STEP_SUMMARY"
