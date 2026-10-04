@@ -93,6 +93,13 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
             claims=[{'kind':r['kind'],**json.loads(r['payload'])} for r in db.execute('SELECT kind,payload FROM accepted_claims WHERE site_id=? ORDER BY kind,id',(site_id,))]
         return {'archive':json.loads(row['payload']),'accepted_claims':claims,'archive_warning':'Historical independent estimates; not silently replaced by new source captures.'}
 
+    @app.get('/api/claims/{claim_id}/history')
+    def claim_history(claim_id:str):
+        data=store.claim_history(claim_id)
+        if not data or not any(x['claim']['id']==claim_id for x in data['items']):
+            raise HTTPException(404,'No reviewed claim with this identity')
+        return data
+
     @app.get('/api/sources/{source_id}/versions')
     def versions(source_id:str,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
         with store.connect() as db:

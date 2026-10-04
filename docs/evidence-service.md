@@ -34,8 +34,11 @@ null; invalid, negative and non-finite capacity values are rejected.
 Claims, source-version records, editorial decisions and audit events are
 append-only. A changed claim requires a new ID and `supersedes`. Acceptance of a
 revision hides the previous accepted claim from the current publication without
-deleting it. Rejection can restore a prior accepted version. Competing accepted
-revisions are rejected rather than silently choosing one. Initial seeding is
+deleting it. Rejection can restore a prior accepted version only when no accepted descendant
+remains. Migration 2 resolves complete revision ancestry, including withdrawn
+intermediaries. Competing branches are rejected under a serialized write
+transaction, including simultaneous reviewer decisions. Revisions retain their
+metric, unit, boundary and scope; different measurement series stay separate. Initial seeding is
 idempotent and never overrides an editor's subsequent rejection.
 
 Source acquisition **does not publish numerical facts**. Fetching a page merely
@@ -77,8 +80,12 @@ python -m server resolve QUEUE_ID acknowledged --actor analyst --reason "Compare
 python -m server export /tmp/reviewed-evidence.json
 ```
 
-Acknowledging a queue item is not accepting a claim. Export produces only current
-accepted claims plus explicitly labeled candidates. Review the exported diff
+Acknowledging a queue item is not accepting a claim. Export produces current
+accepted claims, explicitly labeled candidates and a separate `revision_history`
+partition. Earlier and rejected claims in that partition are not current values
+and never enter power totals. Ancestors are retained so the export can be imported
+into a fresh ledger in any JSON ordering. The publication export preserves the
+latest review status, not the entire decision log; use database backup for that. Review the exported diff
 before replacing `data/evidence.json`; then rebuild with `python src/build.py`.
 The export is atomic and has a deterministic publication hash. Hosted API clients
 can use ETags; source capture times and publication dates remain different.
@@ -88,7 +95,9 @@ can use ETags; source capture times and publication dates remain different.
 The live monitor displays completed captures, failures, next attempts and a
 paginated pending queue. It discloses unavailable/stale status rather than
 showing cached responses as current. The API also exposes `/api/health`,
-`/api/sites?q=...`, `/api/sources/{id}/versions` and `/api/audit`.
+`/api/sites?q=...`, `/api/sources/{id}/versions`, `/api/claims/{id}/history` and
+`/api/audit`. Claim history identifies the effective revision and its dated
+editorial decisions. Unreviewed drafts are not returned by the history endpoint.
 
 ```sh
 python -m server backup backups/atlas.sqlite3

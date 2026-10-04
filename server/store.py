@@ -38,7 +38,12 @@ CREATE INDEX IF NOT EXISTS successors ON claims(supersedes);
 CREATE INDEX IF NOT EXISTS claims_site ON claims(site_id,kind);
 CREATE TABLE IF NOT EXISTS decisions(id INTEGER PRIMARY KEY, claim_id TEXT NOT NULL REFERENCES claims(id), decision TEXT NOT NULL CHECK(decision IN ('accepted','rejected')), actor TEXT NOT NULL, reason TEXT NOT NULL, created_at TEXT NOT NULL);
 CREATE VIEW IF NOT EXISTS current_decisions AS SELECT d.* FROM decisions d WHERE d.id=(SELECT MAX(x.id) FROM decisions x WHERE x.claim_id=d.claim_id);
-CREATE VIEW IF NOT EXISTS accepted_claims AS SELECT c.* FROM claims c JOIN current_decisions d ON d.claim_id=c.id AND d.decision='accepted' WHERE NOT EXISTS (SELECT 1 FROM claims n JOIN current_decisions nd ON nd.claim_id=n.id AND nd.decision='accepted' WHERE n.supersedes=c.id);
+CREATE VIEW IF NOT EXISTS claim_ancestry AS
+WITH RECURSIVE lineage(descendant,ancestor) AS (
+    SELECT id,supersedes FROM claims WHERE supersedes IS NOT NULL
+    UNION ALL
+    SELECT l.descendant,c.supersedes FROM lineage l JOIN claims c ON c.id=l.ancestor WHERE c.supersedes IS NOT NULL
+) SELECT * FROM lineage;
 CREATE TABLE IF NOT EXISTS source_versions(id TEXT PRIMARY KEY, source_id TEXT NOT NULL REFERENCES sources(id), sha256 TEXT NOT NULL, semantic_sha256 TEXT NOT NULL, content_type TEXT NOT NULL, final_url TEXT NOT NULL, byte_length INTEGER NOT NULL CHECK(byte_length >= 0), captured_at TEXT NOT NULL, UNIQUE(source_id,sha256));
 CREATE INDEX IF NOT EXISTS versions_source ON source_versions(source_id,captured_at);
 CREATE TABLE IF NOT EXISTS fetch_events(id INTEGER PRIMARY KEY, source_id TEXT NOT NULL REFERENCES sources(id), version_id TEXT REFERENCES source_versions(id), status INTEGER, outcome TEXT NOT NULL, error TEXT, attempted_at TEXT NOT NULL);
@@ -61,7 +66,19 @@ class Store:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as db:
             db.executescript(SCHEMA)
+            # One transaction upgrades old ledgers. A rejected intermediate revision
+            # must not resurrect its ancestor while an accepted descendant exists.
+            db.execute('BEGIN IMMEDIATE')
             db.execute('INSERT OR IGNORE INTO migrations VALUES(1,?)', (now(),))
+            if not db.execute('SELECT 1 FROM migrations WHERE version=2').fetchone():
+                db.execute('DROP VIEW IF EXISTS accepted_claims')
+                db.execute("""CREATE VIEW accepted_claims AS
+                    SELECT c.* FROM claims c JOIN current_decisions d
+                    ON d.claim_id=c.id AND d.decision='accepted'
+                    WHERE NOT EXISTS (SELECT 1 FROM claim_ancestry a
+                      JOIN current_decisions n ON n.claim_id=a.descendant AND n.decision='accepted'
+                      WHERE a.ancestor=c.id)""")
+                db.execute('INSERT INTO migrations VALUES(2,?)', (now(),))
 
     @contextmanager
     def connect(self) -> Iterator[sqlite3.Connection]:
@@ -101,12 +118,24 @@ class Store:
                     raise ValueError(f'Source identity {sid} changed URL; use a new source ID')
                 db.execute('INSERT INTO sources VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload', (sid, source['url'], source['publisher'], kind, canonical(source)))
                 db.execute('INSERT OR IGNORE INTO jobs(source_id,next_fetch_at,refresh_hours) VALUES(?,?,?)', (sid, now(), source.get('refresh_hours',24)))
+            # Exports retain revision ancestors; import in dependency order rather
+            # than relying on incidental JSON order. Missing parents fail atomically.
+            pending={}
             for key, kind in TABLES.items():
-                for claim in evidence.get(key,[]):
-                    self._insert_claim(db, kind, claim)
-                    decision='accepted' if claim.get('review_status')=='accepted' else None
-                    if decision and not db.execute('SELECT 1 FROM decisions WHERE claim_id=?',(claim['id'],)).fetchone():
-                        self._decide(db,claim['id'],decision,'checked-in-publication','Imported explicitly reviewed, source-cited publication')
+                for claim in evidence.get('revision_history',{}).get(key,[]) + evidence.get(key,[]):
+                    if claim['id'] in pending and pending[claim['id']] != (kind,claim):
+                        raise ValueError('Conflicting duplicate claim identity')
+                    pending[claim['id']] = (kind,claim)
+            while pending:
+                ready=[cid for cid,(_,claim) in pending.items() if not claim.get('supersedes')
+                       or db.execute('SELECT 1 FROM claims WHERE id=?',(claim['supersedes'],)).fetchone()]
+                if not ready: raise ValueError('Unresolved or cyclic revision ancestry')
+                for cid in ready:
+                    kind,claim=pending.pop(cid)
+                    self._insert_claim(db,kind,claim)
+                    decision=claim.get('review_status')
+                    if decision in ('accepted','rejected') and not db.execute('SELECT 1 FROM decisions WHERE claim_id=?',(cid,)).fetchone():
+                        self._decide(db,cid,decision,'checked-in-publication','Imported explicitly reviewed, source-cited publication')
             for key in ('schema_version','published_at','policy'):
                 if key in evidence:
                     db.execute('INSERT INTO metadata VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', (key, canonical(evidence[key])))
@@ -121,7 +150,7 @@ class Store:
             value=claim['value']
             if value is not None and (isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value<0):
                 raise ValueError('Observation value must be nonnegative finite number or null')
-            if claim['metric']=='power' and (claim['unit']!='MW' or claim['boundary'] not in ('critical_it','gross_facility','generation','unspecified_compute','contracted_power')):
+            if claim['metric']=='power' and (claim['unit']!='MW' or claim['boundary'] not in ('critical_it','gross_facility','generation','unspecified_compute','contracted_power','utility_capacity')):
                 raise ValueError('Unsupported power unit / measurement boundary')
         if kind=='relationship' and not db.execute('SELECT 1 FROM companies WHERE id=?',(claim.get('company_id'),)).fetchone():
             raise ValueError('Unknown counterparty')
@@ -137,11 +166,16 @@ class Store:
             p=db.execute('SELECT * FROM claims WHERE id=?',(prior,)).fetchone()
             if not p or p['kind']!=kind or p['site_id']!=claim.get('site_id'):
                 raise ValueError('Revision must replace an existing claim of the same site and kind')
+            if kind=='observation':
+                previous=json.loads(p['payload'])
+                if any(previous.get(k)!=claim.get(k) for k in ('metric','unit','boundary','scope')):
+                    raise ValueError('Revision must retain its measurement series; publish unlike metrics separately')
         db.execute('INSERT INTO claims VALUES(?,?,?,?,?,?,?,?)', (claim['id'],kind,claim.get('site_id'),claim['source_id'],prior,digest(payload),canonical(payload),now()))
 
     def submit_claim(self, kind: str, claim: dict, actor: str) -> None:
         if not actor.strip(): raise ValueError('Actor is required')
         with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
             self._insert_claim(db,kind,claim)
             self.audit(db,'claim-submitted',actor,{'id':claim['id']})
 
@@ -150,14 +184,46 @@ class Store:
             raise ValueError('Decision, actor and editorial reason are required')
         if not db.execute('SELECT 1 FROM claims WHERE id=?',(claim_id,)).fetchone(): raise ValueError('Unknown claim')
         if decision == 'accepted':
-            c=db.execute('SELECT supersedes FROM claims WHERE id=?',(claim_id,)).fetchone()
-            if c['supersedes'] and db.execute('SELECT c.id FROM accepted_claims c WHERE c.supersedes=? AND c.id!=?',(c['supersedes'],claim_id)).fetchone():
-                raise ValueError('Conflicting accepted revision; reject or supersede the other revision first')
+            # Resolve the whole family, not merely direct siblings. A competing
+            # branch cannot be accepted underneath an already accepted grandchild.
+            family=self._family(db,claim_id)
+            comparable={claim_id} | {r[0] for r in db.execute(
+                'SELECT ancestor FROM claim_ancestry WHERE descendant=? UNION SELECT descendant FROM claim_ancestry WHERE ancestor=?',
+                (claim_id,claim_id))}
+            active={r[0] for r in db.execute('SELECT id FROM accepted_claims')}
+            if active.intersection(family).difference(comparable):
+                raise ValueError('Conflicting accepted revision; reject or supersede the other branch first')
         db.execute('INSERT INTO decisions(claim_id,decision,actor,reason,created_at) VALUES(?,?,?,?,?)',(claim_id,decision,actor,reason,now()))
         self.audit(db,'claim-'+decision,actor,{'claim_id':claim_id,'reason':reason})
 
     def decide(self, claim_id: str, decision: str, actor: str, reason: str) -> None:
-        with self.connect() as db: self._decide(db,claim_id,decision,actor,reason)
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._decide(db,claim_id,decision,actor,reason)
+
+    @staticmethod
+    def _family(db: sqlite3.Connection, claim_id: str) -> set[str]:
+        row=db.execute('SELECT id FROM claims WHERE id=?',(claim_id,)).fetchone()
+        if not row: return set()
+        root=db.execute('SELECT c.id FROM claims c WHERE c.supersedes IS NULL AND (c.id=? OR c.id IN (SELECT ancestor FROM claim_ancestry WHERE descendant=?))', (claim_id,claim_id)).fetchone()[0]
+        return {root} | {r[0] for r in db.execute('SELECT descendant FROM claim_ancestry WHERE ancestor=?',(root,))}
+
+    def claim_history(self, claim_id: str) -> dict | None:
+        with self.connect() as db:
+            db.execute('BEGIN')
+            family=self._family(db,claim_id)
+            if not family: return None
+            active={r[0] for r in db.execute('SELECT id FROM accepted_claims')}
+            items=[]
+            for cid in sorted(family):
+                row=db.execute('SELECT c.*,d.decision FROM claims c LEFT JOIN current_decisions d ON c.id=d.claim_id WHERE c.id=?',(cid,)).fetchone()
+                # Public history covers reviewed records, not pending editorial drafts.
+                if not row['decision']: continue
+                decisions=[dict(r) for r in db.execute('SELECT decision,actor,reason,created_at FROM decisions WHERE claim_id=? ORDER BY id',(cid,))]
+                items.append({'kind':row['kind'],'claim':json.loads(row['payload']),
+                              'decision':row['decision'],'effective':cid in active,'decisions':decisions})
+            return {'claim_id':claim_id,'items':items,'policy':'Only effective accepted claims are current publication facts. Earlier and rejected revisions are audit evidence, never additional capacity.'}
+
 
     def enqueue(self, db: sqlite3.Connection, sid: str, vid: str | None, kind: str, payload: dict, fingerprint: str) -> None:
         db.execute('INSERT OR IGNORE INTO review_queue(id,source_id,version_id,kind,fingerprint,payload,created_at) VALUES(?,?,?,?,?,?,?)', ('q-'+fingerprint[:24],sid,vid,kind,fingerprint,canonical(payload),now()))
@@ -171,11 +237,21 @@ class Store:
 
     def publication(self) -> dict:
         with self.connect() as db:
+            db.execute('BEGIN')  # One coherent WAL snapshot across all publication queries.
             meta={r['key']:json.loads(r['value']) for r in db.execute('SELECT * FROM metadata')}
             meta.update(sources=[json.loads(r['payload']) for r in db.execute("SELECT payload FROM sources WHERE kind='page' ORDER BY id")],feeds=[json.loads(r['payload']) for r in db.execute("SELECT payload FROM sources WHERE kind='feed' ORDER BY id")])
             for key,kind in TABLES.items():
                 rows=db.execute('SELECT payload FROM accepted_claims WHERE kind=? ORDER BY id',(kind,)).fetchall()
                 meta[key]=[{**json.loads(r['payload']),'review_status':'accepted'} for r in rows]
+            # Preserve decided ancestors for reproducible export/re-import. These
+            # are explicitly not the live observation arrays and are never summed.
+            history_ids={r[0] for r in db.execute('SELECT claim_id FROM current_decisions UNION SELECT ancestor FROM claim_ancestry WHERE descendant IN (SELECT claim_id FROM current_decisions)')}
+            active_ids={r[0] for r in db.execute('SELECT id FROM accepted_claims')}
+            meta['revision_history']={key:[] for key in TABLES}
+            inverse={value:key for key,value in TABLES.items()}
+            for cid in sorted(history_ids-active_ids):
+                r=db.execute('SELECT c.kind,c.payload,d.decision FROM claims c LEFT JOIN current_decisions d ON d.claim_id=c.id WHERE c.id=?',(cid,)).fetchone()
+                meta['revision_history'][inverse[r['kind']]].append({**json.loads(r['payload']),'review_status':r['decision'] or 'pending'})
             # Candidates are disclosed, but never treated as accepted sites or estimates.
             meta['discoveries']=[{**json.loads(r['payload']),'review_status':'candidate'} for r in db.execute("SELECT c.payload FROM claims c LEFT JOIN current_decisions d ON d.claim_id=c.id WHERE c.kind='discovery' AND (d.decision IS NULL OR d.decision!='rejected') ORDER BY c.id")]
             latest=db.execute("SELECT MAX(created_at) FROM decisions WHERE actor!='checked-in-publication'").fetchone()[0]
@@ -197,7 +273,7 @@ class Store:
                 'accepted_observations':"SELECT COUNT(*) FROM accepted_claims WHERE kind='observation'",
                 'fetch_attempts':'SELECT COUNT(*) FROM fetch_events'}.items()}
             jobs=[dict(r) for r in db.execute('SELECT source_id,next_fetch_at,last_status,last_success,last_error,failures FROM jobs ORDER BY source_id')]
-            return {'schema_version':1,'background_refresh':background,'checked_at':now(),'counts':counts,'jobs':jobs,'publication_date':self.publication().get('published_at'),'policy':'Acquisition is not publication. Changed sources require an explicit editorial decision.'}
+            return {'schema_version':2,'background_refresh':background,'checked_at':now(),'counts':counts,'jobs':jobs,'publication_date':self.publication().get('published_at'),'policy':'Acquisition is not publication. Changed sources require an explicit editorial decision.'}
 
     def search(self, query: str, limit: int=30) -> list[dict]:
         words=query.split()[:12]

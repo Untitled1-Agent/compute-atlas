@@ -43,7 +43,7 @@ def test_seed_is_idempotent_and_archive_is_separate(store):
     with store.connect() as db:
         assert db.execute('SELECT COUNT(*) FROM sites').fetchone()[0]==79
         assert db.execute('SELECT COUNT(*) FROM datasets').fetchone()[0]==2
-        assert db.execute('SELECT COUNT(*) FROM current_decisions').fetchone()[0]==len(before['observations'])+len(before['facts'])+len(before['relationships'])
+        assert db.execute('SELECT COUNT(*) FROM current_decisions').fetchone()[0]==sum(len(before[k])+len(before.get('revision_history',{}).get(k,[])) for k in ('observations','facts','relationships'))
 
 @pytest.mark.parametrize('value',[float('nan'),float('inf'),-1,True,'133'])
 def test_reject_invalid_numeric_claim(store,observation,value):
