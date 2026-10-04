@@ -1,0 +1,61 @@
+name: Apply readable reviewed source
+on:
+  push:
+    branches: [feat/evidence-lineage-and-review]
+permissions:
+  contents: write
+jobs:
+  apply-reviewed-source:
+    if: contains(github.event.head_commit.message, 'Apply readable reviewed source')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/evidence-lineage-and-review
+      - name: Verify readable review patches
+        run: |
+          echo 'f534ac62f6b1144e9c2ebfda4710124a01ee8b91b9a32c86bff04f6f6c95c1be  .review-transport/lineage.patch' | sha256sum -c -
+          echo '2d80245be085e11bb5537773aba978ccb18aecee9f6148f6fe470a4d52fe2b81  .review-transport/ui.patch' | sha256sum -c -
+          git apply --check .review-transport/lineage.patch .review-transport/ui.patch
+          git apply .review-transport/lineage.patch .review-transport/ui.patch
+          python .review-transport/enrich.py
+      - name: Document revision and export contracts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('docs/evidence-service.md')
+          text=p.read_text()
+          changes=[
+            ('Rejection can restore a prior accepted version. Competing accepted\nrevisions are rejected rather than silently choosing one.', 'Rejection can restore a prior accepted version only when no accepted descendant\nremains. Migration 2 resolves complete revision ancestry, including withdrawn\nintermediaries. Competing branches are rejected under a serialized write\ntransaction, including simultaneous reviewer decisions. Revisions retain their\nmetric, unit, boundary and scope; different measurement series stay separate.'),
+            ('Export produces only current\naccepted claims plus explicitly labeled candidates.', 'Export produces current\naccepted claims, explicitly labeled candidates and a separate `revision_history`\npartition. Earlier and rejected claims in that partition are not current values\nand never enter power totals. Ancestors are retained so the export can be imported\ninto a fresh ledger in any JSON ordering. The publication export preserves the\nlatest review status, not the entire decision log; use database backup for that.'),
+            ('`/api/sites?q=...`, `/api/sources/{id}/versions` and `/api/audit`.', '`/api/sites?q=...`, `/api/sources/{id}/versions`, `/api/claims/{id}/history` and\n`/api/audit`. Claim history identifies the effective revision and its dated\neditorial decisions. Unreviewed drafts are not returned by the history endpoint.')]
+          for old,new in changes:
+              assert old in text
+              text=text.replace(old,new)
+          p.write_text(text)
+          PY
+      - name: Verify exact locally reviewed source
+        run: |
+          python - <<'PY'
+          import subprocess
+          expected={'server/store.py':'708e8aaab29822ce196e02a4c2a4cad58d463aa1','server/app.py':'d6736b63af9e043ed26b2dad04b705e087f4f203','src/zoom-explorer.js':'d293302060683319a7c67a3c0eda4cb89a5580b3','data/evidence.json':'fc9a88a1de575fb447d76f7d54287527403c9b9b','tests/test_lineage.py':'201065da2e05f3b2f5ec9a69fc1a028a280013ab','tests/test_publication.py':'a04ecedf3b9cc876c7ec7dcec3c910e3e1de3d98','docs/evidence-service.md':'28f0efa1720c7e2c02469d4c62701e9e907d5f71','docs/research-updates/2026-10-04.md':'4f1940614fad52bbdd2dd35f6fcac843cd2e5719'}
+          for path,sha in expected.items():
+              actual=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert actual==sha,(path,actual,sha)
+              print(path,actual)
+          PY
+          python src/build.py
+          python qa/integrity.py
+          node --check src/zoom-explorer.js
+      - name: Commit clean source without temporary review files
+        run: |
+          git rm -r .review-transport
+          git rm .github/workflows/apply-reviewed-lineage.yml
+          git config user.name 'Compute Atlas verified review'
+          git config user.email 'compute-atlas@users.noreply.github.com'
+          git add server/store.py server/app.py src/zoom-explorer.js data/evidence.json tests/test_lineage.py tests/test_publication.py tests/test_service.py docs/evidence-service.md docs/research-updates/2026-10-04.md compute_atlas.html
+          git diff --cached --stat
+          git commit -m 'Preserve evidence revision lineage and review five more projects'
+          git push origin HEAD:feat/evidence-lineage-and-review
+          git rev-parse HEAD >> "$GITHUB_STEP_SUMMARY"
