@@ -1,0 +1,29 @@
+diff --git a/src/zoom-explorer.js b/src/zoom-explorer.js
+index 9d511c4..d293302 100644
+--- a/src/zoom-explorer.js
++++ b/src/zoom-explorer.js
+@@ -15,3 +15,11 @@ const spatialFinite = value => typeof value === 'number' && Number.isFinite(valu
+ const primarySource = id => ATLAS_PRIMARY.sources.find(s => s.id === id);
+-const effectivePrimary = rows => {const accepted=rows.filter(o=>o.review_status==='accepted'), old=new Set(accepted.map(o=>o.supersedes));return accepted.filter(o=>!old.has(o.id));};
++const effectivePrimary = rows => {
++  // Follow the complete chain, including withdrawn intermediate revisions.
++  // The history partition is audit context and never contributes extra capacity.
++  const all=new Map([...Object.values(ATLAS_PRIMARY.revision_history||{}).flat(),...rows].map(o=>[o.id,o]));
++  const accepted=rows.filter(o=>o.review_status==='accepted'), old=new Set();
++  for(const row of accepted){const visited=new Set([row.id]);let prior=row.supersedes;
++    while(prior&&!visited.has(prior)){visited.add(prior);old.add(prior);prior=all.get(prior)?.supersedes;}}
++  return accepted.filter(o=>!old.has(o.id));
++};
+ const primaryObservations = s => effectivePrimary(ATLAS_PRIMARY.observations).filter(o => o.site_id === s?.id && o.review_status === 'accepted');
+@@ -24,3 +32,3 @@ const spatialEvidenceLabel = review => ({'reviewed-model':'Reviewed independent
+ const spatialEvidenceClass = review => ({'reviewed-model':'model','archive':'archive','primary-noncomparable':'primary','contract-record':'target'})[review] || '';
+-const boundaryLabel = value => ({critical_it:'Critical IT load',gross_facility:'Gross facility power',generation:'Power generation',unspecified_compute:'Unspecified compute power',site_area:'Site area',contract_term:'Lease term',building_count:'Buildings',regional_investment:'Regional investment',construction_cost:'Registered construction cost',building_area:'Registered floor area',equipment_count:'Equipment count'})[value] || value;
++const boundaryLabel = value => ({critical_it:'Critical IT load',gross_facility:'Gross facility power',utility_capacity:'Utility supply capacity',annual_pue:'Annual PUE',reported_energy_savings:'Annual energy saving',base_lease_value:'Base-term lease value',generation:'Power generation',unspecified_compute:'Unspecified compute power',site_area:'Site area',contract_term:'Lease term',building_count:'Buildings',regional_investment:'Regional investment',construction_cost:'Registered construction cost',building_area:'Registered floor area',equipment_count:'Equipment count'})[value] || value;
+ const statusLabel = value => ({delivered:'Delivered',energized:'Energized',contracted:'Contracted',approved:'Approved envelope',under_construction:'Under construction',planned:'Planned',announced:'Announced',disclosed:'Disclosed',operating:'Operating',historical:'Historical snapshot',not_disclosed:'Not disclosed'})[value] || value;
+@@ -143,4 +151,4 @@ function spatialMap(scope,s,level,phase) {
+ }
+-function observationValue(o){return spatialFinite(o.value)?(o.comparison==='gt'?'> ':o.comparison==='approximate'?'≈ ':'')+fmt(o.value):'Not quantified';}
+-function primaryPowerRows(s) {const rank={operating:0,delivered:0,under_construction:1,contracted:2,planned:3,announced:3,historical:9};return primaryObservations(s).filter(o=>o.metric==='power'&&spatialFinite(o.value)).sort((a,b)=>(rank[a.status]??5)-(rank[b.status]??5)||String(b.as_of||'').localeCompare(String(a.as_of||''))||a.id.localeCompare(b.id));}
++function observationValue(o){return spatialFinite(o.value)?(o.comparison==='gt'?'&gt; ':o.comparison==='lt'?'&lt; ':o.comparison==='approximate'?'≈ ':'')+fmt(o.value):'Not quantified';}
++function primaryPowerRows(s) {const rank={operating:0,delivered:0.5,under_construction:1,contracted:2,planned:3,announced:3,historical:9};return primaryObservations(s).filter(o=>o.metric==='power'&&spatialFinite(o.value)).sort((a,b)=>(rank[a.status]??5)-(rank[b.status]??5)||String(b.as_of||'').localeCompare(String(a.as_of||''))||a.id.localeCompare(b.id));}
+ function spatialFacilitySchematic(s,phase,level=5) {
