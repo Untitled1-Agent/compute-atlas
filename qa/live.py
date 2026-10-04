@@ -77,7 +77,7 @@ with sync_playwright() as p:
 
     check("hosted index returns HTTP 200", response is not None and response.status == 200, response.status if response else None)
     check("hosted app reaches atlas-ready state", page.evaluate("document.documentElement.classList.contains('atlas-ready')"))
-    check("hosted status correctly identifies repository data", "WEB · REPOSITORY DATA" in page.locator(".side-status").inner_text())
+    check("hosted status correctly identifies repository data", "Source-cited" in page.locator("#atlas-monitor-label").inner_text())
     check("hosted app has no boot error", page.locator(".boot-error").count() == 0)
 
     counts = page.evaluate("({sites:ATLAS.data.sites.length,companies:ATLAS.data.companies.length,sources:ATLAS.data.sources.length})")
@@ -89,6 +89,7 @@ with sync_playwright() as p:
     # Geographic concentration must navigate into the globe and preserve the selected country.
     first_geo = page.locator(".geo-row").first
     country = first_geo.get_attribute("data-id")
+    page.locator(".atlas-research-depth summary").click()
     first_geo.click()
     page.wait_for_timeout(120)
     state = page.evaluate("({view:ATLAS.state.view,country:ATLAS.state.filter.country})")
@@ -173,7 +174,7 @@ with sync_playwright() as p:
     standalone.on("pageerror", lambda e: standalone_errors.append(str(e)))
     standalone.on("request", lambda r: standalone_requests.append(r.url))
     standalone_response = standalone.goto(base + "compute_atlas.html", wait_until="load", timeout=30000)
-    standalone.wait_for_selector(".evidence-lane")
+    standalone.wait_for_selector(".evidence-lane", state="attached")
     check("standalone artifact returns HTTP 200", standalone_response is not None and standalone_response.status == 200)
     check("standalone artifact includes audited enhancement layer", standalone.locator(".evidence-lane").count() == 4 and standalone.locator(".investor-table").count() == 1)
     embedded_count = standalone.evaluate("Object.keys(JSON.parse(document.getElementById('original-files').textContent)).length")

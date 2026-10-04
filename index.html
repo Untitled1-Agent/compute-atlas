@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Compute Atlas — Infrastructure & Capital</title><link rel="stylesheet" href="src/styles.css">
-<link rel="stylesheet" href="src/enhancements.css">\n<link rel="stylesheet" href="src/zoom-explorer.css"></head>
+<link rel="stylesheet" href="src/enhancements.css">
+<link rel="stylesheet" href="src/zoom-explorer.css">
+<link rel="stylesheet" href="src/evidence-desk.css"></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
@@ -20,7 +22,7 @@
    if(message)message.textContent=String(err?.message||err||'Unknown loading error');
  };
  const load=(id,url)=>fetch(url,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(url+' · HTTP '+r.status);return r.text()}).then(text=>{JSON.parse(text);const el=document.createElement('script');el.type='application/json';el.id=id;el.textContent=text;document.body.appendChild(el)});
- Promise.all([load('atlas-data','data/atlas.json'),load('archive-data','data/archive.json'),load('world-data','data/world.json')]).then(()=>{
+ Promise.all([load('atlas-data','data/atlas.json'),load('archive-data','data/archive.json'),load('world-data','data/world.json'),load('evidence-data','data/evidence.json'),load('context-data','data/context.json')]).then(()=>{
    const loadScript=src=>new Promise((resolve,reject)=>{
      const el=document.createElement('script'); el.src=src;
      el.onload=resolve; el.onerror=()=>reject(new Error('Could not load '+src));
@@ -29,7 +31,11 @@
    loadScript('src/spatial-math.js')
      .then(()=>loadScript('src/app.js'))
      .then(()=>loadScript('src/enhancements.js'))
+     .then(()=>loadScript('src/cartography.js'))
      .then(()=>loadScript('src/zoom-explorer.js'))
+     .then(()=>loadScript('src/evidence-desk.js'))
+     .then(()=>loadScript('src/service-client.js'))
+     .then(()=>loadScript('src/responsive-nav.js'))
      .then(()=>document.documentElement.classList.add('atlas-ready'))
      .catch(fail);
  }).catch(fail);

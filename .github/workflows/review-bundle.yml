@@ -1,0 +1,36 @@
+name: Reproducible review bundle
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: review-bundle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Package exact review tree
+        run: |
+          mkdir -p review
+          git rev-parse HEAD > review/COMMIT.txt
+          git archive --format=zip HEAD > review/compute-atlas-source.zip
+          sha256sum review/compute-atlas-source.zip > review/SHA256SUMS
+      - name: Upload source for reproducible local QA
+        uses: actions/upload-artifact@v4
+        with:
+          name: compute-atlas-review-source
+          path: review/
+          retention-days: 1
+          if-no-files-found: error
+      - name: Explain review contract
+        run: |
+          echo '## Reproducible review source' >> "$GITHUB_STEP_SUMMARY"
+          echo 'The artifact contains the exact tracked source, archival inputs, and commit/hash manifest. It is not a test-pass certificate. Browser and data audit results are reported by the separate live-checks workflow.' >> "$GITHUB_STEP_SUMMARY"
