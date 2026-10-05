@@ -149,3 +149,16 @@ Facility enrichment identifies Epoch AI and links exact site pages. Natural Eart
 ## License
 
 Private repository — all rights reserved. No redistribution license granted.
+
+## Source-backed identity and map precision
+
+Facility attributes and full dossiers now open an **Identity & location** panel.
+Six reviewed project identities are displayed beside, not substituted for,
+unverified historical map pins. Distinct projects sharing one city anchor remain
+separate; adjacency carries its own source. The cited JSON export matches the
+read-only SQLite API. See the [source review](docs/research/2026-10-05-site-identities.md)
+and [implementation checkpoint](docs/checkpoints/2026-10-05-site-identity.md).
+
+The current primary layer has 35 factual attributes including these six identity
+facts. This adds no capacity, mapped sites, or surveyed geometry. The original
+archive and all existing observation rows are unchanged by this slice.

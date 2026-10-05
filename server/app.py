@@ -9,6 +9,7 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from .store import ROOT, Store, canonical, digest
 from .acquire import Monitor
+from .identity import identity_document
 
 log = logging.getLogger('compute_atlas')
 
@@ -86,6 +87,12 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
             if not row: raise HTTPException(404,'Unknown site')
             claims=[{'kind':r['kind'],**json.loads(r['payload'])} for r in db.execute('SELECT kind,payload FROM accepted_claims WHERE site_id=? ORDER BY kind,id',(site_id,))]
         return {'archive':json.loads(row['payload']),'accepted_claims':claims,'archive_warning':'Historical independent estimates; not silently replaced by new source captures.'}
+
+    @app.get('/api/sites/{site_id}/identity')
+    def identity(site_id: str):
+        data = identity_document(store, site_id)
+        if data is None: raise HTTPException(404, 'Unknown site')
+        return data
 
     @app.get('/api/claims/{claim_id}/history')
     def claim_history(claim_id:str):

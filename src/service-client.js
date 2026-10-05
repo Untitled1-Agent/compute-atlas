@@ -110,6 +110,7 @@ function applyAtlasPublication() {
   if(drawer?.kind==='evidence')openDrawer('evidence',drawer.id,{back:true});
   else if(drawer?.kind==='primary-source')openDrawer('primary-source',drawer.id,{back:true});
   else if(drawer?.kind==='site')openDrawer('site',drawer.id,{back:true});
+  else if(drawer?.kind==='identity')openDrawer('identity',drawer.id,{back:true});
   window.scrollTo({top:scroll,behavior:'instant'});
   toast('Reviewed publication applied. Your research context and notes were retained.');
 }

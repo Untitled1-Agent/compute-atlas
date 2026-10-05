@@ -4,7 +4,8 @@
 <link rel="stylesheet" href="src/zoom-explorer.css">
 <link rel="stylesheet" href="src/evidence-desk.css">
 <link rel="stylesheet" href="src/source-health.css">
-<link rel="stylesheet" href="src/global-coverage.css"></head>
+<link rel="stylesheet" href="src/global-coverage.css">
+<link rel="stylesheet" href="src/site-identity.css"></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
@@ -39,6 +40,7 @@
      .then(()=>loadScript('src/service-client.js'))
      .then(()=>loadScript('src/source-health.js'))
      .then(()=>loadScript('src/global-coverage.js'))
+     .then(()=>loadScript('src/site-identity.js'))
      .then(()=>loadScript('src/responsive-nav.js'))
      .then(()=>document.documentElement.classList.add('atlas-ready'))
      .catch(fail);

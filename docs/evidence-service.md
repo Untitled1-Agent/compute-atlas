@@ -171,3 +171,25 @@ New regressions cover recurrence, revalidation, validator removal, deferred
 requests, stale leases, append-only events, source-activity semantics and
 pagination beyond 100 matching sites. Synthetic fixtures live only in temporary
 test databases and are never included in the research publication.
+
+## Site identity and location precision
+
+`GET /api/sites/{site_id}/identity` is a read-only, no-store view of effective
+accepted identity facts plus a separately labeled historical map anchor. Unknown
+IDs return 404; known but unreviewed sites return an empty identity list, not zero
+capacity. No surveyed geometry is returned. Related projects include their own
+source IDs; identical archival coordinates never cause automatic site merging.
+
+An identity is an ordinary immutable `fact` with a typed `identity` object:
+`canonical_name`, `place`, `place_precision` (municipality, county_or_parish,
+region or country), `project_scope` (campus), `coordinate_evidence`
+(not_established) and a bounded `related_sites` list. Reporting `as_of` and
+editorial `reviewed_at` dates are required. Any relation needs a distinct existing
+site, its own source, `adjacent_project` relation and explanatory note. Extra
+geometry fields are rejected. Revisions cannot cross between identity and
+ordinary factual-attribute series. Existing review commands apply unchanged.
+
+The browser derives its identity panel from the analyst's loaded accepted
+publication rather than independently fetching a newer identity document. It
+updates only when a reviewed publication is explicitly applied. Source capture
+and fetch timestamps never change an identity claim's editorial review date.

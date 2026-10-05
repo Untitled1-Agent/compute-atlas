@@ -13,3 +13,5 @@ Branches under `review/` can use the build workflow to regenerate the large stan
 ## Test honesty
 
 The normal QA mode uses real HTTP and Chromium in CI. In restricted browser environments, `qa/zoom-explorer.py`, `qa/evidence-desk.py` and `qa/source-health.py` support `--in-memory`. The source-health mode uses the real temporary SQLite/ASGI API through a test bridge, not browser HTTP. These results are useful local checks, **not** substitutes for the real-HTTP CI runs. Synthetic acquisition fixtures are labeled and never enter the research publication.
+
+- [5 October: integration audit and source-backed site identities](2026-10-05-site-identity.md)

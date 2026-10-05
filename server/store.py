@@ -12,6 +12,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterator
+from .identity import validate_identity_claim
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = {'observations': 'observation', 'facts': 'fact', 'relationships': 'relationship', 'discoveries': 'discovery'}
@@ -147,6 +148,7 @@ class Store:
         required=['id','source_id'] + ([] if kind=='discovery' else ['site_id'])
         if any(not claim.get(k) for k in required):
             raise ValueError('Missing claim identity, site or source')
+        validate_identity_claim(db, kind, claim)
         if kind=='observation':
             if any(k not in claim for k in ('metric','value','unit','boundary','status','scope','as_of','qualifier','confidence')):
                 raise ValueError('Observation lacks a measurement boundary or provenance')
@@ -169,8 +171,10 @@ class Store:
             p=db.execute('SELECT * FROM claims WHERE id=?',(prior,)).fetchone()
             if not p or p['kind']!=kind or p['site_id']!=claim.get('site_id'):
                 raise ValueError('Revision must replace an existing claim of the same site and kind')
+            previous=json.loads(p['payload'])
+            if ('identity' in previous) != ('identity' in claim):
+                raise ValueError('Identity revisions must remain identity facts')
             if kind=='observation':
-                previous=json.loads(p['payload'])
                 if any(previous.get(k)!=claim.get(k) for k in ('metric','unit','boundary','scope')):
                     raise ValueError('Revision must retain its measurement series; publish unlike metrics separately')
         db.execute('INSERT INTO claims VALUES(?,?,?,?,?,?,?,?)', (claim['id'],kind,claim.get('site_id'),claim['source_id'],prior,digest(payload),canonical(payload),now()))
