@@ -54,6 +54,7 @@ jobs:
           node --check src/zoom-explorer.js
           node --check src/service-client.js
           node --check src/source-health.js
+          node --check src/global-coverage.js
           node --check src/evidence-desk.js
       - name: Functional suite
         run: python qa/functional.py
@@ -69,6 +70,8 @@ jobs:
         run: python qa/service.py
       - name: Source-health console over real HTTP
         run: python qa/source-health.py
+      - name: Global disclosure coverage over real HTTP
+        run: python qa/global-coverage.py
       - name: Summarize QA
         if: always()
         run: |
@@ -76,7 +79,7 @@ jobs:
           import json
           from pathlib import Path
           print('## Compute Atlas QA')
-          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','source_health_results.json'):
+          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','source_health_results.json','global_coverage_results.json'):
               path=Path('qa')/name
               if not path.exists():
                   print(f'- `{name}`: not produced')
