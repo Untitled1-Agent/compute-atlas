@@ -1,0 +1,40 @@
+name: Capture global directory baseline
+on:
+  workflow_dispatch:
+  push:
+    branches: ['data/open-infrastructure-capture']
+    paths: ['.github/workflows/directory-baseline.yml']
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download pinned source and license without treating coordinates as verified
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa/directory-baseline
+          BASE='https://raw.githubusercontent.com/Ringmast4r/Global-Data-Center-Map/7c1c6f3abcc6e25f0b4b8eeb291e434ddc42ee05'
+          for file in datacenters.json LICENSE README.md; do
+            curl --ipv4 --fail --silent --show-error --connect-timeout 20 --max-time 90 --max-filesize 15728640 --proto '=https' "$BASE/$file" -o "qa/directory-baseline/$file"
+          done
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          from datetime import datetime,timezone
+          p=Path('qa/directory-baseline');data=json.loads((p/'datacenters.json').read_text())
+          assert data
+          files={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in p.iterdir()}
+          manifest={'source':'https://github.com/Ringmast4r/Global-Data-Center-Map','source_commit':'7c1c6f3abcc6e25f0b4b8eeb291e434ddc42ee05','retrieved_at':datetime.now(timezone.utc).isoformat(),'sha256':files,'policy':'Secondary discovery directory. License explicitly warns of city/state/country centroid coordinates. No operating status, coordinate precision or IT capacity is inferred. Attribution must be visible. Never added to curated research totals.'}
+          (p/'capture.json').write_text(json.dumps(manifest,indent=2));print(manifest)
+          print('Root type',type(data).__name__,'length',len(data));print(str(data)[:3500])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: global-directory-baseline
+          retention-days: 14
+          if-no-files-found: error
+          path: qa/directory-baseline/
