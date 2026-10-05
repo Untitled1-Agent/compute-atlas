@@ -1,0 +1,36 @@
+/* The identity desk follows the atlas palette; geometry is never decorative evidence. */
+.atlas-identity-launch{border-top:1px solid var(--line,#24434f);margin-top:16px;padding-top:15px}
+.atlas-identity-launch p{margin:8px 0;color:var(--text,#e8f1f4);font-size:14px;line-height:1.5}
+.atlas-identity-launch button{width:100%;display:flex;justify-content:space-between;text-align:left;gap:12px;min-height:36px}
+.atlas-identity-desk{max-width:1080px;margin:0 auto;padding:8px 2px 28px}
+.atlas-identity-desk h1{font:400 clamp(30px,3.7vw,48px)/1.13 Georgia,serif;letter-spacing:-.025em;margin:16px 0}
+.atlas-identity-desk h1 span{color:var(--mint,#81e4cb)}
+.atlas-identity-intro{max-width:720px;font-size:15px;line-height:1.7}
+.atlas-identity-boundary{margin:22px 0;border-left:2px solid var(--mint,#81e4cb);background:#112c32;padding:16px 18px;font-size:14px;line-height:1.65;color:#cfede7}
+.atlas-identity-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:20px 0;font-size:12px;color:#aac2cd;flex-wrap:wrap}
+.atlas-identity-columns{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.atlas-identity-columns>*{min-width:0}
+.atlas-identity-claim,.atlas-identity-anchor,.atlas-identity-collision{border:1px solid #29434f;background:linear-gradient(135deg,#0d202b,#0a1821);border-radius:9px;padding:22px;margin-bottom:16px;min-width:0;overflow-wrap:anywhere}
+.atlas-identity-claim header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.atlas-identity-desk h2{font:400 27px/1.18 Georgia,serif;letter-spacing:-.015em;margin:17px 0 12px}
+.atlas-identity-place{color:#8ce4d0;font-size:16px;line-height:1.5}
+.atlas-identity-desk p{line-height:1.65}
+.atlas-identity-desk dl{margin:20px 0}
+.atlas-identity-desk dl>div{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;padding:10px 0;border-bottom:1px solid #213842;font-size:12px;line-height:1.55}
+.atlas-identity-desk dt{color:#9cb6c6}
+.atlas-identity-desk dd{margin:0;color:#e1edf1}
+.atlas-identity-claim>footer{font-size:11px;color:#91adbd;border-top:1px solid #263e49;padding-top:12px;margin-top:18px;line-height:1.8}
+.atlas-identity-claim code{font-size:10px;overflow-wrap:anywhere}
+.atlas-identity-anchor{border-style:dashed;background:#0a1821}
+.atlas-identity-anchor .atlas-card-kicker{color:#b8c4d3;line-height:1.7}
+.atlas-identity-coordinates{font-family:ui-monospace,monospace;font-size:19px;letter-spacing:.02em;padding:14px 0;color:#b2c7d5}
+.atlas-identity-related{border-top:1px solid #29434f;padding-top:12px;margin-top:20px}
+.atlas-identity-related h3{font-size:12px;line-height:1.5;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:#8ce4d0}
+.atlas-identity-related .text-button{white-space:normal;text-align:left;font-size:15px;min-height:40px}
+.atlas-identity-related p{font-size:12px}
+.atlas-identity-collision{background:#11242c;margin-top:4px}
+.atlas-identity-collision .btn{margin:5px 6px 5px 0;white-space:normal;text-align:left;max-width:100%}
+.atlas-identity-footer{display:flex;gap:15px;flex-wrap:wrap;align-items:center;padding-top:8px}
+.atlas-identity-footer>p{flex-basis:100%;font-size:12px;color:#8faaba}
+.atlas-identity-desk button:focus-visible{outline:2px solid #a0f4df;outline-offset:4px}
+@media(max-width:750px){.atlas-identity-columns{grid-template-columns:1fr}.atlas-identity-desk{padding:0 0 24px}.atlas-identity-claim,.atlas-identity-anchor,.atlas-identity-collision{padding:18px}.atlas-identity-desk h2{font-size:25px}.atlas-identity-desk .atlas-card-kicker{font-size:10px;letter-spacing:.08em}.atlas-identity-toolbar button{min-height:44px}.atlas-identity-launch button{min-height:44px}.atlas-identity-footer button{text-align:left;white-space:normal;min-height:44px}.atlas-identity-desk .atlas-source-ref{min-height:36px}}

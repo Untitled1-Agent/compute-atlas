@@ -45,7 +45,7 @@ try:
             check(entry+' historical July subtotal absent from headline cards','175' not in page.locator('.atlas-evidence-schematic').inner_text())
             page.screenshot(path=str(OUT/f'{label}-ellendale-desktop.png'),full_page=True)
             page.locator('[data-atlas-action="evidence-desk"]').first.click()
-            check(entry+' desk has five current records',page.locator('.atlas-evidence-record').count()==5)
+            check(entry+' desk has six current records including identity',page.locator('.atlas-evidence-record').count()==6)
             page.locator('[data-evidence-filter="observations"]').click()
             check(entry+' quantities preserve distinct scopes',set(page.locator('.atlas-claim-scope').all_inner_texts())=={'Campus commissioned subtotal','Building 2 completed','Full campus buildout'})
             page.locator('[data-evidence-filter="history"]').click()
