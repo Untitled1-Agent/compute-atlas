@@ -25,30 +25,26 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p qa/open-capture
-          python - <<'PY'
-          import json,hashlib,time
+          python -u - <<'PY'
+          import json,hashlib,time,subprocess
           from pathlib import Path
-          from urllib.request import Request,urlopen
-          from urllib.parse import urlencode
           from datetime import datetime,timezone
-          query='[out:json][timeout:180][maxsize:134217728];(nwr[~"^(telecom|building|industrial|construction:telecom|proposed:telecom|disused:telecom|abandoned:telecom|construction|proposed)$"~"^data_cent(er|re)$"];);out meta geom;'
-          urls=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']
-          def get(url,data=None):
-              req=Request(url,data=data,headers={'User-Agent':'ComputeAtlas/1.0 (+https://github.com/Untitled1-Agent/compute-atlas)','Accept':'application/json'})
-              with urlopen(req,timeout=230) as r:
-                  if r.status!=200: raise ValueError('Unexpected HTTP status')
-                  b=r.read(60*1024*1024+1)
-              if len(b)>60*1024*1024: raise ValueError('Source response too large')
-              return b
+          keys=['telecom','building','industrial','construction:telecom','proposed:telecom','disused:telecom','abandoned:telecom','construction','proposed']
+          query='[out:json][timeout:120][maxsize:134217728];('+''.join('nwr["'+k+'"~"^data_cent(er|re)$"];' for k in keys)+');out meta geom;'
+          urls=['https://overpass.private.coffee/api/interpreter','https://overpass-api.de/api/interpreter']
+          def get(url,query=None):
+              cmd=['curl','--ipv4','--fail','--silent','--show-error','--connect-timeout','20','--max-time','170','--max-filesize','62914560','--proto','=https','--user-agent','ComputeAtlas/1.0 (+https://github.com/Untitled1-Agent/compute-atlas)',url]
+              if query is not None: cmd+=['--data-urlencode','data='+query]
+              return subprocess.run(cmd,check=True,capture_output=True,timeout=180).stdout
           for endpoint in urls:
               try:
-                  raw=get(endpoint,urlencode({'data':query}).encode()); data=json.loads(raw)
+                  print('Fetching',endpoint,flush=True)
+                  raw=get(endpoint,query); data=json.loads(raw)
                   assert not data.get('remark') and data.get('elements'), 'Incomplete Overpass result'
                   break
               except Exception as e:
-                  print(endpoint,str(e));time.sleep(3)
+                  print(endpoint,str(e),getattr(e,'stderr',b'').decode(errors='replace'));time.sleep(30)
           else: raise SystemExit('No complete source capture; existing publication is unchanged')
-          # Public editor handles are not required for this research collection.
           for row in data['elements']:
               row.pop('user',None);row.pop('uid',None)
           Path('qa/open-capture/osm.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
