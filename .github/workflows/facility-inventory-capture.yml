@@ -1,0 +1,33 @@
+name: Capture global facility inventory for review
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 4 * * 1'
+  push:
+    branches: [feat/global-facility-catalog]
+    paths:
+      - tools/capture_facility_inventory.py
+      - .github/workflows/facility-inventory-capture.yml
+permissions:
+  contents: read
+concurrency:
+  group: facility-inventory-capture
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Fetch complete licensed inventory and source fingerprints
+        run: python tools/capture_facility_inventory.py --output var/inventory-capture
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: global-facility-capture
+          path: var/inventory-capture/
+          retention-days: 14
+          if-no-files-found: error
