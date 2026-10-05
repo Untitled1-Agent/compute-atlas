@@ -30,32 +30,36 @@ jobs:
           from pathlib import Path
           from datetime import datetime,timezone
           keys=['telecom','building','industrial','construction:telecom','proposed:telecom','disused:telecom','abandoned:telecom','construction','proposed']
-          query='[out:json][timeout:120][maxsize:134217728];('+''.join('nwr["'+k+'"~"^data_cent(er|re)$"];' for k in keys)+');out meta geom;'
-          urls=['https://overpass.private.coffee/api/interpreter','https://overpass-api.de/api/interpreter']
+          query='[out:json][timeout:180][maxsize:268435456];('+''.join('nwr["'+k+'"="'+v+'"];' for k in keys for v in ['data_center','data_centre'])+');out meta geom;'
+          urls=['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter']
           def get(url,query=None):
-              cmd=['curl','--ipv4','--fail','--silent','--show-error','--connect-timeout','20','--max-time','170','--max-filesize','62914560','--proto','=https','--user-agent','ComputeAtlas/1.0 (+https://github.com/Untitled1-Agent/compute-atlas)',url]
+              cmd=['curl','--ipv4','--fail','--silent','--show-error','--connect-timeout','20','--max-time','220','--max-filesize','62914560','--proto','=https','--user-agent','ComputeAtlas/1.0 (+https://github.com/Untitled1-Agent/compute-atlas)',url]
               if query is not None: cmd+=['--data-urlencode','data='+query]
-              return subprocess.run(cmd,check=True,capture_output=True,timeout=180).stdout
+              return subprocess.run(cmd,check=True,capture_output=True,timeout=230).stdout
+          country_url='https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
+          countries=get(country_url);json.loads(countries)
+          Path('qa/open-capture/countries.json').write_bytes(countries)
+          errors=[]
           for endpoint in urls:
               try:
                   print('Fetching',endpoint,flush=True)
                   raw=get(endpoint,query); data=json.loads(raw)
-                  assert not data.get('remark') and data.get('elements'), 'Incomplete Overpass result'
+                  if data.get('remark') or not data.get('elements'): raise ValueError(data.get('remark') or 'Empty capture')
                   break
               except Exception as e:
-                  print(endpoint,str(e),getattr(e,'stderr',b'').decode(errors='replace'));time.sleep(30)
-          else: raise SystemExit('No complete source capture; existing publication is unchanged')
+                  error=endpoint+': '+str(e)+' '+getattr(e,'stderr',b'').decode(errors='replace');errors.append(error);print(error);time.sleep(30)
+          else:
+              Path('qa/open-capture/failure.json').write_text(json.dumps({'errors':errors,'query':query,'retrieved_at':datetime.now(timezone.utc).isoformat()},indent=2))
+              raise SystemExit('No complete source capture; existing publication is unchanged')
           for row in data['elements']:
               row.pop('user',None);row.pop('uid',None)
           Path('qa/open-capture/osm.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
-          country_url='https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
-          countries=get(country_url);json.loads(countries)
-          Path('qa/open-capture/countries.json').write_bytes(countries)
           manifest={'retrieved_at':datetime.now(timezone.utc).isoformat(),'endpoint':endpoint,'query':query,'raw_sha256':hashlib.sha256(raw).hexdigest(),'sanitized_sha256':hashlib.sha256(Path('qa/open-capture/osm.json').read_bytes()).hexdigest(),'country_source':country_url,'country_sha256':hashlib.sha256(countries).hexdigest(),'features':len(data['elements']),'license':'ODbL-1.0','attribution':'OpenStreetMap contributors','policy':'A reviewable map-object capture, not a census or operating-capacity assertion. No accepted research is changed by this workflow.'}
           Path('qa/open-capture/manifest.json').write_text(json.dumps(manifest,indent=2))
           print(json.dumps(manifest,indent=2))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: open-infrastructure-source-capture
           retention-days: 14
