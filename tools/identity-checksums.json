@@ -1,0 +1,22 @@
+{
+  ".github/workflows/live-checks.yml": "70a781ed89e0be45d317cbf93ace67bf224137c3c9a330a3deed40ae9f82272b",
+  ".github/workflows/review-build.yml": "824e847c8a2d4c3f64b22c2ba5a0b40caeba5a1513ffdabc6451c40fcd32e600",
+  "README.md": "b6d3092e15959e598a0be7a91af19b91a3707514c4d31718a97a245db345281e",
+  "data/evidence.json": "2287ce85ffcd96f6ff50db6ecec90e773d3b48a973fb86b9e4f65b1131a244fd",
+  "docs/checkpoints/2026-10-05-site-identity.md": "8cb53d4b5587128bfea9936266a829e1701375b176a8ddcc362d70822753a38c",
+  "docs/checkpoints/README.md": "b0cb01f57cec25d4eeea0afb2b8bd68af3bc02b42b016c6490ce4537b55af746",
+  "docs/evidence-service.md": "ba650e67e32d772b1cfba137154503cc32b422a24b4cbfa6e3c64e864b8f0edc",
+  "docs/research/2026-10-05-site-identities.md": "d02c2829bf1970d9fe018f1f3addca737147db3b57879395c58b9d0dde16c7f6",
+  "index.html": "7e74f0f5da1db61bcafe7f5dbce1d2f905db63d01d89aecaa4a52180bd12b669",
+  "qa/evidence-desk.py": "a0708bbf1c44a1ebad0409f25941ae6bfc15e8eb1b83feabf9ce0e0658746e1c",
+  "qa/site-identity.py": "556a8eaeece47c7cc5258bfd2955c9ebd8936b36e6155817ce8851a2c422d915",
+  "server/app.py": "bdac973a0c61350ecc0cb9b6bcd46d03dc4fe4ef3c3a6e6f62fef40f63771751",
+  "server/identity.py": "5e91c4b9c7b289c8d0bedc10fc2bbd67cec2fc27f88e08d32929e3e8851b7538",
+  "server/store.py": "91fe363ee251975dfb266b05e70e788c797c2477c35e88e63ec6f840c9e1a71e",
+  "src/build.py": "da823eb241844a3ace8e1807342b123665cd01d32525425d080211a8090f8767",
+  "src/service-client.js": "163e9ee339758d9931bc819e0c0efa543e22d270e933bad9a49cbbe05db84408",
+  "src/site-identity.css": "de76d0f04305f2188117fd73be49f709177bbbe013e68bc2a8a7eec8929e350b",
+  "src/site-identity.js": "d184719d13190a5d88a6b19069d1b19f761f5ee4b2221dafc1e3649914838f73",
+  "src/zoom-explorer.js": "b5e93bb5bd05151886bfa6ee95ffbb38f4fa3caaa1399038b53a1a75283618ab",
+  "tests/test_identity.py": "02008e73cd4168260206b47e8c0ac8b9f33f622eb562d2e790b149cb2d0f5c8e"
+}
