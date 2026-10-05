@@ -35,3 +35,7 @@ This container's Chromium denies local HTTP navigation (`ERR_BLOCKED_BY_ADMINIST
 2. Open the PR at the generated head and require the permanent live-checks workflow to pass independently.
 3. Update issue #2 with PR, exact head and CI IDs before merging.
 4. Continue global primary-source coverage and map presentation in a separate PR. The 79-site historical archive and its IT-MW estimates are unchanged by this console PR.
+
+## Merged checkpoint
+
+PR #12 merged as `d241efb59d695451c7c70d10a1d284dd702d1cbc`. Tested head: `c98a4b07a628ef7ac758572e738d70baf593fc7e`. Build run `37244875707` and independent permanent PR run `37245288613` both passed. Results: 62 backend tests and 335/335 application QA assertions, including actual HTTP/Chromium suites. The downloaded source-health desktop/mobile and world screenshots were inspected. The source ZIP SHA-256 is `3dab81fc9aecc1bbe663d284497e2d5603cef23e60af045df8a1968fece8e0a6`.
