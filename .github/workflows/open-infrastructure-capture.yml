@@ -1,0 +1,67 @@
+name: Capture open global infrastructure
+on:
+  workflow_dispatch:
+  push:
+    branches: ['data/open-infrastructure-capture']
+    paths: ['.github/workflows/open-infrastructure-capture.yml']
+  schedule:
+    - cron: '23 4 * * 2'
+permissions:
+  contents: read
+concurrency:
+  group: open-infrastructure-capture
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Capture attributed open directory and country context
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa/open-capture
+          python - <<'PY'
+          import json,hashlib,time
+          from pathlib import Path
+          from urllib.request import Request,urlopen
+          from urllib.parse import urlencode
+          from datetime import datetime,timezone
+          query='[out:json][timeout:180][maxsize:134217728];(nwr[~"^(telecom|building|industrial|construction:telecom|proposed:telecom|disused:telecom|abandoned:telecom|construction|proposed)$"~"^data_cent(er|re)$"];);out meta geom;'
+          urls=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']
+          def get(url,data=None):
+              req=Request(url,data=data,headers={'User-Agent':'ComputeAtlas/1.0 (+https://github.com/Untitled1-Agent/compute-atlas)','Accept':'application/json'})
+              with urlopen(req,timeout=230) as r:
+                  if r.status!=200: raise ValueError('Unexpected HTTP status')
+                  b=r.read(60*1024*1024+1)
+              if len(b)>60*1024*1024: raise ValueError('Source response too large')
+              return b
+          for endpoint in urls:
+              try:
+                  raw=get(endpoint,urlencode({'data':query}).encode()); data=json.loads(raw)
+                  assert not data.get('remark') and data.get('elements'), 'Incomplete Overpass result'
+                  break
+              except Exception as e:
+                  print(endpoint,str(e));time.sleep(3)
+          else: raise SystemExit('No complete source capture; existing publication is unchanged')
+          # Public editor handles are not required for this research collection.
+          for row in data['elements']:
+              row.pop('user',None);row.pop('uid',None)
+          Path('qa/open-capture/osm.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
+          country_url='https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
+          countries=get(country_url);json.loads(countries)
+          Path('qa/open-capture/countries.json').write_bytes(countries)
+          manifest={'retrieved_at':datetime.now(timezone.utc).isoformat(),'endpoint':endpoint,'query':query,'raw_sha256':hashlib.sha256(raw).hexdigest(),'sanitized_sha256':hashlib.sha256(Path('qa/open-capture/osm.json').read_bytes()).hexdigest(),'country_source':country_url,'country_sha256':hashlib.sha256(countries).hexdigest(),'features':len(data['elements']),'license':'ODbL-1.0','attribution':'OpenStreetMap contributors','policy':'A reviewable map-object capture, not a census or operating-capacity assertion. No accepted research is changed by this workflow.'}
+          Path('qa/open-capture/manifest.json').write_text(json.dumps(manifest,indent=2))
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: open-infrastructure-source-capture
+          retention-days: 14
+          if-no-files-found: error
+          path: qa/open-capture/
