@@ -1,54 +1,38 @@
 # Approved Compute Atlas visual references
 
-These six user-supplied reference images are **visual-design references only**.
-All numbers, names, dates, roads, parcels, substations, transmission/fiber lines,
-building footprints, cooling equipment, corporate roles and capacities in these
-images require independent evidence before they can appear as facts in the app.
-In particular, “Horizon” and the mockup's “Helios” labels do not establish a real
-project, location or ownership relationship. Unknown is not zero.
+The six user-supplied designs are now stored here as actual 640 × 480 WebP review copies, not broken links. They preserve the layout and color direction. These are reduced-resolution references, not full-resolution originals. See [issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2) for the implementation contract. Compare real desktop/mobile browser captures against these images when changing the interface.
 
-These are compressed review copies of the originals supplied in the conversation.
-Do not use them as a basemap, satellite layer or dataset. Missing exact geometry
-must be an explicitly labeled evidence schematic or approximate geographic context.
+**Design only.** Every number, name, date, boundary, road, building, cooling pond, utility line and relationship shown here must be independently sourced before appearing as research. Do not trace invented geometry into the app. Where geometry is unavailable, display a clearly marked evidence schematic. Research quantities retain their original units and measurement boundaries.
 
-Implementation tracking: [Issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2).
-Initial semantic shell: [PR #3](https://github.com/Untitled1-Agent/compute-atlas/pull/3).
-Cartographic implementation: [PR #6](https://github.com/Untitled1-Agent/compute-atlas/pull/6).
+## 1. World
+Editorial serif headline, large globe, luminous clusters, analytical right rail and bottom KPI cards.
 
-## 01 — World
-Editorial headline, globe hero, luminous clusters, analysis rail and four bottom KPIs.
+![Global compute view](01-world-global.webp)
 
-![World / global compute capital](01-world-global.webp)
+## 2. Continent
+North America–Europe framing with restrained labels and geographic context. Europe must be discoverable, not hidden by an AI-only source selection.
 
-## 02 — Continent
-Closer regional-system framing, legible cluster labels and regional evidence.
-Connections must be independently sourced, not decorative “infrastructure.”
+![Continental view](02-continent-na-europe.webp)
 
-![North America and Europe](02-continent-na-europe.webp)
+## 3. Region
+Regional centers, legible geographic context and a focused information rail.
 
-## 03 — Region
-Geographic context, selected hubs, locally scoped metrics and source-aware operators.
+![Regional view](03-region-east-midwest.webp)
 
-![Eastern United States and Midwest](03-region-east-midwest.webp)
+## 4. Metro
+Local facilities and independently sourced infrastructure; never infer utility service from a nearby line.
 
-## 04 — Metro / corridor
-Individual facilities, local context, ownership roles and visible evidence boundaries.
+![Metro view](04-metro-chicago-new-carlisle.webp)
 
-![Chicago to New Carlisle corridor](04-metro-chicago-new-carlisle.webp)
+## 5. Campus
+Map or 3D hero, power phases, attributes, evidence and notes. Community mapped footprints are not cadastral surveys; assumed heights must be labeled.
 
-## 05 — Campus
-Project phases, power ladder, sources and notes. Parcel-like shapes here are illustrative.
+![Campus view](05-campus-horizon.webp)
 
-![Campus analytical layout](05-campus-horizon.webp)
+## 6. Facility
+Strong facility identity, clear evidence and counterparty cards. Orbit, pan and continuous scroll zoom should work without relying on a static rendering.
 
-## 06 — Facility
-Source-level detail, counterparties, dated phase facts and explicit evidence quality.
+![Facility view](06-facility-helios.webp)
 
-![Facility dossier layout](06-facility-helios.webp)
-
-## Screenshot comparison
-
-Run `python qa/zoom-explorer.py` and inspect `qa/screenshots/`. Compare all six
-scales at desktop width and the world/facility screens at mobile width. Verify
-layout, typography, hierarchy, label collisions, visible uncertainty, focus states,
-and interactive behavior. A QA count is not a visual-fidelity certificate.
+## Integrity
+`sha256.json` fingerprints these exact review copies. `tests/test_references.py` fails if a reference disappears or changes without its manifest. These reference assets are documentation only and are not bundled into the app.
