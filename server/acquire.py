@@ -225,7 +225,7 @@ class Monitor:
                 db.execute('INSERT OR IGNORE INTO source_versions VALUES(?,?,?,?,?,?,?,?)',(vid,job['source_id'],raw_hash,semantic_hash,content_type,final_url,len(raw),captured))
                 meaningful = previous is None or previous['semantic_sha256'] != semantic_hash
                 outcome = 'baseline' if previous is None else ('changed' if meaningful else 'unchanged-content')
-                if meaningful and job['kind']=='page':
+                if meaningful and job['kind'] in ('page','catalog-page'):
                     self.store.enqueue(db,job['source_id'],vid,outcome,{'title': json_title(job['payload']), 'url':final_url, 'note':'New captured baseline; not retroactive verification of historical claims.' if previous is None else 'Source content changed. Accepted claims remain unchanged until editorial review.', 'previous_version_id': previous['id'] if previous else None, 'sha256':raw_hash,'semantic_sha256':semantic_hash,'excerpt':text[:1200] if 'html' in content_type or content_type.startswith('text/') else 'Binary source retained; document extraction has not been performed.'},digest([job['source_id'],event['id'] if event else None,vid,outcome]))
                 for item in entries:
                     self.store.enqueue(db,job['source_id'],vid,'discovery',item,digest([job['source_id'],item['url']]))

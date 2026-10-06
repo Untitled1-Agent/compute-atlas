@@ -10,6 +10,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from .store import ROOT, Store, canonical, digest
 from .acquire import Monitor
 from .identity import identity_document
+from .catalog import CatalogStore
 
 log = logging.getLogger('compute_atlas')
 
@@ -17,6 +18,7 @@ log = logging.getLogger('compute_atlas')
 def create_app(db_path: Path | None = None, *, background: bool = True, root: Path = ROOT, monitor_factory=Monitor) -> FastAPI:
     path = db_path or root/'var/atlas.sqlite3'
     store = Store(path); store.seed(root)
+    catalog = CatalogStore(path); catalog.seed(root); catalog.register_review_sources(root)
 
     async def worker(monitor):
         while True:
@@ -74,6 +76,28 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         headers={'ETag':etag,'Cache-Control':'no-cache'}
         if request.headers.get('if-none-match')==etag: return Response(status_code=304,headers=headers)
         return JSONResponse(data,headers=headers)
+
+    @app.get('/api/catalog/status')
+    def catalog_status(): return catalog.status()
+
+    @app.get('/api/catalog/publication')
+    def catalog_publication(request: Request):
+        data=catalog.publication()
+        if data is None: raise HTTPException(503,'No accepted catalog publication')
+        etag='"'+digest(data)+'"'
+        if request.headers.get('if-none-match')==etag:return Response(status_code=304,headers={'ETag':etag})
+        return JSONResponse(data,headers={'ETag':etag,'Cache-Control':'no-cache'})
+
+    @app.get('/api/catalog/features')
+    def catalog_features(q:str=Query('',max_length=500),country:str|None=None,continent:str|None=None,kind:str|None=None,bbox:str|None=None,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
+        try:return catalog.page(q,country,continent,kind,[float(v) for v in bbox.split(',')] if bbox else None,limit,offset)
+        except ValueError as e:raise HTTPException(422,str(e))
+
+    @app.get('/api/catalog/features/{feature_id}')
+    def catalog_feature(feature_id:str):
+        data=catalog.feature(feature_id)
+        if data is None:raise HTTPException(404,'Unknown catalog feature')
+        return data
 
     @app.get('/api/sites')
     def sites(q:str=Query('',max_length=500),country:str|None=None,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
