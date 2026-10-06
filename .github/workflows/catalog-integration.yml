@@ -1,0 +1,70 @@
+name: Verify global catalog foundation
+on:
+  push:
+    branches: [feat/catalog-foundation]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: catalog-foundation-review
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: contains(github.event.head_commit.message, 'Stage global catalog')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Read existing source artifact from this repository
+        uses: actions/download-artifact@v4
+        with:
+          name: global-facility-capture
+          run-id: 37385525742
+          github-token: ${{ github.token }}
+          path: /tmp/catalog-capture
+      - name: Verify and normalize the source artifact
+        run: |
+          set -euo pipefail
+          python tools/normalize_catalog.py /tmp/catalog-capture data/catalog/osm.json
+          echo '108c7065110bfb775d7d6ba7e7b6a52ce6e23559e4b72bbf45d98a221d9ea670  data/catalog/osm.json' | sha256sum -c -
+          echo '7b3188dbf9ea60130606bbe164ff0f5fd2d076f4bc1e9949e6af6c93c17c9eaa  tools/catalog-foundation.patch' | sha256sum -c -
+          git apply --check tools/catalog-foundation.patch
+          git apply tools/catalog-foundation.patch
+          git rm tools/catalog-foundation.patch
+      - name: Install browser toolchain
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m playwright install --with-deps chromium
+          CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
+          test -n "$CHROMIUM_PATH"
+          sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+      - name: Test actual source and database-backed HTTP application
+        run: |
+          set -euo pipefail
+          python src/build.py
+          git diff --quiet -- compute_atlas.html
+          python -m pytest tests -q | tee /tmp/catalog-pytest.txt
+          for file in src/*.js; do node --check "$file"; done
+          for suite in integrity functional zoom-explorer evidence-desk smoke live service source-health global-coverage site-identity; do python "qa/$suite.py"; done
+      - name: Package a tested checkpoint without publishing
+        run: |
+          mkdir -p qa/checkpoint
+          cp /tmp/catalog-pytest.txt qa/checkpoint/
+          git diff --binary > qa/checkpoint/review.patch
+          cp data/catalog/osm.json qa/checkpoint/catalog.json
+          cp /tmp/catalog-capture/manifest.json qa/checkpoint/
+          sha256sum qa/checkpoint/* > qa/checkpoint/checksums.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: catalog-foundation-evidence
+          retention-days: 14
+          path: |
+            qa/checkpoint/
+            qa/*_results.json
+            qa/screenshots/*.png

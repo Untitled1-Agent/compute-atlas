@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "reviews": [
+    {
+      "id": "CAT-PA9X",
+      "feature_id": "osm-way-1121454055",
+      "publisher": "Equinix",
+      "title": "Equinix PA9x facility specifications",
+      "url": "https://www.equinix.com/data-centers/europe-colocation/france-colocation/paris-data-centers/pa9x",
+      "published_at": null,
+      "reviewed_at": "2026-10-07",
+      "match_basis": "Reviewed operator facility code and stated address compared with the community name/location; source does not certify the OSM outline.",
+      "address": "114 Rue Ambroise Croizat, 93200 Saint Denis, France",
+      "measurements": [
+        {
+          "value": 9600,
+          "unit": "kVA",
+          "boundary": "Sellable apparent power",
+          "qualifier": "Not MW of critical IT. Power factor and IT boundary not disclosed."
+        },
+        {
+          "value": 5,
+          "unit": "storeys",
+          "boundary": "Building description",
+          "qualifier": "Number of storeys does not establish height in meters."
+        }
+      ],
+      "it_mw": null,
+      "geometry_verified": false,
+      "note": "Operator-listed facility. No current utilization, commissioning telemetry or building height is established by this review."
+    },
+    {
+      "id": "CAT-FR5",
+      "feature_id": "osm-way-145174882",
+      "publisher": "Equinix",
+      "title": "Equinix FR5 facility specifications",
+      "url": "https://www.equinix.com/data-centers/europe-colocation/germany-colocation/frankfurt-data-centers/fr5",
+      "published_at": null,
+      "reviewed_at": "2026-10-07",
+      "match_basis": "Reviewed operator facility code and stated address compared with the community name/location; source does not certify the OSM outline.",
+      "address": "Kleyerstrasse 90, 60326 Frankfurt, Germany",
+      "measurements": [
+        {
+          "value": 7257,
+          "unit": "m²",
+          "boundary": "Colocation floor area",
+          "qualifier": "Not gross plot area or a proxy for IT load."
+        },
+        {
+          "value": 6,
+          "unit": "storeys",
+          "boundary": "Building description",
+          "qualifier": "Not a measured height."
+        }
+      ],
+      "it_mw": null,
+      "geometry_verified": false,
+      "note": "Operator-listed facility. No current utilization, commissioning telemetry or building height is established by this review."
+    },
+    {
+      "id": "CAT-AM3",
+      "feature_id": "osm-node-4753473931",
+      "publisher": "Equinix",
+      "title": "Equinix AM3 facility specifications",
+      "url": "https://www.equinix.com/data-centers/europe-colocation/netherlands-colocation/amsterdam-data-centers/am3",
+      "published_at": null,
+      "reviewed_at": "2026-10-07",
+      "match_basis": "Reviewed operator facility code and stated address compared with the community name/location; source does not certify the OSM outline.",
+      "address": "Science Park 610, 1098 XH Amsterdam, Netherlands",
+      "measurements": [
+        {
+          "value": 6400,
+          "unit": "m²",
+          "boundary": "Colocation floor area",
+          "qualifier": "Not a proxy for IT load."
+        },
+        {
+          "value": 5,
+          "unit": "storeys",
+          "boundary": "Building description",
+          "qualifier": "Not a measured height."
+        }
+      ],
+      "it_mw": null,
+      "geometry_verified": false,
+      "note": "Operator-listed facility. No current utilization, commissioning telemetry or building height is established by this review."
+    },
+    {
+      "id": "CAT-LD8",
+      "feature_id": "osm-way-1481564428",
+      "publisher": "Equinix",
+      "title": "Equinix LD8 facility specifications",
+      "url": "https://www.equinix.com/data-centers/europe-colocation/united-kingdom-colocation/london-data-centers/ld8",
+      "published_at": null,
+      "reviewed_at": "2026-10-07",
+      "match_basis": "Reviewed operator facility code and stated address compared with the community name/location; source does not certify the OSM outline.",
+      "address": "6/7/8/9 Harbour Exchange Square, Limeharbour, E14 9GE London, United Kingdom",
+      "measurements": [
+        {
+          "value": 12769,
+          "unit": "m²",
+          "boundary": "Colocation floor area",
+          "qualifier": "Not a proxy for IT load."
+        }
+      ],
+      "it_mw": null,
+      "geometry_verified": false,
+      "note": "Operator-listed facility. No current utilization, commissioning telemetry or building height is established by this review."
+    }
+  ]
+}
