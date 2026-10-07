@@ -20,6 +20,9 @@ def main():
     review=sub.add_parser('review'); review.add_argument('id'); review.add_argument('decision',choices=['accepted','rejected']); review.add_argument('--actor',required=True); review.add_argument('--reason',required=True)
     queue=sub.add_parser('queue'); queue.add_argument('--limit',type=int,default=100); queue.add_argument('--offset',type=int,default=0)
     resolve=sub.add_parser('resolve'); resolve.add_argument('id'); resolve.add_argument('decision',choices=['acknowledged','rejected']); resolve.add_argument('--actor',required=True); resolve.add_argument('--reason',required=True)
+    stage=sub.add_parser('catalog-stage'); stage.add_argument('path',type=Path)
+    accept=sub.add_parser('catalog-accept'); accept.add_argument('hash'); accept.add_argument('--expected-current',required=True); accept.add_argument('--actor',required=True); accept.add_argument('--reason',required=True)
+    sub.add_parser('catalog-status')
     args=parser.parse_args()
     if args.command=='serve':
         import uvicorn
@@ -27,7 +30,15 @@ def main():
         uvicorn.run(create_app(args.db,background=not args.no_refresh),host=args.host,port=args.port,workers=1)
         return
     store=Store(args.db); store.seed()
-    if args.command=='refresh':
+    from .catalog import CatalogStore
+    catalog=CatalogStore(args.db); catalog.seed(ROOT); catalog.register_review_sources(ROOT)
+    if args.command.startswith('catalog-'):
+        from .catalog import CatalogStore
+        catalog=CatalogStore(args.db);catalog.seed(ROOT)
+        if args.command=='catalog-stage':print(catalog.stage(json.loads(args.path.read_text())))
+        elif args.command=='catalog-accept':catalog.accept(args.hash,actor=args.actor,note=args.reason,expected_current=None if args.expected_current=='none' else args.expected_current)
+        else:print(json.dumps(catalog.status(),indent=2))
+    elif args.command=='refresh':
         from .acquire import Monitor
         monitor=Monitor(store,args.db.parent/'blobs')
         try:
