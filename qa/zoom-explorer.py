@@ -57,7 +57,7 @@ try:
             else:
                 response = page.goto(base + entry, wait_until='load', timeout=30000)
                 check(entry + ' returns real HTTP 200', response.status == 200)
-            page.wait_for_function('window.ATLAS && ATLAS.spatial && document.documentElement.classList.contains("atlas-ready")')
+            page.wait_for_function('window.ATLAS && ATLAS.spatial && document.documentElement.classList.contains("catalog-ready")')
             page.evaluate("ATLAS.navigate('globe')")
             labels = page.locator('.atlas-scale-step b').all_inner_texts()
             check(entry + ' exposes six named scales', labels == ['World', 'Continent', 'Region', 'Metro', 'Campus', 'Facility'], labels)
@@ -86,9 +86,13 @@ try:
             page.locator('.atlas-scale-step.active').press('Home')
             check(entry + ' stage-strip Home reaches world', page.evaluate('ATLAS.state.spatialLevel') == 0)
             page.locator('#globe-canvas').hover(position={'x': 300, 'y': 300})
+            before_zoom=page.evaluate('ATLAS.getGlobe().zoom')
             page.mouse.wheel(0, -120)
             page.wait_for_timeout(200)
-            check(entry + ' wheel performs semantic zoom', page.evaluate('ATLAS.state.spatialLevel') == 1)
+            check(entry + ' wheel zooms continuously without replacing the map', page.evaluate('ATLAS.getGlobe().zoom') > before_zoom and page.evaluate('ATLAS.state.spatialLevel') == 0)
+            for _ in range(5):
+                page.mouse.wheel(0,-120);page.wait_for_timeout(60)
+            check(entry + ' continued wheel zoom advances scale',page.evaluate('ATLAS.state.spatialLevel') == 1)
             page.locator('[data-spatial-action="stage"][data-id="0"]').click()
             page.locator('[data-atlas-action="fly"][data-id="asia"]').click()
             page.wait_for_function('Math.abs(ATLAS.getGlobe().lon-105)<2')

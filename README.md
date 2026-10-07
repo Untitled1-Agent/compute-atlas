@@ -162,3 +162,11 @@ and [implementation checkpoint](docs/checkpoints/2026-10-05-site-identity.md).
 The current primary layer has 35 factual attributes including these six identity
 facts. This adds no capacity, mapped sites, or surveyed geometry. The original
 archive and all existing observation rows are unchanged by this slice.
+
+## Worldwide locations and facility 3D
+
+The default landing now exposes the separate attributed geographic catalog: **5,265 community map features**, including **1,908 in Europe**, across **115 named countries/territories**. These include overlapping points, building outlines and campus areas, not a unique-facility or operating-capacity census. Country, region, feature-type and text filters, global search, source-specific exports and private notes are available. Switch to **Capacity research** for the preserved 79-project research collection.
+
+Scroll the globe to magnify continuously, then into regional geography. Click an individual feature (or use the directory) for its **3D source-outline view**. Drag to orbit, Shift-drag to pan, scroll to zoom, or use arrow keys / plus / minus / Home. Plan view, label and nearby-context controls are available. Only source-tagged buildings extrude. An unknown height is explicitly labeled illustrative, adjustable and removable; campus areas stay flat and point-only records never receive invented buildings. Operator storey counts are not converted into meters or power.
+
+The Python service reads the accepted SQL catalog. Static/offline versions use the dated bundled publication and never pretend to run a worker. A service failure displays an explicit fallback warning. OSM-derived records retain ODbL attribution; the complete geographic catalog can be exported from its methodology panel. See [the implementation checkpoint](docs/checkpoints/2026-10-07-catalog-3d-explorer.md), [geographic catalog provenance](docs/checkpoints/2026-10-07-global-catalog.md), and the [six committed visual references](docs/mockups/README.md).

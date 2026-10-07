@@ -45,14 +45,7 @@ class ResearchMap {
     this.on('pointerup', event => this.pointerUp(event));
     this.on('pointercancel', () => { this.drag = null; });
     this.on('pointerleave', () => { if (!this.drag) { this.hover = null; hideTip(); this.dirty = true; } });
-    this.on('wheel', event => {
-      // Deliberate semantic zoom, throttled so a trackpad gesture cannot skip all stages.
-      event.preventDefault();
-      const stamp = performance.now();
-      if (stamp - (globalThis.atlasLastWheel || 0) < 650 || Math.abs(event.deltaY) < 8) return;
-      globalThis.atlasLastWheel = stamp;
-      spatialTransition({level: Math.max(0, Math.min(5, this.level + (event.deltaY < 0 ? 1 : -1)))});
-    }, {passive: false});
+    this.on('wheel', event => this.wheel(event), {passive: false});
     this.on('keydown', event => {
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
       event.preventDefault();
@@ -99,8 +92,23 @@ class ResearchMap {
     this.target = {lat, lon, zoom};
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { Object.assign(this, this.target); this.target = null; this.dirty = true; }
   }
+  wheel(event) {
+    // Pixel-, line- and page-based wheels all feed the same continuous camera.
+    // Do not ignore small trackpad deltas or replace the canvas per wheel tick.
+    if (event.ctrlKey) return; // Preserve the browser's accessibility zoom gesture.
+    event.preventDefault();
+    const delta = Math.max(-320, Math.min(320, event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? this.h : 1)));
+    if (!delta) return;
+    const next = this.zoom * Math.exp(-delta * .0025);
+    if (next > 3.2 && this.level < 4) {
+      const rect=this.canvas.getBoundingClientRect(), x=event.clientX-rect.left, y=event.clientY-rect.top;
+      const nearest=[...this.groups].sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y))[0];
+      spatialTransition({level:this.level+1,selected:nearest?.sites?.[0]?.id});
+    } else if (next < .65 && this.level > 0) spatialTransition({level:this.level-1});
+    else this.zoomTo(next);
+  }
   zoomTo(zoom) {
-    const next = Math.min(5, Math.max(.7, zoom));
+    const next = Math.min(12, Math.max(.6, zoom));
     if (this.flat) {
       const ratio = this.zoom / next, [x0, y0, x1, y1] = this.bounds, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
       this.bounds = [cx + (x0 - cx) * ratio, cy + (y0 - cy) * ratio, cx + (x1 - cx) * ratio, cy + (y1 - cy) * ratio];

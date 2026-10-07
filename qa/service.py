@@ -47,7 +47,7 @@ with tempfile.TemporaryDirectory() as folder:
             page.on('request',lambda r:requested.append(r.url))
             page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') and not r.url.startswith(base) else None)
             response=page.goto(base,wait_until='networkidle')
-            page.wait_for_function('window.ATLAS && document.documentElement.classList.contains("atlas-ready")')
+            page.wait_for_function('window.ATLAS && document.documentElement.classList.contains("catalog-ready")');page.evaluate("ATLAS.navigate('overview')")
             check('Service-hosted app returns HTTP 200',response.status==200)
             check('Hosted bootstrap reads accepted SQL publication',base+'/api/publication' in requested)
             check('Service config uses same-origin API',page.evaluate('ATLAS_SERVICE.base')=='/api')
