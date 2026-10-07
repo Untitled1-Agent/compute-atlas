@@ -157,6 +157,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         text=(root/'index.html').read_text()
         text=text.replace('<head>','<head><script>window.ATLAS_SERVICE={base:"/api"};</script>',1)
         text=text.replace("load('evidence-data','data/evidence.json')", "load('evidence-data','/api/publication').catch(()=>{window.ATLAS_SERVICE_WARNING=true;return load('evidence-data','data/evidence.json')})")
+        text=text.replace("load('catalog-data','data/catalog/osm.json')", "load('catalog-data','/api/catalog/publication').catch(()=>{window.ATLAS_CATALOG_WARNING=true;return load('catalog-data','data/catalog/osm.json')})")
         return HTMLResponse(text,headers={'Cache-Control':'no-cache'})
 
     @app.get('/{path:path}')

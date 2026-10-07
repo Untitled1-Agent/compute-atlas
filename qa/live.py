@@ -73,7 +73,8 @@ with sync_playwright() as p:
         lambda r: hosted_bad_responses.append((r.status, r.url)) if r.status >= 400 else None,
     )
     response = page.goto(base + "index.html", wait_until="networkidle")
-    page.wait_for_function("document.documentElement.classList.contains('atlas-ready')")
+    page.wait_for_function("document.documentElement.classList.contains('catalog-ready')")
+    page.evaluate("ATLAS.navigate('overview')")
 
     check("hosted index returns HTTP 200", response is not None and response.status == 200, response.status if response else None)
     check("hosted app reaches atlas-ready state", page.evaluate("document.documentElement.classList.contains('atlas-ready')"))

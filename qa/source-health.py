@@ -82,7 +82,8 @@ with tempfile.TemporaryDirectory() as directory:
                 page.set_content(html,wait_until='load')
             else:
                 response=page.goto(base,wait_until='networkidle');check('Health console boot returns HTTP 200',response.status==200)
-            page.wait_for_function('window.ATLAS?.monitor && document.documentElement.classList.contains("atlas-ready")')
+            page.wait_for_function('window.ATLAS?.monitor && document.documentElement.classList.contains("catalog-ready")')
+            page.evaluate("ATLAS.navigate('overview')")
             page.evaluate('pollAtlasMonitor()')
             page.locator('[data-atlas-action="monitor"]').click()
             page.wait_for_selector('.atlas-health-source')
