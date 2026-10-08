@@ -8,7 +8,7 @@ Each checkpoint names its upstream commit, changes, exact test mode, known limit
 
 The `Reproducible review bundle` workflow archives the tracked tree for PRs. `Build and verify review branches` also preserves a tested source ZIP, commit/tree IDs, SHA-256 manifest and browser artifacts for 14 days. Download the artifact, verify the ZIP against `SHA256SUMS`, and compare the extracted Git tree with `TREE.txt`. Archive files and their checksums must not be regenerated or discarded.
 
-Branches under `review/` can use the build workflow to regenerate the large standalone without uploading an encoded HTML payload. It runs the full test suite before committing **only** `compute_atlas.html`, checks that the branch has not advanced, and never writes main or merges a PR. No temporary importer or encoded transport file is required. Open the PR after the generated commit (or push a normal source/checkpoint commit) so the permanent pull-request CI tests its exact head. Commits made by the workflow token do not themselves start a new workflow.
+Branches under `review/` can use the build workflow to regenerate the large standalone without uploading an encoded HTML payload. It runs the full test suite before committing `compute_atlas.html` (and, when selected by an explicit hash-pinned review receipt, `data/catalog/operator-directory.json`), checks that the branch has not advanced, and never writes main or merges a PR. No temporary importer or encoded transport file is required. Open the PR after the generated commit (or push a normal source/checkpoint commit) so the permanent pull-request CI tests its exact head. Commits made by the workflow token do not themselves start a new workflow.
 
 ## Test honesty
 
@@ -17,3 +17,5 @@ The normal QA mode uses real HTTP and Chromium in CI. In restricted browser envi
 - [5 October: integration audit and source-backed site identities](2026-10-05-site-identity.md)
 
 - [Worldwide explorer + source-outline 3D](2026-10-07-catalog-3d-explorer.md): continuous wheel zoom, Europe/global discovery, typed geometry, offline/SQL parity and fresh browser regression coverage.
+
+- [Reviewed primary-operator explorer](2026-10-09-operator-explorer.md) — directory publication, provisional map links, SQL persistence and exact capture acceptance.

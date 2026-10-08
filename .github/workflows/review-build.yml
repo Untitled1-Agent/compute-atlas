@@ -1,7 +1,8 @@
 name: Build and verify review branches
 
 # Review branches are authored by repository writers, never fork PR code.
-# The only generated commit is compute_atlas.html, and main is never changed.
+# Only the standalone and a hash-pinned, explicitly reviewed operator publication may be generated.
+# The acceptance manifest is authored by a repository writer; main is never changed.
 on:
   push:
     branches: ['review/**']
@@ -19,6 +20,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -31,15 +33,19 @@ jobs:
           CHROMIUM_PATH="$(find "$HOME/.cache/ms-playwright" -type f -path '*/chrome-linux64/chrome' | head -n 1)"
           test -n "$CHROMIUM_PATH"
           sudo ln -sf "$CHROMIUM_PATH" /usr/bin/chromium
+      - name: Materialize only an explicitly reviewed operator capture
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/materialize_reviewed_directory.py
       - name: Rebuild and test the actual source tree
         run: |
           python src/build.py
           python -m pytest tests -q
           for file in src/*.js; do node --check "$file"; done
-          for suite in integrity functional zoom-explorer evidence-desk smoke live service source-health global-coverage site-identity catalog-explorer; do
+          for suite in integrity functional zoom-explorer evidence-desk smoke live service source-health global-coverage site-identity catalog-explorer operator-directory; do
             python "qa/$suite.py"
           done
-      - name: Commit only the verified standalone, with a head lease
+      - name: Commit only verified publication projections, with a head lease
         env:
           BRANCH: ${{ github.ref_name }}
           EXPECTED_HEAD: ${{ github.sha }}
@@ -47,13 +53,14 @@ jobs:
           case "$BRANCH" in review/*) ;; *) echo 'Not a review branch'; exit 1;; esac
           git fetch origin "$BRANCH"
           test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD"
-          if ! git diff --quiet -- compute_atlas.html; then
+          git add compute_atlas.html data/catalog/operator-directory.json
+          if ! git diff --cached --quiet; then
             git config user.name 'Compute Atlas verified build'
             git config user.email 'compute-atlas@users.noreply.github.com'
-            git add compute_atlas.html
-            git commit -m 'build: synchronize verified standalone from reviewed sources'
+            git commit -m 'build: synchronize hash-pinned operator publication and standalone'
             git push origin "HEAD:$BRANCH"
           fi
+          python tools/materialize_reviewed_directory.py
           python src/build.py
           git diff --exit-code -- compute_atlas.html
       - name: Package the tested checkpoint
