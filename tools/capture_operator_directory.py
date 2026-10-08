@@ -43,7 +43,7 @@ def parse_directory(raw: bytes) -> list[dict]:
             rows = element.find_all('tr')
             header = [c.get_text(' ', strip=True).replace('\xa0', ' ') for c in rows[0].find_all(['th', 'td'])] if rows else []
             if header != ['Metro', 'IBX Type', 'IBX Name', 'Coverage Type']:
-                raise ValueError('Directory table header changed')
+                raise ValueError('Directory table header changed: ' + repr(header))
             tables += 1
             if len(rows) < 2:
                 raise ValueError('Empty directory table')
