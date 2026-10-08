@@ -1,0 +1,32 @@
+name: Operator directory candidate capture
+on:
+  schedule:
+    - cron: '19 6 * * 2'
+  workflow_dispatch:
+  push:
+    branches: ['review/operator-directory']
+    paths: ['tools/capture_operator_directory.py', '.github/workflows/operator-directory-capture.yml']
+permissions:
+  contents: read
+concurrency:
+  group: operator-directory-capture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Capture registered primary directory without publishing
+        run: python tools/capture_operator_directory.py qa/operator-candidate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: operator-directory-candidate
+          path: qa/operator-candidate/*.json
+          retention-days: 30
+          if-no-files-found: error
