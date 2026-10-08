@@ -20,8 +20,7 @@ def test_empty_coverage_is_null_not_zero():
 
 @pytest.mark.parametrize('raw', [b'<html>blocked</html>', sample().replace(b'IBX Name', b'New schema'),
     sample().replace(b'EMEA', b'Unknown region'), sample('').replace(b'<h3>Germany</h3>', b''),
-    sample().replace(b'FR2', b'FR2/FR4'), sample().replace(b'<td>FR2</td>', b'<td></td>'),
-    sample('').replace(b'</table>', sample().split(b'<table>')[1])])
+    sample().replace(b'FR2', b'FR2/FR4'), sample().replace(b'<td>FR2</td>', b'<td></td>'), sample('')])
 def test_schema_drift_fails_closed(raw):
     with pytest.raises(ValueError):
         parse_directory(raw)
@@ -31,3 +30,8 @@ def test_duplicate_codes_do_not_silently_collapse():
     row = '<tr><td>Frankfurt</td><td>Equinix Data Center</td><td>FR2</td><td></td></tr>'
     with pytest.raises(ValueError, match='Duplicate'):
         parse_directory(sample(row + row))
+
+
+def test_browser_optional_end_tags_keep_cells_separate():
+    raw = sample().replace(b'</th>', b'').replace(b'</td>', b'').replace(b'</tr>', b'')
+    assert parse_directory(raw) == parse_directory(sample())

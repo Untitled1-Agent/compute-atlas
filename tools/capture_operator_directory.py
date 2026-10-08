@@ -25,7 +25,7 @@ CODE = re.compile(r'[A-Z]{2}[0-9]{1,3}x?', re.I)
 
 def parse_directory(raw: bytes) -> list[dict]:
     """Read every directory table; abort on schema drift instead of dropping rows."""
-    soup = BeautifulSoup(raw, 'html.parser')
+    soup = BeautifulSoup(raw, 'html5lib')
     main = soup.find('main')
     if main is None:
         raise ValueError('Operator page has no main document')
@@ -43,7 +43,7 @@ def parse_directory(raw: bytes) -> list[dict]:
             rows = element.find_all('tr')
             header = [c.get_text(' ', strip=True).replace('\xa0', ' ') for c in rows[0].find_all(['th', 'td'])] if rows else []
             if header != ['Metro', 'IBX Type', 'IBX Name', 'Coverage Type']:
-                raise ValueError('Directory table header changed: ' + repr(header))
+                raise ValueError('Directory table header changed: ' + repr(header)[:500])
             tables += 1
             if len(rows) < 2:
                 raise ValueError('Empty directory table')

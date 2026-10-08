@@ -3,3 +3,4 @@ uvicorn==0.48.0
 httpx==0.28.1
 beautifulsoup4==4.14.3
 defusedxml==0.7.1
+html5lib==1.1
