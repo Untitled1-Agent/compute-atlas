@@ -188,6 +188,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         text=text.replace("load('evidence-data','data/evidence.json')", "load('evidence-data','/api/publication').catch(()=>{window.ATLAS_SERVICE_WARNING=true;return load('evidence-data','data/evidence.json')})")
         text=text.replace("load('catalog-data','data/catalog/osm.json')", "load('catalog-data','/api/catalog/publication').catch(()=>{window.ATLAS_CATALOG_WARNING=true;return load('catalog-data','data/catalog/osm.json')})")
         text=text.replace("load('operator-directory-data','data/catalog/operator-directory.json')", "load('operator-directory-data','/api/operators/publication').catch(()=>{window.ATLAS_DIRECTORY_WARNING=true;return load('operator-directory-data','data/catalog/operator-directory.json')})")
+        text=text.replace("load('digital-realty-data','data/catalog/digital-realty.json')", "load('digital-realty-data','/api/operators/publication?publisher=digital-realty').catch(()=>{window.ATLAS_DIGITAL_REALTY_WARNING=true;return load('digital-realty-data','data/catalog/digital-realty.json')})")
         return HTMLResponse(text,headers={'Cache-Control':'no-cache'})
 
     @app.get('/{path:path}')

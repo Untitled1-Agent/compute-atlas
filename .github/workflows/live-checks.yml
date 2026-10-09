@@ -61,6 +61,8 @@ jobs:
           node --check src/catalog-explorer.js
           node --check src/directory-schema.js
           node --check src/operator-directory.js
+          node --check src/digital-realty-schema.js
+          node --check src/publisher-explorer.js
       - name: Functional suite
         run: python qa/functional.py
       - name: Six-scale semantic map suite over real HTTP
@@ -83,6 +85,8 @@ jobs:
         run: python qa/catalog-explorer.py
       - name: Primary operator directory and source-bound map links
         run: python qa/operator-directory.py
+      - name: Publisher source maps and cursor-anchored facility zoom
+        run: python qa/publisher-explorer.py
       - name: Summarize QA
         if: always()
         run: |
@@ -90,7 +94,7 @@ jobs:
           import json
           from pathlib import Path
           print('## Compute Atlas QA')
-          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','source_health_results.json','global_coverage_results.json','site_identity_results.json','catalog_explorer_results.json','operator_directory_results.json'):
+          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','source_health_results.json','global_coverage_results.json','site_identity_results.json','catalog_explorer_results.json','operator_directory_results.json','publisher_explorer_results.json'):
               path=Path('qa')/name
               if not path.exists():
                   print(f'- `{name}`: not produced')
