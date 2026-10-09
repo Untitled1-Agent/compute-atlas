@@ -1,0 +1,12 @@
+[Unit]
+Description=Compute Atlas consistent ledger and immutable capture backup
+After=compute-atlas.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.local/share/compute-atlas/current
+ExecStart=%h/.local/share/compute-atlas/venv/bin/python deploy/backup.py --state %h/.local/share/compute-atlas
+UMask=0077
+NoNewPrivileges=yes
+MemoryMax=160M
+TasksMax=16

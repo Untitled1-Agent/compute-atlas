@@ -2,6 +2,7 @@
 from __future__ import annotations
 import asyncio
 import logging
+import re
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 
@@ -16,7 +17,16 @@ from .operator_directory import DirectoryStore, DIRECTORIES
 log = logging.getLogger('compute_atlas')
 
 
-def create_app(db_path: Path | None = None, *, background: bool = True, root: Path = ROOT, monitor_factory=Monitor) -> FastAPI:
+def deployment_prefix(value: str) -> str:
+    """Operator configuration only; never trust a forwarded header as a prefix."""
+    if not isinstance(value,str) or len(value)>200 or (value and not re.fullmatch(r'(?:/[A-Za-z0-9_-]+)+',value)):
+        raise ValueError('Deployment root path must be empty or slash-separated URL segments')
+    return value
+
+
+def create_app(db_path: Path | None = None, *, background: bool = True, root: Path = ROOT, monitor_factory=Monitor, root_path: str = '') -> FastAPI:
+    root_path=deployment_prefix(root_path)
+    api_base=root_path+'/api'
     path = db_path or root/'var/atlas.sqlite3'
     store = Store(path); store.seed(root)
     catalog = CatalogStore(path); catalog.seed(root); catalog.register_review_sources(root)
@@ -53,7 +63,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
             # In-flight bounded network requests may finish in the executor before process exit.
             if monitor: monitor.close()
 
-    app = FastAPI(title='Compute Atlas evidence API',version='1.0.0',lifespan=lifespan,docs_url='/api/docs',openapi_url='/api/openapi.json',redoc_url=None)
+    app = FastAPI(title='Compute Atlas evidence API',version='1.0.0',lifespan=lifespan,root_path=root_path,docs_url='/api/docs',openapi_url='/api/openapi.json',redoc_url=None)
     app.state.store = store
     app.state.directory = directory
     app.state.directories = directories
@@ -67,6 +77,9 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         response.headers['X-Frame-Options']='DENY'
         if request.url.path.startswith('/api/'):
             response.headers.setdefault('Cache-Control','no-store')
+        # An authenticated proxy must not make evidence/assets share-cacheable.
+        cache=response.headers.get('Cache-Control','no-store')
+        response.headers['Cache-Control']='private, '+cache.replace('public,','').replace('public','').strip()
         return response
 
     @app.get('/api/health')
@@ -184,11 +197,11 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
     @app.get('/index.html')
     def index():
         text=(root/'index.html').read_text()
-        text=text.replace('<head>','<head><script>window.ATLAS_SERVICE={base:"/api"};</script>',1)
-        text=text.replace("load('evidence-data','data/evidence.json')", "load('evidence-data','/api/publication').catch(()=>{window.ATLAS_SERVICE_WARNING=true;return load('evidence-data','data/evidence.json')})")
-        text=text.replace("load('catalog-data','data/catalog/osm.json')", "load('catalog-data','/api/catalog/publication').catch(()=>{window.ATLAS_CATALOG_WARNING=true;return load('catalog-data','data/catalog/osm.json')})")
-        text=text.replace("load('operator-directory-data','data/catalog/operator-directory.json')", "load('operator-directory-data','/api/operators/publication').catch(()=>{window.ATLAS_DIRECTORY_WARNING=true;return load('operator-directory-data','data/catalog/operator-directory.json')})")
-        text=text.replace("load('digital-realty-data','data/catalog/digital-realty.json')", "load('digital-realty-data','/api/operators/publication?publisher=digital-realty').catch(()=>{window.ATLAS_DIGITAL_REALTY_WARNING=true;return load('digital-realty-data','data/catalog/digital-realty.json')})")
+        text=text.replace('<head>',f'<head><script>window.ATLAS_SERVICE={{base:"{api_base}"}};</script>',1)
+        text=text.replace("load('evidence-data','data/evidence.json')", f"load('evidence-data','{api_base}/publication').catch(()=>{{window.ATLAS_SERVICE_WARNING=true;return load('evidence-data','data/evidence.json')}})")
+        text=text.replace("load('catalog-data','data/catalog/osm.json')", f"load('catalog-data','{api_base}/catalog/publication').catch(()=>{{window.ATLAS_CATALOG_WARNING=true;return load('catalog-data','data/catalog/osm.json')}})")
+        text=text.replace("load('operator-directory-data','data/catalog/operator-directory.json')", f"load('operator-directory-data','{api_base}/operators/publication').catch(()=>{{window.ATLAS_DIRECTORY_WARNING=true;return load('operator-directory-data','data/catalog/operator-directory.json')}})")
+        text=text.replace("load('digital-realty-data','data/catalog/digital-realty.json')", f"load('digital-realty-data','{api_base}/operators/publication?publisher=digital-realty').catch(()=>{{window.ATLAS_DIGITAL_REALTY_WARNING=true;return load('digital-realty-data','data/catalog/digital-realty.json')}})")
         return HTMLResponse(text,headers={'Cache-Control':'no-cache'})
 
     @app.get('/{path:path}')

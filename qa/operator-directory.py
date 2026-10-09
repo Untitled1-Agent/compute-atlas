@@ -7,6 +7,7 @@ from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+import shutil
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from server.operator_directory import proposed_matches
 parser=argparse.ArgumentParser();parser.add_argument('--in-memory',action='store_true');args=parser.parse_args()
@@ -24,7 +25,7 @@ publication=json.loads((ROOT/'data/catalog/operator-directory.json').read_text()
 expected={r['id']:proposed_matches(r,features) for r in publication['records']}
 try:
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+  browser=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,args=['--no-sandbox'])
   for entry in (['compute_atlas.html'] if args.in_memory else ['index.html','compute_atlas.html']):
    page=browser.new_page(viewport={'width':1440,'height':1080},accept_downloads=True);page.set_default_timeout(10000);errors=[];external=[]
    page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') and not r.url.startswith(base or 'about:') else None)

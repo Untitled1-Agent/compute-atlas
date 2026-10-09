@@ -26,7 +26,7 @@ def test_six_source_identities_preserve_archive_and_existing_quantities(store):
     archive_before = (ROOT/'data/atlas.json').read_bytes()
     pub=store.publication(); typed=[f for f in pub['facts'] if 'identity' in f]
     assert len(typed)==6 and len(pub['facts'])==35 and len(pub['observations'])==40
-    assert len(pub['sources'])==22 and len(pub['discoveries'])==5
+    assert len(pub['sources'])==27 and len(pub['discoveries'])==8
     assert all(f['identity']['coordinate_evidence']=='not_established' for f in typed)
     assert all(f['reviewed_at']=='2026-10-05' for f in typed)
     archive=json.loads(archive_before)
@@ -157,7 +157,7 @@ def test_read_only_identity_api_has_cache_boundary_and_no_pending_drafts(tmp_pat
     app.state.store.submit_claim('fact',claim,'test-editor')
     with TestClient(app) as client:
         response=client.get('/api/sites/'+claim['site_id']+'/identity')
-        assert response.status_code==200 and response.headers['cache-control']=='no-store'
+        assert response.status_code==200 and {'private','no-store'}<=set(response.headers['cache-control'].replace(' ','').split(','))
         assert response.json()==identity_document(app.state.store,claim['site_id'])
         assert 'Pending editorial draft' not in response.text
         assert client.post('/api/sites/'+claim['site_id']+'/identity',json={}).status_code==405

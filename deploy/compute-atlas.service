@@ -1,0 +1,20 @@
+[Unit]
+Description=Compute Atlas evidence service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/compute-atlas/current
+ExecStart=%h/.local/share/compute-atlas/venv/bin/python -m server --db %h/.local/share/compute-atlas/atlas.sqlite3 serve --host 127.0.0.1 --port 8137 --root-path /compute
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+MemoryMax=640M
+TasksMax=64
+TimeoutStopSec=45
+
+[Install]
+WantedBy=default.target

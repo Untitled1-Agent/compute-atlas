@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Compute Atlas evidence backup
+
+[Timer]
+OnCalendar=*-*-* 03:40:00 UTC
+RandomizedDelaySec=15m
+Persistent=true
+Unit=compute-atlas-backup.service
+
+[Install]
+WantedBy=timers.target

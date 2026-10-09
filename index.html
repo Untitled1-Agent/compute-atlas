@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Compute Atlas — Infrastructure & Capital</title><link rel="stylesheet" href="src/styles.css">
+<html lang="en"><head><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2712%27 fill=%27%23071620%27 stroke=%27%239fefd7%27 stroke-width=%273%27/%3E%3C/svg%3E"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Compute Atlas — Infrastructure & Capital</title><link rel="stylesheet" href="src/styles.css">
 <link rel="stylesheet" href="src/enhancements.css">
 <link rel="stylesheet" href="src/zoom-explorer.css">
 <link rel="stylesheet" href="src/evidence-desk.css">
@@ -34,6 +34,7 @@
      document.body.appendChild(el);
    });
    loadScript('src/spatial-math.js')
+     .then(()=>loadScript('src/pointer-gestures.js'))
      .then(()=>loadScript('src/app.js'))
      .then(()=>loadScript('src/enhancements.js'))
      .then(()=>loadScript('src/cartography.js'))

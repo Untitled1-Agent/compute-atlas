@@ -128,7 +128,7 @@ def test_activity_and_event_api_are_paginated_read_only_and_private(tmp_path):
     app=create_app(tmp_path/'atlas.sqlite3',background=False)
     with TestClient(app) as client:
         response=client.get('/api/source-activity?limit=2')
-        assert response.status_code==200 and response.headers['cache-control']=='no-store'
+        assert response.status_code==200 and {'private','no-store'}<=set(response.headers['cache-control'].replace(' ','').split(','))
         data=response.json()
         assert len(data['items'])==2 and data['next_offset']==2
         assert all(x['capture_state']=='never' for x in data['items'])

@@ -122,14 +122,27 @@ Python 3.10+, standard library only. The builder validates original-file hashes 
 
 ## Testing
 
-The PR/main CI runs four complementary layers, currently **105/105 explicit assertions passing**:
+The PR/main CI runs the backend contracts, archival/hash integrity, application
+interactions, six semantic scales, evidence and source history, identity,
+worldwide geography, operator directories and source-polygon 3D. Every browser
+suite publishes its assertion report and screenshots; actual HTTP checks cover
+both hosted and standalone entrypoints, with separate SQLite service runs.
+`qa/inspection.py` also verifies real CDP touch events, source geometry selection,
+research lead exports and a Basic Auth proxy below `/compute/`.
 
-- **15/15 integrity checks** — unique entity IDs, valid company/source references, coordinate and IT-power sanity, archive coverage, source-manifest consistency, all eight checked-in original SHA-256 hashes, all eight embedded standalone-original hashes, and investment-field numeric sanity.
-- **48/48 functional checks** — all 199 entity/source/cost/contract dossiers, every report section and workbook sheet, globe interaction, China filtering, scatter selection, four-company comparison, search, research shelf, formulas, economics scenarios, investment sensitivity, guided tour, mobile overflow, evidence lanes, company KPIs, facility phase ladders and hosted boot/failure behavior.
-- **15/15 smoke checks** — all main routes, Asia globe fly-to, facility dossier completeness, cost sensitivity and mobile overflow. Smoke failures now fail the process rather than merely appearing in a JSON report.
-- **27/27 live HTTP checks** — the repository-native `index.html` and generated `compute_atlas.html` are served over real HTTP in Chromium; checks cover HTTP status, same-origin asset loading, geography → globe drill-down, every facility phase ladder, every company capital stack, hosted original-file hash fidelity, search, mobile layout, explicit asset-failure UX, no external network dependencies, no HTTP errors and no uncaught browser exceptions.
+```sh
+python -m pip install -r requirements-dev.txt
+python -m playwright install chromium
+python -m pytest tests -q
+python src/build.py
+python qa/inspection.py
+```
 
-CI additionally rebuilds `compute_atlas.html` and requires a zero diff, and runs JavaScript syntax checks on both core and enhancement code. The live job runs on pull requests and `main`; concurrency cancels stale runs instead of stacking duplicate QA jobs.
+The browser scripts use a system Chromium when available, otherwise the installed
+Playwright Chromium. CI rebuilds the standalone and requires no diff, checks
+JavaScript syntax, and runs every suite listed in `live-checks.yml`. Current
+counts and tested revisions belong in the dated implementation checkpoints;
+a historical result is not evidence of a new pass.
 
 ## Research shelf
 
@@ -167,6 +180,21 @@ archive and all existing observation rows are unchanged by this slice.
 
 The default landing now exposes the separate attributed geographic catalog: **5,265 community map features**, including **1,908 in Europe**, across **115 named countries/territories**. These include overlapping points, building outlines and campus areas, not a unique-facility or operating-capacity census. Country, region, feature-type and text filters, global search, source-specific exports and private notes are available. Switch to **Capacity research** for the preserved 79-project research collection.
 
-Scroll the globe to magnify continuously, then into regional geography. Click an individual feature (or use the directory) for its **3D source-outline view**. Drag to orbit, Shift-drag to pan, scroll to zoom, or use arrow keys / plus / minus / Home. Plan view, label and nearby-context controls are available. Only source-tagged buildings extrude. An unknown height is explicitly labeled illustrative, adjustable and removable; campus areas stay flat and point-only records never receive invented buildings. Operator storey counts are not converted into meters or power.
+Scroll the globe to magnify continuously, then into regional geography. Click an individual feature (or use the directory) for its **3D source-outline view**. Drag to orbit, Shift-drag to pan, pinch or scroll to zoom, or use arrow keys / plus / minus / Home. Shift-arrow keys pan. Click a visible sourced building or use the mapped-feature selector to inspect its geometry without moving the camera. Nearby features retain their own source identities, and the inspected record is shareable through the URL. Plan view, label and nearby-context controls are available. Only source-tagged buildings extrude. An unknown height is explicitly labeled illustrative, adjustable and removable; campus areas stay flat and point-only records never receive invented buildings. Operator storey counts are not converted into meters or power.
 
 The Python service reads the accepted SQL catalog. Static/offline versions use the dated bundled publication and never pretend to run a worker. A service failure displays an explicit fallback warning. OSM-derived records retain ODbL attribution; the complete geographic catalog can be exported from its methodology panel. See [the implementation checkpoint](docs/checkpoints/2026-10-07-catalog-3d-explorer.md), [geographic catalog provenance](docs/checkpoints/2026-10-07-global-catalog.md), and the [six committed visual references](docs/mockups/README.md).
+
+## Scoped research leads
+
+**Research leads** opens searchable, cited candidates without adding them to mapped
+sites or capacity totals. The October 2026 atNorth research links FIN05 in Salo,
+DEN01 in Ballerup and NOR01 in Haugaland. Planned IT, gross-power, secured-power
+and native campus/site-power disclosures keep separate scopes, sources and
+states; unknown geography and operating IT load stay null. Source navigation
+retains the query, and a cited JSON export preserves the original boundaries.
+See the [primary-source research](docs/research/2026-10-09-additional-operator-sources.md).
+
+The service supports a validated `--root-path /compute` for protected subpath
+hosting. [Protected deployment and recovery](docs/protected-deployment.md) covers
+the loopback service, TLS Basic Auth, persistent state and consistent daily
+backups. A local proxy test does not certify a production deployment.

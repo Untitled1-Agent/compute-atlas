@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterator
 from .identity import validate_identity_claim
+from .discovery import validate_candidate
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = {'observations': 'observation', 'facts': 'fact', 'relationships': 'relationship', 'discoveries': 'discovery'}
@@ -149,6 +150,7 @@ class Store:
         if any(not claim.get(k) for k in required):
             raise ValueError('Missing claim identity, site or source')
         validate_identity_claim(db, kind, claim)
+        if kind=='discovery': validate_candidate(db,claim)
         if kind=='observation':
             if any(k not in claim for k in ('metric','value','unit','boundary','status','scope','as_of','qualifier','confidence')):
                 raise ValueError('Observation lacks a measurement boundary or provenance')

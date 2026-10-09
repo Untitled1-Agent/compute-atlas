@@ -3,6 +3,7 @@ from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
 from pathlib import Path
 from playwright.sync_api import sync_playwright,TimeoutError as PlaywrightTimeoutError
+import shutil
 ROOT=Path(__file__).resolve().parents[1]
 results=[];errors=[];network=[]
 def record(name,passed,**detail):
@@ -10,7 +11,7 @@ def record(name,passed,**detail):
 server=ThreadingHTTPServer(('127.0.0.1',8765),partial(SimpleHTTPRequestHandler,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 with sync_playwright() as p:
- browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--allow-file-access-from-files'])
+ browser=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox','--allow-file-access-from-files'])
  page=browser.new_page(viewport={'width':1500,'height':1040},device_scale_factor=1)
  page.on('pageerror',lambda e:errors.append(str(e)))
  page.on('request',lambda r:network.append(r.url))

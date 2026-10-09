@@ -36,14 +36,27 @@ class ResearchMap {
     this.dirty = true; this.destroyed = false; this.listeners = [];
     this.markerNodes = [...canvas.parentElement.querySelectorAll('.atlas-map-marker')];
     this.stars = Array.from({length: 180}, (_, i) => ({x: (i * 7717 % 997) / 997, y: (i * 4199 % 991) / 991, r: i % 11 ? .45 : .85}));
-    this.on('pointerdown', event => {
-      if (event.button !== 0) return;
-      this.drag = {x: event.clientX, y: event.clientY, lat: this.lat, lon: this.lon, bounds: [...this.bounds], moved: false};
-      this.canvas.setPointerCapture(event.pointerId); this.target = null; hideTip();
+    this.gestures=new AtlasPointerGestures(canvas,{
+      start:event=>{
+        this.prepare();
+        this.drag={x:event.clientX,y:event.clientY,lat:this.lat,lon:this.lon,bounds:[...this.bounds],scale:this.scale,moved:false};
+        this.target=null;hideTip();
+      },
+      move:event=>this.pointerMove(event),hover:event=>this.pointerMove(event),
+      cancel:()=>{this.drag=null;hideTip();},
+      end:(event,cancelled)=>{if(cancelled)this.drag=null;else this.pointerUp(event);},
+      pinch:(factor,center,delta)=>{
+        this.wheel({...center,deltaY:-Math.log(factor)/.0025,deltaMode:0,ctrlKey:false,preventDefault(){}});
+        if(this.destroyed)return;
+        this.prepare();
+        if(this.flat){
+          const x=delta.x/this.scale/geographicRadians,y=delta.y/this.scale;
+          const inv=v=>(2*Math.atan(Math.exp(v))-Math.PI/2)/geographicRadians;
+          this.bounds=[this.bounds[0]-x,Math.max(-82,inv(mercatorY(this.bounds[1])+y)),this.bounds[2]-x,Math.min(82,inv(mercatorY(this.bounds[3])+y))];
+        } else {this.lon-=delta.x*.27/this.zoom;this.lat=Math.max(-85,Math.min(85,this.lat+delta.y*.23/this.zoom));}
+        this.dirty=true;
+      }
     });
-    this.on('pointermove', event => this.pointerMove(event));
-    this.on('pointerup', event => this.pointerUp(event));
-    this.on('pointercancel', () => { this.drag = null; });
     this.on('pointerleave', () => { if (!this.drag) { this.hover = null; hideTip(); this.dirty = true; } });
     this.on('wheel', event => this.wheel(event), {passive: false});
     this.on('keydown', event => {
@@ -83,6 +96,7 @@ class ResearchMap {
   destroy() {
     if(!this.skipCameraSave){state.spatialCamera ||= {};state.spatialCamera[this.cameraKey]={lat:this.lat,lon:this.lon,zoom:this.zoom,bounds:[...this.bounds],flat:this.flat};}
     this.destroyed = true; cancelAnimationFrame(this.raf); this.resizeObserver.disconnect();
+    this.gestures.destroy();
     this.listeners.forEach(([type, fn, options]) => this.canvas.removeEventListener(type, fn, options)); hideTip();
   }
   flyTo(lat, lon, zoom = 1.5) {
@@ -105,13 +119,17 @@ class ResearchMap {
       const nearest=[...this.groups].sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y))[0];
       spatialTransition({level:this.level+1,selected:nearest?.sites?.[0]?.id});
     } else if (next < .65 && this.level > 0) spatialTransition({level:this.level-1});
-    else this.zoomTo(next);
+    else {const rect=this.canvas.getBoundingClientRect();this.zoomTo(next,{x:event.clientX-rect.left,y:event.clientY-rect.top});}
   }
-  zoomTo(zoom) {
+  zoomTo(zoom,anchor=null) {
     const next = Math.min(12, Math.max(.6, zoom));
     if (this.flat) {
-      const ratio = this.zoom / next, [x0, y0, x1, y1] = this.bounds, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-      this.bounds = [cx + (x0 - cx) * ratio, cy + (y0 - cy) * ratio, cx + (x1 - cx) * ratio, cy + (y1 - cy) * ratio];
+      this.prepare();
+      const ratio=this.zoom/next,[x0,y0,x1,y1]=this.bounds;
+      const cx=anchor?(this.mx+(anchor.x-this.cx)/this.scale)/geographicRadians:(x0+x1)/2;
+      const cy=anchor?this.my-(anchor.y-this.cy)/this.scale:(mercatorY(y0)+mercatorY(y1))/2;
+      const inv=v=>(2*Math.atan(Math.exp(v))-Math.PI/2)/geographicRadians;
+      this.bounds=[cx+(x0-cx)*ratio,inv(cy+(mercatorY(y0)-cy)*ratio),cx+(x1-cx)*ratio,inv(cy+(mercatorY(y1)-cy)*ratio)];
     }
     this.zoom = next; if (this.target) this.target.zoom = next; this.dirty = true;
   }
@@ -137,8 +155,9 @@ class ResearchMap {
       const dx = event.clientX - this.drag.x, dy = event.clientY - this.drag.y;
       if (Math.abs(dx) + Math.abs(dy) > 4){this.drag.moved=true;state.spatialFly='custom';document.querySelectorAll('[data-atlas-action="fly"]').forEach(b=>b.classList.remove('active'));}
       if (this.flat) {
-        const x = dx / this.scale / geographicRadians, y = dy / this.scale / geographicRadians * Math.cos((this.bounds[1] + this.bounds[3]) / 2 * geographicRadians);
-        this.bounds = [this.drag.bounds[0] - x, this.drag.bounds[1] + y, this.drag.bounds[2] - x, this.drag.bounds[3] + y];
+        const x=dx/this.drag.scale/geographicRadians,y=dy/this.drag.scale;
+        const inv=v=>(2*Math.atan(Math.exp(v))-Math.PI/2)/geographicRadians;
+        this.bounds=[this.drag.bounds[0]-x,Math.max(-82,inv(mercatorY(this.drag.bounds[1])+y)),this.drag.bounds[2]-x,Math.min(82,inv(mercatorY(this.drag.bounds[3])+y))];
       } else { this.lon = this.drag.lon - dx * .27 / this.zoom; this.lat = Math.max(-85, Math.min(85, this.drag.lat + dy * .23 / this.zoom)); }
       this.dirty = true; return;
     }

@@ -32,5 +32,6 @@ var/
 
 # Reproducible QA outputs are CI artifacts, not source inputs
 qa/screenshots/
+qa/*.png
 qa/*_results.json
 qa/review/

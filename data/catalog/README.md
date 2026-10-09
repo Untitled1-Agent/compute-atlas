@@ -22,7 +22,10 @@ count, or height is converted to critical IT MW.
 
 The weekly `catalog-capture.yml` creates candidate artifacts only. Its fixed HTTPS
 endpoints, byte/time limits, incomplete-response checks and error manifest prevent
-failed sources from erasing accepted data. No commercial directory is scraped.
+failed sources from erasing accepted data. Commercial directories remain
+separate source-specific publications; their factual extraction is not an
+open-data license or proof of a publisher permission grant. See the
+[source-rights audit](../../docs/research/2026-10-09-additional-operator-sources.md).
 PeeringDB bulk redistribution is excluded pending authorization under its AUP.
 
 ```sh
