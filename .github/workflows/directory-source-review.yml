@@ -1,0 +1,45 @@
+name: Primary directory source review
+on:
+  push:
+    branches: ['research/digital-realty-directory']
+    paths: ['.github/workflows/directory-source-review.yml']
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Read registered public sources for parser review
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from datetime import datetime, timezone
+          import json, hashlib
+          from server.acquire import Monitor
+          out=Path('qa/directory-source-review');out.mkdir(parents=True,exist_ok=True)
+          m=Monitor(None,out/'private',min_host_interval=3)
+          report=[]
+          try:
+            for name,url in [('global','https://www.digitalrealty.com/data-centers'),('frankfurt','https://www.digitalrealty.com/data-centers/emea/frankfurt'),('cyrusone','https://www.cyrusone.com/data-centers')]:
+              try:
+                status,headers,raw,final=m._get(url,{'www.digitalrealty.com','www.cyrusone.com'})
+                if status!=200 or 'html' not in headers.get('content-type',''):raise ValueError('Not successful HTML')
+                (out/(name+'.html')).write_bytes(raw)
+                report.append({'name':name,'url':url,'final_url':final,'captured_at':datetime.now(timezone.utc).isoformat(),'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
+              except Exception as e:report.append({'name':name,'url':url,'error':str(e)})
+          finally:m.close()
+          (out/'manifest.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: primary-directory-parser-review
+          path: qa/directory-source-review/*
+          retention-days: 1
