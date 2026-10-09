@@ -36,7 +36,9 @@ jobs:
       - name: Materialize only an explicitly reviewed operator capture
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python tools/materialize_reviewed_directory.py
+        run: |
+          python tools/materialize_reviewed_directory.py
+          python tools/materialize_digital_realty.py
       - name: Rebuild and test the actual source tree
         run: |
           python src/build.py
@@ -53,7 +55,7 @@ jobs:
           case "$BRANCH" in review/*) ;; *) echo 'Not a review branch'; exit 1;; esac
           git fetch origin "$BRANCH"
           test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD"
-          git add compute_atlas.html data/catalog/operator-directory.json
+          git add compute_atlas.html data/catalog/operator-directory.json data/catalog/digital-realty.json
           if ! git diff --cached --quiet; then
             git config user.name 'Compute Atlas verified build'
             git config user.email 'compute-atlas@users.noreply.github.com'
@@ -61,6 +63,7 @@ jobs:
             git push origin "HEAD:$BRANCH"
           fi
           python tools/materialize_reviewed_directory.py
+          python tools/materialize_digital_realty.py
           python src/build.py
           git diff --exit-code -- compute_atlas.html
       - name: Package the tested checkpoint

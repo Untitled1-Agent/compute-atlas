@@ -1,0 +1,31 @@
+name: Digital Realty location candidate capture
+on:
+  schedule:
+    - cron: '43 6 * * 3'
+  workflow_dispatch:
+  push:
+    branches: ['review/digital-realty-coverage']
+    paths: ['tools/capture_digital_realty.py', 'server/digital_realty.py', '.github/workflows/digital-realty-capture.yml']
+permissions:
+  contents: read
+concurrency:
+  group: digital-realty-capture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python tools/capture_digital_realty.py qa/digital-realty-candidate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: digital-realty-location-candidate
+          path: qa/digital-realty-candidate/*.json
+          retention-days: 30
+          if-no-files-found: error

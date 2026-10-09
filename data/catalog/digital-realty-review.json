@@ -1,0 +1,14 @@
+{
+  "artifact_id": 11643018583,
+  "artifact_sha256": "c8fb7703f69e47516cc78cbf6149aeca32a6dc35d7dc6f3d1c1f97b3982061a1",
+  "member": "global.html",
+  "source_sha256": "83b181224e4d8259d7ebbf44fd0b402a063480d9dbb36453ca134f3cd309bee5",
+  "captured_at": "2026-10-09T20:32:16.770273+00:00",
+  "publication_sha256": "95881b0362ec3f64d666a4eea4cec66e1ffd2a32a91739a71f5b8b1377565d89",
+  "expected_records": 261,
+  "review": {
+    "actor": "Compute Atlas source review",
+    "note": "Reviewed all 261 captured facilities-array entries, not the headline fleet total or metro list. Preserve compound entries, publisher pins, source country inconsistencies (including Dublin, Cile, Bogota and null country headings), and null IT load. No OSM identity, surveyed geometry or operating capacity is asserted.",
+    "reviewed_at": "2026-10-09T20:38:44.616451+00:00"
+  }
+}
