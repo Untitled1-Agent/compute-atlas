@@ -11,6 +11,7 @@ from .store import ROOT, Store, canonical, digest
 from .acquire import Monitor
 from .identity import identity_document
 from .catalog import CatalogStore
+from .operator_directory import DirectoryStore
 
 log = logging.getLogger('compute_atlas')
 
@@ -19,6 +20,8 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
     path = db_path or root/'var/atlas.sqlite3'
     store = Store(path); store.seed(root)
     catalog = CatalogStore(path); catalog.seed(root); catalog.register_review_sources(root)
+
+    directory = DirectoryStore(path); directory.seed(root)
 
     async def worker(monitor):
         while True:
@@ -46,6 +49,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
 
     app = FastAPI(title='Compute Atlas evidence API',version='1.0.0',lifespan=lifespan,docs_url='/api/docs',openapi_url='/api/openapi.json',redoc_url=None)
     app.state.store = store
+    app.state.directory = directory
     app.state.background_refresh = False
 
     @app.middleware('http')
@@ -98,6 +102,24 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         data=catalog.feature(feature_id)
         if data is None:raise HTTPException(404,'Unknown catalog feature')
         return data
+
+    @app.get('/api/operators/publication')
+    def operator_publication(request: Request):
+        data = directory.publication()
+        if data is None: raise HTTPException(503, 'No accepted operator directory')
+        etag = '"' + digest(data) + '"'
+        if request.headers.get('if-none-match') == etag:
+            return Response(status_code=304, headers={'ETag': etag})
+        return JSONResponse(data, headers={'ETag': etag, 'Cache-Control': 'no-cache'})
+
+    @app.get('/api/operators/records')
+    def operator_records(q: str = Query('', max_length=500), country: str | None = None,
+                         region: str | None = None, limit: int = Query(30, ge=1, le=100),
+                         offset: int = Query(0, ge=0)):
+        return directory.page(q, country, region, limit, offset)
+
+    @app.get('/api/operators/status')
+    def operator_status(): return directory.status()
 
     @app.get('/api/sites')
     def sites(q:str=Query('',max_length=500),country:str|None=None,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
@@ -158,6 +180,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         text=text.replace('<head>','<head><script>window.ATLAS_SERVICE={base:"/api"};</script>',1)
         text=text.replace("load('evidence-data','data/evidence.json')", "load('evidence-data','/api/publication').catch(()=>{window.ATLAS_SERVICE_WARNING=true;return load('evidence-data','data/evidence.json')})")
         text=text.replace("load('catalog-data','data/catalog/osm.json')", "load('catalog-data','/api/catalog/publication').catch(()=>{window.ATLAS_CATALOG_WARNING=true;return load('catalog-data','data/catalog/osm.json')})")
+        text=text.replace("load('operator-directory-data','data/catalog/operator-directory.json')", "load('operator-directory-data','/api/operators/publication').catch(()=>{window.ATLAS_DIRECTORY_WARNING=true;return load('operator-directory-data','data/catalog/operator-directory.json')})")
         return HTMLResponse(text,headers={'Cache-Control':'no-cache'})
 
     @app.get('/{path:path}')

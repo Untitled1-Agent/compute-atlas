@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "artifact_id": 11584839240,
+  "artifact_sha256": "8cb30b4960bab8d6dd96a674fb83a60e3f379157fff4351b845ebf1665e9bc48",
+  "candidate_sha256": "39955d9988d4ca7de1e7d50adc558d0dc3a86e0c240c511322c30583cca10097",
+  "publication_sha256": "f189bdaeb58b40a8d0e217b900d537a8feaf7963585dd26164d85f6195ee7dda",
+  "expected_records": 253,
+  "review": {
+    "actor": "Compute Atlas Research",
+    "reviewed_at": "2026-10-08T23:28:21.278247+00:00",
+    "note": "Reviewed all 33 country-group tables and 253 unique facility codes in the official Equinix colocation availability directory. Country headings and service-coverage text remain source-scoped. No operating IT capacity, coordinates, floor areas or available inventory are established by this table. Exact code/operator/country map links are proposals only."
+  }
+}
