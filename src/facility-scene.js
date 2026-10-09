@@ -16,7 +16,7 @@ class FacilityScene {
       else {this.yaw=this.drag.yaw+dx*.007;this.pitch=Math.max(.16,Math.min(1.48,this.drag.pitch+dy*.005));}this.dirty=true;});
     this.on('pointerup', e=>{this.drag=null;try{canvas.releasePointerCapture(e.pointerId);}catch(_){}});
     this.on('pointercancel',()=>{this.drag=null;});
-    this.on('wheel',e=>{if(e.ctrlKey)return;e.preventDefault();this.zoomTo(this.zoom*Math.exp(-Math.max(-320,Math.min(320,e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?this.h:1)))*.0025));},{passive:false});
+    this.on('wheel',e=>{if(e.ctrlKey)return;e.preventDefault();const rect=canvas.getBoundingClientRect();this.zoomTo(this.zoom*Math.exp(-Math.max(-320,Math.min(320,e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?this.h:1)))*.0025),{x:e.clientX-rect.left,y:e.clientY-rect.top});},{passive:false});
     this.on('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home'].includes(e.key)){e.preventDefault();e.stopPropagation();
       if(e.key==='Home')this.reset();else if(['+','='].includes(e.key))this.zoomTo(this.zoom*1.2);else if(e.key==='-')this.zoomTo(this.zoom/1.2);
       else if(e.key==='ArrowLeft')this.yaw-=.12;else if(e.key==='ArrowRight')this.yaw+=.12;else this.pitch=Math.max(.16,Math.min(1.48,this.pitch+(e.key==='ArrowUp'?.09:-.09)));this.dirty=true;}});
@@ -32,7 +32,16 @@ class FacilityScene {
       .map(r=>({record:r,selected:r.id===selected.id,polygons:(r.geometry?.coordinates||[]).map(poly=>poly.map(ring=>ring.map(p=>this.local(...p))))}));
   }
   resize(){this.w=this.canvas.parentElement.clientWidth;this.h=this.canvas.parentElement.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);this.canvas.width=Math.round(this.w*this.dpr);this.canvas.height=Math.round(this.h*this.dpr);this.canvas.style.width=this.w+'px';this.canvas.style.height=this.h+'px';this.dirty=true;}
-  zoomTo(z){this.zoom=Math.max(.3,Math.min(8,z));this.dirty=true;}
+  zoomTo(z,anchor=null){
+    if(!Number.isFinite(z)||z<=0)return;
+    const next=Math.max(.3,Math.min(8,z)),ratio=next/this.zoom;
+    // Perspective is independent of zoom: this keeps the projected point under
+    // the cursor fixed, even after orbiting or shift-panning the scene.
+    if(anchor&&Number.isFinite(anchor.x)&&Number.isFinite(anchor.y))this.pan={
+      x:anchor.x-this.w*.5-(anchor.x-this.w*.5-this.pan.x)*ratio,
+      y:anchor.y-this.h*.53-(anchor.y-this.h*.53-this.pan.y)*ratio};
+    this.zoom=next;this.dirty=true;
+  }
   reset(){this.yaw=-.65;this.pitch=.68;this.zoom=1;this.pan={x:0,y:0};this.dirty=true;}
   destroy(){this.destroyed=true;cancelAnimationFrame(this.raf);this.resizeObserver.disconnect();this.listeners.forEach(([t,f,o])=>this.canvas.removeEventListener(t,f,o));}
   height(feature){return feature.record.kind==='building' ? (feature.record.height_m??(this.assumptions?this.displayHeight:0)):0;}

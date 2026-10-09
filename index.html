@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="src/evidence-desk.css">
 <link rel="stylesheet" href="src/source-health.css">
 <link rel="stylesheet" href="src/global-coverage.css">
-<link rel="stylesheet" href="src/site-identity.css"><link rel="stylesheet" href="src/catalog-explorer.css"><link rel="stylesheet" href="src/operator-directory.css"></head>
+<link rel="stylesheet" href="src/site-identity.css"><link rel="stylesheet" href="src/catalog-explorer.css"><link rel="stylesheet" href="src/operator-directory.css"><link rel="stylesheet" href="src/publisher-explorer.css"></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
@@ -16,6 +16,7 @@
 <div id="tour" hidden></div>
 <script type="application/json" id="original-files">{}</script>
 <script src="src/directory-schema.js"></script>
+<script src="src/digital-realty-schema.js"></script>
 <script>
 (()=>{
  const content=document.getElementById('content');
@@ -25,8 +26,8 @@
    const message=document.getElementById('boot-error-message');
    if(message)message.textContent=String(err?.message||err||'Unknown loading error');
  };
- const load=(id,url)=>fetch(url,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(url+' · HTTP '+r.status);return r.text()}).then(text=>{const parsed=JSON.parse(text);if(id==='operator-directory-data')DirectorySchema.validate(parsed);if(id==='catalog-data'&&(!Array.isArray(parsed.records)||!parsed.records.length||parsed.schema_version!==1||parsed.license!=='ODbL-1.0'||parsed.counts?.features!==parsed.records.length))throw new Error('Invalid catalog publication');const el=document.createElement('script');el.type='application/json';el.id=id;el.textContent=text;document.body.appendChild(el)});
- Promise.all([load('atlas-data','data/atlas.json'),load('archive-data','data/archive.json'),load('world-data','data/world.json'),load('evidence-data','data/evidence.json'),load('context-data','data/context.json'),load('catalog-data','data/catalog/osm.json'),load('catalog-reviews','data/catalog/reviews.json'),load('operator-directory-data','data/catalog/operator-directory.json')]).then(()=>{
+ const load=(id,url)=>fetch(url,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(url+' · HTTP '+r.status);return r.text()}).then(text=>{const parsed=JSON.parse(text);if(id==='operator-directory-data')DirectorySchema.validate(parsed);if(id==='digital-realty-data')DigitalRealtySchema.validate(parsed);if(id==='catalog-data'&&(!Array.isArray(parsed.records)||!parsed.records.length||parsed.schema_version!==1||parsed.license!=='ODbL-1.0'||parsed.counts?.features!==parsed.records.length))throw new Error('Invalid catalog publication');const el=document.createElement('script');el.type='application/json';el.id=id;el.textContent=text;document.body.appendChild(el)});
+ Promise.all([load('atlas-data','data/atlas.json'),load('archive-data','data/archive.json'),load('world-data','data/world.json'),load('evidence-data','data/evidence.json'),load('context-data','data/context.json'),load('catalog-data','data/catalog/osm.json'),load('catalog-reviews','data/catalog/reviews.json'),load('operator-directory-data','data/catalog/operator-directory.json'),load('digital-realty-data','data/catalog/digital-realty.json')]).then(()=>{
    const loadScript=src=>new Promise((resolve,reject)=>{
      const el=document.createElement('script'); el.src=src;
      el.onload=resolve; el.onerror=()=>reject(new Error('Could not load '+src));
@@ -46,6 +47,7 @@
      .then(()=>loadScript('src/facility-scene.js'))
      .then(()=>loadScript('src/catalog-explorer.js'))
      .then(()=>loadScript('src/operator-directory.js'))
+     .then(()=>loadScript('src/publisher-explorer.js'))
      .then(()=>document.documentElement.classList.add('atlas-ready'))
      .catch(fail);
  }).catch(fail);
