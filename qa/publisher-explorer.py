@@ -105,9 +105,18 @@ try:
    canvas.focus();page.keyboard.press('Home');check(entry+' keyboard Home resets 3D camera and pan',page.evaluate('ATLAS.catalog.scene().zoom===1&&ATLAS.catalog.scene().pan.x===0'))
    canvas.evaluate('e=>e.blur()');page.evaluate("document.querySelector('#toast')?.classList.remove('visible')");page.wait_for_timeout(120)
    page.screenshot(path=str(OUT/f'{Path(entry).stem}-publisher-source-outline-3d.png'),full_page=True)
+   # Same-document history is testable in embedded mode too: exercise the exact
+   # child route, not only the direct button handler that bypassed legacy NAV.
+   length=page.evaluate('history.length')
+   page.go_back();page.wait_for_function('ATLAS.state.view==="publisher"',timeout=5000)
+   check(entry+' back restores publisher selection after independent 3D inspection',page.evaluate('ATLAS.publisher.state.selected==="digital-realty-2324"'))
+   page.go_forward();page.wait_for_function('ATLAS.state.view==="catalog"',timeout=5000)
+   check(entry+' forward restores the independent source-outline facility',page.evaluate('ATLAS.catalog.state.feature==="osm-way-168961561"&&ATLAS.catalog.scene() instanceof FacilityScene'))
+   page.go_back();page.wait_for_function('ATLAS.state.view==="publisher"',timeout=5000)
+   check(entry+' history traversal does not append duplicate route entries',page.evaluate('history.length')==length)
+   page.evaluate('ATLAS.navigate("publisher",{hash:true})')
+   check(entry+' registered publisher navigation preserves source scope and history',page.evaluate('ATLAS.state.view==="publisher"&&ATLAS.publisher.state.selected==="digital-realty-2324"') and page.evaluate('history.length')==length)
    if not args.in_memory:
-    page.go_back();page.wait_for_function('ATLAS.state.view==="publisher"')
-    check(entry+' back restores publisher selection after independent 3D inspection',page.evaluate('ATLAS.publisher.state.selected==="digital-realty-2324"'))
     page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
     check(entry+' publisher deep link survives real HTTP reload',page.evaluate('ATLAS.state.view==="publisher"&&ATLAS.publisher.state.selected==="digital-realty-2324"'))
    check(entry+' every source and archival record remains unchanged',page.evaluate('JSON.stringify([ATLAS.data,ATLAS.catalog.data,ATLAS.operators.data])')==original and page.evaluate('ATLAS.publisher.data')==publication)

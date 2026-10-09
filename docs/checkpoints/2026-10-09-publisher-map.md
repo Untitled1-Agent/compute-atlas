@@ -9,3 +9,7 @@ Facility wheel zoom now keeps a projected point fixed under the pointer after or
 Local browser validation: the dedicated publisher suite passed 39/39 embedded assertions; old catalog and operator suites passed 35/35 and 25/25 embedded assertions. Those are not HTTP tests. The permanent workflows run fresh real hosted, standalone and SQL-backed HTTP tests, including publication failure and pending/accepted states, before merge. Do not represent local fallback tests as server validation.
 
 Recovery: see `docs/publisher-maps.md`, `docs/research/2026-10-09-digital-realty.md` and the accepted projection/receipt under `data/catalog/`. Rebuild with `python src/build.py`; run `python -m server serve` for the persistent source service. No new public persistent deployment has been created. Near-complete global operating coverage is still not established.
+
+## Browser-history correction
+
+Review build `37994108938` passed all 191 backend tests and all 603 pre-existing application assertions, then failed the new hosted publisher suite at browser Back (35 assertions had run). The suite did **not** complete. The legacy navigator's NAV allowlist treated the new child route as unknown and rendered the overview. The publisher module now explicitly registers its child route while retaining the existing sidebar hierarchy. Back/forward, exact selected facility and history-length stability are exercised in embedded mode as well as real HTTP. A fresh complete review build and independent PR run remain required before merge.

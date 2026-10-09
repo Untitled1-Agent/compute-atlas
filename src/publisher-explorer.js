@@ -69,6 +69,18 @@ const publisherOldTabs=catalogModeTabs;
 catalogModeTabs=()=>publisherOldTabs().replace(/▤ Operator directory <span>\d+<\/span>/,'▤ Operator directories <span>2 sources</span>');
 const publisherOldRender=render;
 render=function(){if(state.view!=='publisher')return publisherOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=publisherView();$('#breadcrumb').textContent='Operator directory / Digital Realty';document.querySelector('#navigation [data-id=operators]')?.classList.add('active');globe=new PublisherMap($('#publisher-map'));};
+// This is a child route of Operator directory, not an extra sidebar item.
+// The legacy navigator permits only NAV entries; register the child route here
+// so browser history, reload and ATLAS.navigate do not fall back to overview.
+const publisherOldNavigate=navigate;
+navigate=function(view,opts={}){
+  if(view!=='publisher')return publisherOldNavigate(view,opts);
+  clearTimeout(publisherTimer);if(state.tour>=0)endTour();
+  if(!opts.keepDrawer)closeDrawer();state.view='publisher';$('#sidebar').classList.remove('open');
+  if(!opts.hash)history.pushState(null,'',publisherURL());
+  render();window.scrollTo({top:0,behavior:'instant'});updateMonitorLabel();
+};
+ATLAS.navigate=navigate;
 const publisherOldRoute=routeFromHash;window.removeEventListener('hashchange',publisherOldRoute);
 routeFromHash=function(){const [path,q='']=location.hash.slice(1).split('?');if(path!=='publisher')return publisherOldRoute();const p=new URLSearchParams(q);if(globe instanceof PublisherMap)globe.skipPublisherSave=true;Object.assign(publisherState,{region:['Europe','EMEA','APAC','Americas'].includes(p.get('region'))?p.get('region'):'All',country:Object.hasOwn(DIGITAL_REALTY.counts.countries,p.get('country'))?p.get('country'):'All',q:(p.get('q')||'').slice(0,500),review:p.get('review')==='notes'?'notes':'All',page:Math.max(0,Math.min(200,parseInt(p.get('page'))||0)),selected:publisherRecord(p.get('selected'))?.id||null,camera:null});navigate('publisher',{hash:true});};
 window.addEventListener('hashchange',routeFromHash);
