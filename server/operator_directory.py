@@ -8,6 +8,10 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from .catalog import canonical
+from . import digital_realty
+
+DIRECTORIES = {'equinix': ('DIR-EQUINIX-AVAILABILITY', 'data/catalog/operator-directory.json'),
+               'digital-realty': (digital_realty.SOURCE_ID, digital_realty.FILE)}
 
 SOURCE_ID = 'DIR-EQUINIX-AVAILABILITY'
 SOURCE_URL = 'https://docs.equinix.com/colocation/availability/'
@@ -16,6 +20,8 @@ ROW_KEYS = {'id','operator','code','name','source_region','source_country','metr
 
 
 def validate_directory(data):
+    if isinstance(data,dict) and data.get('id') == digital_realty.SOURCE_ID:
+        return digital_realty.validate(data)
     if not isinstance(data, dict) or type(data.get('schema_version')) is not int or data.get('schema_version') != 1 or data.get('id') != SOURCE_ID:
         raise ValueError('Unsupported operator directory')
     if data.get('url') != SOURCE_URL or data.get('final_url') != SOURCE_URL or data.get('publisher') != 'Equinix':
@@ -78,7 +84,10 @@ def proposed_matches(row, features):
 
 
 class DirectoryStore:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, publisher='equinix'):
+        if publisher not in DIRECTORIES: raise ValueError('Unknown directory publisher')
+        self.publisher = publisher
+        self.source_id, self.seed_file = DIRECTORIES[publisher]
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as db:
@@ -87,6 +96,8 @@ class DirectoryStore:
             CREATE TABLE IF NOT EXISTS directory_records(snapshot TEXT NOT NULL REFERENCES directory_snapshots(hash),id TEXT NOT NULL,country TEXT NOT NULL,region TEXT NOT NULL,search_text TEXT NOT NULL,payload TEXT NOT NULL,PRIMARY KEY(snapshot,id));
             CREATE INDEX IF NOT EXISTS directory_geography ON directory_records(snapshot,country,region);
             CREATE TABLE IF NOT EXISTS directory_current(slot INTEGER PRIMARY KEY CHECK(slot=1),hash TEXT NOT NULL REFERENCES directory_snapshots(hash));
+            CREATE TABLE IF NOT EXISTS directory_heads(source_id TEXT PRIMARY KEY,hash TEXT NOT NULL REFERENCES directory_snapshots(hash));
+            INSERT OR IGNORE INTO directory_heads SELECT 'DIR-EQUINIX-AVAILABILITY',hash FROM directory_current WHERE slot=1;
             CREATE TABLE IF NOT EXISTS directory_decisions(id INTEGER PRIMARY KEY,hash TEXT NOT NULL REFERENCES directory_snapshots(hash),action TEXT NOT NULL,actor TEXT NOT NULL,note TEXT NOT NULL,created_at TEXT NOT NULL);
             ''')
             for table in ('directory_snapshots','directory_records','directory_decisions'):
@@ -100,15 +111,17 @@ class DirectoryStore:
 
     def current(self):
         with self.connect() as db:
-            r=db.execute('SELECT hash FROM directory_current WHERE slot=1').fetchone()
+            r=db.execute('SELECT hash FROM directory_heads WHERE source_id=?',(self.source_id,)).fetchone()
             return r['hash'] if r else None
 
     def stage(self, data):
-        validate_directory(data);payload=canonical(data);key=hashlib.sha256(payload.encode()).hexdigest()
+        validate_directory(data)
+        if data['id'] != self.source_id: raise ValueError('Cross-publisher directory stage')
+        payload=canonical(data);key=hashlib.sha256(payload.encode()).hexdigest()
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
             if db.execute('INSERT OR IGNORE INTO directory_snapshots VALUES(?,?,?)',(key,payload,datetime.now(timezone.utc).isoformat())).rowcount:
-                db.executemany('INSERT INTO directory_records VALUES(?,?,?,?,?,?)',[(key,r['id'],r['source_country'],r['source_region'],' '.join([r['name'],r['metro'],r['source_country']]).casefold(),canonical(r)) for r in data['records']])
+                db.executemany('INSERT INTO directory_records VALUES(?,?,?,?,?,?)',[(key,r['id'],r['source_country'] or 'Not specified',r['source_region'],' '.join([r['name'],r['metro'],r['source_country'] or '']).casefold(),canonical(r)) for r in data['records']])
                 db.execute('INSERT INTO directory_decisions(hash,action,actor,note,created_at) VALUES(?,?,?,?,?)',(key,'staged','acquisition','Awaiting review; no map identity or capacity established.',datetime.now(timezone.utc).isoformat()))
         return key
 
@@ -117,17 +130,21 @@ class DirectoryStore:
             raise ValueError('Named reviewer and reason required')
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
-            r=db.execute('SELECT hash FROM directory_current WHERE slot=1').fetchone()
+            r=db.execute('SELECT hash FROM directory_heads WHERE source_id=?',(self.source_id,)).fetchone()
             if (r['hash'] if r else None)!=expected_current:
                 raise ValueError('Publication changed; re-review current directory')
-            if not db.execute('SELECT 1 FROM directory_snapshots WHERE hash=?',(key,)).fetchone():
+            snapshot = db.execute('SELECT payload FROM directory_snapshots WHERE hash=?',(key,)).fetchone()
+            if snapshot is None:
                 raise ValueError('Unknown directory snapshot')
-            db.execute('INSERT INTO directory_current VALUES(1,?) ON CONFLICT(slot) DO UPDATE SET hash=excluded.hash',(key,))
+            if json.loads(snapshot['payload'])['id'] != self.source_id: raise ValueError('Cross-publisher directory acceptance')
+            db.execute('INSERT INTO directory_heads VALUES(?,?) ON CONFLICT(source_id) DO UPDATE SET hash=excluded.hash',(self.source_id,key))
+            if self.publisher == 'equinix':
+                db.execute('INSERT INTO directory_current VALUES(1,?) ON CONFLICT(slot) DO UPDATE SET hash=excluded.hash',(key,))
             db.execute('INSERT INTO directory_decisions(hash,action,actor,note,created_at) VALUES(?,?,?,?,?)',(key,'accepted',actor,note,datetime.now(timezone.utc).isoformat()))
 
     def publication(self):
         with self.connect() as db:
-            r=db.execute('SELECT s.payload,s.hash FROM directory_snapshots s JOIN directory_current c ON s.hash=c.hash').fetchone()
+            r=db.execute('SELECT s.payload,s.hash FROM directory_snapshots s JOIN directory_heads c ON s.hash=c.hash WHERE c.source_id=?',(self.source_id,)).fetchone()
             if r is None:return None
             data=json.loads(r['payload'])
             # Acquisition candidates carry no review. The accepted publication exposes
@@ -151,11 +168,11 @@ class DirectoryStore:
 
     def status(self):
         with self.connect() as db:
-            events=[dict(r) for r in db.execute('SELECT * FROM directory_decisions ORDER BY id DESC LIMIT 50')]
+            events=[dict(r) for r in db.execute("SELECT d.* FROM directory_decisions d JOIN directory_snapshots s ON s.hash=d.hash WHERE json_extract(s.payload,'$.id')=? ORDER BY d.id DESC LIMIT 50",(self.source_id,))]
         return {'current':self.current(),'decisions':events,'boundary':'Directory codes and proposed map matches are not capacity facts.'}
 
     def seed(self, root):
-        file=Path(root)/'data/catalog/operator-directory.json'
+        file=Path(root)/self.seed_file
         if not file.exists():return
         data=validate_directory(json.loads(file.read_text()))
         if not data.get('review'):raise ValueError('Checked-in directory requires editorial review')
@@ -166,9 +183,9 @@ class DirectoryStore:
                 if self.current() is None:raise
         # The ordinary source monitor captures changes for review, not auto publication.
         with self.connect() as db:
-            old=db.execute('SELECT url FROM sources WHERE id=?',(SOURCE_ID,)).fetchone()
-            if old and old['url']!=SOURCE_URL:raise ValueError('Registered directory URL changed')
-            source={'id':SOURCE_ID,'url':SOURCE_URL,'publisher':'Equinix','title':data['title'],
+            old=db.execute('SELECT url FROM sources WHERE id=?',(self.source_id,)).fetchone()
+            if old and old['url']!=data['url']:raise ValueError('Registered directory URL changed')
+            source={'id':self.source_id,'url':data['url'],'publisher':data['publisher'],'title':data['title'],
                     'retrieved_at':data['captured_at'],'refresh_hours':168,'rights':data['rights']}
-            db.execute('INSERT INTO sources VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload',(SOURCE_ID,SOURCE_URL,'Equinix','page',canonical(source)))
-            db.execute('INSERT OR IGNORE INTO jobs(source_id,next_fetch_at,refresh_hours) VALUES(?,?,?)',(SOURCE_ID,datetime.now(timezone.utc).isoformat(),168))
+            db.execute('INSERT INTO sources VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload',(self.source_id,data['url'],data['publisher'],'page',canonical(source)))
+            db.execute('INSERT OR IGNORE INTO jobs(source_id,next_fetch_at,refresh_hours) VALUES(?,?,?)',(self.source_id,datetime.now(timezone.utc).isoformat(),168))

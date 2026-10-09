@@ -11,7 +11,7 @@ from .store import ROOT, Store, canonical, digest
 from .acquire import Monitor
 from .identity import identity_document
 from .catalog import CatalogStore
-from .operator_directory import DirectoryStore
+from .operator_directory import DirectoryStore, DIRECTORIES
 
 log = logging.getLogger('compute_atlas')
 
@@ -21,7 +21,13 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
     store = Store(path); store.seed(root)
     catalog = CatalogStore(path); catalog.seed(root); catalog.register_review_sources(root)
 
-    directory = DirectoryStore(path); directory.seed(root)
+    directories = {key: DirectoryStore(path, key) for key in DIRECTORIES}
+    for item in directories.values(): item.seed(root)
+    directory = directories['equinix']
+
+    def directory_for(publisher):
+        if publisher not in directories: raise HTTPException(422, 'Unknown directory publisher')
+        return directories[publisher]
 
     async def worker(monitor):
         while True:
@@ -50,6 +56,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
     app = FastAPI(title='Compute Atlas evidence API',version='1.0.0',lifespan=lifespan,docs_url='/api/docs',openapi_url='/api/openapi.json',redoc_url=None)
     app.state.store = store
     app.state.directory = directory
+    app.state.directories = directories
     app.state.background_refresh = False
 
     @app.middleware('http')
@@ -104,8 +111,8 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         return data
 
     @app.get('/api/operators/publication')
-    def operator_publication(request: Request):
-        data = directory.publication()
+    def operator_publication(request: Request, publisher: str = 'equinix'):
+        data = directory_for(publisher).publication()
         if data is None: raise HTTPException(503, 'No accepted operator directory')
         etag = '"' + digest(data) + '"'
         if request.headers.get('if-none-match') == etag:
@@ -115,11 +122,11 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
     @app.get('/api/operators/records')
     def operator_records(q: str = Query('', max_length=500), country: str | None = None,
                          region: str | None = None, limit: int = Query(30, ge=1, le=100),
-                         offset: int = Query(0, ge=0)):
-        return directory.page(q, country, region, limit, offset)
+                         offset: int = Query(0, ge=0), publisher: str = 'equinix'):
+        return directory_for(publisher).page(q, country, region, limit, offset)
 
     @app.get('/api/operators/status')
-    def operator_status(): return directory.status()
+    def operator_status(publisher: str = 'equinix'): return directory_for(publisher).status()
 
     @app.get('/api/sites')
     def sites(q:str=Query('',max_length=500),country:str|None=None,limit:int=Query(30,ge=1,le=100),offset:int=Query(0,ge=0)):
