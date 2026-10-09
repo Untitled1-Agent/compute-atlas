@@ -2,21 +2,25 @@
   "world.png": {
     "sha256": "e52bb07ec8233677ad44c4e05b214b96a0b4a3312a3fbed6f0034de110db3669",
     "source": "qa/screenshots/index-catalog-world.png",
-    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production"
+    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production",
+    "verified_implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af"
   },
   "building-inspection.png": {
     "sha256": "96cd27d3581a882e871237609d93b39f494c99b18057cbfa916bcba0fdb4f900",
     "source": "qa/screenshots/protected-service-geometry-inspection.png",
-    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production"
+    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production",
+    "verified_implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af"
   },
   "building-mobile.png": {
-    "sha256": "4257b2d1fde8f35d3b356436c4621a59a0a6d39ea969bd319dbd372242a901c1",
+    "sha256": "3015f1898a856bb3adc6a3ae259533cdcd9a90c0b10ddb91ed080af3bec8f4c6",
     "source": "qa/screenshots/protected-service-geometry-mobile.png",
-    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production"
+    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production",
+    "verified_implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af"
   },
   "nordic-leads.png": {
     "sha256": "0ebaa81fda5b6f7e538a7928316e49e2822fbffd67aa1340c361bcbbe183aea5",
     "source": "qa/screenshots/protected-service-nordic-research.png",
-    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production"
+    "execution": "actual HTTP; protected-service images use an ephemeral local Basic Auth proxy, not production",
+    "verified_implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af"
   }
 }
