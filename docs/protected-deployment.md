@@ -59,7 +59,11 @@ contents into the terminal on **Untitled1**, or run `bash install_nginx.sh` afte
 copying that single file. It embeds the canonical Nginx block and requires no
 checkout, sibling file or Python package. It checks the actual loopback database
 health before editing, backs up the site, then validates Nginx and reloads.
-Six anonymous requests to the actual local HTTPS virtual host must return 401;
+Six anonymous requests to the actual local HTTPS virtual host must return 401.
+The check uses a shared 20-second deadline and retries the previous configuration's
+404 while new Nginx workers activate; other unexpected HTTP statuses fail immediately.
+This handles Nginx's signal-driven reload without treating one early old-worker
+response as a failed deployment. All six checks remain mandatory;
 validation, reload or auth-gate failures restore and reload the previous site.
 `bash install_nginx.sh --dry-run` checks the preparation without editing files.
 Public HTTPS and authenticated browser checks remain separate acceptance steps.

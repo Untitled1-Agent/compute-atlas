@@ -6,6 +6,7 @@ import os
 import sqlite3
 import subprocess
 import sys
+import time
 import urllib.request
 
 import pytest
@@ -124,3 +125,29 @@ def test_standalone_installer_checks_health_before_creating_auth_or_editing_ngin
     assert site.read_text()==original and not calls
     assert not (nginx/'.compute-atlas-htpasswd').exists()
     assert not (nginx/'compute-atlas-backups').exists()
+
+
+def test_standalone_installer_waits_for_reload_instead_of_rolling_back_on_old_route(standalone_installation,monkeypatch):
+    _,site,original,calls,execute=standalone_installation
+    statuses=iter(['404','404','401']+['401']*5)
+    def response(argv,**_):
+        calls.append(argv)
+        return next(statuses)
+    sleeps=[]
+    monkeypatch.setattr(subprocess,'check_output',response)
+    monkeypatch.setattr(time,'sleep',sleeps.append)
+    execute()
+    assert site.read_text()!=original and 'auth_basic "Compute Atlas"' in site.read_text()
+    assert len(sleeps)==2
+    assert len([c for c in calls if c[0]=='/usr/bin/curl'])==8
+    assert [c for c in calls if c[0]=='/usr/bin/systemctl']==[['/usr/bin/systemctl','reload','nginx']]
+
+
+def test_standalone_installer_bounds_reload_wait_and_rolls_back_a_persistent_404(standalone_installation,monkeypatch):
+    _,site,original,calls,execute=standalone_installation
+    ticks=iter([0,21])
+    monkeypatch.setattr(time,'monotonic',lambda:next(ticks,21))
+    monkeypatch.setattr(subprocess,'check_output',lambda *_,**__:'404')
+    with pytest.raises(RuntimeError,match='HTTP 404'):execute()
+    assert site.read_text()==original
+    assert calls[-1]==['/usr/bin/systemctl','reload','nginx']

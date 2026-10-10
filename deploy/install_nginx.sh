@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import ProxyHandler, build_opener
@@ -79,6 +80,27 @@ def write_site(content):
     os.chmod(name, 0o644)
     os.replace(name, site)
 
+def wait_for_auth(paths, origin='https://untitled1.cc/compute/', resolve='untitled1.cc:443:127.0.0.1'):
+    # nginx -s reload signals the master; new workers may not be ready yet.
+    deadline = time.monotonic() + 20
+    waiting = False
+    for path in paths:
+        while True:
+            command = ['/usr/bin/curl', '--silent', '--show-error',
+                       '--connect-timeout', '2', '--max-time', '3', '--noproxy', '*',
+                       '--output', '/dev/null', '--write-out', '%{http_code}']
+            if resolve:
+                command += ['--resolve', resolve]
+            code = subprocess.check_output(command + [origin + path], text=True).strip()
+            if code == '401':
+                break
+            if code != '404' or time.monotonic() >= deadline:
+                raise RuntimeError('Auth check failed for /compute/' + path + ': HTTP ' + code)
+            if not waiting:
+                print('Waiting for Nginx to activate the protected route...', flush=True)
+                waiting = True
+            time.sleep(0.25)
+
 backup_dir = Path('/etc/nginx/compute-atlas-backups')
 backup_dir.mkdir(mode=0o700, exist_ok=True)
 backup = backup_dir / ('untitled1.cc-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ'))
@@ -91,16 +113,8 @@ try:
     write_site(proposed)
     subprocess.run(['/usr/sbin/nginx', '-t'], check=True)
     subprocess.run(['/usr/bin/systemctl', 'reload', 'nginx'], check=True)
-    for path in ('', 'api/publication', 'src/app.js', 'data/evidence.json',
-                 'originals/compute_infrastructure_report.pdf', 'compute_atlas.html'):
-        code = subprocess.check_output([
-            '/usr/bin/curl', '--silent', '--show-error', '--max-time', '15',
-            '--noproxy', '*',
-            '--resolve', 'untitled1.cc:443:127.0.0.1', '--output', '/dev/null',
-            '--write-out', '%{http_code}', 'https://untitled1.cc/compute/' + path
-        ], text=True).strip()
-        if code != '401':
-            raise RuntimeError('Auth check failed for /compute/' + path + ': HTTP ' + code)
+    wait_for_auth(('', 'api/publication', 'src/app.js', 'data/evidence.json',
+                   'originals/compute_infrastructure_report.pdf', 'compute_atlas.html'))
 except Exception:
     write_site(original)
     subprocess.run(['/usr/sbin/nginx', '-t'], check=True)
