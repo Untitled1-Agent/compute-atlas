@@ -41,7 +41,21 @@ def test_backup_never_publishes_a_missing_or_corrupt_capture(tmp_path):
     with store.connect() as db:
         db.execute('INSERT INTO source_versions VALUES(?,?,?,?,?,?,?,?)',('missing-backup','P01',digest,digest,'text/html','https://example.com',3,'2026-10-09T00:00:00Z'))
     with pytest.raises(FileNotFoundError):backup(tmp_path)
-    assert all(p.name.startswith('.staging-') for p in (tmp_path/'backups').iterdir())
+    assert list((tmp_path/'backups').iterdir())==[]
+
+
+def test_repeated_corrupt_backups_remove_staging_and_preserve_live_state(tmp_path):
+    store=Store(tmp_path/'atlas.sqlite3');store.seed()
+    before=store.publication()
+    digest='a'*64
+    (tmp_path/'blobs').mkdir();(tmp_path/'blobs'/digest).write_bytes(b'corrupt')
+    with store.connect() as db:
+        db.execute('INSERT INTO source_versions VALUES(?,?,?,?,?,?,?,?)',('corrupt-backup','P01',digest,digest,'text/html','https://example.com',7,'2026-10-09T00:00:00Z'))
+    for _ in range(3):
+        with pytest.raises(ValueError,match='missing or corrupt'):backup(tmp_path)
+        assert list((tmp_path/'backups').iterdir())==[]
+    assert store.publication()==before
+    assert (tmp_path/'blobs'/digest).read_bytes()==b'corrupt'
 
 
 def test_nginx_installer_preserves_other_routes_and_is_idempotent():
@@ -52,6 +66,38 @@ def test_nginx_installer_preserves_other_routes_and_is_idempotent():
     assert proposed_config(proposed,block)==proposed
     assert 'location ^~ /compute/' in proposed and 'Authorization ""' in proposed
     with pytest.raises(ValueError):proposed_config(base.replace('location / {','location /compute {'),block)
+
+
+@pytest.mark.parametrize('markers',[
+    '    # END compute-atlas\n',
+    '    # BEGIN compute-atlas\n',
+    '    # END compute-atlas\n    # BEGIN compute-atlas\n',
+])
+def test_nginx_installer_rejects_incomplete_or_reversed_markers(markers):
+    original='server {\n    ssl_certificate /cert;\n'+markers+'    location / {\n        try_files $uri $uri/ $uri/index.html =404;\n    }\n}\n'
+    with pytest.raises(ValueError,match='Ambiguous Compute Atlas block'):
+        proposed_config(original,(ROOT/'deploy/nginx-compute.conf').read_text())
+
+
+def test_python_installer_restores_and_reloads_after_a_failed_reload(tmp_path,monkeypatch):
+    from deploy import install_nginx
+    site=tmp_path/'untitled1.cc';auth=tmp_path/'auth'
+    original='server {\n    ssl_certificate /cert;\n    location / {\n        try_files $uri $uri/ $uri/index.html =404;\n    }\n}\n'
+    site.write_text(original);auth.write_text('dummy-test-hash')
+    monkeypatch.setattr(install_nginx,'CONFIG',site)
+    monkeypatch.setattr(install_nginx,'AUTH',auth)
+    monkeypatch.setattr(install_nginx,'BACKUPS',tmp_path/'backups')
+    monkeypatch.setattr(sys,'argv',['install_nginx'])
+    monkeypatch.setattr(os,'geteuid',lambda:0)
+    calls=[]
+    def run(argv,**_):
+        calls.append(argv)
+        if len(calls)==2:raise subprocess.CalledProcessError(1,argv)
+    monkeypatch.setattr(subprocess,'run',run)
+    with pytest.raises(subprocess.CalledProcessError):install_nginx.main()
+    assert site.read_text()==original
+    assert calls==[['/usr/sbin/nginx','-t'],['/usr/bin/systemctl','reload','nginx'],
+                  ['/usr/sbin/nginx','-t'],['/usr/bin/systemctl','reload','nginx']]
 
 
 def standalone_installer_source():

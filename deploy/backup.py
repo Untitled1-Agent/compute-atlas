@@ -10,6 +10,7 @@ import re
 import shutil
 import sqlite3
 import sys
+import tempfile
 import uuid
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -23,24 +24,25 @@ def backup(state: Path) -> Path:
         raise FileNotFoundError('The live ledger must exist before a backup')
     backups=state/'backups';backups.mkdir(mode=0o700,exist_ok=True)
     token=uuid.uuid4().hex
-    staging=backups/('.staging-'+token);staging.mkdir(mode=0o700)
-    Store(state/'atlas.sqlite3').backup(staging/'atlas.sqlite3')
-    with sqlite3.connect(staging/'atlas.sqlite3') as db:
-        if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok':
-            raise RuntimeError('Backup database integrity check failed')
-        hashes={row[0] for row in db.execute('SELECT sha256 FROM source_versions')}
-    (staging/'blobs').mkdir(mode=0o700)
-    for digest in sorted(hashes):
-        if not re.fullmatch('[0-9a-f]{64}',digest):raise ValueError('Invalid content-addressed body')
-        source=state/'blobs'/digest
-        if hashlib.sha256(source.read_bytes()).hexdigest()!=digest:
-            raise ValueError('Referenced capture is missing or corrupt')
-        shutil.copyfile(source,staging/'blobs'/digest)
-    manifest={'created_at':datetime.now(timezone.utc).isoformat(),'sqlite_sha256':hashlib.sha256((staging/'atlas.sqlite3').read_bytes()).hexdigest(),'blobs':sorted(hashes),'policy':'Committed database snapshot and all referenced immutable captures; retain outside the web root.'}
-    (staging/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-    target=backups/(datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+token[:8])
-    staging.rename(target)
-    return target
+    with tempfile.TemporaryDirectory(prefix='.staging-',dir=backups) as folder:
+        staging=Path(folder)
+        Store(state/'atlas.sqlite3').backup(staging/'atlas.sqlite3')
+        with sqlite3.connect(staging/'atlas.sqlite3') as db:
+            if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok':
+                raise RuntimeError('Backup database integrity check failed')
+            hashes={row[0] for row in db.execute('SELECT sha256 FROM source_versions')}
+        (staging/'blobs').mkdir(mode=0o700)
+        for digest in sorted(hashes):
+            if not re.fullmatch('[0-9a-f]{64}',digest):raise ValueError('Invalid content-addressed body')
+            source=state/'blobs'/digest
+            if hashlib.sha256(source.read_bytes()).hexdigest()!=digest:
+                raise ValueError('Referenced capture is missing or corrupt')
+            shutil.copyfile(source,staging/'blobs'/digest)
+        manifest={'created_at':datetime.now(timezone.utc).isoformat(),'sqlite_sha256':hashlib.sha256((staging/'atlas.sqlite3').read_bytes()).hexdigest(),'blobs':sorted(hashes),'policy':'Committed database snapshot and all referenced immutable captures; retain outside the web root.'}
+        (staging/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+        target=backups/(datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+token[:8])
+        staging.rename(target)
+        return target
 
 
 if __name__=='__main__':
