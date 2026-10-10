@@ -7,6 +7,7 @@ from pathlib import Path
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from playwright.sync_api import sync_playwright
+import shutil
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 parser=argparse.ArgumentParser();parser.add_argument('--in-memory',action='store_true');args=parser.parse_args()
 OUT=ROOT/'qa/screenshots';OUT.mkdir(exist_ok=True);checks=[]
@@ -21,13 +22,14 @@ if not args.in_memory:
 base=f'http://127.0.0.1:{server.server_port}/' if server else ''
 try:
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+  browser=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox'])
   for entry in (['compute_atlas.html'] if args.in_memory else ['index.html','compute_atlas.html']):
    page=browser.new_page(viewport={'width':1440,'height':1080},accept_downloads=True);page.set_default_timeout(10000);errors=[];external=[]
    page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') and not r.url.startswith(base or 'about:') else None)
    if args.in_memory:page.set_content((ROOT/entry).read_text(),wait_until='load')
    else:check(entry+' HTTP 200',page.goto(base+entry,wait_until='load').status==200)
-   page.wait_for_function('document.documentElement.classList.contains("catalog-ready")');page.wait_for_timeout(150)
+   page.wait_for_function('document.documentElement.classList.contains("catalog-ready")')
+   page.wait_for_function('ATLAS.getGlobe()?.groups?.length>30')
    check(entry+' broad catalog is the default landing',page.evaluate('ATLAS.state.view')=='catalog')
    check(entry+' catalog counts match captured source, not fabricated sites',page.evaluate('ATLAS.catalog.data.records.length===5265 && ATLAS.data.sites.length===79'))
    check(entry+' visible globe has real mapped clusters',page.evaluate('ATLAS.getGlobe().groups.length>30'))
@@ -62,7 +64,7 @@ try:
    page.locator('#scene-assumptions').uncheck();check(entry+' illustrative volume can be disabled',page.evaluate('ATLAS.catalog.scene().height(ATLAS.catalog.scene().features[0])===0'))
    page.locator('[data-catalog-tool="plan"]').click();check(entry+' plan view tilts camera overhead',page.evaluate('ATLAS.catalog.scene().pitch')>1.4)
    page.locator('#globe-canvas').focus();page.keyboard.press('Home');page.keyboard.press('ArrowRight');check(entry+' keyboard camera controls work',page.evaluate('ATLAS.catalog.scene().yaw>-.65'))
-   with page.expect_download() as transfer:page.locator('[data-catalog-export]').click()
+   with page.expect_download() as transfer:page.locator('.catalog-facility .atlas-intro [data-catalog-export]').click()
    exported=json.loads(Path(transfer.value.path()).read_text());check(entry+' exported record never invents height or IT MW',exported['feature']['height_m'] is None and exported['feature']['it_mw'] is None and exported['license']=='ODbL-1.0')
    page.locator('#catalog-note').fill('Verify operator and outline independently.');page.wait_for_timeout(100);check(entry+' facility note saves privately',page.evaluate('saved.notes["osm-way-1121454055"]')=='Verify operator and outline independently.')
    if not args.in_memory:

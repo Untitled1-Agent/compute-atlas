@@ -9,16 +9,30 @@ class FacilityScene {
     this.yaw=-.65; this.pitch=.68; this.zoom=1; this.pan={x:0,y:0}; this.listeners=[];
     this.destroyed=false; this.dirty=true; this.groups=[]; this.lat=record.lat; this.lon=record.lon;
     this.displayHeight=12; this.showContext=false; this.assumptions=true; this.labels=true;
-    this.buildGeometry(neighbors);
-    this.on('pointerdown', e=>{if(e.button!==0)return;this.drag={id:e.pointerId,x:e.clientX,y:e.clientY,yaw:this.yaw,pitch:this.pitch,pan:{...this.pan},shift:e.shiftKey};canvas.setPointerCapture(e.pointerId);});
-    this.on('pointermove', e=>{if(!this.drag)return;let dx=e.clientX-this.drag.x,dy=e.clientY-this.drag.y;
-      if(this.drag.shift)this.pan={x:this.drag.pan.x+dx,y:this.drag.pan.y+dy};
-      else {this.yaw=this.drag.yaw+dx*.007;this.pitch=Math.max(.16,Math.min(1.48,this.drag.pitch+dy*.005));}this.dirty=true;});
-    this.on('pointerup', e=>{this.drag=null;try{canvas.releasePointerCapture(e.pointerId);}catch(_){}});
-    this.on('pointercancel',()=>{this.drag=null;});
+    this.inspected=record;this.hitSurfaces=[];this.buildGeometry(neighbors);
+    this.gestures=new AtlasPointerGestures(canvas,{
+      start:e=>{this.drag={x:e.clientX,y:e.clientY,yaw:this.yaw,pitch:this.pitch,pan:{...this.pan},shift:e.shiftKey,moved:false};},
+      move:e=>{
+        if(!this.drag)return;
+        const dx=e.clientX-this.drag.x,dy=e.clientY-this.drag.y;
+        if(Math.abs(dx)+Math.abs(dy)>4)this.drag.moved=true;
+        if(this.drag.shift)this.pan={x:this.drag.pan.x+dx,y:this.drag.pan.y+dy};
+        else {this.yaw=this.drag.yaw+dx*.007;this.pitch=Math.max(.16,Math.min(1.48,this.drag.pitch+dy*.005));}
+        this.dirty=true;
+      },
+      hover:e=>{canvas.style.cursor=this.hit(e)?'pointer':'grab';},
+      cancel:()=>{this.drag=null;},
+      end:(e,cancelled)=>{if(!cancelled&&this.drag&&!this.drag.moved){const f=this.hit(e);if(f)this.inspect(f.record.id);}this.drag=null;},
+      pinch:(factor,center,delta)=>{
+        const rect=canvas.getBoundingClientRect();
+        this.zoomTo(this.zoom*factor,{x:center.clientX-rect.left,y:center.clientY-rect.top});
+        this.pan={x:this.pan.x+delta.x,y:this.pan.y+delta.y};this.dirty=true;
+      }
+    });
     this.on('wheel',e=>{if(e.ctrlKey)return;e.preventDefault();const rect=canvas.getBoundingClientRect();this.zoomTo(this.zoom*Math.exp(-Math.max(-320,Math.min(320,e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?this.h:1)))*.0025),{x:e.clientX-rect.left,y:e.clientY-rect.top});},{passive:false});
     this.on('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home'].includes(e.key)){e.preventDefault();e.stopPropagation();
       if(e.key==='Home')this.reset();else if(['+','='].includes(e.key))this.zoomTo(this.zoom*1.2);else if(e.key==='-')this.zoomTo(this.zoom/1.2);
+      else if(e.shiftKey)this.pan={x:this.pan.x+(e.key==='ArrowLeft'?-24:e.key==='ArrowRight'?24:0),y:this.pan.y+(e.key==='ArrowUp'?-24:e.key==='ArrowDown'?24:0)};
       else if(e.key==='ArrowLeft')this.yaw-=.12;else if(e.key==='ArrowRight')this.yaw+=.12;else this.pitch=Math.max(.16,Math.min(1.48,this.pitch+(e.key==='ArrowUp'?.09:-.09)));this.dirty=true;}});
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas.parentElement);this.resize();
     this.frame=()=>{if(this.destroyed)return;if(this.dirty){this.draw();this.dirty=false;}this.raf=requestAnimationFrame(this.frame);};this.raf=requestAnimationFrame(this.frame);
@@ -28,8 +42,37 @@ class FacilityScene {
   buildGeometry(neighbors){
     const selected=this.record, basePoints=(selected.geometry?.coordinates||[]).flat(2).map(p=>this.local(...p));
     this.extent=Math.max(20,...basePoints.map(p=>Math.hypot(...p)))*1.15;
+    this.baseExtent=this.extent;
     this.features=[selected,...neighbors.filter(r=>r.id!==selected.id&&r.geometry&&spatialDistance(selected,r)<.45).slice(0,60)]
       .map(r=>({record:r,selected:r.id===selected.id,polygons:(r.geometry?.coordinates||[]).map(poly=>poly.map(ring=>ring.map(p=>this.local(...p))))}));
+  }
+  setContext(enabled) {
+    this.showContext=enabled;
+    this.extent=enabled?Math.max(this.baseExtent,...this.features.flatMap(f=>f.polygons.flat(2).map(p=>Math.hypot(...p))))*1.1:this.baseExtent;
+    this.zoom=1;this.pan={x:0,y:0};
+    if(!enabled&&this.inspected.id!==this.record.id)this.inspect(this.record.id);
+    this.dirty=true;
+  }
+  inspect(id,notify=true) {
+    const f=this.features.find(f=>f.record.id===id);
+    if(!f || (!this.showContext&&id!==this.record.id))return false;
+    this.inspected=f.record;this.features.forEach(f=>{f.selected=f.record.id===id;});this.dirty=true;
+    if(notify)this.canvas.dispatchEvent(new CustomEvent('atlas-feature-select',{bubbles:true,detail:{id}}));
+    return true;
+  }
+  hit(event) {
+    if(this.dirty)this.draw();
+    const rect=this.canvas.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top;
+    const inside=ring=>{
+      let yes=false;
+      for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+        const a=ring[i],b=ring[j];
+        if((a.y>y)!==(b.y>y)&&x<(b.x-a.x)*(y-a.y)/(b.y-a.y)+a.x)yes=!yes;
+      }
+      return yes;
+    };
+    // Painter order is also selection order; holes remain unselectable.
+    return [...this.hitSurfaces].reverse().find(s=>s.rings.reduce((yes,r)=>yes!==inside(r),false))?.feature;
   }
   resize(){this.w=this.canvas.parentElement.clientWidth;this.h=this.canvas.parentElement.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);this.canvas.width=Math.round(this.w*this.dpr);this.canvas.height=Math.round(this.h*this.dpr);this.canvas.style.width=this.w+'px';this.canvas.style.height=this.h+'px';this.dirty=true;}
   zoomTo(z,anchor=null){
@@ -43,7 +86,7 @@ class FacilityScene {
     this.zoom=next;this.dirty=true;
   }
   reset(){this.yaw=-.65;this.pitch=.68;this.zoom=1;this.pan={x:0,y:0};this.dirty=true;}
-  destroy(){this.destroyed=true;cancelAnimationFrame(this.raf);this.resizeObserver.disconnect();this.listeners.forEach(([t,f,o])=>this.canvas.removeEventListener(t,f,o));}
+  destroy(){this.destroyed=true;cancelAnimationFrame(this.raf);this.resizeObserver.disconnect();this.gestures.destroy();this.listeners.forEach(([t,f,o])=>this.canvas.removeEventListener(t,f,o));}
   height(feature){return feature.record.kind==='building' ? (feature.record.height_m??(this.assumptions?this.displayHeight:0)):0;}
   project3(x,y,z=0){
     const a=x*Math.cos(this.yaw)-y*Math.sin(this.yaw), b=x*Math.sin(this.yaw)+y*Math.cos(this.yaw);
@@ -54,35 +97,38 @@ class FacilityScene {
   }
   polygon(rings,z,fill,stroke,width=1){const c=this.ctx;c.beginPath();for(const ring of rings){ring.forEach((p,i)=>{const q=this.project3(p[0],p[1],z);i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y);});c.closePath();}if(fill){c.fillStyle=fill;c.fill('evenodd');}if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.stroke();}}
   draw(){
+    this.hitSurfaces=[];
     const c=this.ctx,w=this.w,h=this.h;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.fillStyle='#07141d';c.fillRect(0,0,w,h);
     const halo=c.createRadialGradient(w*.5,h*.5,5,w*.5,h*.5,w*.55);halo.addColorStop(0,'#123e413d');halo.addColorStop(1,'#06131b00');c.fillStyle=halo;c.fillRect(0,0,w,h);
     const step=10**Math.floor(Math.log10(this.extent/3)),extent=this.extent*2.5;
     c.lineWidth=.6;c.strokeStyle='#29464f70';
     for(let n=-Math.ceil(extent/step);n<=Math.ceil(extent/step);n++){
       for(const pair of [[[n*step,-extent],[n*step,extent]],[[-extent,n*step],[extent,n*step]]]){const a=this.project3(...pair[0]),b=this.project3(...pair[1]);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}}
-    const features=this.features.filter(f=>f.selected||this.showContext).sort((a,b)=>this.project3(...(b.polygons[0]?.[0]?.[0]||[0,0])).depth-this.project3(...(a.polygons[0]?.[0]?.[0]||[0,0])).depth);
+    const features=this.features.filter(f=>f.record.id===this.record.id||this.showContext).sort((a,b)=>this.project3(...(b.polygons[0]?.[0]?.[0]||[0,0])).depth-this.project3(...(a.polygons[0]?.[0]?.[0]||[0,0])).depth);
     const surfaces=[];
     for(const f of features){let z=this.height(f);for(const poly of f.polygons){
       this.polygon(poly,0,f.selected?'#14564b50':'#13384635',f.selected?'#79e9ca80':'#335a6365');
+      this.hitSurfaces.push({feature:f,rings:poly.map(r=>r.map(p=>this.project3(...p,0)))});
       if(z>0){
         for(const ring of poly)for(let i=0;i<ring.length-1;i++){
           const a=ring[i],b=ring[i+1];const pts=[this.project3(...a,0),this.project3(...b,0),this.project3(...b,z),this.project3(...a,z)];
-          surfaces.push({depth:pts.reduce((s,p)=>s+p.depth,0)/4,pts,fill:f.selected?'#245f59e8':'#1a3943cc',stroke:f.selected?'#6bc9b6b0':'#365a6575'});
+          surfaces.push({feature:f,depth:pts.reduce((s,p)=>s+p.depth,0)/4,pts,fill:f.selected?'#245f59e8':'#1a3943cc',stroke:f.selected?'#6bc9b6b0':'#365a6575'});
         }
-        surfaces.push({depth:poly[0].reduce((s,p)=>s+this.project3(...p,z).depth,0)/poly[0].length,poly,z,selected:f.selected});
+        surfaces.push({feature:f,depth:poly[0].reduce((s,p)=>s+this.project3(...p,z).depth,0)/poly[0].length,poly,z,selected:f.selected});
       }
     }}
     // Painter ordering covers walls and roofs together. Roof holes use even-odd fill.
     for(const face of surfaces.sort((a,b)=>b.depth-a.depth)){
+      this.hitSurfaces.push({feature:face.feature,rings:face.poly?face.poly.map(r=>r.map(p=>this.project3(...p,face.z))):[face.pts]});
       if(face.poly)this.polygon(face.poly,face.z,face.selected?'#74c6bdaa':'#2b515e99',face.selected?'#b7ffe9':'#447483',face.selected?1.5:.7);
       else {c.beginPath();face.pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.fillStyle=face.fill;c.fill();c.strokeStyle=face.stroke;c.lineWidth=.8;c.stroke();}
     }
-    const selected=this.features[0],height=this.height(selected),anchor=this.project3(0,0,height);
+    const selected=this.features.find(f=>f.record.id===this.inspected.id),height=this.height(selected),center=this.local(this.inspected.lon,this.inspected.lat),anchor=this.project3(...center,height);
     if(!selected.polygons.length){c.strokeStyle='#8ceace';c.lineWidth=2;c.beginPath();c.arc(anchor.x,anchor.y,14,0,Math.PI*2);c.moveTo(anchor.x-20,anchor.y);c.lineTo(anchor.x+20,anchor.y);c.moveTo(anchor.x,anchor.y-20);c.lineTo(anchor.x,anchor.y+20);c.stroke();}
     // Labels describe the actual record, never fictional building phases.
-    if(this.labels){const text=this.record.name.length>36?this.record.name.slice(0,34)+'…':this.record.name;
+    if(this.labels){const text=this.inspected.name.length>36?this.inspected.name.slice(0,34)+'…':this.inspected.name;
     c.font='12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const tw=c.measureText(text).width;const x=Math.max(18,Math.min(w-tw-30,anchor.x+35)), y=Math.max(122,Math.min(h-120,anchor.y-80));
-    c.strokeStyle='#a1dfd2';c.beginPath();c.moveTo(anchor.x,anchor.y-4);c.lineTo(x-8,y+10);c.stroke();c.fillStyle='#081720f0';c.fillRect(x-5,y-8,tw+18,44);c.fillStyle='#e4f3ef';c.fillText(text,x+2,y+9);c.font='10px ui-monospace,monospace';c.fillStyle='#8fafa9';c.fillText(this.record.kind==='building'?'SOURCE BUILDING OUTLINE':this.record.geometry?'SOURCE AREA · NO EXTRUSION':'POINT ONLY · NO FOOTPRINT',x+2,y+25);
+    c.strokeStyle='#a1dfd2';c.beginPath();c.moveTo(anchor.x,anchor.y-4);c.lineTo(x-8,y+10);c.stroke();c.fillStyle='#081720f0';c.fillRect(x-5,y-8,tw+18,44);c.fillStyle='#e4f3ef';c.fillText(text,x+2,y+9);c.font='10px ui-monospace,monospace';c.fillStyle='#8fafa9';c.fillText(this.inspected.kind==='building'?'SOURCE BUILDING OUTLINE':this.inspected.geometry?'SOURCE AREA · NO EXTRUSION':'POINT ONLY · NO FOOTPRINT',x+2,y+25);
     }
     // North is derived from the world coordinates and rotates with the camera.
     const origin=this.project3(0,0),north=this.project3(0,this.extent*.4);const angle=Math.atan2(north.y-origin.y,north.x-origin.x),nx=w-39,ny=h-120;

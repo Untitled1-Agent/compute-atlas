@@ -1,0 +1,52 @@
+{
+  "execution": "actual isolated Nginx on loopback HTTP; delayed master reload; canonical installer auth helper",
+  "passed": 11,
+  "total": 11,
+  "checks": [
+    {
+      "test": "actual Nginx initially serves the previous 404 route",
+      "pass": true
+    },
+    {
+      "test": "reload command returns before the new auth route is active",
+      "pass": true,
+      "status": 404
+    },
+    {
+      "test": "actual installer waits for real Nginx activation",
+      "pass": true
+    },
+    {
+      "test": "anonymous entry is protected",
+      "pass": true
+    },
+    {
+      "test": "anonymous api/publication is protected",
+      "pass": true
+    },
+    {
+      "test": "anonymous src/app.js is protected",
+      "pass": true
+    },
+    {
+      "test": "anonymous data/evidence.json is protected",
+      "pass": true
+    },
+    {
+      "test": "anonymous originals/compute_infrastructure_report.pdf is protected",
+      "pass": true
+    },
+    {
+      "test": "anonymous compute_atlas.html is protected",
+      "pass": true
+    },
+    {
+      "test": "valid Basic Auth loads content",
+      "pass": true
+    },
+    {
+      "test": "incorrect Basic Auth remains denied",
+      "pass": true
+    }
+  ]
+}

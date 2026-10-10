@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-09",
+  "base_commit": "a9bf37ce972d9d95c84d651be7ae15cd34151ab7",
+  "backend": {
+    "passed": 216,
+    "total": 216,
+    "warning": "AnyIO deprecated BlockingPortal alias in Starlette TestClient"
+  },
+  "application_data": {
+    "passed": 778,
+    "total": 778
+  },
+  "suites": [
+    {
+      "suite": "integrity",
+      "passed": 15,
+      "total": 15,
+      "execution": "archival/static integrity"
+    },
+    {
+      "suite": "functional",
+      "passed": 48,
+      "total": 48,
+      "execution": "Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy."
+    },
+    {
+      "suite": "zoom_explorer",
+      "passed": 127,
+      "total": 127,
+      "execution": "real Chromium over HTTP; both entrypoints"
+    },
+    {
+      "suite": "evidence_desk",
+      "passed": 50,
+      "total": 50,
+      "execution": "real HTTP hosted and standalone Chromium"
+    },
+    {
+      "suite": "smoke",
+      "passed": 15,
+      "total": 15,
+      "execution": "existing embedded Chromium smoke"
+    },
+    {
+      "suite": "live",
+      "passed": 27,
+      "total": 27,
+      "execution": "existing embedded Chromium smoke"
+    },
+    {
+      "suite": "service",
+      "passed": 26,
+      "total": 26,
+      "execution": "real HTTP service with Chromium"
+    },
+    {
+      "suite": "source_health",
+      "passed": 29,
+      "total": 29,
+      "execution": "real HTTP service + Chromium"
+    },
+    {
+      "suite": "global_coverage",
+      "passed": 58,
+      "total": 58,
+      "execution": "real HTTP hosted + standalone Chromium"
+    },
+    {
+      "suite": "site_identity",
+      "passed": 68,
+      "total": 68,
+      "execution": "real HTTP hosted + standalone Chromium"
+    },
+    {
+      "suite": "catalog_explorer",
+      "passed": 76,
+      "total": 76,
+      "execution": "real HTTP Chromium: hosted, standalone, and SQLite service"
+    },
+    {
+      "suite": "operator_directory",
+      "passed": 64,
+      "total": 64,
+      "execution": "real HTTP hosted, offline and SQLite-backed Chromium"
+    },
+    {
+      "suite": "publisher_explorer",
+      "passed": 98,
+      "total": 98,
+      "execution": "real HTTP hosted, standalone and SQLite-backed Chromium"
+    },
+    {
+      "suite": "inspection",
+      "passed": 77,
+      "total": 77,
+      "execution": "actual HTTP hosted + standalone + Basic Auth proxy /compute/ SQLite service; CDP touch events"
+    }
+  ],
+  "standalone_sha256": "4a43e39d186207de21b29f40cc55996aa0115220e1fa03404ad5f703137a5c09"
+}

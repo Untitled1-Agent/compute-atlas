@@ -12,6 +12,7 @@ def main():
     parser.add_argument('--db',type=Path,default=Path(os.getenv('ATLAS_DB',str(ROOT/'var/atlas.sqlite3'))))
     sub=parser.add_subparsers(dest='command',required=True)
     serve=sub.add_parser('serve'); serve.add_argument('--host',default='127.0.0.1'); serve.add_argument('--port',type=int,default=8000); serve.add_argument('--no-refresh',action='store_true')
+    serve.add_argument('--root-path',default=os.getenv('ATLAS_ROOT_PATH',''))
     refresh=sub.add_parser('refresh'); refresh.add_argument('--limit',type=int,default=20)
     sub.add_parser('status')
     export=sub.add_parser('export'); export.add_argument('path',type=Path)
@@ -27,7 +28,7 @@ def main():
     if args.command=='serve':
         import uvicorn
         from .app import create_app
-        uvicorn.run(create_app(args.db,background=not args.no_refresh),host=args.host,port=args.port,workers=1)
+        uvicorn.run(create_app(args.db,background=not args.no_refresh,root_path=args.root_path),host=args.host,port=args.port,workers=1)
         return
     store=Store(args.db); store.seed()
     from .catalog import CatalogStore

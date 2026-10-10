@@ -1,0 +1,47 @@
+{
+  "implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af",
+  "implementation_tree": "c5429344a94e75201a1f67d4a2d22847f4b56afa",
+  "pull_request": "https://github.com/Untitled1-Agent/compute-atlas/pull/22",
+  "ci": {
+    "live_checks_run": 38002758610,
+    "conclusion": "success",
+    "source_bundle_run": 38002758597,
+    "source_bundle_conclusion": "success"
+  },
+  "runtime_checked_at": "2026-10-09T23:14:21+00:00",
+  "loopback_service": {
+    "host": "127.0.0.1",
+    "port": 8137,
+    "root_path": "/compute",
+    "background_refresh": true,
+    "counts": {
+      "sites": 79,
+      "sources": 37,
+      "source_versions": 31,
+      "pending_review": 77,
+      "accepted_observations": 40,
+      "fetch_attempts": 37
+    }
+  },
+  "publication": {
+    "hash": "2db537f79b3e8cafa7086b5e9f88daeed97f2c2e89fd65f9a6052e10ef82aa0f",
+    "observations": 40,
+    "facts": 35,
+    "relationships": 21,
+    "discoveries": 8,
+    "sources": 29,
+    "source_context": "27 curated primary records plus two registered operator-directory source records; registry includes other geography/feed jobs"
+  },
+  "first_backup": {
+    "name": "20261009T231003Z-2e43937b",
+    "sqlite_sha256": "4b661ab82abbeb6638fdbe9bb721fef41cb71d6512a68cad850a462afee34bc1",
+    "referenced_bodies_verified": 23,
+    "integrity": "ok"
+  },
+  "public_route": {
+    "url": "https://untitled1.cc/compute/",
+    "status": "pending administrator Nginx installation",
+    "last_checked_http_status": 404
+  },
+  "auth_credentials": "Existing /files login hashes are copied only by the administrator installer; no credentials or hashes recorded here."
+}

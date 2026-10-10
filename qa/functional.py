@@ -6,15 +6,17 @@ import json,hashlib,math
 from urllib.parse import urlparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+import shutil
 ROOT=Path(__file__).resolve().parents[1]
 checks=[];errs=[];requests=[]
 def check(name,ok,detail=None):
  checks.append(dict(test=name,pass_=bool(ok),detail=detail))
  print(('PASS ' if ok else 'FAIL ')+name,flush=True)
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+ b=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox'])
  page=b.new_page(viewport={'width':1500,'height':1000},accept_downloads=True)
  page.set_default_timeout(6500)
+ page.set_default_navigation_timeout(45000)
  page.on('pageerror',lambda e:errs.append(str(e)))
  page.on('request',lambda r:requests.append(r.url))
  page.set_content((ROOT/'compute_atlas.html').read_text(),wait_until='load');page.wait_for_timeout(200)
