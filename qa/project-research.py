@@ -68,6 +68,13 @@ with tempfile.TemporaryDirectory() as directory:
                         'requests':requests[-20:]}, indent=2), flush=True)
                     raise
                 check(label+' complete research reaches the browser', page.evaluate('ATLAS_PRIMARY.research_coverage.projects.length') == 79)
+                page.evaluate("ATLAS.openDrawer('site','microsoft-fairwater-wisconsin')")
+                check(label+' regional investment remains wider context in the dossier',
+                    page.locator('#drawer .atlas-research-topic [data-research-claim="wisconsin-regional-investment"]').count() == 0
+                    and page.locator('#drawer .atlas-research-context [data-research-claim="wisconsin-regional-investment"]').count() == 1)
+                check(label+' regional investment export preserves the source boundary without project allocation',
+                    page.evaluate("(()=>{const x=ATLAS.evidence.export(ATLAS.data.sites.find(s=>s.id==='microsoft-fairwater-wisconsin'));return x.contextual_claim_ids.includes('wisconsin-regional-investment')&&!x.project_claim_ids.includes('wisconsin-regional-investment')&&x.primary_observations.some(r=>r.id==='wisconsin-regional-investment'&&r.value===7&&r.boundary==='regional_investment');})()"))
+                page.locator('[data-action="close-drawer"]').click()
                 if label == 'sqlite':
                     check('SQLite publication hash reaches the browser', page.evaluate('ATLAS_PRIMARY.publication_hash') == publication['publication_hash'])
                 else:

@@ -48,6 +48,51 @@ def test_merge_deduplicates_urls_and_preserves_older_claims():
         merge(result,[bundle],reviewed_by='editor',reviewed_at='2026-10-10')
 
 
+def test_merge_remaps_nested_and_supporting_citations_idempotently():
+    original={'sources':[{'id':'P01','url':'https://example.org/a'},
+                         {'id':'P02','url':'https://example.org/b'}],
+        'facts':[], 'observations':[], 'relationships':[]}
+    bundle={'sources':[{'id':'R01','url':'https://example.org/a'},
+                       {'id':'R02','url':'https://example.org/b'}],
+        'facts':[claim(source_id='R01',identity={'related_sites':[{'source_id':'R02'}]})],
+        'discoveries':[{'id':'candidate-test','site_id':'candidate-test','source_id':'R01',
+          'supporting_source_ids':['R02'],'candidate_measurements':[{'source_id':'R02'}]}],
+        'coverage':[]}
+    before=copy.deepcopy(bundle)
+    result=merge(original,[bundle],reviewed_by='editor',reviewed_at='2026-10-10')
+    assert result['facts'][0]['identity']['related_sites'][0]['source_id']=='P02'
+    candidate=result['discoveries'][0]
+    assert candidate['source_id']=='P01' and candidate['supporting_source_ids']==['P02']
+    assert candidate['candidate_measurements'][0]['source_id']=='P02'
+    assert merge(result,[bundle],reviewed_by='editor',reviewed_at='2026-10-10')==result
+    assert bundle==before
+
+
+def test_merge_rejects_a_reused_bundle_source_id_with_a_different_url():
+    original={'sources':[{'id':'P01','url':'https://example.org/a'},
+                         {'id':'P02','url':'https://example.org/b'}], 'facts':[]}
+    bundle={'sources':[{'id':'R01','url':'https://example.org/a'},
+                       {'id':'R01','url':'https://example.org/b'}],
+        'facts':[claim(source_id='R01')],'coverage':[]}
+    with pytest.raises(ValueError,match='Source identifier collision'):
+        merge(original,[bundle],reviewed_by='editor',reviewed_at='2026-10-10')
+
+
+@pytest.mark.parametrize('field',['supporting','measurement','identity','coverage'])
+def test_merge_rejects_unregistered_secondary_citations(field):
+    original={'sources':[{'id':'P01','url':'https://example.org/a'}], 'facts':[]}
+    bundle={'sources':[],'facts':[],'coverage':[]}
+    if field=='coverage':bundle['coverage']=[{'site_id':'google-mesa','source_ids':['unknown']}]
+    elif field=='identity':bundle['facts']=[claim(identity={'related_sites':[{'source_id':'unknown'}]})]
+    else:
+        candidate={'id':'candidate-test','site_id':'candidate-test','source_id':'P01'}
+        if field=='supporting':candidate['supporting_source_ids']=['unknown']
+        else:candidate['candidate_measurements']=[{'source_id':'unknown'}]
+        bundle['discoveries']=[candidate]
+    with pytest.raises(ValueError,match='Unregistered research source'):
+        merge(original,[bundle],reviewed_by='editor',reviewed_at='2026-10-10')
+
+
 def test_research_coverage_rejects_unknown_sources_and_duplicate_sites(tmp_path):
     store=Store(tmp_path/'atlas.sqlite3');store.seed()
     coverage={'reviewed_at':'2026-10-10','policy':'Editorial findings, not completeness',

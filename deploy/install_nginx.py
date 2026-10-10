@@ -17,12 +17,14 @@ import tempfile
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG=Path('/etc/nginx/sites-available/untitled1.cc')
 AUTH=Path('/etc/nginx/.compute-atlas-htpasswd')
+BACKUPS=Path('/etc/nginx/compute-atlas-backups')
 
 
 def proposed_config(original: str, block: str) -> str:
     start='    # BEGIN compute-atlas\n';end='    # END compute-atlas\n'
-    if start in original:
-        if original.count(start)!=1 or original.count(end)!=1:raise ValueError('Ambiguous Compute Atlas block')
+    if start in original or end in original:
+        if original.count(start)!=1 or original.count(end)!=1 or original.index(end)<original.index(start):
+            raise ValueError('Ambiguous Compute Atlas block')
         a=original.index(start);b=original.index(end,a)+len(end)
         return original[:a]+block+original[b:]
     if 'location = /compute' in original or 'location /compute' in original or 'location ^~ /compute' in original:
@@ -52,7 +54,7 @@ def main():
     if not AUTH.exists():
         shutil.copyfile('/etc/nginx/.files-htpasswd',AUTH)
         os.chown(AUTH,0,grp.getgrnam('www-data').gr_gid);os.chmod(AUTH,0o640)
-    backups=Path('/etc/nginx/compute-atlas-backups');backups.mkdir(mode=0o700,exist_ok=True)
+    backups=BACKUPS;backups.mkdir(mode=0o700,exist_ok=True)
     target=backups/('untitled1.cc-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ'))
     shutil.copy2(CONFIG,target)
     atomic_write(CONFIG,proposed)
@@ -61,6 +63,8 @@ def main():
         subprocess.run(['/usr/bin/systemctl','reload','nginx'],check=True)
     except (subprocess.CalledProcessError,OSError):
         atomic_write(CONFIG,original)
+        subprocess.run(['/usr/sbin/nginx','-t'],check=True)
+        subprocess.run(['/usr/bin/systemctl','reload','nginx'],check=True)
         raise
     print('Compute Atlas protected TLS route installed. Existing /files login credentials apply.')
 

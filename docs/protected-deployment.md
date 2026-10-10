@@ -47,8 +47,9 @@ sudo /usr/bin/python3 /path/to/verified/release/deploy/install_nginx.py
 
 `--dry-run` checks that the existing server can be edited without changing it.
 The installer preserves other locations, backs up the current site configuration,
-edits atomically, runs `nginx -t`, and reloads. A failed validation restores the
-previous file. It copies the existing `/files` password hashes into a separate
+edits atomically, runs `nginx -t`, and reloads. Validation or reload failure
+restores, validates and reloads the previous configuration. Incomplete or reversed
+Compute Atlas block markers are rejected before editing. It copies the existing `/files` password hashes into a separate
 root-owned `/etc/nginx/.compute-atlas-htpasswd` the first time, so the existing
 login works without changing `/files`. Later password updates to either file
 are independent. Passwords and hashes are never included in the repository.
@@ -85,7 +86,9 @@ systemctl --user list-timers compute-atlas-backup.timer
 The daily timer snapshots the committed WAL through SQLite's online backup API,
 checks database integrity, and copies exactly the immutable body hashes that the
 snapshot references. A missing/corrupt capture fails the backup. Only a complete
-backup is renamed from `.staging-*` to a timestamped directory. Its manifest
+backup is renamed from `.staging-*` to a timestamped directory. Failed attempts
+remove their temporary staging directory without touching live state or completed
+backups, so repeated failures do not accumulate partial snapshots. Its manifest
 records database and body hashes. This preserves accepted research, decisions,
 history, source captures and review queues consistently, including while the
 worker is active. Backups remain outside web assets; no automatic deletion is
