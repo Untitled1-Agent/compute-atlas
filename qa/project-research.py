@@ -182,6 +182,12 @@ with tempfile.TemporaryDirectory() as directory:
                 page.locator('#global-search').fill('Training-room')
                 locator_match=page.locator('#search-results [data-research-site="huawei-gui-an-cloud-data-center"]')
                 locator_match.wait_for(state='visible')
+                check(label+' supplemental search match clears the generic empty state',
+                    page.locator('#search-results .search-empty').count() == 0)
+                title_box=locator_match.locator('b').bounding_box()
+                citation_box=locator_match.locator('small').bounding_box()
+                check(label+' global result citation has a separate readable line',
+                    citation_box['y'] >= title_box['y']+title_box['height']-0.5)
                 check(label+' global search includes source locators and identifies the cited claim',
                     locator_match.count() == 1
                     and locator_match.get_attribute('data-research-claim-target') == 'research-20261010-guian-training'
@@ -202,6 +208,11 @@ with tempfile.TemporaryDirectory() as directory:
                 page.locator('#search-results [data-research-site="microsoft-fairwater-wisconsin"][data-research-claim-target]').wait_for(state='visible')
                 check(label+' global search recognizes disclosure dates',
                     page.locator('#search-results [data-research-site="microsoft-fairwater-wisconsin"][data-research-claim-target]').count() == 1)
+                page.locator('#global-search').fill('zz-no-atlas-result-visual-regression')
+                page.locator('#search-results .search-empty').wait_for(state='visible')
+                check(label+' genuinely unmatched global query retains the empty state',
+                    page.locator('#search-results .search-result').count() == 0
+                    and 'No results found' in page.locator('#search-results .search-empty').inner_text())
                 page.evaluate('closeSearch()')
                 page.evaluate("ATLAS.openDrawer('site','sensetime-qianhai-intelligent-computing-center')")
                 check(label+' native FP16 precision and planned status are visible', 'PFLOPS FP16' in page.locator('#drawer [data-research-claim="research-20261010-qianhai-fp16"]').inner_text() and 'Planned' in page.locator('#drawer [data-research-claim="research-20261010-qianhai-fp16"]').inner_text())
@@ -209,6 +220,16 @@ with tempfile.TemporaryDirectory() as directory:
                 page.locator('#drawer').evaluate('el=>el.scrollTop=0')
                 page.wait_for_timeout(300)
                 check(label+' mobile dossier has no horizontal overflow', page.evaluate('document.documentElement.scrollWidth<=innerWidth+1') and page.locator('#drawer').evaluate('el=>el.scrollWidth<=el.clientWidth+1'))
+                page.evaluate('openSearch()')
+                page.locator('#global-search').fill('Training-room')
+                mobile_match=page.locator('#search-results [data-research-site="huawei-gui-an-cloud-data-center"]')
+                mobile_match.wait_for(state='visible')
+                title_box=mobile_match.locator('b').bounding_box()
+                citation_box=mobile_match.locator('small').bounding_box()
+                check(label+' mobile global result separates title and citation without overflow',
+                    citation_box['y'] >= title_box['y']+title_box['height']-0.5
+                    and page.locator('#search-results').evaluate('el=>el.scrollWidth<=el.clientWidth+1'))
+                page.evaluate('closeSearch()')
                 check(label+' mobile drawer retains a single-line back control', page.locator('[data-action="drawer-back"]').bounding_box()['height'] <= 44)
                 page.screenshot(path=str(out/f'project-research-{label}-mobile.png'))
                 page.set_viewport_size({'width':320, 'height':780})

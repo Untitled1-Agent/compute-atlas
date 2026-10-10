@@ -2,3 +2,10 @@
 
 .globe-panel:fullscreen{width:100vw;height:100vh;max-height:none;min-height:100vh;border:0;border-radius:0}.scatter-point{cursor:pointer}.scatter-point:hover circle,.scatter-point:focus circle{stroke:#fff;stroke-width:2.6;fill-opacity:1}.scatter-point:focus{outline:none}
 .scatter-point{pointer-events:bounding-box}
+
+/* Supplemental search sources share the command-result layout. */
+#search-results .search-result>span:last-child{min-width:0;flex:1}
+#search-results .result-type{font:9px monospace;flex:0 0 90px;color:var(--accent);padding-top:4px;overflow-wrap:anywhere}
+#search-results .search-result b{font-size:12px;display:block;font-weight:500;margin-bottom:5px}
+#search-results .search-result small{font-size:11px;display:block;color:#a0b3c4;line-height:1.5;overflow-wrap:anywhere}
+@media(max-width:640px){#search-results .result-type{flex-basis:64px;font-size:8px}}
