@@ -39,6 +39,13 @@ The web entrypoint falls back to repository attachment links for original PDFs/X
 
 China coverage includes Alibaba, Tencent, Baidu, ByteDance, Huawei, China Mobile, China Telecom, China Unicom, GDS, VNET and SenseTime. Unknown is not zero — some companies have coverage cards but no defensibly quantified accelerator inventory.
 
+The [10 October project research review](docs/research/2026-10-10-project-dossiers.md)
+investigates all 79 dossiers, adding 703 cited claims and growing the primary
+layer to 230 sources. 68 projects have project-specific primary claims; wider
+context and eight unresolved identities are marked separately. **Project
+research** opens the searchable index and six-category dossiers, with reporting
+dates, source locators, disagreements and open questions.
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.
@@ -136,6 +143,7 @@ python -m playwright install chromium
 python -m pytest tests -q
 python src/build.py
 python qa/inspection.py
+python qa/project-research.py
 ```
 
 The browser scripts use a system Chromium when available, otherwise the installed

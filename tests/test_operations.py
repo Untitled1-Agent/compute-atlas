@@ -41,7 +41,17 @@ def test_backup_never_publishes_a_missing_or_corrupt_capture(tmp_path):
     with store.connect() as db:
         db.execute('INSERT INTO source_versions VALUES(?,?,?,?,?,?,?,?)',('missing-backup','P01',digest,digest,'text/html','https://example.com',3,'2026-10-09T00:00:00Z'))
     with pytest.raises(FileNotFoundError):backup(tmp_path)
-    assert list((tmp_path/'backups').iterdir())==[]
+    assert not (tmp_path/'backups').exists()
+
+
+def test_backup_defers_before_allocating_when_disk_space_is_low(tmp_path,monkeypatch):
+    from types import SimpleNamespace
+    store=Store(tmp_path/'atlas.sqlite3');store.seed();before=store.publication()
+    monkeypatch.setattr('deploy.backup.shutil.disk_usage',lambda _:SimpleNamespace(free=1))
+    with pytest.raises(OSError,match='Backup deferred'):
+        backup(tmp_path)
+    assert not (tmp_path/'backups').exists()
+    assert store.publication()==before
 
 
 def test_repeated_corrupt_backups_remove_staging_and_preserve_live_state(tmp_path):

@@ -2,6 +2,9 @@
 
 Start with the newest dated file here and the latest comment on [issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2). Do not restart from the original pasted handoff: it predates the evidence service and several merged PRs.
 
+[10 October: all-project evidence enrichment](2026-10-10-project-research-audit.md)
+records the latest research, application validation and deployment status.
+
 Each checkpoint names its upstream commit, changes, exact test mode, known limitations, and the next runnable step. Code and regression tests belong in the same PR. An open PR is not a pass certificate; inspect the exact head and permanent CI run before merging.
 
 ## Recovering an exact tree

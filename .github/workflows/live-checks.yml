@@ -58,18 +58,22 @@ jobs:
           node --check src/global-coverage.js
           node --check src/evidence-desk.js
           node --check src/site-identity.js
+          node --check src/responsive-nav.js
           node --check src/facility-scene.js
           node --check src/catalog-explorer.js
           node --check src/directory-schema.js
           node --check src/operator-directory.js
           node --check src/digital-realty-schema.js
           node --check src/publisher-explorer.js
+          node --check src/project-research.js
       - name: Functional suite
         run: python qa/functional.py
       - name: Six-scale semantic map suite over real HTTP
         run: python qa/zoom-explorer.py
       - name: Analyst evidence desk over real HTTP
         run: python qa/evidence-desk.py
+      - name: Cited project research over real HTTP
+        run: python qa/project-research.py
       - name: Authoritative smoke suite
         run: python qa/smoke.py
       - name: Live HTTP browser audit
@@ -97,7 +101,7 @@ jobs:
           import json
           from pathlib import Path
           print('## Compute Atlas QA')
-          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','source_health_results.json','global_coverage_results.json','site_identity_results.json','catalog_explorer_results.json','operator_directory_results.json','publisher_explorer_results.json','inspection_results.json'):
+          for name in ('integrity_results.json','functional_results.json','zoom_explorer_results.json','smoke_results.json','live_results.json','service_results.json','evidence_desk_results.json','project_research_results.json','source_health_results.json','global_coverage_results.json','site_identity_results.json','catalog_explorer_results.json','operator_directory_results.json','publisher_explorer_results.json','inspection_results.json'):
               path=Path('qa')/name
               if not path.exists():
                   print(f'- `{name}`: not produced')

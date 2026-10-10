@@ -52,7 +52,7 @@
   });
   // Actions such as Search can open a dialog without navigating to another page.
   sidebar.addEventListener('click', event => {
-    if (event.target.closest('[data-action],.brand')) dismiss();
+    if (event.target.closest('[data-action],[data-research-index],.brand')) dismiss();
   });
   sync();
 })();

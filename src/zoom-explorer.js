@@ -13,6 +13,8 @@ const ATLAS_PRIMARY = JSON.parse(document.getElementById('evidence-data')?.textC
 const atlasSpatial = globalThis.AtlasSpatialMath || {};
 const spatialFinite = value => typeof value === 'number' && Number.isFinite(value);
 const primarySource = id => ATLAS_PRIMARY.sources.find(s => s.id === id);
+// Regional investment is a known wider boundary in the original claim schema.
+const primaryIsContext = row => row.applies_to==='context' || row.boundary==='regional_investment';
 const effectivePrimary = rows => {
   // Follow the complete chain, including withdrawn intermediate revisions.
   // The history partition is audit context and never contributes extra capacity.
@@ -191,7 +193,7 @@ function atlasPowerLadder(s) {
   return `<section class="atlas-detail-card">${atlasKicker('04 / POWER LADDER',false)}<h3>${primary.length?'Critical IT load by evidence scope':'Independent model: snapshot & target'}</h3>${display.length?display.map(o=>`<div class="atlas-power-row"><span>${esc(o.scope)}<small>${esc(statusLabel(o.status))}</small></span><b>${fmt(o.value)} MW</b><div class="atlas-power-track"><i class="${['delivered','operating'].includes(o.status)?'delivered':''}" style="width:${Math.max(2,o.value/max*100)}%"></i></div>${o.source_id?primaryRef(o.source_id):srefs(o.source_ids)}</div>`).join(''):'<p>No comparable IT-MW disclosure. Native quantities have not been converted.</p>'}<p class="atlas-card-footnote">Rows have different scopes or dates. Do not sum them. Gross power and generation are excluded.</p></section>`;
 }
 function atlasAttributes(s) {
-  const facts=primaryFacts(s).filter(f=>!f.identity).slice(0,4), obs=primaryObservations(s).filter(o=>o.metric!=='power').slice(0,3);
+  const facts=primaryFacts(s).filter(f=>!f.identity&&!primaryIsContext(f)).slice(0,4), obs=primaryObservations(s).filter(o=>o.metric!=='power'&&!primaryIsContext(o)).slice(0,3);
   return `<section class="atlas-detail-card">${atlasKicker('05 / FACILITY ATTRIBUTES',false)}${facts.map(f=>atlasRow(f.label,esc(f.value)+' '+primaryRef(f.source_id))).join('')}${obs.map(o=>atlasRow(boundaryLabel(o.boundary),observationValue(o)+' '+esc(o.unit)+' '+primaryRef(o.source_id))).join('')}${!facts.length&&!obs.length?atlasRow('Location',esc(s.location))+atlasRow('Primary archive association',esc(s.owner_label)):''}${atlasRow('Coordinate precision',esc(s.coordinate_precision||'Not mapped'))}<button class="atlas-evidence-link" data-atlas-action="evidence-desk" data-id="${esc(s.id)}">All quantities, attributes & revision history <span>↗</span></button><p class="atlas-card-footnote">${facts[0]?.qualifier?esc(facts[0].qualifier):'Attributes retain their original scope; no parcel geometry is inferred.'}</p></section>`;
 }
 function atlasSourcesPanel(s) {

@@ -128,7 +128,7 @@ try:
             check(entry + ' approved gross power never enters IT ladder', '1,630' not in ' '.join(page.locator('.atlas-power-row').all_inner_texts()))
             check(entry + ' original independent model remains 132 MW', page.evaluate("ATLAS.data.sites.find(s=>s.id==='coreweave-helios').snapshot.it_mw") == 132)
             with page.expect_download() as info:
-                page.locator('[data-atlas-action="export"]').click()
+                page.locator('.atlas-insight-stack [data-atlas-action="export"]').click()
             dossier = json.loads(Path(info.value.path()).read_text())
             powers = {(o['value'], o['boundary'], o['status']) for o in dossier['primary_observations'] if o['metric'] == 'power'}
             check(entry + ' export preserves distinct measurement boundaries', {(133, 'critical_it', 'delivered'), (526, 'critical_it', 'contracted'), (1630, 'gross_facility', 'approved')}.issubset(powers), sorted(powers))

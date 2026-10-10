@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Iterator
 from .identity import validate_identity_claim
 from .discovery import validate_candidate
+from .research import validate_research_claim, validate_research_coverage
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = {'observations': 'observation', 'facts': 'fact', 'relationships': 'relationship', 'discoveries': 'discovery'}
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS claims(id TEXT PRIMARY KEY, kind TEXT NOT NULL CHECK(
 CREATE INDEX IF NOT EXISTS successors ON claims(supersedes);
 CREATE INDEX IF NOT EXISTS claims_site ON claims(site_id,kind);
 CREATE TABLE IF NOT EXISTS decisions(id INTEGER PRIMARY KEY, claim_id TEXT NOT NULL REFERENCES claims(id), decision TEXT NOT NULL CHECK(decision IN ('accepted','rejected')), actor TEXT NOT NULL, reason TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS decisions_claim ON decisions(claim_id,id);
 CREATE VIEW IF NOT EXISTS current_decisions AS SELECT d.* FROM decisions d WHERE d.id=(SELECT MAX(x.id) FROM decisions x WHERE x.claim_id=d.claim_id);
 CREATE VIEW IF NOT EXISTS claim_ancestry AS
 WITH RECURSIVE lineage(descendant,ancestor) AS (
@@ -141,7 +143,9 @@ class Store:
                     decision=claim.get('review_status')
                     if decision in ('accepted','rejected') and not db.execute('SELECT 1 FROM decisions WHERE claim_id=?',(cid,)).fetchone():
                         self._decide(db,cid,decision,'checked-in-publication','Imported explicitly reviewed, source-cited publication')
-            for key in ('schema_version','published_at','policy'):
+            if 'research_coverage' in evidence:
+                validate_research_coverage(db, evidence['research_coverage'])
+            for key in ('schema_version','published_at','policy','research_coverage'):
                 if key in evidence:
                     db.execute('INSERT INTO metadata VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value', (key, canonical(evidence[key])))
 
@@ -150,6 +154,7 @@ class Store:
         if any(not claim.get(k) for k in required):
             raise ValueError('Missing claim identity, site or source')
         validate_identity_claim(db, kind, claim)
+        validate_research_claim(kind, claim)
         if kind=='discovery': validate_candidate(db,claim)
         if kind=='observation':
             if any(k not in claim for k in ('metric','value','unit','boundary','status','scope','as_of','qualifier','confidence')):
