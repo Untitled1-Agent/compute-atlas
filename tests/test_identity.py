@@ -25,8 +25,8 @@ def ids(store, site):
 def test_six_source_identities_preserve_archive_and_existing_quantities(store):
     archive_before = (ROOT/'data/atlas.json').read_bytes()
     pub=store.publication(); typed=[f for f in pub['facts'] if 'identity' in f]
-    assert len(typed)==6 and len(pub['facts'])==35 and len(pub['observations'])==40
-    assert len(pub['sources'])==27 and len(pub['discoveries'])==8
+    assert len(typed)==6 and len(pub['facts'])==731 and len(pub['observations'])==47
+    assert len(pub['sources'])==230 and len(pub['discoveries'])==8
     assert all(f['identity']['coordinate_evidence']=='not_established' for f in typed)
     assert all(f['reviewed_at']=='2026-10-05' for f in typed)
     archive=json.loads(archive_before)

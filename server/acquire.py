@@ -8,6 +8,7 @@ import hashlib
 import ipaddress
 import re
 import secrets
+import shutil
 import socket
 import time
 from datetime import datetime, timedelta, timezone
@@ -24,6 +25,7 @@ from .store import Store, canonical, digest, now
 
 USER_AGENT = 'ComputeAtlasSourceMonitor/1.0 (+https://github.com/Untitled1-Agent/compute-atlas; evidence review, daily checks)'
 MAX_BYTES = 8 * 1024 * 1024
+CAPTURE_DISK_RESERVE = 128 * 1024 * 1024
 LEASE_SECONDS = 180
 
 class AcquisitionError(Exception):
@@ -202,6 +204,8 @@ class Monitor:
             # Content-addressed raw snapshots stay local; never exposed by the web server.
             dest = self.blob_dir / raw_hash
             if not dest.exists():
+                if shutil.disk_usage(self.blob_dir).free - len(raw) < CAPTURE_DISK_RESERVE:
+                    raise AcquisitionError('Capture deferred to preserve the 128 MiB disk reserve')
                 import os
                 tmp = self.blob_dir / (raw_hash+'.'+secrets.token_hex(8)+'.tmp')
                 try:

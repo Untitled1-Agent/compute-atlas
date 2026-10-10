@@ -1,7 +1,4 @@
-"""Browser tests for the standalone build and repository-native entrypoint.
-The managed browser blocks localhost navigation, so the standalone build is loaded
-in-memory and the hosted entrypoint is exercised with intercepted repository assets.
-"""
+"""Native offline-file checks and intercepted repository-entrypoint contracts."""
 import json,hashlib,math
 from urllib.parse import urlparse
 from pathlib import Path
@@ -18,8 +15,8 @@ with sync_playwright() as p:
  page.set_default_timeout(6500)
  page.set_default_navigation_timeout(45000)
  page.on('pageerror',lambda e:errs.append(str(e)))
- page.on('request',lambda r:requests.append(r.url))
- page.set_content((ROOT/'compute_atlas.html').read_text(),wait_until='load');page.wait_for_timeout(200)
+ page.on('request',lambda r:requests.append(r.url) if r.url.startswith(('http://','https://')) else None)
+ page.goto((ROOT/'compute_atlas.html').as_uri(),wait_until='load');page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
  # Data completeness, malformed references and all original phase rows.
  d=page.evaluate('ATLAS.data');arc=page.evaluate('ATLAS.archive')
  check('all 92 original facility-phase rows preserved',sum(len(s['raw']) for s in d['sites'])==92)
@@ -40,11 +37,12 @@ with sync_playwright() as p:
  check('pointer dragging rotates globe',abs(page.evaluate('ATLAS.getGlobe().lon')-old)>5)
  old=page.evaluate('ATLAS.state.spatialLevel');page.locator('[data-spatial-action="zoom-in"]').click();check('zoom button changes semantic scale',page.evaluate('ATLAS.state.spatialLevel')==old+1)
  page.locator('[data-spatial-action="stage"][data-id="0"]').click()
- page.locator('[data-atlas-action="fly"][data-id="asia"]').click();page.wait_for_timeout(950)
+ page.locator('[data-atlas-action="fly"][data-id="asia"]').click();canvas.scroll_into_view_if_needed()
+ page.wait_for_function('ATLAS.getGlobe() && !ATLAS.getGlobe().target && !ATLAS.getGlobe().dirty',timeout=30000)
  g=page.evaluate("(()=>{let g=ATLAS.getGlobe(),p=g.groups.find(p=>p.sites.some(s=>s.name==='Zhangbei'));return p?{x:p.x,y:p.y,id:p.sites[0].id}:null})()")
  check('China facility belongs to a selectable evidence cluster',g is not None)
  if g:
-  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas cluster drills to next semantic scale',page.evaluate('ATLAS.state.spatialLevel')==1)
+  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas cluster drills to next semantic scale',page.evaluate('ATLAS.state.spatialLevel')==1,{'point':g,'level':page.evaluate('ATLAS.state.spatialLevel')})
  page.evaluate("ATLAS.navigate('facilities')");page.locator('[data-filter="country"]').select_option('China');check('country filter reaches all seven China dossiers',page.locator('#content tbody tr').count()==7)
  page.locator('[data-action="site-layout"][data-id="chart"]').click();check('linked facility scatter shows two quantified China sites',page.locator('.scatter-point').count()==2)
  page.locator('.scatter-point circle').first.click();check('scatter point opens facility dossier',page.locator('#drawer').is_visible());page.locator('[data-action="close-drawer"]').click()
@@ -117,7 +115,7 @@ with sync_playwright() as p:
  check('repository-native entrypoint surfaces asset-load failures cleanly','Could not load src/enhancements.js' in broken.locator('.boot-error').inner_text() and not broken_errs,broken_errs)
  broken.close()
  b.close()
-res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy.'}
+res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Native file:// standalone Chromium; repository-native index exercised with intercepted checked-in same-origin assets.'}
 (ROOT/'qa/functional_results.json').write_text(json.dumps(res,indent=2))
 print(json.dumps(res,indent=2))
 

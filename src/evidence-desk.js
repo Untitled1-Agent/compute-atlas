@@ -33,13 +33,14 @@ function atlasEvidenceCard(row) {
   const title = quantity ? boundaryLabel(row.boundary) : relation ? row.role : row.label;
   const value = quantity ? observationValue(row)+(row.value === null ? '' : ' <small>'+esc(row.unit)+'</small>')
     : esc(relation ? company(row.company_id)?.name || row.company_id : row.value);
-  const scope = quantity ? row.scope : relation ? 'Source-scoped counterparty role' : row.label;
+  const scope = row.scope || (relation ? 'Source-scoped counterparty role' : row.label);
   const label = row.effective ? 'Current publication' : row.review_status === 'rejected' ? 'Withdrawn interpretation' : 'Earlier revision · not current';
   return `<article class="atlas-evidence-record ${row.effective?'':'historical'}" data-claim-id="${esc(row.id)}">
     <div class="atlas-evidence-record-head"><span class="atlas-card-kicker">${esc(title)}</span><span class="atlas-revision-state">${label}</span></div>
-    <h3>${value}</h3><p class="atlas-claim-scope">${esc(scope)}</p>
+    <h3>${value}</h3><p class="atlas-claim-scope">${esc(scope)}${row.applies_to==='context'?' · WIDER CONTEXT / MATCH UNRESOLVED':''}</p>
     <dl><div><dt>Reported</dt><dd>${esc(row.as_of || 'Date not stated')}</dd></div><div><dt>Status</dt><dd>${esc(statusLabel(row.status || 'disclosed'))}</dd></div>${row.period?`<div><dt>Applies to</dt><dd>${esc(row.period)}</dd></div>`:''}</dl>
     ${row.qualifier?`<p class="atlas-claim-qualifier">${esc(row.qualifier)}</p>`:''}
+    ${row.source_locator?`<details><summary>Find the claim in the source</summary><p>${esc(row.source_locator)}</p></details>`:''}
     ${row.supersedes?`<p class="atlas-revision-link">Replaces <code>${esc(row.supersedes)}</code>. Prior values are not added.</p>`:''}
     <footer>${primaryRef(row.source_id)}<details><summary>Record identity</summary><code>${esc(row.id)}</code></details></footer>
   </article>`;

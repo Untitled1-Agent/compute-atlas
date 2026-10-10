@@ -64,9 +64,9 @@
       "test": "globe visibly rendered, not blank",
       "pass_": true,
       "detail": [
-        24,
-        49,
-        62,
+        10,
+        34,
+        45,
         255
       ]
     },
@@ -76,19 +76,26 @@
       "detail": null
     },
     {
-      "test": "zoom button changes globe scale",
+      "test": "zoom button changes semantic scale",
       "pass_": true,
       "detail": null
     },
     {
-      "test": "China facility has a selectable marker",
+      "test": "China facility belongs to a selectable evidence cluster",
       "pass_": true,
       "detail": null
     },
     {
-      "test": "actual canvas marker opens matching dossier",
+      "test": "actual canvas cluster drills to next semantic scale",
       "pass_": true,
-      "detail": null
+      "detail": {
+        "point": {
+          "x": 486.223122568773,
+          "y": 220.04413922580605,
+          "id": "huawei-horinger"
+        },
+        "level": 1
+      }
     },
     {
       "test": "country filter reaches all seven China dossiers",
@@ -302,5 +309,5 @@
   "total": 48,
   "errors": [],
   "network_requests": [],
-  "execution": "Standalone HTML rendered in managed Chromium via set_content; repository-native index exercised with intercepted same-origin assets because localhost navigation is blocked by environment policy."
+  "execution": "Native file:// standalone Chromium; repository-native index exercised with intercepted checked-in same-origin assets."
 }

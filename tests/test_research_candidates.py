@@ -12,7 +12,7 @@ def store(tmp_path):
 
 def test_nordic_leads_retain_primary_sources_and_nonadditive_scopes(store):
     pub=store.publication();leads={r['id']:r for r in pub['discoveries'] if r['id'].startswith('atnorth-')}
-    assert len(leads)==3 and len(pub['discoveries'])==8 and len(pub['observations'])==40
+    assert len(leads)==3 and len(pub['discoveries'])==8 and len(pub['observations'])==47
     assert len(json.loads((ROOT/'data/atlas.json').read_text())['sites'])==79
     assert all(r['review_status']=='candidate' and r['latitude'] is None and r['longitude'] is None and r['operating_it_mw'] is None for r in leads.values())
     fin=leads['atnorth-fin05-candidate']['candidate_measurements']

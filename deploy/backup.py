@@ -21,6 +21,14 @@ def backup(state: Path) -> Path:
     state=state.resolve()
     if not (state/'atlas.sqlite3').is_file():
         raise FileNotFoundError('The live ledger must exist before a backup')
+    with sqlite3.connect(state/'atlas.sqlite3') as db:
+        database_bytes=db.execute('PRAGMA page_count').fetchone()[0]*db.execute('PRAGMA page_size').fetchone()[0]
+        hashes={row[0] for row in db.execute('SELECT sha256 FROM source_versions')}
+    if any(not re.fullmatch('[0-9a-f]{64}',digest) for digest in hashes):
+        raise ValueError('Invalid content-addressed body')
+    body_bytes=sum((state/'blobs'/digest).stat().st_size for digest in hashes)
+    if shutil.disk_usage(state).free < database_bytes+body_bytes+64*1024*1024:
+        raise OSError('Backup deferred: insufficient space for the snapshot and 64 MiB disk reserve')
     backups=state/'backups';backups.mkdir(mode=0o700,exist_ok=True)
     token=uuid.uuid4().hex
     staging=backups/('.staging-'+token);staging.mkdir(mode=0o700)

@@ -1,0 +1,126 @@
+{
+  "reviewed_at": "2026-10-10",
+  "branch": "feat/project-dossier-research",
+  "baseline_commit": "806d6daa804f7264972957ae69b4e3b1d793e040",
+  "data": {
+    "projects_researched": 79,
+    "projects_with_project_specific_claims": 68,
+    "sources": 230,
+    "new_claims": 703,
+    "new_claim_scopes": {
+      "context": 173,
+      "project": 530
+    },
+    "current_claims": 799,
+    "outcomes": {
+      "partial": 14,
+      "enriched": 57,
+      "unresolved": 8
+    }
+  },
+  "backend": {
+    "passed": 236,
+    "total": 236,
+    "execution": "full pytest suite with temporary RAM-backed databases"
+  },
+  "browser_and_integrity": [
+    {
+      "name": "functional",
+      "passed": 48,
+      "total": 48,
+      "execution": "Native file:// standalone Chromium; repository-native index exercised with intercepted checked-in same-origin assets."
+    },
+    {
+      "name": "zoom_explorer",
+      "passed": 127,
+      "total": 127,
+      "execution": "real Chromium over HTTP; both entrypoints"
+    },
+    {
+      "name": "evidence_desk",
+      "passed": 50,
+      "total": 50,
+      "execution": "real HTTP hosted and standalone Chromium"
+    },
+    {
+      "name": "project_research",
+      "passed": 62,
+      "total": 62,
+      "execution": "real HTTP SQLite service and standalone Chromium"
+    },
+    {
+      "name": "smoke",
+      "passed": 15,
+      "total": 15,
+      "execution": "native offline-file Chromium"
+    },
+    {
+      "name": "live",
+      "passed": 27,
+      "total": 27,
+      "execution": "actual HTTP hosted + standalone Chromium, including original attachment downloads"
+    },
+    {
+      "name": "service",
+      "passed": 26,
+      "total": 26,
+      "execution": "real HTTP service with Chromium"
+    },
+    {
+      "name": "source_health",
+      "passed": 29,
+      "total": 29,
+      "execution": "real HTTP service + Chromium"
+    },
+    {
+      "name": "global_coverage",
+      "passed": 60,
+      "total": 60,
+      "execution": "real HTTP hosted + standalone Chromium"
+    },
+    {
+      "name": "site_identity",
+      "passed": 68,
+      "total": 68,
+      "execution": "real HTTP hosted + standalone Chromium"
+    },
+    {
+      "name": "catalog_explorer",
+      "passed": 76,
+      "total": 76,
+      "execution": "real HTTP Chromium: hosted, standalone, and SQLite service"
+    },
+    {
+      "name": "operator_directory",
+      "passed": 64,
+      "total": 64,
+      "execution": "real HTTP hosted, offline and SQLite-backed Chromium"
+    },
+    {
+      "name": "publisher_explorer",
+      "passed": 98,
+      "total": 98,
+      "execution": "real HTTP hosted, standalone and SQLite-backed Chromium"
+    },
+    {
+      "name": "inspection",
+      "passed": 77,
+      "total": 77,
+      "execution": "actual HTTP hosted + standalone + Basic Auth proxy /compute/ SQLite service; CDP touch events"
+    },
+    {
+      "name": "integrity",
+      "passed": 15,
+      "total": 15,
+      "execution": "research/archive integrity"
+    }
+  ],
+  "browser_and_integrity_total": 842,
+  "javascript_syntax": {
+    "passed": 19,
+    "total": 19
+  },
+  "standalone_sha256": "72eb0c262ea18991229528fec58e5aa053afc4f9c0b198f4f4287b0d9f77f462",
+  "original_models_and_claims": "unchanged; original attachments verified byte-for-byte",
+  "production_authenticated_browser": "not tested; no production credentials transferred"
+}

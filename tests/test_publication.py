@@ -6,10 +6,10 @@ def test_expanded_primary_publication_and_archival_separation(tmp_path):
     s=Store(tmp_path/'atlas.sqlite3'); s.seed(); pub=s.publication()
     archive=json.loads((ROOT/'data/atlas.json').read_text())
     assert len(archive['sites'])==79
-    assert len(pub['sources'])==27
-    assert len({o['site_id'] for k in ('observations','facts','relationships') for o in pub[k]})==14
+    assert len(pub['sources'])==230
+    assert len({o['site_id'] for k in ('observations','facts','relationships') for o in pub[k]})==79
     assert all(x['review_status']=='accepted' for k in ('observations','facts','relationships') for x in pub[k])
-    assert pub['published_at']=='2026-10-09'
+    assert pub['published_at']=='2026-10-10'
     sources={x['id'] for x in pub['sources']}
     assert all(x['source_id'] in sources for k in ('observations','facts','relationships') for x in pub[k])
 
@@ -39,7 +39,7 @@ def test_new_location_sources_are_candidates_not_capacity(tmp_path):
     assert all(row['review_status']=='candidate' and row['latitude'] is None and row['longitude'] is None for row in candidates)
     assert all('power_mw' not in row and 'next_review' in row for row in candidates)
     assert not any(row['source_id'] in ('P19','P20','P21','P22') for kind in ('observations','facts','relationships') for row in pub[kind])
-    assert len(pub['observations'])==40
+    assert len(pub['observations'])==47
     assert len(json.loads((ROOT/'data/atlas.json').read_text())['sites'])==79
     with s.connect() as db:
         assert db.execute("SELECT COUNT(*) FROM jobs WHERE source_id IN ('P19','P20','P21','P22')").fetchone()[0]==4

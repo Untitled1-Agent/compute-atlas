@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="src/evidence-desk.css">
 <link rel="stylesheet" href="src/source-health.css">
 <link rel="stylesheet" href="src/global-coverage.css">
-<link rel="stylesheet" href="src/site-identity.css"><link rel="stylesheet" href="src/catalog-explorer.css"><link rel="stylesheet" href="src/operator-directory.css"><link rel="stylesheet" href="src/publisher-explorer.css"></head>
+<link rel="stylesheet" href="src/site-identity.css"><link rel="stylesheet" href="src/catalog-explorer.css"><link rel="stylesheet" href="src/operator-directory.css"><link rel="stylesheet" href="src/publisher-explorer.css"><link rel="stylesheet" href="src/project-research.css"></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
+<aside class="sidebar" id="sidebar"><a class="brand" href="#overview" aria-label="Compute Atlas home"><span class="brand-mark">◉</span><span>COMPUTE<span class="brand-sub">ATLAS</span></span></a><div class="side-label">INFRASTRUCTURE & CAPITAL</div><nav id="navigation" aria-label="Main navigation"></nav><div class="side-bottom"><button class="side-tool" data-research-index>▤ &nbsp; Project research</button><button class="side-tool" data-action="search">⌕ &nbsp; Search everything <kbd>/</kbd></button><button class="side-tool" data-action="nav" data-id="watchlist">☆ &nbsp; Your research shelf <span id="shelf-count">0</span></button><div class="side-status"><span class="status-dot"></span> WEB · REPOSITORY DATA</div><p>A dated research collection.<br>Not a live capacity or pricing feed.</p><button class="text-button" data-action="method">Reading the evidence ↗</button></div></aside>
 <div class="app-shell"><header class="topbar"><button class="icon-button mobile-menu" data-action="menu" aria-label="Open navigation">☰</button><div id="breadcrumb">The landscape</div><button class="search-trigger" data-action="search"><span>Search a company, site, source…</span><kbd>⌘ K</kbd></button><div class="top-date">DATASET <b>11 SEP 2026</b></div><button class="icon-button" data-action="help" aria-label="Help">?</button></header><main id="content" tabindex="-1"></main><footer class="app-footer"><span>Compute Atlas · Evidence before aggregation.</span><button class="text-button" data-action="nav" data-id="data">Sources, coverage & audit trail ↗</button></footer></div>
 <div id="toast" role="status" aria-live="polite"></div><div id="tooltip" role="tooltip"></div>
 <div class="scrim" id="drawer-scrim" hidden></div><aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Research detail" hidden><div class="drawer-head"><button class="text-button" data-action="drawer-back" id="drawer-back">← Back</button><span id="drawer-type">RESEARCH DOSSIER</span><button class="icon-button" data-action="close-drawer" aria-label="Close detail">✕</button></div><div id="drawer-content"></div></aside>
@@ -49,6 +49,7 @@
      .then(()=>loadScript('src/catalog-explorer.js'))
      .then(()=>loadScript('src/operator-directory.js'))
      .then(()=>loadScript('src/publisher-explorer.js'))
+     .then(()=>loadScript('src/project-research.js'))
      .then(()=>document.documentElement.classList.add('atlas-ready'))
      .catch(fail);
  }).catch(fail);
