@@ -46,6 +46,14 @@ context and eight unresolved identities are marked separately. **Project
 research** opens the searchable index and six-category dossiers, with reporting
 dates, source locators, disagreements and open questions.
 
+Refine this collection by country, archived operator association, research
+outcome or project-claim topic. Search results include the matching disclosure,
+scope and original citation; the URL preserves the chosen view. Dossiers offer
+recent dated disclosures, topic shortcuts, claim search, a primary-source trail
+and a development chronology ordered by reported/as-of date. Undated documents
+remain explicit. Regional investment programs appear as wider context rather
+than a single facility's financing. See the [navigation checkpoint](docs/checkpoints/2026-10-10-research-navigation.md).
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.
