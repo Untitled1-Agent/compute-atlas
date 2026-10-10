@@ -19,7 +19,7 @@ function atlasResearchTopic(row) {
   return 'technical';
 }
 function atlasResearchRows(s, context=false) {
-  return atlasEvidenceRows(s).filter(r=>r.effective && (context ? r.applies_to==='context' : r.applies_to!=='context'));
+  return atlasEvidenceRows(s).filter(r=>r.effective && (context ? primaryIsContext(r) : !primaryIsContext(r)));
 }
 function atlasResearchProfile(s) {
   const rows=atlasResearchRows(s),context=atlasResearchRows(s,true),review=atlasResearchReview(s);
@@ -95,7 +95,7 @@ openDrawer=function(kind,id,options={}) {
       .filter(row=>row.source_id===id).map(row=>({...row,kind:type})));
     $('#drawer-content').querySelectorAll('.atlas-source-observation').forEach((element,i)=>{
       const row=claims[i];
-      if (row) element.innerHTML=`<h3>${esc(site(row.site_id)?.name||row.site_id)}</h3>${row.applies_to==='context'?'<p class="atlas-source-context-label">Wider context / project match unresolved</p>':''}${atlasResearchClaim(row)}`;
+      if (row) element.innerHTML=`<h3>${esc(site(row.site_id)?.name||row.site_id)}</h3>${primaryIsContext(row)?'<p class="atlas-source-context-label">Wider context / not a project total</p>':''}${atlasResearchClaim(row)}`;
     });
   }
 };
@@ -110,7 +110,7 @@ atlasCitedDossier=function(s) {
 };
 ATLAS.evidence.export=atlasCitedDossier;
 const atlasResearchPreviousPower=primaryPowerRows;
-primaryPowerRows=function(s){return atlasResearchPreviousPower(s).filter(r=>r.applies_to!=='context');};
+primaryPowerRows=function(s){return atlasResearchPreviousPower(s).filter(r=>!primaryIsContext(r));};
 function atlasResearchMatches(s,q) {
   return [s.name,s.location,s.owner_label,JSON.stringify(s.hardware),JSON.stringify(s.facts),
     ...atlasEvidenceRows(s).filter(r=>r.effective).map(r=>[r.label,r.value,r.role,r.scope,r.qualifier,primarySource(r.source_id)?.publisher].join(' '))]
