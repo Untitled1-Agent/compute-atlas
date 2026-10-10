@@ -181,6 +181,7 @@ with tempfile.TemporaryDirectory() as directory:
                 page.evaluate('openSearch()')
                 page.locator('#global-search').fill('Training-room')
                 locator_match=page.locator('#search-results [data-research-site="huawei-gui-an-cloud-data-center"]')
+                locator_match.wait_for(state='visible')
                 check(label+' global search includes source locators and identifies the cited claim',
                     locator_match.count() == 1
                     and locator_match.get_attribute('data-research-claim-target') == 'research-20261010-guian-training'
@@ -194,9 +195,11 @@ with tempfile.TemporaryDirectory() as directory:
                     and 'huawei-gui-an-cloud-data-center' in page.evaluate('filteredSites().map(s=>s.id)'))
                 page.evaluate("state.filter.q='';openSearch()")
                 page.locator('#global-search').fill('3,000,000 kWh/year')
+                page.locator('#search-results [data-research-site="sensetime-lingang-aidc"]').wait_for(state='visible')
                 check(label+' global search recognizes formatted native quantities with units',
                     page.locator('#search-results [data-research-site="sensetime-lingang-aidc"]').count() == 1)
                 page.locator('#global-search').fill('2026-06-23')
+                page.locator('#search-results [data-research-site="microsoft-fairwater-wisconsin"][data-research-claim-target]').wait_for(state='visible')
                 check(label+' global search recognizes disclosure dates',
                     page.locator('#search-results [data-research-site="microsoft-fairwater-wisconsin"][data-research-claim-target]').count() == 1)
                 page.evaluate('closeSearch()')
