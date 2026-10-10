@@ -1,0 +1,709 @@
+{
+  "checked_at": "2026-10-10T16:46:09.277832+00:00",
+  "branch": "feat/research-navigation",
+  "baseline_commit": "c89553113f57672e0c921c3d29bd4319a625dca8",
+  "execution": "Actual Chromium: SQLite HTTP, static and standalone HTTP, native offline file, and explicitly labeled intercepted-asset boot checks",
+  "passed": 463,
+  "total": 463,
+  "suites": [
+    {
+      "name": "project_research",
+      "passed": 122,
+      "total": 122,
+      "execution": "real HTTP SQLite service and standalone Chromium"
+    },
+    {
+      "name": "global_coverage",
+      "passed": 60,
+      "total": 60,
+      "execution": "real HTTP hosted + standalone Chromium"
+    },
+    {
+      "name": "zoom_explorer",
+      "passed": 127,
+      "total": 127,
+      "execution": "real Chromium over HTTP; both entrypoints"
+    },
+    {
+      "name": "evidence_desk",
+      "passed": 50,
+      "total": 50,
+      "execution": "real HTTP hosted and standalone Chromium"
+    },
+    {
+      "name": "functional",
+      "passed": 48,
+      "total": 48,
+      "execution": "Native file:// standalone Chromium; repository-native index exercised with intercepted checked-in same-origin assets."
+    },
+    {
+      "name": "smoke",
+      "passed": 15,
+      "total": 15,
+      "execution": "Native file:// standalone Chromium"
+    },
+    {
+      "name": "service",
+      "passed": 26,
+      "total": 26,
+      "execution": "real HTTP service with Chromium"
+    },
+    {
+      "name": "integrity",
+      "passed": 15,
+      "total": 15,
+      "execution": "archive and data integrity"
+    }
+  ],
+  "project_research_checks": [
+    {
+      "test": "sqlite actual HTTP entrypoint",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite complete research reaches the browser",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "SQLite publication hash reaches the browser",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite searchable index includes all 79 projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite index paginates projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite pagination focuses the new page of projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite pagination brings new results into view",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite geography and topic filters intersect known disclosures",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite contradictory filters have a truthful empty state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite reset clears all filters and restores search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite formatted native quantities are searchable with their units",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite research text search finds a new project detail",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite search explains the matching project disclosure",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite search preserves input focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite research URL restores search, geography, topic and order",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite topic refinement matches finance evidence directly",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite removing one refinement retains the others and search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite matched disclosure opens and receives keyboard focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite project dossier shows six research categories",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite every displayed project claim has a citation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dated brief excludes contextual claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dossier search reveals wider context without project allocation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dossier filtering keeps search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dossier no-match is explicit without a zero-capacity claim",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dossier clear restores six categories and input focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite topic shortcut scrolls and focuses its section",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite city compute stays separate from Baidu project",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite source opens its original disclosure link",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite source back restores the researched dossier",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite export distinguishes project and contextual claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite export includes review and original archive",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite export retains date semantics and only project milestones",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite dossier retains a site deep-link",
+      "pass": true,
+      "detail": "http://127.0.0.1:41335/index.html#site/baidu-yangquan-cloud-center"
+    },
+    {
+      "test": "sqlite deep-link reload returns HTML",
+      "pass": true,
+      "detail": {
+        "url": "http://127.0.0.1:41335/index.html#site/baidu-yangquan-cloud-center",
+        "status": 200
+      }
+    },
+    {
+      "test": "sqlite deep-link reload includes the new research",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite facility map includes the same researched dossier",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite map filters search reviewed claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite global search links new project evidence",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite search selection dismisses command overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite native FP16 precision and planned status are visible",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite mobile dossier has no horizontal overflow",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite mobile drawer retains a single-line back control",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite narrow mobile dossier fits 320 pixels",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite mobile research navigation closes the menu",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite returning to research retains search",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite returning to research retains topic and geography",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite unresolved identities are findable",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite context-only match visibly retains unresolved association",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite literal HTML search remains inert",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite new operating disclosure precedes the old planned schedule",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite regional investment stays outside project financing",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite regional investment export retains its original boundary and contextual classification",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite chronology orders disclosure dates and retains dated plan wording",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite new source trail attributes documents and undated publications",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite primary source trail opens its exact source URL",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite evidence search renders within one second",
+      "pass": true,
+      "detail": {
+        "input_to_animation_frame_ms": 77
+      }
+    },
+    {
+      "test": "Publication update leaves current research snapshot stable",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "Applying SQLite update refreshes research while retaining query",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "Publication update retains geography, operator, topic and order",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "Matched untrusted text is escaped before search highlighting",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite all original dossiers and scoped exports remain available",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "sqlite no unhandled browser exceptions",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "test": "sqlite no third-party asset or API requests",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "test": "standalone actual HTTP entrypoint",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone complete research reaches the browser",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "Standalone never probes the API",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone searchable index includes all 79 projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone index paginates projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone pagination focuses the new page of projects",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone pagination brings new results into view",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone geography and topic filters intersect known disclosures",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone contradictory filters have a truthful empty state",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone reset clears all filters and restores search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone formatted native quantities are searchable with their units",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone research text search finds a new project detail",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone search explains the matching project disclosure",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone search preserves input focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone research URL restores search, geography, topic and order",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone topic refinement matches finance evidence directly",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone removing one refinement retains the others and search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone matched disclosure opens and receives keyboard focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone project dossier shows six research categories",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone every displayed project claim has a citation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dated brief excludes contextual claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dossier search reveals wider context without project allocation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dossier filtering keeps search focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dossier no-match is explicit without a zero-capacity claim",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dossier clear restores six categories and input focus",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone topic shortcut scrolls and focuses its section",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone city compute stays separate from Baidu project",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone source opens its original disclosure link",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone source back restores the researched dossier",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone export distinguishes project and contextual claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone export includes review and original archive",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone export retains date semantics and only project milestones",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone dossier retains a site deep-link",
+      "pass": true,
+      "detail": "http://127.0.0.1:41335/compute_atlas.html#site/baidu-yangquan-cloud-center"
+    },
+    {
+      "test": "standalone deep-link reload returns HTML",
+      "pass": true,
+      "detail": {
+        "url": "http://127.0.0.1:41335/compute_atlas.html#site/baidu-yangquan-cloud-center",
+        "status": 200
+      }
+    },
+    {
+      "test": "standalone deep-link reload includes the new research",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone facility map includes the same researched dossier",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone map filters search reviewed claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone global search links new project evidence",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone search selection dismisses command overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone native FP16 precision and planned status are visible",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone mobile dossier has no horizontal overflow",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone mobile drawer retains a single-line back control",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone narrow mobile dossier fits 320 pixels",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone mobile research navigation closes the menu",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone returning to research retains search",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone returning to research retains topic and geography",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone unresolved identities are findable",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone context-only match visibly retains unresolved association",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone literal HTML search remains inert",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone new operating disclosure precedes the old planned schedule",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone regional investment stays outside project financing",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone regional investment export retains its original boundary and contextual classification",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone chronology orders disclosure dates and retains dated plan wording",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone new source trail attributes documents and undated publications",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone primary source trail opens its exact source URL",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone evidence search renders within one second",
+      "pass": true,
+      "detail": {
+        "input_to_animation_frame_ms": 87.1
+      }
+    },
+    {
+      "test": "standalone all original dossiers and scoped exports remain available",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "standalone no unhandled browser exceptions",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "test": "standalone no third-party asset or API requests",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "javascript_syntax": {
+    "passed": 19,
+    "total": 19
+  },
+  "standalone": {
+    "builds": 2,
+    "sha256": "930d23546e16f0002f4072184bcd8b67a2c552c9a0e231f26c8cec485ec0840a",
+    "identical": true
+  },
+  "unchanged_datasets": {
+    "data/evidence.json": "972eb323515849b8b0082ba990fba74afc818e63b750d24ab77789701cd923f1",
+    "data/atlas.json": "da643ec94ff9db4dcacacf34ea6cc8fb56278fb96e0c62fcb41fd0bc923a3ae2",
+    "data/archive.json": "852b5fe8fb7ab7a056602b5b2dec91561e637a9dad650578c369ee0059c11ef5"
+  },
+  "screenshots": [
+    {
+      "file": "research-navigation-index-desktop.png",
+      "sha256": "1e7084aea97cdc04c1b40ee90c1467e2902116094cbbb1f821c8f23d358778c3"
+    },
+    {
+      "file": "research-navigation-brief-desktop.png",
+      "sha256": "01bb7f421625e751d92e56524a6545b06bddc0c2dd14fa8afcd97381d0af107f"
+    },
+    {
+      "file": "research-navigation-brief-mobile.png",
+      "sha256": "e382903d6b2e2b1173b74eebdfc6e9a3d364cd9518d676aaf98fe54529588c7f"
+    }
+  ],
+  "full_backend_and_browser_ci": "Required on exact PR head before deployment; recorded on issue #2 and release receipt."
+}
