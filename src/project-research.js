@@ -282,7 +282,7 @@ const atlasResearchPreviousPower=primaryPowerRows;
 primaryPowerRows=function(s){return atlasResearchPreviousPower(s).filter(r=>!primaryIsContext(r));};
 function atlasResearchMatches(s,q) {
   return [s.name,s.location,s.owner_label,JSON.stringify(s.hardware),JSON.stringify(s.facts),
-    ...atlasEvidenceRows(s).filter(r=>r.effective).map(r=>[r.label,r.value,r.role,r.scope,r.qualifier,primarySource(r.source_id)?.publisher].join(' '))]
+    ...atlasResearchProfile(s).searchRows.map(r=>r.text)]
     .join(' ').toLocaleLowerCase().includes(q.trim().toLocaleLowerCase());
 }
 function atlasResearchFilter(previous) {
@@ -298,10 +298,12 @@ spatialFiltered=atlasResearchFilter(spatialFiltered);
 const atlasResearchPreviousSearch=searchAll;
 searchAll=function(q) {
   atlasResearchPreviousSearch(q);
-  if (!q.trim()) return;
-  const rows=D.sites.filter(s=>atlasResearchRows(s).concat(atlasResearchRows(s,true)).some(r=>
-    [r.label,r.value,r.scope,r.qualifier,primarySource(r.source_id)?.publisher].join(' ').toLocaleLowerCase().includes(q.trim().toLocaleLowerCase())));
-  if (rows.length) $('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">Project research · ${rows.length} matching dossiers</div>`+rows.slice(0,6).map(s=>`<button class="search-result" data-research-site="${esc(s.id)}"><span class="result-type">PROJECT EVIDENCE</span><span><b>${esc(s.name)}</b><small>${esc(s.location)} · cited project research</small></span></button>`).join(''));
+  const query=q.trim().toLocaleLowerCase();
+  if (!query) return;
+  const rows=D.sites.map(atlasResearchProfile).map(profile=>({profile,
+    match:profile.searchRows.find(r=>!primaryIsContext(r.row)&&r.text.includes(query))?.row
+      || profile.searchRows.find(r=>r.text.includes(query))?.row})).filter(r=>r.match);
+  if (rows.length) $('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">Project research · ${rows.length} matching dossiers</div>`+rows.slice(0,6).map(({profile:p,match})=>`<button class="search-result" data-research-site="${esc(p.site.id)}" data-research-claim-target="${esc(match.id)}"><span class="result-type">${primaryIsContext(match)?'WIDER CONTEXT':'PROJECT EVIDENCE'}</span><span><b>${esc(p.site.name)}</b><small>${esc(atlasResearchLabel(match))} · ${esc(match.source_id)} · ${esc(match.as_of||'Date not stated')}</small></span></button>`).join(''));
 };
 document.addEventListener('click',event=>{
   if (event.target.closest('[data-research-index]')) openDrawer('research-index','projects');

@@ -178,6 +178,28 @@ with tempfile.TemporaryDirectory() as directory:
                 check(label+' global search links new project evidence', page.locator('#search-results [data-research-site="baidu-yangquan-cloud-center"]').count() == 1)
                 page.locator('#search-results [data-research-site="baidu-yangquan-cloud-center"]').click()
                 check(label+' search selection dismisses command overlay', page.locator('#search-modal').is_hidden())
+                page.evaluate('openSearch()')
+                page.locator('#global-search').fill('Training-room')
+                locator_match=page.locator('#search-results [data-research-site="huawei-gui-an-cloud-data-center"]')
+                check(label+' global search includes source locators and identifies the cited claim',
+                    locator_match.count() == 1
+                    and locator_match.get_attribute('data-research-claim-target') == 'research-20261010-guian-training'
+                    and 'RC009' in locator_match.inner_text())
+                locator_match.click()
+                check(label+' global source-locator match reveals and focuses the actual claim',
+                    page.locator('#drawer [data-research-claim="research-20261010-guian-training"]').evaluate('el=>document.activeElement===el && el.getClientRects().length>0'))
+                page.evaluate("state.filter.q='Training-room'")
+                check(label+' map and directory filters search the same source locators',
+                    'huawei-gui-an-cloud-data-center' in page.evaluate('spatialFiltered().map(s=>s.id)')
+                    and 'huawei-gui-an-cloud-data-center' in page.evaluate('filteredSites().map(s=>s.id)'))
+                page.evaluate("state.filter.q='';openSearch()")
+                page.locator('#global-search').fill('3,000,000 kWh/year')
+                check(label+' global search recognizes formatted native quantities with units',
+                    page.locator('#search-results [data-research-site="sensetime-lingang-aidc"]').count() == 1)
+                page.locator('#global-search').fill('2026-06-23')
+                check(label+' global search recognizes disclosure dates',
+                    page.locator('#search-results [data-research-site="microsoft-fairwater-wisconsin"][data-research-claim-target]').count() == 1)
+                page.evaluate('closeSearch()')
                 page.evaluate("ATLAS.openDrawer('site','sensetime-qianhai-intelligent-computing-center')")
                 check(label+' native FP16 precision and planned status are visible', 'PFLOPS FP16' in page.locator('#drawer [data-research-claim="research-20261010-qianhai-fp16"]').inner_text() and 'Planned' in page.locator('#drawer [data-research-claim="research-20261010-qianhai-fp16"]').inner_text())
                 page.set_viewport_size({'width':390, 'height':844})
