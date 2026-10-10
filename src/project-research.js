@@ -304,6 +304,8 @@ searchAll=function(q) {
     match:profile.searchRows.find(r=>!primaryIsContext(r.row)&&r.text.includes(query))?.row
       || profile.searchRows.find(r=>r.text.includes(query))?.row})).filter(r=>r.match);
   if (rows.length) $('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">Project research · ${rows.length} matching dossiers</div>`+rows.slice(0,6).map(({profile:p,match})=>`<button class="search-result" data-research-site="${esc(p.site.id)}" data-research-claim-target="${esc(match.id)}"><span class="result-type">${primaryIsContext(match)?'WIDER CONTEXT':'PROJECT EVIDENCE'}</span><span><b>${esc(p.site.name)}</b><small>${esc(atlasResearchLabel(match))} · ${esc(match.source_id)} · ${esc(match.as_of||'Date not stated')}</small></span></button>`).join(''));
+  const results=$('#search-results');
+  if(results.querySelector('.search-result'))results.querySelector('.search-empty')?.remove();
 };
 document.addEventListener('click',event=>{
   if (event.target.closest('[data-research-index]')) openDrawer('research-index','projects');
