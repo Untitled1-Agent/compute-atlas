@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-10-10T01:00:52.400963+00:00",
+  "url": "https://untitled1.cc/compute/",
+  "public_anonymous_checks": [
+    {
+      "path": "entry",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    },
+    {
+      "path": "api/publication",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    },
+    {
+      "path": "src/app.js",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    },
+    {
+      "path": "data/evidence.json",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    },
+    {
+      "path": "originals/compute_infrastructure_report.pdf",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    },
+    {
+      "path": "compute_atlas.html",
+      "status": 401,
+      "www_authenticate": "Basic realm=\"Compute Atlas\""
+    }
+  ],
+  "loopback_health": {
+    "status": "ok",
+    "database": "ready"
+  },
+  "background_refresh": true,
+  "loopback_counts": {
+    "sites": 79,
+    "sources": 37,
+    "source_versions": 31,
+    "pending_review": 77,
+    "accepted_observations": 40,
+    "fetch_attempts": 61
+  },
+  "implementation_commit": "6eb17786ff771fb66a066fd0f18601725ff2c1af",
+  "installer_fix_commit": "4638872",
+  "authenticated_https_verification": "pending explicit approval; automatic review rejected transmission of the stored login credential",
+  "credentials_recorded": false
+}
