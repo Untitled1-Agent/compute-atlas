@@ -54,7 +54,8 @@ original = site.read_text()
 start, end = '    # BEGIN compute-atlas\n', '    # END compute-atlas\n'
 anchor = '    location / {\n        try_files $uri $uri/ $uri/index.html =404;\n    }\n'
 if start in original or end in original:
-    if original.count(start) != 1 or original.count(end) != 1:
+    if (original.count(start) != 1 or original.count(end) != 1
+            or original.index(end) < original.index(start)):
         raise SystemExit('Ambiguous Compute Atlas block; no changes made.')
     a = original.index(start)
     b = original.index(end, a) + len(end)
