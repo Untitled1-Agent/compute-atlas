@@ -1,6 +1,12 @@
 import hashlib
+import ast
+import io
 import json
+import os
 import sqlite3
+import subprocess
+import sys
+import urllib.request
 
 import pytest
 
@@ -45,3 +51,76 @@ def test_nginx_installer_preserves_other_routes_and_is_idempotent():
     assert proposed_config(proposed,block)==proposed
     assert 'location ^~ /compute/' in proposed and 'Authorization ""' in proposed
     with pytest.raises(ValueError):proposed_config(base.replace('location / {','location /compute {'),block)
+
+
+def standalone_installer_source():
+    script=(ROOT/'deploy/install_nginx.sh').read_text()
+    return script.split("<<'PY'\n",1)[1].rsplit('\nPY',1)[0]
+
+
+def test_standalone_installer_embeds_the_canonical_auth_configuration():
+    parsed=ast.parse(standalone_installer_source())
+    embedded=next(ast.literal_eval(node.value) for node in parsed.body
+                  if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='block' for t in node.targets))
+    assert embedded==(ROOT/'deploy/nginx-compute.conf').read_text()
+
+
+@pytest.fixture
+def standalone_installation(tmp_path,monkeypatch):
+    nginx=tmp_path/'nginx';(nginx/'sites-available').mkdir(parents=True)
+    site=nginx/'sites-available/untitled1.cc'
+    original='server {\n    ssl_certificate /cert;\n    location /files/ { auth_basic "Files"; }\n    location / {\n        try_files $uri $uri/ $uri/index.html =404;\n    }\n}\n'
+    site.write_text(original)
+    (nginx/'.files-htpasswd').write_text('researcher:dummy-test-hash\n')
+    source=standalone_installer_source().replace('/etc/nginx',str(nginx))
+    calls=[]
+    monkeypatch.setattr(sys,'argv',['install_nginx'])
+    monkeypatch.setattr(os,'geteuid',lambda:0)
+    monkeypatch.setattr(os,'umask',lambda _:0)
+    monkeypatch.setattr(os,'chown',lambda *_:None)
+    class Healthy:
+        def open(self,*_,**__):return io.BytesIO(b'{"status":"ok","database":"ready"}')
+    monkeypatch.setattr(urllib.request,'build_opener',lambda *_:Healthy())
+    monkeypatch.setattr(subprocess,'run',lambda argv,**_:calls.append(argv))
+    monkeypatch.setattr(subprocess,'check_output',lambda argv,**_:calls.append(argv) or '401')
+    def execute():exec(compile(source,'standalone-nginx-install','exec'),{'__name__':'__main__'})
+    return nginx,site,original,calls,execute
+
+
+def test_standalone_installation_checks_six_auth_routes_and_preserves_credentials(standalone_installation):
+    nginx,site,original,calls,execute=standalone_installation
+    execute()
+    installed=site.read_text()
+    block=(ROOT/'deploy/nginx-compute.conf').read_text().replace('/etc/nginx',str(nginx))
+    assert installed.replace(block+'\n','',1)==original
+    assert (nginx/'.compute-atlas-htpasswd').read_bytes()==(nginx/'.files-htpasswd').read_bytes()
+    assert (nginx/'.compute-atlas-htpasswd').stat().st_mode & 0o777 == 0o640
+    assert len([c for c in calls if c[0]=='/usr/bin/curl'])==6
+    assert all('--noproxy' in c and '--resolve' in c for c in calls if c[0]=='/usr/bin/curl')
+    assert next((nginx/'compute-atlas-backups').iterdir()).read_text()==original
+    execute()
+    assert site.read_text()==installed
+
+
+@pytest.mark.parametrize('failure',['nginx-validation','auth-gate'])
+def test_standalone_installer_restores_and_reloads_the_previous_site(standalone_installation,monkeypatch,failure):
+    _,site,original,calls,execute=standalone_installation
+    if failure=='nginx-validation':
+        def run(argv,**_):
+            calls.append(argv)
+            if len(calls)==1:raise subprocess.CalledProcessError(1,argv)
+        monkeypatch.setattr(subprocess,'run',run)
+    else:
+        monkeypatch.setattr(subprocess,'check_output',lambda *_,**__:'200')
+    with pytest.raises((subprocess.CalledProcessError,RuntimeError)):execute()
+    assert site.read_text()==original
+    assert calls[-1]==['/usr/bin/systemctl','reload','nginx']
+
+
+def test_standalone_installer_checks_health_before_creating_auth_or_editing_nginx(standalone_installation,monkeypatch):
+    nginx,site,original,calls,execute=standalone_installation
+    monkeypatch.setattr(urllib.request,'build_opener',lambda *_:None)
+    with pytest.raises(SystemExit,match='No Nginx changes made'):execute()
+    assert site.read_text()==original and not calls
+    assert not (nginx/'.compute-atlas-htpasswd').exists()
+    assert not (nginx/'compute-atlas-backups').exists()

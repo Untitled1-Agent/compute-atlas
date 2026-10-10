@@ -53,6 +53,17 @@ root-owned `/etc/nginx/.compute-atlas-htpasswd` the first time, so the existing
 login works without changing `/files`. Later password updates to either file
 are independent. Passwords and hashes are never included in the repository.
 
+If the release path is unavailable in the administrator's terminal, use the
+self-contained [shell installer](../deploy/install_nginx.sh): paste its complete
+contents into the terminal on **Untitled1**, or run `bash install_nginx.sh` after
+copying that single file. It embeds the canonical Nginx block and requires no
+checkout, sibling file or Python package. It checks the actual loopback database
+health before editing, backs up the site, then validates Nginx and reloads.
+Six anonymous requests to the actual local HTTPS virtual host must return 401;
+validation, reload or auth-gate failures restore and reload the previous site.
+`bash install_nginx.sh --dry-run` checks the preparation without editing files.
+Public HTTPS and authenticated browser checks remain separate acceptance steps.
+
 Verify anonymous requests to `/compute/`, `/compute/api/publication`, JS, data,
 original attachments and the standalone return **401**. Verify authenticated
 requests return the application and private API responses. Test the actual
