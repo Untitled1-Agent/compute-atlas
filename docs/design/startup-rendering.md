@@ -52,3 +52,10 @@ route handlers normally, then invoke the final route handler once after clearing
 the bootstrap boundary. It parses the original route, composes the matching page
 and opens the requested drawer with the complete source registry. Empty-entry
 default landscape behavior, later hash navigation and route validation remain.
+
+Publish route-dependent ready markers only after that initial route completes.
+Remote testing caught the hosted deep-link check observing the old saved state
+between the last module's ready marker and the loader's final route callback.
+Keep individual-module readiness behavior for use without a bootstrap boundary;
+both full entrypoints release the complete ready-marker set after final routing,
+then emit the service-start event. Readiness must describe the rendered route.
