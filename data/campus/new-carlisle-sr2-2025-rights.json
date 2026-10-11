@@ -1,0 +1,319 @@
+{
+ "currentVersion": 11.4,
+ "serviceDescription": "State of Indiana Current Orthophotography includes the years 2022 to 2025. The Indiana Orthoimagery Program collects and produces 4-band, 6-inch orthoimagery (with some areas at 3-inch resolution) on a 3-year cycle. Approximately one-third of the state is flown to develop streaming imagery services, 2,500' by 2,500' tiles. The dynamic imagery services contain color infrared and NDVI raster functions built into the services. Access to Indiana Geographic Information Office Orthoimagery is governed by Creative Commons 0 (CC0)",
+ "name": "DynamicWebMercator/Indiana_Current_Imagery",
+ "description": "State of Indiana Current Orthophotography includes the years 2022 to 2025. The Indiana Orthoimagery Program collects and produces 4-band, 6-inch orthoimagery (with some areas at 3-inch resolution) on a 3-year cycle. Approximately one-third of the state is flown to develop streaming imagery services, 2,500' by 2,500' tiles. The dynamic imagery services contain color infrared and NDVI raster functions built into the services. Access to Indiana Geographic Information Office Orthoimagery is governed by Creative Commons 0 (CC0)",
+ "extent": {
+  "xmin": -9823995.6497,
+  "ymin": 4543011.003853263,
+  "xmax": -9432544.874998452,
+  "ymax": 5135334.3719,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857
+  }
+ },
+ "initialExtent": {
+  "xmin": -9823995.6497,
+  "ymin": 4543011.003853263,
+  "xmax": -9432544.874998452,
+  "ymax": 5135334.3719,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857
+  }
+ },
+ "fullExtent": {
+  "xmin": -9823995.6497,
+  "ymin": 4543011.003853263,
+  "xmax": -9432544.874998452,
+  "ymax": 5135334.3719,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857
+  }
+ },
+ "sortableFields": "",
+ "bandCount": 4,
+ "pixelType": "U8",
+ "minValues": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "maxValues": [
+  255,
+  255,
+  255,
+  255
+ ],
+ "meanValues": [
+  104.8059473296954,
+  94.56688730486636,
+  78.92323160243737,
+  118.00976566984822
+ ],
+ "stdvValues": [
+  32.66645107708213,
+  29.153405101912742,
+  24.8598338130507,
+  27.69037745058863
+ ],
+ "hasMultidimensions": false,
+ "pixelSizeX": 0.07620015240030467,
+ "pixelSizeY": 0.07620015240030484,
+ "meanPixelSize": 0.07620015240030475,
+ "datasetFormat": "AMD",
+ "uncompressedSize": 159729186218336,
+ "blockWidth": 2048,
+ "blockHeight": 256,
+ "compressionType": "None",
+ "bandNames": [
+  "Band_1",
+  "Band_2",
+  "Band_3",
+  "Band_4"
+ ],
+ "allowCopy": true,
+ "allowAnalysis": true,
+ "itemAccess": false,
+ "inspectionCapabilities": "",
+ "minPixelSize": 0,
+ "maxPixelSize": 0,
+ "copyrightText": "Access to Indiana Geographic Information Office Orthoimagery is governed by Creative Commons 0 (CC0)",
+ "serviceDataType": "esriImageServiceDataTypeGeneric",
+ "serviceSourceType": "esriImageServiceSourceTypeMosaicDataset",
+ "objectIdField": "OBJECTID",
+ "fields": [
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID",
+   "domain": null
+  },
+  {
+   "name": "Shape",
+   "type": "esriFieldTypeGeometry",
+   "alias": "Shape",
+   "domain": null
+  },
+  {
+   "name": "Name",
+   "type": "esriFieldTypeString",
+   "alias": "Name",
+   "domain": null,
+   "length": 200
+  },
+  {
+   "name": "MinPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "MinPS",
+   "domain": null
+  },
+  {
+   "name": "MaxPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "MaxPS",
+   "domain": null
+  },
+  {
+   "name": "LowPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "LowPS",
+   "domain": null
+  },
+  {
+   "name": "HighPS",
+   "type": "esriFieldTypeDouble",
+   "alias": "HighPS",
+   "domain": null
+  },
+  {
+   "name": "Category",
+   "type": "esriFieldTypeInteger",
+   "alias": "Category",
+   "domain": {
+    "type": "codedValue",
+    "name": "MosaicCatalogItemCategoryDomain",
+    "description": "Catalog item categories.",
+    "codedValues": [
+     {
+      "name": "Unknown",
+      "code": 0
+     },
+     {
+      "name": "Primary",
+      "code": 1
+     },
+     {
+      "name": "Overview",
+      "code": 2
+     },
+     {
+      "name": "Unprocessed Overview",
+      "code": 3
+     },
+     {
+      "name": "Partial Overview",
+      "code": 4
+     },
+     {
+      "name": "Inactive",
+      "code": 5
+     },
+     {
+      "name": "Uploaded",
+      "code": 253
+     },
+     {
+      "name": "Incomplete",
+      "code": 254
+     },
+     {
+      "name": "Custom",
+      "code": 255
+     }
+    ],
+    "mergePolicy": "esriMPTDefaultValue",
+    "splitPolicy": "esriSPTDefaultValue"
+   }
+  },
+  {
+   "name": "Tag",
+   "type": "esriFieldTypeString",
+   "alias": "Tag",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "GroupName",
+   "type": "esriFieldTypeString",
+   "alias": "GroupName",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "ProductName",
+   "type": "esriFieldTypeString",
+   "alias": "ProductName",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "CenterX",
+   "type": "esriFieldTypeDouble",
+   "alias": "CenterX",
+   "domain": null
+  },
+  {
+   "name": "CenterY",
+   "type": "esriFieldTypeDouble",
+   "alias": "CenterY",
+   "domain": null
+  },
+  {
+   "name": "ZOrder",
+   "type": "esriFieldTypeInteger",
+   "alias": "ZOrder",
+   "domain": null
+  },
+  {
+   "name": "Image_Year",
+   "type": "esriFieldTypeString",
+   "alias": "Image_Year",
+   "domain": null,
+   "length": 25
+  },
+  {
+   "name": "County",
+   "type": "esriFieldTypeString",
+   "alias": "County",
+   "domain": null,
+   "length": 100
+  },
+  {
+   "name": "Pixel_Size",
+   "type": "esriFieldTypeString",
+   "alias": "Pixel_Size",
+   "domain": null,
+   "length": 25
+  },
+  {
+   "name": "Shape_Length",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape_Length",
+   "domain": null
+  },
+  {
+   "name": "Shape_Area",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape_Area",
+   "domain": null
+  }
+ ],
+ "capabilities": "Image,Metadata,Catalog,Mensuration",
+ "defaultMosaicMethod": "ByAttribute",
+ "allowedMosaicMethods": "ByAttribute,NorthWest,Center,LockRaster,Nadir,Viewpoint,Seamline,None",
+ "sortField": "ZOrder",
+ "sortValue": "",
+ "sortAscending": false,
+ "mosaicOperator": "First",
+ "maxDownloadSizeLimit": 2048,
+ "defaultCompressionQuality": 75,
+ "defaultResamplingMethod": "Bilinear",
+ "maxImageHeight": 4100,
+ "maxImageWidth": 15000,
+ "maxRecordCount": 1000,
+ "maxDownloadImageCount": 20,
+ "maxMosaicImageCount": 20,
+ "allowRasterFunction": true,
+ "rasterFunctionInfos": [
+  {
+   "name": "None",
+   "description": "Make a Raster or Raster Dataset into a Function Raster Dataset.",
+   "help": ""
+  },
+  {
+   "name": "Indiana_NearIR_RFT",
+   "description": "Indiana NearIR raster function template",
+   "help": ""
+  },
+  {
+   "name": "Indiana_NDVI_RPT2",
+   "description": "Indiana NDVI raster processing template",
+   "help": ""
+  }
+ ],
+ "rasterTypeInfos": [
+  {
+   "name": "Raster Dataset",
+   "description": "Supports all ArcGIS Raster Datasets",
+   "help": ""
+  }
+ ],
+ "mensurationCapabilities": "Basic",
+ "hasHistograms": true,
+ "hasColormap": false,
+ "hasRasterAttributeTable": false,
+ "minScale": 0,
+ "maxScale": 0,
+ "exportTilesAllowed": false,
+ "supportsStatistics": true,
+ "supportsAdvancedQueries": true,
+ "editFieldsInfo": null,
+ "ownershipBasedAccessControlForRasters": null,
+ "allowComputeTiePoints": false,
+ "useStandardizedQueries": true,
+ "advancedQueryCapabilities": {
+  "useStandardizedQueries": true,
+  "supportsStatistics": true,
+  "supportsOrderBy": true,
+  "supportsDistinct": true,
+  "supportsPagination": true
+ },
+ "spatialReference": {
+  "wkid": 102100,
+  "latestWkid": 3857
+ }
+}
