@@ -39,3 +39,8 @@ so their eight-second network deadlines do not run during module registration.
 Emit one ready event from both entrypoints; a service-client loaded without a boot
 boundary retains immediate polling. Keep genuine network errors, dated fallback,
 manual retries and the existing five-minute visible-page refresh behavior.
+
+A direct archival project dossier route must also work when retained scale state
+chooses a physical scene. Opening the dossier only requests geographic camera
+movement from renderers that support it; physical scene cameras remain intact.
+Include direct dossier entry/reload in the physical regression journey.
