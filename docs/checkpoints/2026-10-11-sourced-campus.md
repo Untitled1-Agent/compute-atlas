@@ -37,7 +37,12 @@ accepted research inventories. Original attachments, accepted claims and the
 project/OSM counts remain unchanged.
 
 Visual review corrected an initial phone overlap between the view switcher and
-scale toolbar. Dedicated hosted/standalone journeys, source-asset tests, broad
+scale toolbar.
+Tablet review also exposed a legacy inner card grid that split an already narrow
+inspector. The inspector keeps one column and the workspace stacks at tablet
+widths where a useful map and rail no longer fit side by side.
+
+Dedicated hosted/standalone journeys, source-asset tests, broad
 regression, exact-head live testing and actual deployed visual verification are
 required before merge/release. Results are recorded on the implementation PR.
 

@@ -74,6 +74,11 @@ try:
             page.go_back();ready(page)
             check(entry+' Back restores the prior roof and aerial view',page.locator('.campus-feature-inspector').is_visible() and page.evaluate('campusState.mode')=='oblique')
             page.locator('[data-campus-mode="aerial"]').click();ready(page)
+            for width,height in ((768,1024),(1024,768)):
+                page.set_viewport_size({'width':width,'height':height});ready(page);page.evaluate('window.scrollTo(0,0)')
+                check(entry+f' tablet {width} inspector remains legible',page.locator('.campus-feature-inspector').evaluate('e=>e.getBoundingClientRect().width')>250 and page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
+                check(entry+f' tablet {width} view controls remain clickable',page.locator('[data-campus-mode="oblique"]').evaluate('e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest("button")===e}'))
+                capture(page,entry,f'tablet-{width}')
             for width in (390,320):
                 page.set_viewport_size({'width':width,'height':844});ready(page)
                 # Keyboard/list parity and phone selection expansion.

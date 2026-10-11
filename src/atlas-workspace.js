@@ -298,4 +298,4 @@ routeFromHash=function(){
 // Preserve existing explicit catalog links. A fresh visit opens the approved landscape.
 if(!ATLAS_ENTRY_HASH){state.spatialLevel=0;state.view='overview';if(location.protocol!=='about:')history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
 ATLAS.workspace={phases:workspacePhases,selected:workspaceSelected,state:workspaceState,compare:()=>saved.projectCompare,compareDrawer:workspaceCompareDrawer,records:workspaceRecordData,parseCamera:workspaceParseCamera};
-document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready');
+// The final campus integration marks the complete workspace ready.

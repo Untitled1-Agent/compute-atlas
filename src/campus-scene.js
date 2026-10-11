@@ -103,3 +103,4 @@ const campusOriginalNav=renderNav;
 renderNav=function(){campusOriginalNav();if(campusSpatial()&&campusFeature())$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
 ATLAS.campus={scene:campusScene,state:campusState,parseCamera:campusCameraParse,select:campusSelectFeature};
 routeFromHash();
+document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready');

@@ -555,6 +555,19 @@ body{background:#07141b}
 .workspace-records .workspace-record-scroll{width:100%;max-width:100%;max-height:none}
 .workspace-records{border-left:0;border-right:0;border-bottom:0;border-radius:0;background:none}
 .workspace-records>summary{padding-left:0;padding-right:0}
+/* Tablet reading needs a useful map and a legible inspector. Legacy campus
+   card columns must not subdivide an already narrow sidebar. */
+.atlas-workspace .atlas-spatial-rail .atlas-insight-stack{grid-template-columns:1fr}
+.atlas-workspace .atlas-spatial-rail .atlas-insight-card:first-child{grid-row:auto}
+@media(min-width:641px) and (max-width:900px){
+ .atlas-workspace .atlas-spatial-layout{grid-template-columns:minmax(0,1fr)}
+ .atlas-workspace .atlas-intro{grid-template-columns:minmax(0,1fr);gap:12px}
+ .atlas-editorial .atlas-spatial-rail{grid-column:1;grid-row:2}
+ .atlas-editorial .workspace-map-lower{grid-column:1;grid-row:3}
+ .atlas-workspace .atlas-insight-card h2{font-size:26px}
+ .atlas-workspace .atlas-insight-card p{font-size:12px}
+ .atlas-workspace .atlas-insight-card{padding-top:16px}
+}
 </style></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -3460,7 +3473,7 @@ try{const previous=sessionStorage.getItem('atlas-research-view');if(previous)atl
 if (['overview','globe'].includes(state.view)) render();
 if (state.drawer?.kind==='site') openDrawer('site',state.drawer.id,{back:true});
 if(location.hash.split('?')[0]==='#research')routeFromHash();
-// Complete workspace readiness is emitted by atlas-workspace.js.
+// Complete workspace readiness is emitted after the final campus integration.
 
 'use strict';
 /* Shared map-led workspace. Collections stay separate; presentation and navigation do not. */
@@ -3762,7 +3775,7 @@ routeFromHash=function(){
 // Preserve existing explicit catalog links. A fresh visit opens the approved landscape.
 if(!ATLAS_ENTRY_HASH){state.spatialLevel=0;state.view='overview';if(location.protocol!=='about:')history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
 ATLAS.workspace={phases:workspacePhases,selected:workspaceSelected,state:workspaceState,compare:()=>saved.projectCompare,compareDrawer:workspaceCompareDrawer,records:workspaceRecordData,parseCamera:workspaceParseCamera};
-document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready');
+// The final campus integration marks the complete workspace ready.
 
 'use strict';
 /* Reviewed historical imagery and interpreted features. Independent of OSM and
@@ -3869,5 +3882,6 @@ const campusOriginalNav=renderNav;
 renderNav=function(){campusOriginalNav();if(campusSpatial()&&campusFeature())$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
 ATLAS.campus={scene:campusScene,state:campusState,parseCamera:campusCameraParse,select:campusSelectFeature};
 routeFromHash();
+document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready');
 </script>
 </body></html>
