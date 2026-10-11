@@ -111,7 +111,7 @@ try:
             page.locator('#atlas-map-query').fill('zzzz_no_matching_facility')
             page.wait_for_timeout(400)
             check(entry + ' empty search has explicit result state', page.evaluate('ATLAS.spatial.scope().sites.length') == 0 and 'No records match' in page.locator('.atlas-record-list').text_content())
-            page.locator('[data-atlas-action="clear-filters"]').click()
+            page.locator('.atlas-filterbar [data-atlas-action="clear-filters"]').click()
             page.evaluate("ATLAS.spatial.select('anthropic-fluidstack-lake-mariner');ATLAS.spatial.setLevel(5)")
             check(entry + ' Lake Mariner operating capacity excludes historical and construction totals', '102 MW' in page.locator('.atlas-feature-number').inner_text())
             check(entry + ' Lake Mariner phases retain operating and construction scopes', '336 MW' in page.locator('.atlas-evidence-schematic').inner_text() and 'Historical snapshot' in page.locator('.atlas-power-row').last.inner_text())
