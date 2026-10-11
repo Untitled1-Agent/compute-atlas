@@ -22,7 +22,7 @@ function workspaceCompareContent(){
   const projects=saved.projectCompare.map(site).filter(Boolean);
   return `<h1>Compare projects.</h1><p>Independent estimates and source-reported scopes retain their dates. These columns do not establish complete fleets or additive capacity.</p>${projects.length?`<div class="table-wrap"><table class="workspace-project-comparison"><thead><tr><th>Dimension</th>${projects.map(s=>`<th>${esc(s.name)}<button data-workspace-remove-compare="${esc(s.id)}" aria-label="Remove ${esc(s.name)}">Remove ×</button></th>`).join('')}</tr></thead><tbody>${[['Location',s=>esc(s.location)],['Snapshot IT estimate',s=>spatialPower(s,'snapshot')==null?'Not quantified':fmt(spatialPower(s,'snapshot'))+' MW<br><small>'+esc(s.snapshot.date)+' · independent model</small>'],['Target IT estimate',s=>spatialPower(s,'target')==null?'Not quantified':fmt(spatialPower(s,'target'))+' MW<br><small>'+esc(s.target.date)+' · independent model</small>'],['Source-reported power',s=>workspacePhases(s).filter(r=>r.source_id).map(r=>`<p>${esc(r.scope)}: ${fmt(r.value)} ${esc(r.unit)}<br><small>${esc(statusLabel(r.status))} · ${esc(r.as_of||'Undated')}</small>${primaryRef(r.source_id)}</p>`).join('')||'No comparable disclosure'],['Counterparties',s=>primaryRelationships(s).map(r=>`${esc(r.role)}: ${esc(company(r.company_id)?.name||r.company_id)} ${primaryRef(r.source_id)}`).join('<br>')||esc(s.owner_label)],['Sources',s=>primarySourceIds(s).map(primaryRef).join(' ')+srefs(s.sources)],['Inspect',s=>`<button data-atlas-action="campus" data-id="${esc(s.id)}">Explore campus ↗</button>`]].map(([label,value])=>`<tr><th>${label}</th>${projects.map(s=>`<td>${value(s)}</td>`).join('')}</tr>`).join('')}</tbody></table></div><button class="btn" data-workspace-export-compare>Export cited comparison ↓</button>`:'<p>Select Compare on a map selection or project to add up to three projects.</p>'}`;
 }
-function workspaceCompareDrawer(){openDrawer('project-comparison');$('#drawer-type').textContent='PROJECT COMPARISON';$('#drawer-content').innerHTML=workspaceCompareContent();}
+function workspaceCompareDrawer(){openDrawer('project-comparison');}
 function workspacePhases(s){
   const primary=primaryPowerRows(s).filter(o=>o.boundary==='critical_it'&&o.unit==='MW'&&!primaryIsContext(o));
   if(primary.length)return primary;
@@ -145,6 +145,9 @@ renderNav=function(){
   }
 };
 // Reading a source must preserve the campus/topic/phase return point.
+const workspaceOpenDrawer=openDrawer;
+openDrawer=function(kind,id,opts={}){workspaceOpenDrawer(kind,id,opts);if(kind==='project-comparison'){$('#drawer-type').textContent='PROJECT COMPARISON';$('#drawer-content').innerHTML=workspaceCompareContent();}};
+ATLAS.openDrawer=openDrawer;
 const workspaceCloseDrawer=closeDrawer;
 closeDrawer=function(){const wasOpen=!$('#drawer').hidden;workspaceCloseDrawer();if(wasOpen&&['overview','globe'].includes(state.view))history.replaceState(null,'',spatialURL());};
 // Phase inspection survives sharing and reload without changing the research ledger.
