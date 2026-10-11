@@ -1,0 +1,26 @@
+# Startup rendering and bounded live acceptance
+
+Design contract before the startup correction, 11 October 2026.
+
+Exact-head live testing found intermittent reload timeouts under the shared VPS's
+CPU/RAM caps. Isolated hosted and standalone diagnostics completed with correct
+state and no JavaScript or memory-pressure errors. The hosted CPU profile showed
+intermediate geographic maps drawing while successive modules were still loading,
+alongside repeated locale formatter construction. Waiting longer does not remove
+that unnecessary work.
+
+Keep module registration, source validation and route parsing intact. Defer map
+animation and drawing while the hosted loader installs modules. After the last
+module, clear the loading flag and mark the current map dirty so it draws the
+complete source/selection/layer state. Use the same boundary for the synchronous
+standalone; failures clear the flag and retain the existing boot error recovery.
+Do not create a background animation or skip any source/ready-state assertion.
+
+Cache the English number formatter by requested precision. Preserve the current
+handling of missing/non-finite quantities, decimal digits and units. This changes
+formatting work, not accepted values or measurement boundaries.
+
+Verify cold load and disabled-layer reload through both entrypoints, complete
+ready state, retained camera/selection, cited quantities and unchanged screenshots.
+Measure under the existing 640 MiB, zero-swap, 50% CPU browser cap. Restart the
+exact-head live/manual and remote regression gates before merging.
