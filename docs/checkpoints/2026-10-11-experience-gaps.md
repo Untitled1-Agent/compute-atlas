@@ -17,7 +17,7 @@ remain design examples, never research inputs.
 | The campus screen repeated large model panels while recent primary research appeared much farther down. | Compact evidence schematic, direct power/design/timeline/counterparty/investment shortcuts, and recent dated disclosures immediately alongside the existing campus material. Shortcuts open and focus the original cited claims. |
 | Expanded catalog maps lacked Escape dismissal and accurately labeled controls. | Escape closes the map and restores focus; label and expand controls expose their state. |
 | The application advertised readiness before the last research modules had loaded. | `atlas-ready` is emitted after the final research module initializes. |
-| CI caught a delayed camera save replacing an open research drawer's URL. | Camera persistence now respects drawer and route ownership; a background-redraw regression checks that research bookmarks survive. |
+| CI caught a delayed camera save replacing an open research drawer's URL; closing drawers also dropped catalog parameters. | Camera persistence now respects drawer and route ownership. Closing by Escape or backdrop restores the complete map bookmark. Both directions have regressions. |
 
 ## Evidence boundaries that remain intentional
 
@@ -46,7 +46,7 @@ copy of the live SQLite ledger and the standalone publication. This includes
 1440×1000 and 1366×768 KPI visibility, mobile legend/control separation, live
 publication loading, real geometry selection and focused primary claims.
 The earlier full interaction pass was **50/50**; CI adds the two short-desktop
-checks for **52** interaction assertions. See the [live receipt](evidence/2026-10-11/live-acceptance.json),
+checks and four drawer-return checks for **56** interaction assertions. See the [live receipt](evidence/2026-10-11/live-acceptance.json),
 [world](evidence/2026-10-11/world-desktop.png),
 [short desktop](evidence/2026-10-11/world-short-desktop.png), and
 [source campus](evidence/2026-10-11/source-campus.png). All six research scales

@@ -65,6 +65,12 @@ try:
                 raise
             page.wait_for_timeout(300)
             check(entry+' reload preserves page and camera',page.locator('.catalog-result').first.inner_text()==first and page.evaluate('catalogCameraToken(catalogState.camera)')==camera)
+            catalog_url=page.url
+            for dismissal in ['Escape','scrim']:
+                page.evaluate("ATLAS.openDrawer('help')")
+                if dismissal=='Escape': page.keyboard.press('Escape')
+                else: page.locator('#drawer-scrim').click(position={'x':10,'y':100})
+                check(entry+f' {dismissal} restores complete catalog bookmark',page.url==catalog_url)
             for level in range(4):
                 page.locator(f'[data-catalog-scale="{level}"]').click();page.wait_for_timeout(250)
                 check(entry+f' geographic scale {level}',page.locator(f'[data-catalog-scale="{level}"]').get_attribute('aria-pressed')=='true')
