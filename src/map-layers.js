@@ -109,4 +109,7 @@ document.addEventListener('click',event=>{if(event.target.closest('[data-energy-
 ATLAS.layers={state:energyState,data:POWER_CONTEXT,roads:ROAD_CONTEXT,select:energySelect,hit:energyHit,on:layerOn};
 if(ATLAS_ENTRY_HASH)history.replaceState(null,'',ATLAS_ENTRY_HASH);
 routeFromHash();
+// Install the selection notice only once this module's layer helpers exist.
+// Hosted scripts load separately while the geographic map is already drawing.
+document.addEventListener('atlas-camera-change',workspaceSelectionNotice);
 document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready');

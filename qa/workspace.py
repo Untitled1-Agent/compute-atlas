@@ -65,7 +65,7 @@ try:
             check(entry+' browser Back restores campus',page.url==before)
             page.locator('[data-workspace-location="true"]').click()
             check(entry+' approximate map is interactive and explicitly bounded',page.locator('#globe-canvas').is_visible() and 'no site footprint established' in page.locator('.workspace-location-map').inner_text())
-            page.locator('[data-workspace-location="false"]').click()
+            page.locator('.campus-view-toggle [data-campus-mode="evidence"]').click()
             page.locator('[data-workspace-topic="energy"]').click()
             check(entry+' energy evidence stays on the selected campus',page.locator('[data-workspace-topic-content="energy"]').is_visible() and page.locator('#drawer').is_hidden())
             page.evaluate("ATLAS.spatial.select('tencent-qingyuan')")
