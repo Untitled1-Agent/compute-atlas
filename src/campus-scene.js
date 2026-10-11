@@ -13,8 +13,8 @@ function campusChangeMode(mode){campusRememberCamera();if(mode==='physical')mode
 
 function campusCameraParse(value){
   const raw=value?.split(',');if(!raw||raw.length!==5||raw.some(x=>x.trim()===''))return null;
-  const n=raw.map(Number);if(n.some(x=>!Number.isFinite(x))||Math.abs(n[0])>Math.PI*4||n[1]<.16||n[1]>Math.PI/2||n[2]<.3||n[2]>8||Math.abs(n[3])>5000||Math.abs(n[4])>5000)return null;
-  return {yaw:n[0],pitch:n[1],zoom:n[2],pan:{x:n[3],y:n[4]}};
+  const n=raw.map(Number);if(n.some(x=>!Number.isFinite(x))||Math.abs(n[0])>Math.PI*4||n[1]<.16||n[1]>Math.PI/2+.000005||n[2]<.3||n[2]>8||Math.abs(n[3])>5000||Math.abs(n[4])>5000)return null;
+  return {yaw:n[0],pitch:Math.min(n[1],Math.PI/2),zoom:n[2],pan:{x:n[3],y:n[4]}};
 }
 function campusCameraParam(c){return c?[c.yaw,c.pitch,c.zoom,c.pan.x,c.pan.y].map(x=>Number(x.toFixed(5))).join(','):'';}
 class CampusScene extends FacilityScene {
