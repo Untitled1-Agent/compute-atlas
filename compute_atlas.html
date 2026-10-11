@@ -2422,7 +2422,7 @@ if(['overview','globe'].includes(state.view))render();
 'use strict';
 /* Source-locality review never mutates D.sites or certifies an archive pin.
    Multiple effective sources remain separate; there is no proximity deduplication. */
-const atlasIdentityPolicy='Source-established identities and localities are separate from historical map anchors. Matching anchors do not establish a common campus. No surveyed coordinates, certified parcel/building geometry or capacity total is supplied. Historical image interpretations, where available, use separate dated campus records.';
+const atlasIdentityPolicy='Source-established identities and localities are separate from historical map anchors. Matching anchors do not establish a common campus. No surveyed coordinates, parcel boundaries, building geometry or capacity total is supplied.';
 const atlasIdentityPrecision={municipality:'Municipality',county_or_parish:'County / parish',region:'Region',country:'Country'};
 function atlasIdentityValid(row,sources=ATLAS_PRIMARY.sources) {
   const x=row?.identity,keys=['canonical_name','place','place_precision','project_scope','coordinate_evidence','related_sites'];
