@@ -83,6 +83,7 @@ const operatorBaseTabs=catalogModeTabs;
 catalogModeTabs=function(){return operatorBaseTabs().replace(/<\/div>$/,`<button data-action="nav" data-id="operators" class="${state.view==='operators'?'active':''}">▤ Operator directory <span>${OPERATOR_DIRECTORY.records.length}</span></button></div>`);};
 const operatorBaseRender=render;
 render=function(){
+  if(window.ATLAS_BOOTSTRAPPING)return;
   if(state.view!=='operators')return operatorBaseRender();
   if(globe){globe.destroy();globe=null;}
   renderNav();$('#content').innerHTML=operatorDirectoryView();

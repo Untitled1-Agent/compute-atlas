@@ -3,6 +3,7 @@
 let atlasQueueOffset=0,atlasQueueNext=null,atlasQueueTotal=0,atlasMonitorBusy=false;
 const monitorTime = value => value ? new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}) : 'Not yet captured';
 const queueURL = value => {try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}};
+function atlasAfterStartup(task){if(window.ATLAS_BOOTSTRAPPING)document.addEventListener('atlas-ready',task,{once:true});else task();}
 pollAtlasMonitor = async function({offset=atlasQueueOffset}={}) {
   if(!globalThis.ATLAS_SERVICE||atlasMonitorBusy)return;
   atlasMonitorBusy=true;
@@ -56,7 +57,7 @@ if(globalThis.ATLAS_SERVICE_WARNING){
   document.querySelector('.app-shell')?.prepend(banner);
 }
 
-if(globalThis.ATLAS_SERVICE){pollAtlasMonitor({offset:0});setInterval(()=>{if(!document.hidden)pollAtlasMonitor();},300000);}
+if(globalThis.ATLAS_SERVICE)atlasAfterStartup(()=>{pollAtlasMonitor({offset:0});setInterval(()=>{if(!document.hidden)pollAtlasMonitor();},300000);});
 
 // Keep the analyst's current snapshot stable until they explicitly apply a new
 // reviewed publication. Source acquisition alone cannot trigger this notice.
@@ -121,4 +122,4 @@ document.addEventListener('click',event=>{
   if(action==='check')pollAtlasPublication();
 });
 ATLAS.publication={check:pollAtlasPublication,apply:applyAtlasPublication,pending:()=>atlasPublicationPending};
-if(globalThis.ATLAS_SERVICE){pollAtlasPublication();setInterval(()=>{if(!document.hidden)pollAtlasPublication();},300000);}
+if(globalThis.ATLAS_SERVICE)atlasAfterStartup(()=>{pollAtlasPublication();setInterval(()=>{if(!document.hidden)pollAtlasPublication();},300000);});

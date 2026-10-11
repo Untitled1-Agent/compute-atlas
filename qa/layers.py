@@ -14,7 +14,7 @@ base=os.environ.get('ATLAS_TEST_BASE');server=None
 if not base:
  server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/'
 def ready(page):
- page.wait_for_function('document.documentElement.classList.contains("layers-ready")')
+ page.wait_for_function('window.ATLAS_BOOTSTRAPPING===false&&document.documentElement.classList.contains("layers-ready")')
  page.wait_for_function('!globe||(!globe.dirty&&!globe.target)');page.wait_for_timeout(300)
 def capture(page,entry,name):
  page.evaluate('window.scrollTo(0,0)');page.screenshot(path=str(OUT/(entry+'-layers-'+name+'.png')),full_page=True)

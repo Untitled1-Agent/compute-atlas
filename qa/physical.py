@@ -16,7 +16,7 @@ if not base:
     server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)))
     threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/'
 def ready(page,scene=True):
-    page.wait_for_function('document.documentElement.classList.contains("layers-ready")')
+    page.wait_for_function('window.ATLAS_BOOTSTRAPPING===false&&document.documentElement.classList.contains("layers-ready")')
     page.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
     page.wait_for_function(('globe instanceof CampusScene&&globe.imageReady&&' if scene else 'globe instanceof ResearchMap&&')+'!globe.dirty&&globe.w===globe.canvas.parentElement.clientWidth')
     page.wait_for_timeout(300)
@@ -101,6 +101,10 @@ try:
             check(entry+' utility review keeps native missing voltage independent','Not tagged' in page.locator('#drawer-content').inner_text() and '345 kV · operator statement' in page.locator('#drawer-content').inner_text() and 'Native tags remain unchanged' in page.locator('#drawer-content').inner_text())
             page.keyboard.press('Escape');page.locator('#drawer').wait_for(state='hidden');page.locator('[data-campus-feature]').click();ready(page)
             check(entry+' explicit roof selection clears context identity',page.evaluate('ATLAS.workspace.activeSelection().type==="feature"&&ATLAS.layers.state.feature===null'))
+            page.goto(base+entry+'#site/coreweave-helios');page.wait_for_function('window.ATLAS_BOOTSTRAPPING===false&&document.documentElement.classList.contains("layers-ready")')
+            check(entry+' direct archival dossier works with retained physical scale',page.locator('#drawer').is_visible() and 'Helios' in page.locator('#drawer-content').inner_text() and page.url.endswith('#site/coreweave-helios'))
+            page.reload();page.wait_for_function('window.ATLAS_BOOTSTRAPPING===false&&document.documentElement.classList.contains("layers-ready")')
+            check(entry+' direct archival dossier survives reload',page.locator('#drawer').is_visible() and 'Helios' in page.locator('#drawer-content').inner_text())
             check(entry+' no uncaught physical journey errors',not errors)
             ctx.close()
         browser.close()

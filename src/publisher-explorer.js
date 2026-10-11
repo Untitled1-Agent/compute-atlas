@@ -68,7 +68,7 @@ operatorDirectoryView=()=>publisherOldOperatorView().replace('</header>','</head
 const publisherOldTabs=catalogModeTabs;
 catalogModeTabs=()=>publisherOldTabs().replace(/▤ Operator directory <span>\d+<\/span>/,'▤ Operator directories <span>2 sources</span>');
 const publisherOldRender=render;
-render=function(){if(state.view!=='publisher')return publisherOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=publisherView();$('#breadcrumb').textContent='Operator directory / Digital Realty';document.querySelector('#navigation [data-id=operators]')?.classList.add('active');globe=new PublisherMap($('#publisher-map'));};
+render=function(){if(window.ATLAS_BOOTSTRAPPING)return;if(state.view!=='publisher')return publisherOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=publisherView();$('#breadcrumb').textContent='Operator directory / Digital Realty';document.querySelector('#navigation [data-id=operators]')?.classList.add('active');globe=new PublisherMap($('#publisher-map'));};
 // This is a child route of Operator directory, not an extra sidebar item.
 // The legacy navigator permits only NAV entries; register the child route here
 // so browser history, reload and ATLAS.navigate do not fall back to overview.

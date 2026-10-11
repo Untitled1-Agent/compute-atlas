@@ -35,7 +35,7 @@ class FacilityScene {
       else if(e.shiftKey)this.pan={x:this.pan.x+(e.key==='ArrowLeft'?-24:e.key==='ArrowRight'?24:0),y:this.pan.y+(e.key==='ArrowUp'?-24:e.key==='ArrowDown'?24:0)};
       else if(e.key==='ArrowLeft')this.yaw-=.12;else if(e.key==='ArrowRight')this.yaw+=.12;else this.pitch=Math.max(.16,Math.min(1.48,this.pitch+(e.key==='ArrowUp'?.09:-.09)));this.dirty=true;}});
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas.parentElement);this.resize();
-    this.frame=()=>{if(this.destroyed)return;if(this.dirty){this.draw();this.dirty=false;}this.raf=requestAnimationFrame(this.frame);};this.raf=requestAnimationFrame(this.frame);
+    this.frame=()=>{if(this.destroyed)return;if(!window.ATLAS_BOOTSTRAPPING&&this.dirty){this.draw();this.dirty=false;}this.raf=requestAnimationFrame(this.frame);};this.raf=requestAnimationFrame(this.frame);
   }
   on(t,f,o){this.canvas.addEventListener(t,f,o);this.listeners.push([t,f,o]);}
   local(lon,lat){return [(lon-this.lon)*111320*Math.cos(this.lat*Math.PI/180),(lat-this.lat)*111320];}
