@@ -383,4 +383,4 @@ try{const previous=sessionStorage.getItem('atlas-research-view');if(previous)atl
 if (['overview','globe'].includes(state.view)) render();
 if (state.drawer?.kind==='site') openDrawer('site',state.drawer.id,{back:true});
 if(location.hash.split('?')[0]==='#research')routeFromHash();
-document.documentElement.classList.add('research-ready','atlas-ready');
+// Complete workspace readiness is emitted by atlas-workspace.js.

@@ -24,7 +24,7 @@ class ResearchMap {
     const selected = spatialDefaultSite();
     const asia = selected && spatialContinent(selected) === 'Asia';
     this.lat = this.level === 1 ? (asia ? 30 : 40) : 24;
-    this.lon = this.level === 1 ? (asia ? 105 : -43) : -48;
+    this.lon = this.level === 1 ? (asia ? 105 : -43) : -18;
     this.zoom = this.level === 1 ? 1.53 : 1;
     this.flat = this.level >= 2;
     this.labels = state.spatialLabels !== false;
@@ -141,7 +141,7 @@ class ResearchMap {
   projectNow(lon, lat) { this.prepare(); return this.project(lon, lat); }
   prepare() {
     this.cx = this.w * .51; this.cy = this.h * .48;
-    this.radius = Math.min(this.w * .47, this.h * .455) * this.zoom;
+    this.radius = Math.min(this.w * .49, this.h * .47) * this.zoom;
     this.sl0 = Math.sin(this.lat * geographicRadians); this.cl0 = Math.cos(this.lat * geographicRadians);
     if (this.flat) {
       const [x0, y0, x1, y1] = this.bounds;
@@ -197,7 +197,7 @@ class ResearchMap {
     if (!this.w || !this.h) return;
     const c = this.ctx, w = this.w, h = this.h;
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.prepare();
-    c.fillStyle = '#07141e'; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#08121b'; c.fillRect(0, 0, w, h);
     for (const star of this.stars) { c.fillStyle = '#38616c88'; c.fillRect(star.x * w, star.y * h, star.r, star.r); }
     const R = this.radius, cx = this.cx, cy = this.cy;
     if (!this.flat) {
@@ -215,32 +215,37 @@ class ResearchMap {
     const lon1 = this.flat ? this.bounds[2] + step : 180;
     const lat0 = this.flat ? Math.floor(this.bounds[1] / step) * step - step : -75;
     const lat1 = this.flat ? this.bounds[3] + step : 75;
-    for (let lon = lon0; lon <= lon1; lon += step) this.path(Array.from({length: 91}, (_, i) => [lon, -85 + i * 170 / 90]), '#28515f38', .65);
-    for (let lat = lat0; lat <= lat1; lat += step) this.path(Array.from({length: 181}, (_, i) => [-180 + i * 2, lat]), '#28515f38', .65);
+    for (let lon = lon0; lon <= lon1; lon += step) this.path(Array.from({length: 91}, (_, i) => [lon, -85 + i * 170 / 90]), this.flat?'#28515f24':'#28515f14', .65);
+    for (let lat = lat0; lat <= lat1; lat += step) this.path(Array.from({length: 181}, (_, i) => [-180 + i * 2, lat]), this.flat?'#28515f24':'#28515f14', .65);
     // Existing, attributed land points add cartographic texture only.
     if (!this.flat) for (const [lon, lat] of W.dots || []) {
       const p = this.project(lon, lat); if (p.z <= 0) continue;
       const size = .65 + .4 * p.z;
       c.fillStyle = `rgba(78,151,163,${.18 + p.z * .34})`; c.fillRect(p.x, p.y, size, size);
     }
-    for (const line of (this.flat && ATLAS_CONTEXT.coast?.length ? ATLAS_CONTEXT.coast : W.lines || [])) this.path(line, this.flat ? '#33687b' : '#387688a0', this.flat ? .85 : .6);
+    for (const line of (this.flat && ATLAS_CONTEXT.coast?.length ? ATLAS_CONTEXT.coast : W.lines || [])) this.path(line, this.flat ? '#46717a' : '#37616c65', this.flat ? .85 : .6);
     if (this.flat) {
       for (const line of ATLAS_CONTEXT.lakes || []) this.path(line, '#32708490', .8, '#091a28');
       c.setLineDash([3, 4]); for (const line of ATLAS_CONTEXT.states || []) this.path(line, '#43809470', .65); c.setLineDash([]);
       if (state.spatialRoads !== false) for (const line of ATLAS_CONTEXT.roads || []) this.path(line, this.level >= 3 ? '#467d8a69' : '#3358654a', this.level >= 3 ? .8 : .55);
-      this.drawPlaces();
     }
     const shade = c.createLinearGradient(0, 0, w, h); shade.addColorStop(0, '#07121a00'); shade.addColorStop(.65, '#04101900'); shade.addColorStop(1, '#040c1870');
     c.fillStyle = shade; c.fillRect(0, 0, w, h); c.restore();
-    if (!this.flat) { c.strokeStyle = '#4b9eab65'; c.lineWidth = 1; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.stroke(); }
+    if (!this.flat) { c.strokeStyle = '#4b9eab25'; c.lineWidth = 1; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.stroke(); }
+    // Source-backed location context, visually separate from the 79-project capacity layer.
+    if(this.canvas.closest('.atlas-workspace')&&state.view!=='catalog'){
+      c.fillStyle='#b2d3d180';
+      for(const r of CATALOG.records){const p=this.project(r.lon,r.lat);if(p.z>.025&&p.x>8&&p.x<w-8&&p.y>60&&p.y<h-65){c.beginPath();c.arc(p.x,p.y,this.flat?1.25:.85,0,Math.PI*2);c.fill();}}
+    }
     this.drawMarkers();
+    if(this.flat)this.drawPlaces();
     const position = document.getElementById('geo-position');
     if (position) position.textContent = this.flat ? 'MERCATOR · GENERALIZED CONTEXT · APPROXIMATE ANCHORS' : `${this.lat.toFixed(1)}° N  ${Math.abs(this.lon).toFixed(1)}° ${this.lon < 0 ? 'W' : 'E'}  ·  DRAG TO ROTATE`;
     const live = document.getElementById('globe-live');
     if (live) live.textContent = `${this.scope.sites.length} research records; ${this.groups.length} visible markers or clusters. Use the record list for keyboard access.`;
   }
   drawPlaces() {
-    const c = this.ctx, occupied = [];
+    const c = this.ctx, occupied = [...(this.markerLabels||[])];
     c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left';
     for (const place of [...(ATLAS_CONTEXT.places || [])].sort((a, b) => a.rank - b.rank)) {
       const p = this.project(place.lon, place.lat), text = place.name;
@@ -279,7 +284,7 @@ class ResearchMap {
     // Small points remain genuine source anchors, not randomly generated sites.
     if(this.level<=1)for(const item of points){c.fillStyle='#95dce399';c.beginPath();c.arc(item.p.x,item.p.y,1.7,0,Math.PI*2);c.fill();}
     const ranked = [...visible].sort((a, b) => Number(b.s.id === selected) - Number(a.s.id === selected) || (b.mw || 0) - (a.mw || 0));
-    const labels = [], labeled = new Set();
+    const labels = [], labeled = new Set();this.markerLabels=labels;
     if (this.labels) for (const item of ranked) {
       const {s, p, r} = item, name = item.members.length>1 ? (s.name.length>16?s.name.slice(0,15)+'…':s.name)+' + '+(item.members.length-1) : s.name.length > 26 ? s.name.slice(0, 24) + '…' : s.name;
       c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
@@ -304,10 +309,10 @@ class ResearchMap {
       c.restore();
       if (item.label) {
         const b = item.label;
-        c.fillStyle = '#06121beb'; c.fillRect(b.left - 5, b.y - 2, b.width + 10, 34);
+        c.save();c.shadowColor='#04101a';c.shadowBlur=5;
         c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left'; c.fillStyle = '#e5eeec'; c.fillText(b.name, b.left, b.y + 10);
         c.font = '10px ui-monospace,monospace'; c.fillStyle = '#8eb3bd';
-        c.fillText(item.mw == null ? 'Native / unquantified' : (item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW') + (item.members.length>1?' · '+item.known+' estimates':' · estimate'), b.left, b.y + 25);
+        c.fillText(item.mw == null ? 'Native / unquantified' : (item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW') + (item.members.length>1?' · '+item.known+' estimates':' · estimate'), b.left, b.y + 25);c.restore();
       }
     }
     for (const node of this.markerNodes) {

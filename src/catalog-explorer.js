@@ -125,7 +125,7 @@ class CatalogMap extends ResearchMap {
     const occupied=[];if(this.labels!==false){for(const g of [...this.groups].sort((a,b)=>Number(b.sites.some(r=>catalogReview(r.id)))-Number(a.sites.some(r=>catalogReview(r.id)))||b.sites.length-a.sites.length)){
       if(occupied.length>=(this.w<500?3:5))break;const r=g.sites[0],crossCountry=new Set(g.sites.map(s=>s.country)).size>1,name=g.sites.length>1?(crossCountry?(r.continent+' cluster'):((r.city||r.country)+' cluster')):r.name,text=name.length>24?name.slice(0,22)+'…':name;
       c.font='11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const width=Math.max(100,c.measureText(text).width+12),x=Math.min(this.w-width-12,Math.max(10,g.x+g.r+8)),y=g.y-18;
-      if(y<100||y>this.h-(this.w<360?295:this.w<500?270:175)||occupied.some(p=>Math.abs(p.y-y)<42&&x<p.x+p.width+10&&x+width>p.x-10))continue;occupied.push({x,y,width});c.fillStyle='#07151cec';c.fillRect(x-4,y-5,width+8,35);c.fillStyle='#e7f6f2';c.fillText(text,x,y+9);c.fillStyle='#8db7b9';c.font='10px ui-monospace,monospace';c.fillText(g.sites.length>1?fmt(g.sites.length)+' map features':r.kind+' · OSM',x,y+24);
+      if(y<100||y>this.h-(this.w<360?295:this.w<500?270:175)||occupied.some(p=>Math.abs(p.y-y)<42&&x<p.x+p.width+10&&x+width>p.x-10))continue;occupied.push({x,y,width});c.shadowColor='#07151c';c.shadowBlur=5;c.fillStyle='#e7f6f2';c.fillText(text,x,y+9);c.fillStyle='#8db7b9';c.font='10px ui-monospace,monospace';c.fillText(g.sites.length>1?fmt(g.sites.length)+' map features':r.kind+' · OSM',x,y+24);c.shadowBlur=0;
     }}
     const count=document.getElementById('catalog-visible-count');if(count)count.textContent=fmt(this.groups.reduce((n,g)=>n+g.sites.length,0))+' plotted / ';
     this.persistCamera();
