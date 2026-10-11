@@ -68,36 +68,52 @@ jobs:
           node --check src/project-research.js
           node --check src/atlas-workspace.js
       - name: Functional suite
+        if: ${{ !cancelled() }}
         run: python qa/functional.py
       - name: Six-scale semantic map suite over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/zoom-explorer.py
       - name: Analyst evidence desk over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/evidence-desk.py
       - name: Cited project research over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/project-research.py
       - name: Exploration state and mockup layout over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/experience.py
       - name: Map-led workspace and phase selection
+        if: ${{ !cancelled() }}
         run: python qa/workspace.py
       - name: Authoritative smoke suite
+        if: ${{ !cancelled() }}
         run: python qa/smoke.py
       - name: Live HTTP browser audit
+        if: ${{ !cancelled() }}
         run: python qa/live.py
       - name: SQLite-backed app over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/service.py
       - name: Source-health console over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/source-health.py
       - name: Global disclosure coverage over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/global-coverage.py
       - name: Site identity and coordinate precision over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/site-identity.py
       - name: Worldwide catalog, continuous wheel and 3D over real HTTP
+        if: ${{ !cancelled() }}
         run: python qa/catalog-explorer.py
       - name: Primary operator directory and source-bound map links
+        if: ${{ !cancelled() }}
         run: python qa/operator-directory.py
       - name: Publisher source maps and cursor-anchored facility zoom
+        if: ${{ !cancelled() }}
         run: python qa/publisher-explorer.py
       - name: Touch, sourced geometry selection and protected deployment prefix
+        if: ${{ !cancelled() }}
         run: python qa/inspection.py
       - name: Summarize QA
         if: always()

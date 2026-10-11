@@ -27,9 +27,13 @@ try:
         for entry in ('index.html','compute_atlas.html'):
             page=browser.new_page(viewport={'width':1440,'height':1080})
             page.set_default_timeout(60000 if os.environ.get('ATLAS_TEST_BASE') else 30000)
-            errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            errors=[];page.on('pageerror',lambda e:(errors.append(str(e)),print('BROWSER ERROR',str(e),flush=True)))
+            page.on('response',lambda r:print('HTTP ERROR',r.status,r.url,flush=True) if r.status>=400 else None)
             check(entry+' HTTP entrypoint',page.goto(base+entry).status==200)
-            page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+            try:page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+            except Exception:
+                print('STARTUP',page.url,page.locator('#content').inner_text()[:1200],errors,flush=True)
+                raise
             check(entry+' fresh visit opens world capacity landscape',page.evaluate("state.view==='overview'&&state.spatialLevel===0"))
             check(entry+' source monitor remains directly accessible',page.locator('[data-atlas-action="monitor"]').is_visible())
             check(entry+' map dominates usable desktop area',page.locator('.atlas-map-panel').evaluate('e=>{const r=e.getBoundingClientRect();return r.width>innerWidth*.5&&r.height>innerHeight*.5}'))
