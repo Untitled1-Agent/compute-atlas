@@ -61,8 +61,8 @@ function workspaceResearchView(){
     <header class="atlas-intro"><div><div class="atlas-eyebrow">${campus?'FACILITY & CAMPUS':'COMPUTE, FROM THE GROUND UP'}</div><h1>${campus?esc(s?.name||'No matching project'):title}</h1>${campus?`<p class="atlas-location">⌖ ${esc(s?.location||'')} · ${esc(s?.country||'')}</p>`:''}</div><div class="atlas-intro-aside"><p>${description}</p><button class="btn primary" data-atlas-action="journey">Take the five-stop tour ↗</button></div></header>
     ${workspaceToolbar(spatialStageStrip(level),workspaceRefine())}
     ${campus&&s?workspaceProjectTabs(s):''}
-    <div class="atlas-spatial-layout"><div class="atlas-map-column"><section class="atlas-map-panel">${campus?workspacePhaseDiagram(s,level):spatialMap(scope,s,level,phase).replace('<div class="atlas-map-legend">','<div class="atlas-map-legend"><span class="workspace-context-key">· OSM locations · no capacity implied</span>')}</section>${campus&&s?`<div class="atlas-detail-pair">${atlasPowerLadder(s)}${atlasAttributes(s)}</div>`:''}</div><aside class="atlas-spatial-rail" aria-label="Analysis and evidence">${workspaceRail(level,scope,s,phase)}</aside></div>
-    ${campus&&s?`<div class="workspace-evidence-bottom">${atlasSourcesPanel(s)}${atlasNotePanel(s)}</div><details class="workspace-research-detail"><summary>All project claims & dated disclosures <span>↓</span></summary>${atlasCampusBrief(s)}${atlasResearchPanel(s)}</details>`:spatialKpis(scope,phase)}
+    <div class="atlas-spatial-layout"><div class="atlas-map-column"><section class="atlas-map-panel">${campus?workspacePhaseDiagram(s,level):spatialMap(scope,s,level,phase).replace('<div class="atlas-map-legend">','<div class="atlas-map-legend"><span class="workspace-context-key">· OSM locations · no capacity implied</span>')}</section>${campus&&s?`<div class="atlas-detail-pair">${atlasPowerLadder(s)}${atlasAttributes(s)}</div>`:spatialKpis(scope,phase)}</div><aside class="atlas-spatial-rail" aria-label="Analysis and evidence">${workspaceRail(level,scope,s,phase)}</aside></div>
+    ${campus&&s?`<div class="workspace-evidence-bottom">${atlasSourcesPanel(s)}${atlasNotePanel(s)}</div><details class="workspace-research-detail"><summary>All project claims & dated disclosures <span>↓</span></summary>${atlasCampusBrief(s)}${atlasResearchPanel(s)}</details>`:''}
     <div class="atlas-map-footnote"><span>${esc(scope.note)}</span><button data-atlas-action="source-context">Natural Earth · sources & methodology ↗</button></div>
     ${campus?'':atlasRecordList(scope,phase)}
   </article>`;
@@ -75,6 +75,7 @@ const workspaceCatalogView=catalogView;
 catalogView=function(){
   const container=document.createElement('div');container.innerHTML=workspaceCatalogView();const root=container.firstElementChild;if(!root)return container.innerHTML;
   root.classList.add('atlas-workspace');root.querySelector('.catalog-mode-switch')?.remove();
+  const stats=root.querySelector('#catalog-stats');if(stats)root.querySelector('.atlas-map-column')?.append(stats);
   const strip=root.querySelector('.catalog-scale-strip');if(strip){const bar=document.createElement('div');bar.className='workspace-toolbar';strip.before(bar);bar.append(strip);bar.insertAdjacentHTML('beforeend',workspaceCollections());}
   if(root.classList.contains('catalog-facility')){
     const inspector=root.querySelector('.catalog-inspector'),rail=root.querySelector('.atlas-spatial-rail .atlas-insight-stack');
