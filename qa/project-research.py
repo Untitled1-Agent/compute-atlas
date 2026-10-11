@@ -105,6 +105,11 @@ with tempfile.TemporaryDirectory() as directory:
                 page.locator('[data-research-filter="country"]').select_option('China')
                 page.locator('[data-research-filter="topic"]').select_option('finance')
                 page.locator('[data-research-filter="sort"]').select_option('date')
+                research_url = page.url
+                # A background map redraw must not replace the drawer's bookmark.
+                page.evaluate('(()=>{const map=ATLAS.getGlobe();if(map){map.lon+=.001;map.dirty=true;}})()')
+                page.wait_for_timeout(350)
+                check(label+' background camera preserves research deep link', page.url == research_url)
                 page.reload(wait_until='networkidle')
                 page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
                 check(label+' research URL restores search, geography, topic and order', '#research?' in page.url

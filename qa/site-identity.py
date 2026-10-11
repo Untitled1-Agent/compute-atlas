@@ -44,7 +44,7 @@ try:
             page.on('response',lambda r:http_errors.append(str(r.status)+' '+r.url) if r.status>=400 else None)
             if args.in_memory:page.set_content((ROOT/entry).read_text(),wait_until='load')
             else:check(entry+' HTTP response',page.goto(base+entry,wait_until='load').status==200)
-            page.wait_for_function('window.ATLAS?.identity');page.wait_for_function('document.documentElement.classList.contains("catalog-ready")')
+            page.wait_for_function('window.ATLAS?.identity');page.wait_for_function('document.documentElement.classList.contains("atlas-ready")')
             baseline=page.evaluate('JSON.stringify(D.sites)')
             page.evaluate("ATLAS.spatial.select('hut8-river-bend');ATLAS.spatial.setLevel(5)")
             check(entry+' facility attributes have a reachable locality control',page.locator('.atlas-identity-launch [data-identity-open]').count()==1)

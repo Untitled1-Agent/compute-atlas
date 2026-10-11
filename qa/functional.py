@@ -107,7 +107,7 @@ with sync_playwright() as p:
   if f.exists() and f.is_file():route.fulfill(status=200,body=f.read_bytes(),content_type=mime.get(f.suffix,'application/octet-stream'))
   else:route.fulfill(status=404,body='not found',content_type='text/plain')
  web=b.new_page(viewport={'width':1400,'height':900});web_errs=[];web.on('pageerror',lambda e:web_errs.append(str(e)));web.route('https://atlas.test/**',lambda r:serve(r))
- web.set_content(hosted_html,wait_until='load');web.wait_for_function('document.documentElement.classList.contains("catalog-ready")');web.evaluate("ATLAS.navigate('overview',{hash:true})")
+ web.set_content(hosted_html,wait_until='load');web.wait_for_function('document.documentElement.classList.contains("atlas-ready")');web.evaluate("ATLAS.navigate('overview',{hash:true})")
  check('repository-native entrypoint boots from checked-in assets',web.locator('.evidence-lane').count()==4 and web.locator('.investor-table tbody tr').count()==7 and web.locator('#atlas-monitor-label').count()==1,web_errs)
  web.close()
  broken=b.new_page(viewport={'width':1200,'height':800});broken_errs=[];broken.on('pageerror',lambda e:broken_errs.append(str(e)));broken.route('https://atlas.test/**',lambda r:serve(r,True))

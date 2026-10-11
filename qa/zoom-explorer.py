@@ -57,7 +57,7 @@ try:
             else:
                 response = page.goto(base + entry, wait_until='load', timeout=30000)
                 check(entry + ' returns real HTTP 200', response.status == 200)
-            page.wait_for_function('window.ATLAS && ATLAS.spatial && document.documentElement.classList.contains("catalog-ready")')
+            page.wait_for_function('window.ATLAS && ATLAS.spatial && document.documentElement.classList.contains("atlas-ready")')
             page.evaluate("ATLAS.navigate('globe')")
             labels = page.locator('.atlas-scale-step b').all_inner_texts()
             check(entry + ' exposes six named scales', labels == ['World', 'Continent', 'Region', 'Metro', 'Campus', 'Facility'], labels)
