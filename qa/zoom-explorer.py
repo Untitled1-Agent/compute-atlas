@@ -107,7 +107,7 @@ try:
             page.locator('#atlas-evidence-filter').select_option('native')
             check(entry + ' native filter excludes comparable model records', page.evaluate("ATLAS.spatial.scope().sites.every(s=>!['archive','reviewed-model'].includes(s.review))"))
             check(entry + ' unknown IT is not rendered as a zero aggregate', '—' in page.locator('.atlas-kpi-grid').inner_text())
-            page.locator('[data-atlas-action="clear-filters"]').click()
+            page.locator('.atlas-filterbar [data-atlas-action="clear-filters"]').click()
             page.locator('#atlas-map-query').fill('zzzz_no_matching_facility')
             page.wait_for_timeout(400)
             check(entry + ' empty search has explicit result state', page.evaluate('ATLAS.spatial.scope().sites.length') == 0 and 'No records match' in page.locator('.atlas-record-list').text_content())

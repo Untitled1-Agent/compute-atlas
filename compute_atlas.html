@@ -440,7 +440,7 @@ body{background:#07141b}
 
 .workspace-toolbar .atlas-filter-panel{flex:0 0 auto;min-width:0}
 
-@media(min-width:1100px) and (max-height:850px){.atlas-workspace{--map-height:calc(100dvh - 286px)}}
+@media(min-width:1100px) and (max-height:850px){.atlas-workspace{--map-height:calc(100dvh - 337px)}.atlas-editorial{--map-height:calc(100dvh - 286px)}}
 .atlas-workspace .atlas-map-column .metric-value{font-size:27px}
 .atlas-workspace .atlas-map-column .metric-label{line-height:1.4}
 
@@ -812,8 +812,8 @@ case 'export-all':download('compute_atlas_enriched_data.json',D);break;case 'exp
 case 'export-scenario':download('compute_atlas_economics_scenario.json',{assumptions:scenario,results:calculateScenario(),scope:'Hypothetical annuity-cost model per IT GW; not an issuer forecast'});break;
 case 'export-sheet':{const sh=A.workbooks[state.book].sheets[state.sheet],m=new Map(sh.cells.map(c=>[c.address,c]));download(sh.name+'_original_cached_values.csv',csv(Array.from({length:sh.max_row},(_,r)=>Array.from({length:sh.max_col},(_,c)=>m.get(colName(c+1)+(r+1))?.value??''))),'text/csv;charset=utf-8');break;}
 case 'export-legacy':download('original_model_'+state.book+'.json',A.legacy[state.book]);break;case 'export-model-key':download('original_'+id+'.json',A.legacy[state.book][id]);break;
-case 'export-session':download('compute_atlas_research_session.json',{version:3,exported:new Date().toISOString(),favorites:saved.favorites,notes:saved.notes,compare:state.compare});break;
-case 'import-session':{const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=async()=>{try{const x=JSON.parse(await inp.files[0].text());if(!Array.isArray(x.favorites)||!x.notes||typeof x.notes!=='object')throw Error('Invalid session format');saved.favorites=x.favorites.filter(id=>site(id));saved.notes=Object.fromEntries(Object.entries(x.notes).filter(([id,v])=>site(id)&&typeof v==='string'));state.compare=Array.isArray(x.compare)?x.compare.filter(id=>company(id)).slice(0,4):[];save();render();toast('Research session imported.');}catch(err){toast('Could not import this file: '+err.message);}};inp.click();break;}
+case 'export-session':download('compute_atlas_research_session.json',{version:3,exported:new Date().toISOString(),favorites:saved.favorites,notes:saved.notes,compare:state.compare,projectCompare:saved.projectCompare||[]});break;
+case 'import-session':{const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.onchange=async()=>{try{const x=JSON.parse(await inp.files[0].text());if(!Array.isArray(x.favorites)||!x.notes||typeof x.notes!=='object')throw Error('Invalid session format');saved.favorites=x.favorites.filter(id=>site(id));saved.notes=Object.fromEntries(Object.entries(x.notes).filter(([id,v])=>site(id)&&typeof v==='string'));state.compare=Array.isArray(x.compare)?x.compare.filter(id=>company(id)).slice(0,4):[];saved.projectCompare=Array.isArray(x.projectCompare)?[...new Set(x.projectCompare.filter(id=>site(id)))].slice(0,3):[];save();render();toast('Research session imported.');}catch(err){toast('Could not import this file: '+err.message);}};inp.click();break;}
 }});
 document.addEventListener('change',e=>{const el=e.target;if(el.dataset.filter){state.filter[el.dataset.filter]=el.value;render();}else if(el.dataset.compare){if(!toggleCompare(el.dataset.compare))el.checked=false;render();}else if(el.id==='marker-metric'){state.marker=el.value;if(globe)globe.dirty=true;}else if(el.id==='cost-layer'){state.costLayer=el.value;render();}else if(el.id==='invest-company'){state.invest=el.value;render();}else if(el.id==='report-select'){state.report=+el.value;state.section=0;render();}else if(el.id==='book-select'){state.book=+el.value;state.sheet=0;render();}else if(el.id==='sheet-select'){state.sheet=+el.value;render();}else if(el.id==='model-select'){state.book=+el.value;render();}});
 document.addEventListener('input',e=>{const el=e.target;if(el.dataset.scenario){scenario[el.dataset.scenario]=+el.value;updateScenario();return;}if(el.id.startsWith('v-')){updateInvestment();return;}if(el.dataset.note){saved.notes[el.dataset.note]=el.value;save();return;}if(el.id==='global-search'){clearTimeout(debounceTimer);debounceTimer=setTimeout(()=>searchAll(el.value),100);return;}const map={'site-query':['filter','q'],'company-query':['companyQ'],'report-query':['reportQ'],'data-query':['dataQ'],'cost-query':['costQ']};if(map[el.id]){const p=map[el.id];if(p.length===2)state[p[0]][p[1]]=el.value;else state[p[0]]=el.value;clearTimeout(debounceTimer);debounceTimer=setTimeout(()=>rememberFilterFocus(()=>render(),el.id),170);}});
@@ -1688,7 +1688,7 @@ document.addEventListener('click',event=>{
     if(action==='phase')spatialTransition({phase:id});
     if(action==='zoom-in')spatialTransition({level:st.spatialLevel+1});
     if(action==='zoom-out')spatialTransition({level:st.spatialLevel-1});
-    if(action==='select'){state.spatialCluster=[];spatialTransition({selected:id});}
+    if(action==='select'){state.spatialCluster=globe?.groups?.find(g=>g.sites.some(s=>s.id===id))?.sites.map(s=>s.id)||[id];spatialTransition({selected:id});}
     if(action==='dossier')openDrawer('site',id);
     if(action==='reset'){state.filter={q:'',company:'all',country:'all',review:'all',stage:'all'};state.spatialSelected=null;state.spatialSelectionActive=false;state.spatialCluster=[];state.spatialFly='all';state.spatialCamera={};if(globe)globe.skipCameraSave=true;spatialTransition({level:0,evidence:'all',phase:'snapshot'});}
     return;

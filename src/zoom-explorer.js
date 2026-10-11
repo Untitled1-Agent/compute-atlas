@@ -312,7 +312,7 @@ document.addEventListener('click',event=>{
     if(action==='phase')spatialTransition({phase:id});
     if(action==='zoom-in')spatialTransition({level:st.spatialLevel+1});
     if(action==='zoom-out')spatialTransition({level:st.spatialLevel-1});
-    if(action==='select'){state.spatialCluster=[];spatialTransition({selected:id});}
+    if(action==='select'){state.spatialCluster=globe?.groups?.find(g=>g.sites.some(s=>s.id===id))?.sites.map(s=>s.id)||[id];spatialTransition({selected:id});}
     if(action==='dossier')openDrawer('site',id);
     if(action==='reset'){state.filter={q:'',company:'all',country:'all',review:'all',stage:'all'};state.spatialSelected=null;state.spatialSelectionActive=false;state.spatialCluster=[];state.spatialFly='all';state.spatialCamera={};if(globe)globe.skipCameraSave=true;spatialTransition({level:0,evidence:'all',phase:'snapshot'});}
     return;
