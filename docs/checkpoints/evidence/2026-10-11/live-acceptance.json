@@ -1,0 +1,115 @@
+{
+  "passed": 27,
+  "total": 27,
+  "checks": [
+    {
+      "test": "service catalog initialized",
+      "pass": true
+    },
+    {
+      "test": "candidate uses live SQL publication",
+      "pass": true
+    },
+    {
+      "test": "service 1440x1000 KPI row visible",
+      "pass": true
+    },
+    {
+      "test": "service 1366x768 KPI row visible",
+      "pass": true
+    },
+    {
+      "test": "service composed filters",
+      "pass": true
+    },
+    {
+      "test": "service semantic zoom reaches actual geometry",
+      "pass": true
+    },
+    {
+      "test": "service campus geometry available",
+      "pass": true
+    },
+    {
+      "test": "service campus project evidence available",
+      "pass": true
+    },
+    {
+      "test": "service topic shortcut focuses cited details",
+      "pass": true
+    },
+    {
+      "test": "service mobile 390 legend avoids controls",
+      "pass": true
+    },
+    {
+      "test": "service mobile 390 fits",
+      "pass": true
+    },
+    {
+      "test": "service mobile 320 legend avoids controls",
+      "pass": true
+    },
+    {
+      "test": "service mobile 320 fits",
+      "pass": true
+    },
+    {
+      "test": "service no browser or HTTP errors",
+      "pass": true
+    },
+    {
+      "test": "standalone catalog initialized",
+      "pass": true
+    },
+    {
+      "test": "standalone 1440x1000 KPI row visible",
+      "pass": true
+    },
+    {
+      "test": "standalone 1366x768 KPI row visible",
+      "pass": true
+    },
+    {
+      "test": "standalone composed filters",
+      "pass": true
+    },
+    {
+      "test": "standalone semantic zoom reaches actual geometry",
+      "pass": true
+    },
+    {
+      "test": "standalone campus geometry available",
+      "pass": true
+    },
+    {
+      "test": "standalone campus project evidence available",
+      "pass": true
+    },
+    {
+      "test": "standalone topic shortcut focuses cited details",
+      "pass": true
+    },
+    {
+      "test": "standalone mobile 390 legend avoids controls",
+      "pass": true
+    },
+    {
+      "test": "standalone mobile 390 fits",
+      "pass": true
+    },
+    {
+      "test": "standalone mobile 320 legend avoids controls",
+      "pass": true
+    },
+    {
+      "test": "standalone mobile 320 fits",
+      "pass": true
+    },
+    {
+      "test": "standalone no browser or HTTP errors",
+      "pass": true
+    }
+  ],
+  "execution": "real HTTP: isolated SQLite copy of live ledger and standalone; no production mutation"
+}

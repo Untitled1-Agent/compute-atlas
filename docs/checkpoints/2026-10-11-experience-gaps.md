@@ -40,9 +40,25 @@ existing comparable-IT boundaries and do not absorb the geographic catalog.
 selection/back/reload, camera persistence, scale selection, geometry context,
 focused project claims, Escape, keyboard navigation, and 320/390px layouts.
 The required GitHub workflow runs this alongside all existing regressions.
-Fresh screenshots and exact final results are recorded below before release.
+The final candidate passed **27/27** checks over actual HTTP against an isolated
+copy of the live SQLite ledger and the standalone publication. This includes
+1440×1000 and 1366×768 KPI visibility, mobile legend/control separation, live
+publication loading, real geometry selection and focused primary claims.
+The earlier full interaction pass was **50/50**; CI adds the two short-desktop
+checks for **52** interaction assertions. See the [live receipt](evidence/2026-10-11/live-acceptance.json),
+[world](evidence/2026-10-11/world-desktop.png),
+[short desktop](evidence/2026-10-11/world-short-desktop.png), and
+[source campus](evidence/2026-10-11/source-campus.png). All six research scales
+and 320/390px mobile captures were also inspected locally.
+
+Hosted regression suites now wait for complete application readiness; otherwise
+the later operator/research modules can replace a DOM node while an earlier
+suite is interacting with it. Final full CI and release receipts are linked from
+[PR #26](https://github.com/Untitled1-Agent/compute-atlas/pull/26).
 
 Local browsers run serially at lower CPU priority. Broad regression work runs
 on GitHub Actions. Cleanup removed only reproducible Atlas QA screenshots, the
 redundant Atlas development environment, and an obsolete Atlas test database;
-production state, source captures, backups and other projects were untouched.
+three obsolete Atlas code releases were subsequently removed, recovering another
+72 MiB while retaining the active and previous rollback releases. Production
+state, source captures, all backups and other projects were untouched.
