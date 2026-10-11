@@ -122,6 +122,7 @@ try:
             page.locator('[data-action="close-drawer"]').click()
             page.evaluate("ATLAS.spatial.select('coreweave-helios');ATLAS.spatial.setLevel(5)")
             check(entry + ' campus never aggregates neighboring sites', page.evaluate('ATLAS.spatial.scope().sites.map(s=>s.id)') == ['coreweave-helios'])
+            page.locator('[data-campus-mode="evidence"]').click()
             text = page.locator('.atlas-evidence-schematic').inner_text()
             check(entry + ' schematic cannot be mistaken for a survey', 'NOT A PARCEL / BUILDING SURVEY' in text and 'not additive' in text)
             check(entry + ' delivered and contracted IT are separate', '133 MW' in text and '526 MW' in text)
