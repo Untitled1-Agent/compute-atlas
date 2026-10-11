@@ -77,6 +77,11 @@ try:
             page.evaluate("ATLAS.navigate('overview');ATLAS.spatial.setLevel(0)")
             check(entry+' landscape KPIs fit short desktop',page.locator('.atlas-kpi-grid').first.evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
             page.screenshot(path=str(OUT/f'{entry}-workspace-short-desktop.png'))
+            page.set_viewport_size({'width':768,'height':1024})
+            for level in range(6):
+                page.evaluate(f'ATLAS.spatial.setLevel({level})')
+                check(entry+f' tablet scale {level} has a useful map and readable rail',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1') and page.locator('.atlas-map-panel').evaluate('e=>e.getBoundingClientRect().width')>500 and page.locator('.atlas-spatial-rail').evaluate('e=>e.getBoundingClientRect().width')>500)
+                if level in (0,4):page.screenshot(path=str(OUT/f'{entry}-workspace-tablet-{level}.png'),full_page=True)
             for width in (390,320):
                 page.set_viewport_size({'width':width,'height':844})
                 for level in (0,4,5):

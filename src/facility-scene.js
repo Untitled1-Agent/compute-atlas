@@ -106,6 +106,7 @@ class FacilityScene {
     c.lineWidth=.5;c.strokeStyle='#29464f36';
     for(let n=-Math.ceil(extent/step);n<=Math.ceil(extent/step);n++){
       for(const pair of [[[n*step,-extent],[n*step,extent]],[[-extent,n*step],[extent,n*step]]]){const a=this.project3(...pair[0]),b=this.project3(...pair[1]);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}}
+    this.drawGround?.();
     const features=this.features.filter(f=>f.record.id===this.record.id||this.showContext).sort((a,b)=>this.project3(...(b.polygons[0]?.[0]?.[0]||[0,0])).depth-this.project3(...(a.polygons[0]?.[0]?.[0]||[0,0])).depth);
     const surfaces=[];
     for(const f of features){let z=this.height(f);for(const poly of f.polygons){
@@ -129,8 +130,9 @@ class FacilityScene {
     if(!selected.polygons.length){c.strokeStyle='#8ceace';c.lineWidth=2;c.beginPath();c.arc(anchor.x,anchor.y,14,0,Math.PI*2);c.moveTo(anchor.x-20,anchor.y);c.lineTo(anchor.x+20,anchor.y);c.moveTo(anchor.x,anchor.y-20);c.lineTo(anchor.x,anchor.y+20);c.stroke();}
     // Labels describe the actual record, never fictional building phases.
     if(this.labels){const text=this.inspected.name.length>36?this.inspected.name.slice(0,34)+'…':this.inspected.name;
-    c.font='12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const tw=c.measureText(text).width;const x=Math.max(18,Math.min(w-tw-30,anchor.x+35)), y=Math.max(122,Math.min(h-120,anchor.y-80));
-    c.strokeStyle='#a1dfd2';c.beginPath();c.moveTo(anchor.x,anchor.y-4);c.lineTo(x-8,y+10);c.stroke();c.fillStyle='#081720f0';c.fillRect(x-5,y-8,tw+18,44);c.fillStyle='#e4f3ef';c.fillText(text,x+2,y+9);c.font='10px ui-monospace,monospace';c.fillStyle='#8fafa9';c.fillText(this.inspected.kind==='building'?'SOURCE BUILDING OUTLINE':this.inspected.geometry?'SOURCE AREA · NO EXTRUSION':'POINT ONLY · NO FOOTPRINT',x+2,y+25);
+    c.font='10px ui-monospace,monospace';const basisWidth=this.labelBasis?c.measureText(this.labelBasis).width:0;
+    c.font='12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const tw=Math.max(c.measureText(text).width,basisWidth);const x=Math.max(18,Math.min(w-tw-30,anchor.x+35)), y=Math.max(this.labelMinY||122,Math.min(h-120,anchor.y-80));
+    c.strokeStyle='#a1dfd2';c.beginPath();c.moveTo(anchor.x,anchor.y-4);c.lineTo(x-8,y+10);c.stroke();c.fillStyle='#081720f0';c.fillRect(x-5,y-8,tw+18,44);c.fillStyle='#e4f3ef';c.fillText(text,x+2,y+9);c.font='10px ui-monospace,monospace';c.fillStyle='#8fafa9';c.fillText(this.labelBasis|| (this.inspected.kind==='building'?'SOURCE BUILDING OUTLINE':this.inspected.geometry?'SOURCE AREA · NO EXTRUSION':'POINT ONLY · NO FOOTPRINT'),x+2,y+25);
     }
     // North is derived from the world coordinates and rotates with the camera.
     const origin=this.project3(0,0),north=this.project3(0,this.extent*.4);const angle=Math.atan2(north.y-origin.y,north.x-origin.x),nx=w-39,ny=h-120;

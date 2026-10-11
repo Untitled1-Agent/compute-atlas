@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-11",
+  "policy": "Historical image interpretation, independent of accepted power evidence and community-map inventory. No phase allocation or current building completeness is inferred.",
+  "scenes": [
+    {
+      "project_id": "coreweave-helios",
+      "title": "Helios \u00b7 historical campus",
+      "review": {
+        "status": "accepted_historical_interpretation",
+        "reviewed_at": "2026-10-11",
+        "basis": "Name/address corroboration through TDLR, TCEQ and EPA; visual comparison of original long-roof building, flanking equipment and nearby substation with operator aerial. Registry geocodes are not used as roof centroids.",
+        "limitations": "2022 imagery predates the AI conversion. One interpreted roof; no parcel survey, current inventory, measured height or building-to-phase/IT-power allocation.",
+        "registry_anchors": [
+          {
+            "registry_id": "110071953658",
+            "fac_name": "GALAXY HELIOS",
+            "fac_street": "984 COUNTY ROAD 112",
+            "fac_city": "AFTON",
+            "fac_state": "TX",
+            "fac_zip": "79220",
+            "fac_lat": 33.78026,
+            "fac_long": -100.85931,
+            "fac_collection_method": "ADDRESS MATCHING-HOUSE NUMBER",
+            "fac_accuracy_meters": 50
+          },
+          {
+            "registry_id": "110071142021",
+            "fac_name": "ARGO DATA CENTER",
+            "fac_street": "SW OF THE INTERSECTION OF CR 112 AND CR 131",
+            "fac_city": "AFTON",
+            "fac_state": "TX",
+            "fac_zip": "79220",
+            "fac_lat": 33.774823,
+            "fac_long": -100.868967,
+            "fac_collection_method": null,
+            "fac_accuracy_meters": 17483
+          }
+        ],
+        "registry_query_url": "https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/ECHO_All_Media_Facilities/FeatureServer/0/query?f=json&where=fac_state+%3D+%27TX%27+AND+%28fac_name+LIKE+%27%25HELIOS%25%27+OR+fac_name+LIKE+%27ARGO%25%27+OR+fac_city+%3D+%27AFTON%27%29&outFields=registry_id%2Cfac_name%2Cfac_street%2Cfac_city%2Cfac_state%2Cfac_zip%2Cfac_lat%2Cfac_long%2Cfac_collection_method%2Cfac_accuracy_meters&returnGeometry=false&resultRecordCount=100"
+      },
+      "image": {
+        "path": "data/campus/helios-naip-20220905.jpg",
+        "sha256": "ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7",
+        "bytes": 301536,
+        "width": 1200,
+        "height": 1000,
+        "acquired_at": "2022-09-05",
+        "captured_at": "2026-10-11",
+        "publisher": "USDA NAIP / USGS National Map",
+        "license": "Public domain",
+        "native_resolution_m": 0.6,
+        "raster_id": 190775,
+        "raster_name": "m_3310010_sw_14_060_20220905",
+        "extent_3857": {
+          "xmin": -11229161.562570395,
+          "ymin": 3998094.213094154,
+          "xmax": -11227875.912610648,
+          "ymax": 3999165.5880606095,
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        },
+        "export_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?f=json&bbox=-100.872%2C33.771%2C-100.863%2C33.779&bboxSR=4326&imageSR=3857&size=1200%2C1000&format=jpg&compressionQuality=88&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B190775%5D%2C+%22ascending%22%3A+true%7D&renderingRule=%7B%22rasterFunction%22%3A+%22NaturalColor%22%7D",
+        "metadata_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/query?where=Category%3D1&geometry=%7B%22x%22%3A+-100.8671%2C+%22y%22%3A+33.78064%2C+%22spatialReference%22%3A+%7B%22wkid%22%3A+4326%7D%7D&geometryType=esriGeometryPoint&spatialRel=esriSpatialRelIntersects&outFields=%2A&returnGeometry=false&orderByFields=acquisition_date+DESC&f=pjson",
+        "license_url": "https://www.usgs.gov/centers/eros/science/usgs-eros-archive-aerial-photography-national-agriculture-imagery-program-naip",
+        "source_metadata": {
+          "OBJECTID": 190775,
+          "Name": "m_3310010_sw_14_060_20220905",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -11225848.970926283,
+          "CenterY": 3999502.170710402,
+          "State": "TX",
+          "Year": 2022,
+          "raster_name": "m_3310010_sw_14_060_20220905",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3283682",
+          "acquisition_date": 1662336000000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "14N",
+          "datum": "NAD83"
+        }
+      },
+      "sources": [
+        {
+          "label": "TDLR \u00b7 Helios Light Speed registration",
+          "url": "https://www.tdlr.texas.gov/TABS/Search/Print/TABS2025012175"
+        },
+        {
+          "label": "TCEQ \u00b7 facility application/address",
+          "url": "https://records.tceq.texas.gov/cs/idcplg?IdcService=TCEQ_EXTERNAL_SEARCH_GET_FILE&Rendition=Web&dID=8718222"
+        },
+        {
+          "label": "EPA \u00b7 Galaxy Helios registry",
+          "url": "https://echo.epa.gov/detailed-facility-report?fid=110071953658"
+        },
+        {
+          "label": "EPA \u00b7 legacy Argo Data Center registry",
+          "url": "https://echo.epa.gov/detailed-facility-report?fid=110071142021"
+        },
+        {
+          "label": "Galaxy \u00b7 July 2026 campus aerial (page 17)",
+          "url": "https://www.sec.gov/Archives/edgar/data/1859392/000185939226000084/exhibit992-q22026overvie.htm"
+        }
+      ],
+      "features": [
+        {
+          "id": "helios-naip2022-roof-01",
+          "name": "Original long roof",
+          "kind": "building",
+          "lat": 33.7744161,
+          "lon": -100.8690495,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -100.8707915,
+                    33.7745921
+                  ],
+                  [
+                    -100.8673075,
+                    33.7745841
+                  ],
+                  [
+                    -100.8673075,
+                    33.7742481
+                  ],
+                  [
+                    -100.8707915,
+                    33.7742481
+                  ],
+                  [
+                    -100.8707915,
+                    33.7745921
+                  ]
+                ]
+              ]
+            ]
+          },
+          "derivation": "Manual roof interpretation from georeferenced NAIP crop; approximate, not surveyed",
+          "pixel_vertices": [
+            [
+              258,
+              551
+            ],
+            [
+              620,
+              552
+            ],
+            [
+              620,
+              594
+            ],
+            [
+              258,
+              594
+            ],
+            [
+              258,
+              551
+            ]
+          ],
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2022-09-05",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null
+        }
+      ]
+    }
+  ]
+}
