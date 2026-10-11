@@ -24,3 +24,12 @@ Verify cold load and disabled-layer reload through both entrypoints, complete
 ready state, retained camera/selection, cited quantities and unchanged screenshots.
 Measure under the existing 640 MiB, zero-swap, 50% CPU browser cap. Restart the
 exact-head live/manual and remote regression gates before merging.
+
+The first focused run preserved formatting, camera, layers and selection, but a
+standalone reload still took 240 seconds. Deferring canvas frames alone is not
+sufficient: module registration calls the page renderer repeatedly. Extend the
+boundary to each page-rendering entry point. Route and module state still register
+in order; page composition and map construction wait for the completed registry.
+After clearing the boundary, invoke the final decorated renderer once. Explicit
+catalog, operator, publisher and source routes must retain their existing state
+and drawers. Verify these routes as well as geographic and physical startup.
