@@ -237,10 +237,18 @@ atlasPublicationNotice=function() {
 };
 
 // Campus and deep-linked site dossiers expose the same reviewed evidence.
+function atlasCampusBrief(s){
+  const p=atlasResearchProfile(s),rows=p.rows.filter(r=>r.as_of&&atlasResearchTopic(r)!=='identity').slice(0,3);
+  return `<section class="atlas-campus-brief" aria-label="Recent project evidence"><div class="atlas-eyebrow">PROJECT EVIDENCE</div><h3>What the sources report.</h3><p>${p.rows.length} project claims · ${p.sources.length} cited documents. Reported dates are not inferred completion dates.</p>${rows.map(r=>`<article class="atlas-campus-disclosure"><time>${esc(r.as_of)}</time><div><button data-research-site="${esc(s.id)}" data-research-claim-target="${esc(r.id)}">${esc(atlasResearchLabel(r))} ↗</button><small>${esc(r.scope||atlasResearchLabel(r))}${r.status?' · '+esc(statusLabel(r.status)):''}</small></div>${primaryRef(r.source_id)}</article>`).join('')||'<p>No dated project-specific disclosure is available. Read the research gaps below.</p>'}</section>`;
+}
 const atlasResearchPreviousView=sixScaleGlobeView;
 sixScaleGlobeView=function() {
-  const html=atlasResearchPreviousView(),s=site(state.spatialSelected);
-  return state.spatialLevel>=4&&s ? html.replace('<div class="atlas-bottom-evidence">',atlasResearchPanel(s)+'<div class="atlas-bottom-evidence">') : html;
+  let html=atlasResearchPreviousView();const s=site(state.spatialSelected);
+  if(state.spatialLevel<4||!s)return html;
+  const shortcuts=`<nav class="atlas-project-shortcuts" aria-label="Facility research sections">${[['energy','Power & energy'],['technical','Technical design'],['development','Timeline'],['commercial','Counterparties'],['finance','Investment']].map(([topic,label])=>`<button data-research-site="${esc(s.id)}" data-research-topic-target="${topic}">${label} ↗</button>`).join('')}<button data-atlas-action="export" data-id="${esc(s.id)}">Export dossier ↓</button></nav>`;
+  html=html.replace('<div class="atlas-spatial-layout">',shortcuts+'<div class="atlas-spatial-layout">');
+  html=html.replace('<div class="atlas-detail-pair">',atlasCampusBrief(s)+'<div class="atlas-detail-pair">');
+  return html.replace('<div class="atlas-bottom-evidence">',atlasResearchPanel(s)+'<div class="atlas-bottom-evidence">');
 };
 globeView=sixScaleGlobeView;
 const atlasResearchPreviousDossier=siteDossier;
@@ -375,4 +383,4 @@ try{const previous=sessionStorage.getItem('atlas-research-view');if(previous)atl
 if (['overview','globe'].includes(state.view)) render();
 if (state.drawer?.kind==='site') openDrawer('site',state.drawer.id,{back:true});
 if(location.hash.split('?')[0]==='#research')routeFromHash();
-document.documentElement.classList.add('research-ready');
+document.documentElement.classList.add('research-ready','atlas-ready');

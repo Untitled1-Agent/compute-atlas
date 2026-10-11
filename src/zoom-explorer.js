@@ -361,5 +361,5 @@ dataView=()=>`<section class="atlas-publication-banner"><span><b>Reviewed primar
 ATLAS.navigate=navigate;ATLAS.openDrawer=openDrawer;ATLAS.primary=ATLAS_PRIMARY;ATLAS.context=ATLAS_CONTEXT;
 ATLAS.spatial={levels:ATLAS_SCALE_LEVELS,state:spatialState,scope:()=>spatialScope(spatialState().spatialLevel,spatialDefaultSite()),aggregate:spatialAggregate,select:id=>{if(site(id))spatialTransition({selected:id});},setLevel:n=>spatialTransition({level:n})};
 const buildDate=document.querySelector('.top-date b');if(buildDate){const date=new Date((ATLAS_PRIMARY.published_at||'2026-09-11')+'T00:00:00Z');buildDate.textContent=date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}).toUpperCase();}
-routeFromHash();document.documentElement.classList.add('atlas-ready');
+routeFromHash();
 // Optional same-origin monitor startup is owned by service-client.js.
