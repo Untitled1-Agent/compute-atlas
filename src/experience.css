@@ -59,7 +59,7 @@
  .catalog-scale-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.catalog-scale-strip button{justify-content:center;padding:9px 7px;min-height:38px}.catalog-scale-strip small{display:none}
  .catalog-scale-strip button:nth-child(-n+3){border-bottom:1px solid var(--atlas-line)}
  .catalog-scale-strip button:nth-child(3){border-right:0}
- .catalog-map-caption{bottom:139px;background:#07141eea;max-width:calc(100% - 24px)}
+ .catalog-map-caption{bottom:180px;background:#07141eea;max-width:calc(100% - 24px)}
  .catalog-map-stage .atlas-map-chips{gap:4px;padding-bottom:48px}.catalog-map-stage .atlas-map-chips button{min-height:28px}
  .catalog-map-stage .atlas-map-tools{bottom:12px}.catalog-map-stage .atlas-coordinate{max-width:39%;white-space:normal}
  .atlas-campus-brief{padding:14px}.atlas-campus-disclosure{grid-template-columns:1fr auto;gap:5px 10px}.atlas-campus-disclosure time{grid-column:1/-1}
@@ -79,3 +79,5 @@
  .atlas-intro h1,.catalog-experience .atlas-intro h1{font-size:36px}
  .atlas-intro-aside p{font-size:11px}.atlas-intro .btn{padding:7px 12px}
 }
+
+@media(max-width:360px){.catalog-map-caption{bottom:200px}}
