@@ -31,3 +31,16 @@ survey dates, commissioning dates or confirmation of current operation. The
 2022 campus aerial is independently dated. No service connection, campus owner,
 building/phase identity, height or IT-capacity allocation is inferred from this
 context. Research and geographic-catalog collections remain unchanged.
+
+`helios-roads.json` derives **36 highway ways** from the same response and exact
+capture time, retaining names, references, native highway/access tags, node refs,
+complete coordinates, edits and object history. It is an independently exported
+ODbL road collection; it does not add capacity/location inventory records or
+establish public/campus access. Some source ways explicitly carry `access=private`.
+Run `python -m tools.normalize_road_context INPUT.xml OUTPUT.json CAPTURE_TIMESTAMP`.
+
+The Road context control governs generalized Natural Earth roads and the bounded
+local snapshot. Local roads draw beneath selected geometry and research markers;
+their attribution is present even when the location/electricity layers are off.
+Current community edits, historical aerial capture and basemap retrieval dates
+remain separate. Screen clipping/visibility never changes native exported data.
