@@ -40,6 +40,7 @@ try:
             check(entry+' topic survives sharing/reload',page.url==timeline_url and page.locator('[data-workspace-topic-content="development"]').is_visible())
             page.screenshot(path=str(OUT/(entry+'-editorial-timeline.png')),full_page=True)
             page.locator('[data-workspace-topic="overview"]').click()
+            page.locator('.campus-phase-shortcuts>summary').click()
             page.locator('[data-workspace-phase="helios-phase2-it"]').click()
             phase_url=page.url
             page.locator('.workspace-selected-phase [data-atlas-action="source"]').first.click()
@@ -53,7 +54,7 @@ try:
             check(entry+' shelf action reflects saved state','On research shelf' in page.locator('.atlas-intro [data-action="favorite"]').inner_text())
             page.locator('.workspace-selected-phase [data-workspace-compare]').click()
             page.evaluate("ATLAS.spatial.select('amazon-anthropic-new-carlisle');ATLAS.spatial.setLevel(4)")
-            page.locator('.workspace-selected-phase [data-workspace-compare]').click()
+            page.locator('.campus-project-inspector [data-workspace-compare]').click()
             page.locator('[data-workspace-open-compare]').click()
             check(entry+' compares project quantities with sources',page.locator('.workspace-project-comparison').is_visible() and 'Snapshot IT estimate' in page.locator('#drawer-content').inner_text() and page.locator('#drawer-content [data-atlas-action="source"]').count()>0)
             page.screenshot(path=str(OUT/(entry+'-editorial-comparison.png')),full_page=True)

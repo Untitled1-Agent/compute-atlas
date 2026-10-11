@@ -30,7 +30,7 @@ def pin_tag(match):
 hosted=re.sub(r'<(?:link|script)\b[^>]*(?:href|src)="src/[^"?]+\.(?:css|js)(?:\?v=[^"]+)?"[^>]*>',pin_tag,hosted)
 hosted_path.write_text(hosted)
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
-for key,path in [('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
+for key,path in [('POWER_REVIEWS','data/layers/helios-power-reviews.json'),('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
 campus=json.loads((ROOT/'data/campus/scenes.json').read_text())
 for scene in campus['scenes']:

@@ -48,6 +48,7 @@ try:
                 page.screenshot(path=str(OUT/f'{entry}-workspace-scale-{level}.png'))
             page.evaluate("ATLAS.spatial.select('coreweave-helios');ATLAS.spatial.setLevel(4)")
             before=page.url
+            page.locator('.campus-phase-shortcuts>summary').click()
             phase=page.locator('[data-workspace-phase]').nth(1)
             claim=phase.get_attribute('data-workspace-phase');label=phase.locator('b').inner_text()
             phase.click()

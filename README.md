@@ -225,3 +225,24 @@ The service supports a validated `--root-path /compute` for protected subpath
 hosting. [Protected deployment and recovery](docs/protected-deployment.md) covers
 the loopback service, TLS Basic Auth, persistent state and consistent daily
 backups. A local proxy test does not certify a production deployment.
+
+
+The Campus/Facility journey now separates a physical source feature from project
+phase evidence. Facility defaults to the one reviewed Helios roof; New Carlisle
+provides a chooser for three positional roof interpretations in the licensed
+2025 Edison / IEC-2 image. Selecting a phase opens Evidence; returning restores
+the prior physical feature and camera. Source drawers, cited feature exports,
+shared links and typed local shelf/session records retain the image version.
+The compact overview uses four initial project attributes and four documents,
+with accessible expanders for the rest. The Chicago–New Carlisle frame is distinct
+from its 250 km nearby-project research context. Locate actions preserve original
+archival coordinates and name the reviewed scene separately.
+
+Geometry dates, later physical-identity reviews, native utility tags, transformer
+capacity, project grid power and critical IT remain separate. The Indiana image
+is dated to 2025, not an inferred exact day. Positional roofs do not inherit permit
+building names, current operating status or MW. The separate SR2 / IEC-3 component,
+current Helios imagery, full building inventory, reviewed phase/circuit links,
+fiber geometry and collection reconciliation remain open. See
+[physical-selection design](docs/design/campus-feature-selection.md) and the
+[cited source decisions](docs/research/new-carlisle-campus.md).
