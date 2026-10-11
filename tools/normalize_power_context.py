@@ -31,23 +31,27 @@ def clip_paths(coords):
         else:paths.append(segment)
     return paths
 
-def normalize(raw,captured_at):
+def normalize(raw,captured_at,*,kind='power'):
+    if kind not in ('power','roads'):raise ValueError('Unknown context collection')
     root=ET.fromstring(raw);nodes={x.attrib['id']:x for x in root.findall('node')};features=[]
     for way in root.findall('way'):
         tags={t.attrib['k']:t.attrib['v'] for t in way.findall('tag')}
-        if tags.get('power') not in ('line','minor_line','substation'):continue
+        if kind=='power' and tags.get('power') not in ('line','minor_line','substation'):continue
+        if kind=='roads' and ('highway' not in tags or tags.get('area')=='yes'):continue
         refs=[n.attrib['ref'] for n in way.findall('nd')]
         if not refs or any(ref not in nodes for ref in refs):raise ValueError('Incomplete source way '+way.attrib['id'])
         coords=[[float(nodes[ref].attrib['lon']),float(nodes[ref].attrib['lat'])] for ref in refs]
         if any(not(-180<=x<=180 and -90<y<90) for x,y in coords):raise ValueError('Invalid source coordinates')
         paths=clip_paths(coords)
         if not paths:continue
-        area=tags['power']=='substation'
+        area=kind=='power' and tags['power']=='substation'
         if area and (len(coords)<4 or coords[0]!=coords[-1]):raise ValueError('Substation area is not a closed way')
         sid=way.attrib['id']
         features.append({'id':'osm-way-'+sid,'osm_type':'way','osm_id':int(sid),'version':int(way.attrib['version']),'edited_at':way.attrib['timestamp'],'tags':tags,'node_refs':refs,'geometry':{'type':'Polygon' if area else 'LineString','coordinates':[coords] if area else coords},'display_paths':paths,'url':'https://www.openstreetmap.org/way/'+sid})
     if not features:raise ValueError('Empty capture cannot replace the context snapshot')
-    return {'schema_version':1,'collection':'Bounded community electricity context','license':'ODbL-1.0','attribution':'© OpenStreetMap contributors','license_url':'https://www.openstreetmap.org/copyright','captured_at':captured_at,'coverage_bbox':list(BBOX),'query_url':QUERY,'response_sha256':hashlib.sha256(raw).hexdigest(),'method':'Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.','policy':'Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence.','features':features}
+    policy='Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence.'
+    if kind=='roads':policy='Community road mapping, not a survey or confirmation of public access, campus access, ownership or present condition. Native access tags remain independent source statements. Edit times are not image dates. Coverage is partial; absence is not proof of absence.'
+    return {'schema_version':1,'collection':'Bounded community '+('road' if kind=='roads' else 'electricity')+' context','license':'ODbL-1.0','attribution':'© OpenStreetMap contributors','license_url':'https://www.openstreetmap.org/copyright','captured_at':captured_at,'coverage_bbox':list(BBOX),'query_url':QUERY,'response_sha256':hashlib.sha256(raw).hexdigest(),'method':'Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.','policy':policy,'features':features}
 
 if __name__=='__main__':
     source=Path(sys.argv[1]);out=Path(sys.argv[2]);date=sys.argv[3] if len(sys.argv)>3 else datetime.fromtimestamp(source.stat().st_mtime,timezone.utc).isoformat()

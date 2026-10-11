@@ -11,15 +11,26 @@ def safe_json(x):
 template=(ROOT/'src/index.html').read_text()
 css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css','src/source-health.css','src/global-coverage.css','src/site-identity.css','src/catalog-explorer.css','src/operator-directory.css','src/publisher-explorer.css','src/project-research.css','src/experience.css'))
 js='\n'.join((ROOT/p).read_text() for p in ('src/directory-schema.js','src/digital-realty-schema.js','src/spatial-math.js','src/pointer-gestures.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/global-coverage.js','src/site-identity.js','src/responsive-nav.js','src/facility-scene.js','src/catalog-explorer.js','src/operator-directory.js','src/publisher-explorer.js','src/project-research.js','src/atlas-workspace.js','src/campus-scene.js','src/map-layers.js'))
-# The hosted entrypoint must never combine cached assets from different releases.
-asset_version=hashlib.sha256((css+js).encode()).hexdigest()[:12]
+# Source-only updates also change release identity. Native browser integrity checks
+# reject stale HTML receiving changed scripts, styles or publication JSON.
+asset_paths=sorted({str(p.relative_to(ROOT)) for p in (ROOT/'src').iterdir() if p.suffix in ('.css','.js')})
+asset_paths+=sorted(str(p.relative_to(ROOT)) for p in (ROOT/'data').rglob('*') if p.is_file())
+asset_hashes={path:hashlib.sha256((ROOT/path).read_bytes()).digest() for path in asset_paths}
+integrity={path:'sha256-'+base64.b64encode(digest).decode() for path,digest in asset_hashes.items()}
+asset_version=hashlib.sha256(safe_json({p:h.hex() for p,h in asset_hashes.items()}).encode()).hexdigest()[:12]
 hosted_path=ROOT/'index.html'
 hosted=hosted_path.read_text()
 hosted=re.sub(r"const ASSET_VERSION='[^']*'",f"const ASSET_VERSION='{asset_version}'",hosted)
+hosted=re.sub(r'const ASSET_INTEGRITY=.*?;\n',f'const ASSET_INTEGRITY={safe_json(integrity)};\n',hosted)
 hosted=re.sub(r'((?:href|src)="src/[^"?]+\.(?:css|js))(?:\?v=[^"]+)?(")',lambda m:m[1]+'?v='+asset_version+m[2],hosted)
+def pin_tag(match):
+    tag=match[0];path=re.search(r'(?:href|src)="(src/[^"?]+)',tag)[1]
+    tag=re.sub(r' (?:integrity|crossorigin)="[^"]*"','',tag)
+    return tag[:-1]+' integrity="'+integrity[path]+'" crossorigin="anonymous">'
+hosted=re.sub(r'<(?:link|script)\b[^>]*(?:href|src)="src/[^"?]+\.(?:css|js)(?:\?v=[^"]+)?"[^>]*>',pin_tag,hosted)
 hosted_path.write_text(hosted)
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
-for key,path in [('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
+for key,path in [('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
 campus=json.loads((ROOT/'data/campus/scenes.json').read_text())
 for scene in campus['scenes']:

@@ -152,7 +152,7 @@ class ResearchMap {
     this.zoom = next; if (this.target) this.target.zoom = next; this.dirty = true;
   }
   project(lon, lat) {
-    if (this.flat) return {x: this.cx + (lon * geographicRadians - this.mx) * this.scale, y: this.cy - (mercatorY(lat) - this.my) * this.scale, z: 1};
+    if (this.flat) {const aligned=AtlasSpatialMath.longitudeNear(lon,this.mx/geographicRadians);return {x: this.cx + (aligned * geographicRadians - this.mx) * this.scale, y: this.cy - (mercatorY(lat) - this.my) * this.scale, z: 1,lon:aligned};}
     const a = lat * geographicRadians, b = (lon - this.lon) * geographicRadians, cos = Math.cos(a), sin = Math.sin(a);
     return {x: this.cx + this.radius * cos * Math.sin(b), y: this.cy - this.radius * (this.cl0 * sin - this.sl0 * cos * Math.cos(b)), z: this.sl0 * sin + this.cl0 * cos * Math.cos(b)};
   }
@@ -202,16 +202,12 @@ class ResearchMap {
     const c = this.ctx;
     if (this.flat) {
       const b = lineBounds(line), v = this.bounds, px = (v[2] - v[0]) * .3, py = (v[3] - v[1]) * .3;
-      if (b[2] < v[0] - px || b[0] > v[2] + px || b[3] < v[1] - py || b[1] > v[3] + py) return;
+      const shift=360*Math.round(((v[0]+v[2])/2-(b[0]+b[2])/2)/360);
+      if ((b[2]-b[0]<=180&&(b[2]+shift < v[0] - px || b[0]+shift > v[2] + px)) || b[3] < v[1] - py || b[1] > v[3] + py) return;
     }
-    c.beginPath(); let previous = null, continuous = true;
-    for (const point of line) {
-      const p = this.project(point[0], point[1]);
-      if (p.z <= 0) { previous = null; continuous = false; continue; }
-      if (previous && Math.abs(p.x - previous.x) < this.w * .65) c.lineTo(p.x, p.y); else c.moveTo(p.x, p.y);
-      previous = p;
-    }
-    if (fill && continuous) { c.fillStyle = fill; c.fill(); }
+    const paths=AtlasSpatialMath.screenPaths(line.map(point=>this.project(point[0],point[1])),{flat:this.flat,width:this.w});
+    c.beginPath();for(const path of paths)path.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));
+    if (fill && paths.length===1&&paths[0].length===line.length&&line.length>3&&line[0][0]===line.at(-1)[0]&&line[0][1]===line.at(-1)[1]) { c.fillStyle = fill; c.fill(); }
     c.strokeStyle = stroke; c.lineWidth = width; c.stroke();
   }
   draw() {
@@ -260,9 +256,11 @@ class ResearchMap {
       c.fillStyle='#b2d3d180';
       for(const r of CATALOG.records){const p=this.project(r.lon,r.lat);if(p.z>.025&&p.x>8&&p.x<w-8&&p.y>60&&p.y<h-65){c.beginPath();c.arc(p.x,p.y,this.flat?1.25:.85,0,Math.PI*2);c.fill();}}
     }
+    if(typeof localRoadDraw==='function')localRoadDraw(this);
     if(typeof energyDraw==='function')energyDraw(this);
     this.drawMarkers();
     if(this.flat&&this.labels)this.drawPlaces();
+    if(typeof localRoadLabels==='function')localRoadLabels(this);
     const position = document.getElementById('geo-position');
     if (position) position.textContent = this.flat ? 'MERCATOR · GENERALIZED CONTEXT · APPROXIMATE ANCHORS' : `${this.lat.toFixed(1)}° N  ${Math.abs(this.lon).toFixed(1)}° ${this.lon < 0 ? 'W' : 'E'}  ·  DRAG TO ROTATE`;
     const live = document.getElementById('globe-live');
