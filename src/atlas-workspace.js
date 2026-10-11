@@ -281,7 +281,7 @@ spatialURL=function(view=state.view){
   return '#'+view+'?'+p.toString();
 };
 const workspaceRoute=routeFromHash;window.removeEventListener('hashchange',workspaceRoute);
-routeFromHash=function(){
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
   const [path,query='']=location.hash.slice(1).split('?'),p=new URLSearchParams(query),s=site(p.get('site'));
   workspaceState.tab=WORKSPACE_TOPICS.some(([id])=>id===p.get('topic'))?p.get('topic'):'overview';
   if(s){if(workspacePhases(s).some(r=>r.id===p.get('claim')))workspaceState.phaseBySite.set(s.id,p.get('claim'));else workspaceState.phaseBySite.delete(s.id);}

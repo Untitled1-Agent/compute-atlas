@@ -68,7 +68,7 @@ operatorDirectoryView=()=>publisherOldOperatorView().replace('</header>','</head
 const publisherOldTabs=catalogModeTabs;
 catalogModeTabs=()=>publisherOldTabs().replace(/▤ Operator directory <span>\d+<\/span>/,'▤ Operator directories <span>2 sources</span>');
 const publisherOldRender=render;
-render=function(){if(state.view!=='publisher')return publisherOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=publisherView();$('#breadcrumb').textContent='Operator directory / Digital Realty';document.querySelector('#navigation [data-id=operators]')?.classList.add('active');globe=new PublisherMap($('#publisher-map'));};
+render=function(){if(window.ATLAS_BOOTSTRAPPING)return;if(state.view!=='publisher')return publisherOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=publisherView();$('#breadcrumb').textContent='Operator directory / Digital Realty';document.querySelector('#navigation [data-id=operators]')?.classList.add('active');globe=new PublisherMap($('#publisher-map'));};
 // This is a child route of Operator directory, not an extra sidebar item.
 // The legacy navigator permits only NAV entries; register the child route here
 // so browser history, reload and ATLAS.navigate do not fall back to overview.
@@ -82,7 +82,7 @@ navigate=function(view,opts={}){
 };
 ATLAS.navigate=navigate;
 const publisherOldRoute=routeFromHash;window.removeEventListener('hashchange',publisherOldRoute);
-routeFromHash=function(){const [path,q='']=location.hash.slice(1).split('?');if(path!=='publisher')return publisherOldRoute();const p=new URLSearchParams(q);if(globe instanceof PublisherMap)globe.skipPublisherSave=true;Object.assign(publisherState,{region:['Europe','EMEA','APAC','Americas'].includes(p.get('region'))?p.get('region'):'All',country:Object.hasOwn(DIGITAL_REALTY.counts.countries,p.get('country'))?p.get('country'):'All',q:(p.get('q')||'').slice(0,500),review:p.get('review')==='notes'?'notes':'All',page:Math.max(0,Math.min(200,parseInt(p.get('page'))||0)),selected:publisherRecord(p.get('selected'))?.id||null,camera:null});navigate('publisher',{hash:true});};
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=location.hash.slice(1).split('?');if(path!=='publisher')return publisherOldRoute();const p=new URLSearchParams(q);if(globe instanceof PublisherMap)globe.skipPublisherSave=true;Object.assign(publisherState,{region:['Europe','EMEA','APAC','Americas'].includes(p.get('region'))?p.get('region'):'All',country:Object.hasOwn(DIGITAL_REALTY.counts.countries,p.get('country'))?p.get('country'):'All',q:(p.get('q')||'').slice(0,500),review:p.get('review')==='notes'?'notes':'All',page:Math.max(0,Math.min(200,parseInt(p.get('page'))||0)),selected:publisherRecord(p.get('selected'))?.id||null,camera:null});navigate('publisher',{hash:true});};
 window.addEventListener('hashchange',routeFromHash);
 const publisherOldSearch=searchAll;
 searchAll=function(q){publisherOldSearch(q);if(!q.trim())return;const query=q.toLocaleLowerCase(),hits=DIGITAL_REALTY.records.filter(r=>[r.name,r.code,r.metro,r.source_country].join(' ').toLocaleLowerCase().includes(query));if(hits.length)$('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">${hits.length} Digital Realty source entries · separate from OSM features</div>`+hits.slice(0,6).map(r=>`<button class="search-result" data-publisher-select="${esc(r.id)}"><span class="result-type">PUBLISHER PIN</span><span><b>${esc(r.name)}</b><small>${esc(r.metro)} · ${esc(r.source_country||'Source group not specified')}</small></span></button>`).join(''));};
@@ -97,4 +97,4 @@ catalogRail=function(rows){
   return t.innerHTML;
 };
 if(location.hash.startsWith('#publisher'))routeFromHash();else render();
-document.documentElement.classList.add('publisher-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('publisher-ready');

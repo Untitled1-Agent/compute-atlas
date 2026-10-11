@@ -265,7 +265,7 @@ navigate=function(view,opts={}) {
 };
 const atlasOldRoute=routeFromHash;
 window.removeEventListener('hashchange',atlasOldRoute);
-routeFromHash=function() {
+routeFromHash=function() {if(window.ATLAS_BOOTSTRAPPING)return;
   const hash=location.hash.slice(1), [path,query='']=hash.split('?'), params=new URLSearchParams(query);
   if(['overview','globe',''].includes(path)) {
     const key=params.get('scale'), found=ATLAS_SCALE_LEVELS.find(x=>x.key===key);

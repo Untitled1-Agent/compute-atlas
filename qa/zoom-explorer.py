@@ -144,7 +144,7 @@ try:
             page.evaluate("ATLAS.navigate('globe')")
             if not ARGS.in_memory:
                 page.reload(wait_until='load')
-                page.wait_for_function('window.ATLAS && ATLAS.spatial')
+                page.wait_for_function('window.ATLAS_BOOTSTRAPPING===false&&window.ATLAS&&ATLAS.spatial&&document.documentElement.classList.contains("layers-ready")')
                 check(entry + ' deep link restores selected facility and level', page.evaluate('({id:ATLAS.state.spatialSelected,level:ATLAS.state.spatialLevel})') == {'id': 'coreweave-helios', 'level': 5})
                 check(entry + ' private note persists after HTTP reload', page.locator('#atlas-local-note').input_value().startswith('Verify delivered'))
                 page.locator('[data-spatial-action="stage"][data-id="3"]').click()
