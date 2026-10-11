@@ -40,9 +40,9 @@ jobs:
         timeout-minutes: 2
         run: |
           python src/build.py
-          if ! git diff --quiet -- compute_atlas.html; then
-            echo '::error::Standalone artifact is stale. Run python src/build.py and commit compute_atlas.html.'
-            git diff --stat -- compute_atlas.html
+          if ! git diff --quiet -- compute_atlas.html index.html; then
+            echo '::error::Generated entrypoints are stale. Run python src/build.py and commit both HTML entrypoints.'
+            git diff --stat -- compute_atlas.html index.html
             exit 1
           fi
       - name: JavaScript syntax checks

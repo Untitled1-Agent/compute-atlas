@@ -34,6 +34,8 @@ try:
             except Exception:
                 print('STARTUP',page.url,page.locator('#content').inner_text()[:1200],errors,flush=True)
                 raise
+            if entry=='index.html':
+                check('hosted CSS and scripts share a release cache key',page.evaluate('(()=>{const a=[...document.querySelectorAll("script[src],link[rel=stylesheet]")].map(e=>new URL(e.src||e.href).searchParams.get("v"));return a.length>20&&a.every(x=>x&&x===a[0])})()'))
             check(entry+' fresh visit opens world capacity landscape',page.evaluate("state.view==='overview'&&state.spatialLevel===0"))
             check(entry+' source monitor remains directly accessible',page.locator('[data-atlas-action="monitor"]').is_visible())
             check(entry+' map dominates usable desktop area',page.locator('.atlas-map-panel').evaluate('e=>{const r=e.getBoundingClientRect();return r.width>innerWidth*.5&&r.height>innerHeight*.5}'))
