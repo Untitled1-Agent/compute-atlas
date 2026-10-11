@@ -95,4 +95,4 @@ window.addEventListener('hashchange',routeFromHash);
 const operatorBaseSearch=searchAll;
 searchAll=function(q){operatorBaseSearch(q);if(!q.trim())return;const query=q.toLocaleLowerCase(),hits=OPERATOR_DIRECTORY.records.filter(r=>[r.name,r.metro,r.source_country].join(' ').toLocaleLowerCase().includes(query));if(hits.length)$('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">${hits.length} primary-directory codes · first ${Math.min(8,hits.length)} · separate from map features</div>`+hits.slice(0,8).map(r=>`<button class="search-result" data-operator-select="${esc(r.id)}"><span class="result-type">OPERATOR LISTING</span><span><b>${esc(r.name)}</b><small>${esc(r.metro)} · ${esc(r.source_country)}</small></span></button>`).join(''));};
 if(location.hash.startsWith('#operators'))routeFromHash();else render();
-document.documentElement.classList.add('operator-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('operator-ready');

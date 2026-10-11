@@ -97,4 +97,4 @@ catalogRail=function(rows){
   return t.innerHTML;
 };
 if(location.hash.startsWith('#publisher'))routeFromHash();else render();
-document.documentElement.classList.add('publisher-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('publisher-ready');

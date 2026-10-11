@@ -112,4 +112,4 @@ routeFromHash();
 // Install the selection notice only once this module's layer helpers exist.
 // Hosted scripts load separately while the geographic map is already drawing.
 document.addEventListener('atlas-camera-change',workspaceSelectionNotice);
-document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready');

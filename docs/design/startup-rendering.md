@@ -54,7 +54,7 @@ and opens the requested drawer with the complete source registry. Empty-entry
 default landscape behavior, later hash navigation and route validation remain.
 
 Publish route-dependent ready markers only after that initial route completes.
-Remote testing caught the hosted deep-link check observing the old saved state
+Remote testing caught the hosted deep-link check observing the pre-route state
 between the last module's ready marker and the loader's final route callback.
 Keep individual-module readiness behavior for use without a bootstrap boundary;
 both full entrypoints release the complete ready-marker set after final routing,

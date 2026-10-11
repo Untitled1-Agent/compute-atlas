@@ -3013,7 +3013,7 @@ const catalogOldSearch=searchAll;
 searchAll=function(q){catalogOldSearch(q);if(!q.trim())return;const query=q.toLocaleLowerCase(),hits=CATALOG.records.filter(r=>[r.name,r.operator,r.city,r.country,r.address].join(' ').toLocaleLowerCase().includes(query));if(!hits.length)return;$('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">${fmt(hits.length)} geographic map matches · first ${Math.min(12,hits.length)} · separate from capacity research</div>`+hits.slice(0,12).map(r=>`<button class="search-result" data-catalog-open="${esc(r.id)}"><span class="result-type">MAP FEATURE</span><span><b>${esc(r.name)}</b><small>${esc(r.city||r.country)} · ${esc(r.kind)} · community map</small></span></button>`).join(''));};
 ATLAS.catalog={state:catalogState,get data(){return CATALOG;},reviews:CATALOG_REVIEWS,filtered:catalogFiltered,select:catalogSelect,go:catalogGo,feature:catalogFeature,exportRecord:id=>({feature:catalogFeature(id),review:catalogReview(id)||null}),scene:()=>globe instanceof FacilityScene?globe:null};
 if(!location.hash)navigate('catalog',{hash:true});else routeFromHash();
-document.documentElement.classList.add('catalog-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('catalog-ready');
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.view==='catalog'){const panel=document.querySelector('.atlas-map-expanded');if(panel){panel.classList.remove('atlas-map-expanded');const button=panel.querySelector('[data-catalog-tool=expand]');button?.setAttribute('aria-label','Expand map');button?.focus();globe?.resize();}}});
 
@@ -3114,7 +3114,7 @@ window.addEventListener('hashchange',routeFromHash);
 const operatorBaseSearch=searchAll;
 searchAll=function(q){operatorBaseSearch(q);if(!q.trim())return;const query=q.toLocaleLowerCase(),hits=OPERATOR_DIRECTORY.records.filter(r=>[r.name,r.metro,r.source_country].join(' ').toLocaleLowerCase().includes(query));if(hits.length)$('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">${hits.length} primary-directory codes · first ${Math.min(8,hits.length)} · separate from map features</div>`+hits.slice(0,8).map(r=>`<button class="search-result" data-operator-select="${esc(r.id)}"><span class="result-type">OPERATOR LISTING</span><span><b>${esc(r.name)}</b><small>${esc(r.metro)} · ${esc(r.source_country)}</small></span></button>`).join(''));};
 if(location.hash.startsWith('#operators'))routeFromHash();else render();
-document.documentElement.classList.add('operator-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('operator-ready');
 
 /* A primary-source map with its own denominator; no automatic cross-source identity. */
 const DIGITAL_REALTY=DigitalRealtySchema.validate(JSON.parse($('#digital-realty-data').textContent));
@@ -3215,7 +3215,7 @@ catalogRail=function(rows){
   return t.innerHTML;
 };
 if(location.hash.startsWith('#publisher'))routeFromHash();else render();
-document.documentElement.classList.add('publisher-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('publisher-ready');
 
 'use strict';
 /* The reviewed publication owns claims. Categories organize evidence, not scores. */
@@ -4225,7 +4225,7 @@ routeFromHash();
 // Install the selection notice only once this module's layer helpers exist.
 // Hosted scripts load separately while the geographic map is already drawing.
 document.addEventListener('atlas-camera-change',workspaceSelectionNotice);
-document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready');
 
-window.ATLAS_BOOTSTRAPPING=false;routeFromHash();document.dispatchEvent(new Event('atlas-ready'));</script>
+window.ATLAS_BOOTSTRAPPING=false;routeFromHash();document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready','catalog-ready','operator-ready','publisher-ready');document.dispatchEvent(new Event('atlas-ready'));</script>
 </body></html>
