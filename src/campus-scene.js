@@ -155,7 +155,7 @@ spatialURL=function(view=state.view){
  return '#'+view+'?'+p.toString();
 };
 const campusOriginalRoute=routeFromHash;window.removeEventListener('hashchange',campusOriginalRoute);
-routeFromHash=function(){
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
  const [,query='']=location.hash.slice(1).split('?'),p=new URLSearchParams(query),s=site(p.get('site')),m=campusScene(s),type=p.get('selection');if(globe instanceof CampusScene)globe.skipCameraSave=true;
  campusState.mode=['aerial','oblique','evidence'].includes(p.get('campusview'))?p.get('campusview'):p.get('claim')?'evidence':'aerial';
  const requested=p.get('feature')||p.get('lastfeature');campusState.feature=m?.features.some(f=>f.id===requested)?requested:null;
