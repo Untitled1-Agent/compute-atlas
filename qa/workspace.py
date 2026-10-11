@@ -26,6 +26,7 @@ try:
         browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox'])
         for entry in ('index.html','compute_atlas.html'):
             page=browser.new_page(viewport={'width':1440,'height':1080})
+            page.set_default_timeout(60000 if os.environ.get('ATLAS_TEST_BASE') else 30000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             check(entry+' HTTP entrypoint',page.goto(base+entry).status==200)
             page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')

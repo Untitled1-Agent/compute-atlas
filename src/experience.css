@@ -60,3 +60,5 @@ body{background:#08121b}
 @media(min-width:1100px) and (max-height:850px){
  .atlas-workspace .atlas-insight-stack{gap:8px}.atlas-workspace .atlas-insight-card{padding-top:8px}.atlas-workspace .atlas-insight-card h2{font-size:20px;margin:6px 0;line-height:1.04}.atlas-workspace .atlas-insight-card p{margin:5px 0}.atlas-workspace .atlas-company-cloud{margin:7px 0;gap:4px}.atlas-workspace .atlas-rank-row{padding:5px 0}.atlas-workspace .atlas-card-kicker{margin-bottom:4px}
 }
+
+.workspace-toolbar .atlas-filter-panel{flex:0 0 auto;min-width:0}

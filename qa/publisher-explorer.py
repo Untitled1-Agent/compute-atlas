@@ -33,7 +33,7 @@ try:
    page.on('response',lambda r:http_errors.append(r.url) if r.status>=400 else None)
    if args.in_memory:page.set_content((ROOT/entry).read_text(),wait_until='load')
    else:check(entry+' returns actual HTTP 200',page.goto(base+entry).status==200)
-   page.wait_for_function('document.documentElement.classList.contains("publisher-ready")');page.wait_for_timeout(120)
+   page.wait_for_function('document.documentElement.classList.contains("workspace-ready")');page.wait_for_timeout(120)
    page.evaluate("ATLAS.navigate('catalog')")
    check(entry+' world map keeps all four headline metrics visible',page.locator('.catalog-kpis').first.evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
    original=page.evaluate('JSON.stringify([ATLAS.data,ATLAS.catalog.data,ATLAS.operators.data])')
@@ -119,7 +119,7 @@ try:
    page.evaluate('ATLAS.navigate("publisher",{hash:true})')
    check(entry+' registered publisher navigation preserves source scope and history',page.evaluate('ATLAS.state.view==="publisher"&&ATLAS.publisher.state.selected==="digital-realty-2324"') and page.evaluate('history.length')==length)
    if not args.in_memory:
-    page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check(entry+' publisher deep link survives real HTTP reload',page.evaluate('ATLAS.state.view==="publisher"&&ATLAS.publisher.state.selected==="digital-realty-2324"'))
    check(entry+' every source and archival record remains unchanged',page.evaluate('JSON.stringify([ATLAS.data,ATLAS.catalog.data,ATLAS.operators.data])')==original and page.evaluate('ATLAS.publisher.data')==publication)
    invalid=[]
@@ -142,21 +142,21 @@ try:
      if service.started:break
      time.sleep(.05)
     origin=f'http://127.0.0.1:{port}/';page=browser.new_page(viewport={'width':1440,'height':1080});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-    page.goto(origin+'#publisher?region=Europe');page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.goto(origin+'#publisher?region=Europe');page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check('SQL publisher boot uses the independently accepted Digital Realty source',page.evaluate('ATLAS.publisher.data')==app.state.directories['digital-realty'].publication() and not page.evaluate('!!window.ATLAS_DIGITAL_REALTY_WARNING'))
     pending={**publication,'review':None,'title':'Pending synthetic publisher fixture'};store=app.state.directories['digital-realty'];key=store.stage(pending)
-    page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check('Pending publisher capture is not published on browser reload',page.evaluate('ATLAS.publisher.data.title')==publication['title'])
     store.accept(key,actor='QA reviewer',note='Synthetic source fixture only',expected_current=store.current())
     check('Acceptance never silently changes a currently open research view',page.evaluate('ATLAS.publisher.data.title')==publication['title'])
-    page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check('Explicit reload applies reviewed publisher revision, preserving scope',page.evaluate('ATLAS.publisher.data.title')==pending['title'] and page.evaluate('ATLAS.publisher.state.region')=='Europe')
     check('Digital Realty acceptance leaves the Equinix source untouched',page.evaluate('ATLAS.operators.data')==app.state.directory.publication())
     unsafe=copy.deepcopy(publication);unsafe['records'][0]['it_mw']=999
     endpoint='**/api/operators/publication?publisher=digital-realty'
-    page.route(endpoint,lambda route:route.fulfill(json=unsafe));page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.route(endpoint,lambda route:route.fulfill(json=unsafe));page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check('Malformed publisher API response falls back visibly to the reviewed file',page.evaluate('!!window.ATLAS_DIGITAL_REALTY_WARNING') and page.evaluate('ATLAS.publisher.data')==publication and 'checked-in' in page.locator('#content').inner_text())
-    page.unroute(endpoint);page.route(endpoint,lambda route:route.fulfill(status=503,body='unavailable'));page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+    page.unroute(endpoint);page.route(endpoint,lambda route:route.fulfill(status=503,body='unavailable'));page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
     check('Publisher outage is explicit while both source collections remain usable',page.evaluate('!!window.ATLAS_DIGITAL_REALTY_WARNING&&ATLAS.operators.data.records.length===253&&ATLAS.publisher.data.records.length===261'))
     check('Service boundary tests produce no unhandled errors',not errors,errors)
     page.close();service.should_exit=True;thread.join(timeout=5);service=None

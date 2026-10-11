@@ -8,7 +8,7 @@ function workspacePhases(s){
 }
 function workspaceSelected(s){const rows=workspacePhases(s);return rows.find(r=>r.id===workspaceState.phaseBySite.get(s.id))||rows[0];}
 function workspaceCollections(){return `<nav class="catalog-mode-switch workspace-collections" aria-label="Atlas collections"><button data-action="nav" data-id="overview" class="${['overview','globe'].includes(state.view)?'active':''}">Capacity</button><button data-action="nav" data-id="catalog" class="${state.view==='catalog'?'active':''}">Locations <span>${fmt(CATALOG.records.length)}</span></button><button data-action="nav" data-id="operators">Directories</button><button data-coverage-candidates>Research leads</button></nav>`;}
-function workspaceToolbar(scale,filters=''){return `<div class="workspace-toolbar">${scale}<div class="workspace-tools">${filters}<button class="atlas-monitor-launch" data-atlas-action="monitor" aria-label="Source monitor and review queue" title="Source monitor and review queue">▤<span class="sr-only" id="atlas-monitor-label">Source monitor</span></button>${workspaceCollections()}</div></div>`;}
+function workspaceToolbar(scale,filters=''){return `<div class="workspace-toolbar">${scale}<div class="workspace-tools">${filters}<button class="atlas-monitor-launch" data-atlas-action="monitor" aria-label="Source monitor and review queue" title="Source monitor and review queue">▤<span class="sr-only" id="atlas-monitor-label">${globalThis.ATLAS_SERVICE?'Source monitor connecting…':'Source-cited · offline ready'}</span></button>${workspaceCollections()}</div></div>`;}
 function workspaceRefine(){return `<details class="atlas-filter-panel" ${state.spatialFiltersOpen?'open':''}><summary class="atlas-filter-toggle">Refine view</summary>${atlasFilterbar()}</details>`;}
 function workspacePhaseDiagram(s,level){
   if(!s)return spatialFacilitySchematic(s,'snapshot',level);
@@ -95,6 +95,6 @@ spatialURL=function(view=state.view){const url=workspaceSpatialURL(view);if(!['o
 const workspaceRoute=routeFromHash;window.removeEventListener('hashchange',workspaceRoute);
 routeFromHash=function(){const p=new URLSearchParams(location.hash.split('?')[1]||''),s=site(p.get('site'));if(s){if(workspacePhases(s).some(r=>r.id===p.get('claim')))workspaceState.phaseBySite.set(s.id,p.get('claim'));else workspaceState.phaseBySite.delete(s.id);}workspaceRoute();};window.addEventListener('hashchange',routeFromHash);
 // Preserve existing explicit catalog links. A fresh visit opens the approved landscape.
-if(!ATLAS_ENTRY_HASH){state.spatialLevel=0;state.view='overview';history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
+if(!ATLAS_ENTRY_HASH){state.spatialLevel=0;state.view='overview';if(location.protocol!=='about:')history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
 ATLAS.workspace={phases:workspacePhases,selected:workspaceSelected,state:workspaceState};
 document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready');
