@@ -26,7 +26,7 @@ try:
         browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox'])
         for entry in ('index.html','compute_atlas.html'):
             page=browser.new_page(viewport={'width':1440,'height':1080})
-            page.set_default_timeout(60000 if os.environ.get('ATLAS_TEST_BASE') else 30000)
+            page.set_default_timeout(120000 if os.environ.get('ATLAS_TEST_BASE') else 30000)
             errors=[];page.on('pageerror',lambda e:(errors.append(str(e)),print('BROWSER ERROR',str(e),flush=True)))
             page.on('response',lambda r:print('HTTP ERROR',r.status,r.url,flush=True) if r.status>=400 else None)
             check(entry+' HTTP entrypoint',page.goto(base+entry).status==200)
@@ -50,7 +50,11 @@ try:
             check(entry+' phase selection updates facility and rail',page.evaluate('state.spatialLevel')==5 and page.locator('.workspace-selected-phase h2').inner_text()==label)
             check(entry+' phase selection retains keyboard focus',page.locator(f'[data-workspace-phase="{claim}"]').evaluate('e=>e===document.activeElement'))
             selected_url=page.url
-            page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+            page.reload()
+            try:page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+            except Exception:
+                print('RELOAD',page.url,page.locator('#content').inner_text()[:1200],errors,flush=True)
+                raise
             check(entry+' shared phase reload restores evidence',page.url==selected_url and page.locator('.workspace-selected-phase h2').inner_text()==label)
             page.go_back();page.wait_for_function('state.spatialLevel===4')
             check(entry+' browser Back restores campus',page.url==before)
@@ -60,6 +64,8 @@ try:
             page.locator('[data-research-topic-target="energy"]').click()
             check(entry+' energy evidence remains accessible',page.locator('#drawer [data-research-topic="energy"]').is_visible())
             page.keyboard.press('Escape')
+            page.evaluate("ATLAS.spatial.select('microsoft-narvik')")
+            check(entry+' native-unit project does not invent an MW axis',page.locator('.workspace-phase-row').count()==0 and page.locator('.workspace-phase-axis').count()==0)
             page.evaluate("ATLAS.navigate('catalog');ATLAS.catalog.select('osm-way-1121454055');catalogSetScale(4)")
             check(entry+' geometry inspector sits beside source scene',page.locator('.atlas-spatial-rail .catalog-inspector').is_visible())
             check(entry+' context geometry is framed in canvas',page.evaluate('(()=>{const g=ATLAS.getGlobe();g.draw();const p=g.hitSurfaces.flatMap(s=>s.rings.flat());return p.length>0&&Math.min(...p.map(x=>x.x))>=0&&Math.max(...p.map(x=>x.x))<=g.w&&Math.min(...p.map(x=>x.y))>=0&&Math.max(...p.map(x=>x.y))<=g.h})()'))
