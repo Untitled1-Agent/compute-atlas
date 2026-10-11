@@ -44,3 +44,11 @@ A direct archival project dossier route must also work when retained scale state
 chooses a physical scene. Opening the dossier only requests geographic camera
 movement from renderers that support it; physical scene cameras remain intact.
 Include direct dossier entry/reload in the physical regression journey.
+
+The direct dossier reload exposed another intermediate composition path: route
+registration repeatedly opens and extends the archival drawer before the final
+module. Defer initial route execution as well as page rendering. Register all
+route handlers normally, then invoke the final route handler once after clearing
+the bootstrap boundary. It parses the original route, composes the matching page
+and opens the requested drawer with the complete source registry. Empty-entry
+default landscape behavior, later hash navigation and route validation remain.
