@@ -37,7 +37,11 @@ class CampusScene extends FacilityScene {
     this.dirty=true;
   }
   local(lon,lat){const R=6378137,rad=Math.PI/180,merc=x=>Math.log(Math.tan(Math.PI/4+x*rad/2)),k=Math.cos(this.lat*rad);return [R*(lon-this.lon)*rad*k,R*(merc(lat)-merc(this.lat))*k];}
-  resize(){super.resize();this.labelMinY=this.w<500?273:122;}
+  resize(){super.resize();this.labelMinY=this.w<500?273:122;
+    // Keep the rotating north arrow above the phone's roof-label region and
+    // beside the dated-image badge, clear of the source caption and controls.
+    this.compassPosition=this.w<500?{x:this.w-30,y:this.labelMinY-30}:null;
+  }
   // Orthographic ground projection keeps the georeferenced image and outline
   // aligned under pan, zoom and orbit, without making up building heights.
   project3(x,y,z=0){

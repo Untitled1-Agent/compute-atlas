@@ -79,6 +79,12 @@ try:
                 if width<=640 and page.locator('[data-workspace-inspector]').get_attribute('aria-expanded')!='true':page.locator('[data-workspace-inspector]').click()
                 check(entry+f' {width}px selected identity remains legible',page.locator('.campus-feature-inspector').is_visible() and page.locator('.campus-feature-inspector').evaluate('e=>e.getBoundingClientRect().width')>250 and page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
                 capture(page,entry,f'new-carlisle-{width}')
+                if width<=640:
+                    for mode in ('aerial','oblique'):
+                        page.locator(f'[data-campus-mode="{mode}"]').click();ready(page)
+                        check(entry+f' {width}px {mode} compass clears roof date and controls',page.evaluate('''(()=>{const g=globe,c=g.compassRect,l=g.labelRect,b=g.canvas.getBoundingClientRect(),overlap=(a,d)=>a.x<d.x+d.width&&a.x+a.width>d.x&&a.y<d.y+d.height&&a.y+a.height>d.y;return c&&l&&!overlap(c,l)&&c.x>=0&&c.y>=0&&c.x+c.width<=g.w&&c.y+c.height<=g.h&&[...document.querySelectorAll('.campus-scene-head,.campus-historic-badge,.campus-scene-foot,.campus-spatial-hero .atlas-map-tools,.workspace-toolbar')].filter(e=>e.getClientRects().length).every(e=>{const r=e.getBoundingClientRect();return !overlap(c,{x:r.x-b.x,y:r.y-b.y,width:r.width,height:r.height});});})()'''))
+                        capture(page,entry,f'new-carlisle-{width}-{mode}')
+                    page.locator('[data-campus-mode="aerial"]').click();ready(page)
             page.set_viewport_size({'width':1440,'height':1080});page.goto(base+entry+'#overview?scale=metro&site=amazon-anthropic-new-carlisle');ready(page,False)
             check(entry+' metro frame follows Chicago to New Carlisle',page.evaluate('globe.bounds[2]-globe.bounds[0]<2&&globe.bounds[3]-globe.bounds[1]<1') and page.locator('.atlas-map-head h2').inner_text()=='Chicago–New Carlisle')
             check(entry+' nearby context names its separate 250km scope','250 km' in page.locator('.atlas-map-head p').inner_text() and 'outside the frame' in page.locator('.workspace-map-context').inner_text())
