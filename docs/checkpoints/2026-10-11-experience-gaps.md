@@ -17,6 +17,7 @@ remain design examples, never research inputs.
 | The campus screen repeated large model panels while recent primary research appeared much farther down. | Compact evidence schematic, direct power/design/timeline/counterparty/investment shortcuts, and recent dated disclosures immediately alongside the existing campus material. Shortcuts open and focus the original cited claims. |
 | Expanded catalog maps lacked Escape dismissal and accurately labeled controls. | Escape closes the map and restores focus; label and expand controls expose their state. |
 | The application advertised readiness before the last research modules had loaded. | `atlas-ready` is emitted after the final research module initializes. |
+| CI caught a delayed camera save replacing an open research drawer's URL. | Camera persistence now respects drawer and route ownership; a background-redraw regression checks that research bookmarks survive. |
 
 ## Evidence boundaries that remain intentional
 

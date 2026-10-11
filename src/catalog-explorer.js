@@ -115,7 +115,8 @@ class CatalogMap extends ResearchMap {
     document.querySelectorAll('[data-catalog-scale]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.catalogScale)===level)));
     const camera=catalogCameraSnapshot(this),token=catalogCameraToken(camera);
     if(token===this.lastCameraToken)return;this.lastCameraToken=token;catalogState.camera=camera;
-    clearTimeout(this.cameraTimer);this.cameraTimer=setTimeout(()=>{if(!this.destroyed&&state.view==='catalog'&&!catalogState.feature)history.replaceState(null,'',catalogURL());},180);
+    // A drawer owns its deep link even when the catalog continues rendering behind it.
+    clearTimeout(this.cameraTimer);this.cameraTimer=setTimeout(()=>{if(!this.destroyed&&state.view==='catalog'&&!catalogState.feature&&!state.drawer&&(!location.hash||/^#catalog(?:\?|$)/.test(location.hash)))history.replaceState(null,'',catalogURL());},180);
   }
   drawMarkers(){const c=this.ctx,points=[];this.groups=[];const grid=new Map();
     for(const r of this.scope.sites){const p=this.project(r.lon,r.lat);if(p.z<.02||p.x<7||p.x>this.w-7||p.y<80||p.y>this.h-95)continue;points.push({r,p});const cell=this.flat?28:42,key=Math.floor(p.x/cell)+':'+Math.floor(p.y/cell);let g=grid.get(key);if(!g){g={x:p.x,y:p.y,z:p.z,r:4,sites:[],sumX:0,sumY:0};grid.set(key,g);}g.sites.push(r);g.sumX+=p.x;g.sumY+=p.y;}
