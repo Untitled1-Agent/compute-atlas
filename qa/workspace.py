@@ -23,7 +23,7 @@ if not base:
     base=f'http://127.0.0.1:{server.server_port}/'
 try:
     with sync_playwright() as p:
-        browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox'])
+        browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox']+(['--disable-gpu','--no-zygote','--renderer-process-limit=1'] if os.environ.get('ATLAS_LIGHT_BROWSER') else []))
         for entry in ('index.html','compute_atlas.html'):
             page=browser.new_page(viewport={'width':1440,'height':1080})
             page.set_default_timeout(120000 if os.environ.get('ATLAS_TEST_BASE') else 30000)

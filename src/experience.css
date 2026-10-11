@@ -66,3 +66,5 @@ body{background:#08121b}
 @media(min-width:1100px) and (max-height:850px){.atlas-workspace{--map-height:calc(100dvh - 337px)}}
 .atlas-workspace .atlas-map-column .metric-value{font-size:27px}
 .atlas-workspace .atlas-map-column .metric-label{line-height:1.4}
+
+.workspace-data-warning{font-size:11px;color:#e1c98f;border-bottom:1px solid #66583c;padding:0 0 10px}

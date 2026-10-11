@@ -33,7 +33,7 @@ function workspacePhaseRail(s,level){
       <div class="atlas-badge-row"><span>${esc(row?statusLabel(row.status):'Not quantified')}</span><span>${esc(row?.as_of||'Date not supplied')}</span></div>
       <h2>${esc(level===5?(row?.scope||s.name):s.name)}</h2><p>${esc(level===5?s.name:s.location)}</p>
       <div class="atlas-feature-number">${row?fmt(row.value)+' '+esc(row.unit):'Not quantified'}</div>
-      <p class="atlas-number-boundary">${row?.source_id?'Disclosed critical IT load':'Independent IT estimate'}${level===4&&row?' · '+esc(row.scope):''}</p>
+      <p class="atlas-number-boundary">${row?.source_id?'Critical IT load · disclosed':'Independent IT estimate'}${level===4&&row?' · '+esc(row.scope):''}</p>
       <p class="workspace-phase-qualifier">${esc(row?.qualifier||'Native units and uncertainty remain attached to each source.')}</p>
       ${row?.source_id?primaryRef(row.source_id):srefs(row?.source_ids||s.sources)}
       <div class="workspace-dossier-actions"><button class="btn primary" data-spatial-action="dossier" data-id="${esc(s.id)}">Full dossier ↗</button><button class="text-button" data-atlas-action="export" data-id="${esc(s.id)}">Export ↓</button></div>
@@ -58,6 +58,7 @@ function workspaceProjectTabs(s){
 function workspaceResearchView(){
   const st=spatialState(),s=spatialDefaultSite(),level=st.spatialLevel,phase=st.spatialPhase,scope=spatialScope(level,s),[title,description]=spatialHeadline(level,scope,s),campus=level>=4;
   return `<article class="atlas-experience atlas-workspace atlas-level-${level}">
+    ${globalThis.ATLAS_CATALOG_WARNING?'<p class="workspace-data-warning" role="status">Catalog service unavailable · showing the dated community-map snapshot.</p>':''}
     <header class="atlas-intro"><div><div class="atlas-eyebrow">${campus?'FACILITY & CAMPUS':'COMPUTE, FROM THE GROUND UP'}</div><h1>${campus?esc(s?.name||'No matching project'):title}</h1>${campus?`<p class="atlas-location">⌖ ${esc(s?.location||'')} · ${esc(s?.country||'')}</p>`:''}</div><div class="atlas-intro-aside"><p>${description}</p><button class="btn primary" data-atlas-action="journey">Take the five-stop tour ↗</button></div></header>
     ${workspaceToolbar(spatialStageStrip(level),workspaceRefine())}
     ${campus&&s?workspaceProjectTabs(s):''}
