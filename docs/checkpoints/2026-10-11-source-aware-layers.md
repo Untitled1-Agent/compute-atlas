@@ -28,6 +28,10 @@ source drawer. Phones show the same selected identity in both their compact
 summary and expanded inspector. Disabling electricity restores project/roof
 inspection; roof and phase selection remain separate journeys.
 
+Visual review reserved a single phone toolbar row above the image date; the
+short-desktop canvas also reserves space for the new attribution row so its
+four metrics stay visible.
+
 Cartographic labels now measure both the project name and quantity subtitle,
 try four placements and avoid solid markers, controls, other project labels and
 place labels. Source records remain available when a crowded map cannot label
