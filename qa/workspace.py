@@ -64,7 +64,7 @@ try:
             page.locator('[data-research-topic-target="energy"]').click()
             check(entry+' energy evidence remains accessible',page.locator('#drawer [data-research-topic="energy"]').is_visible())
             page.keyboard.press('Escape')
-            page.evaluate("ATLAS.spatial.select('microsoft-narvik')")
+            page.evaluate("ATLAS.spatial.select('tencent-qingyuan')")
             check(entry+' native-unit project does not invent an MW axis',page.locator('.workspace-phase-row').count()==0 and page.locator('.workspace-phase-axis').count()==0)
             page.evaluate("ATLAS.navigate('catalog');ATLAS.catalog.select('osm-way-1121454055');catalogSetScale(4)")
             check(entry+' geometry inspector sits beside source scene',page.locator('.atlas-spatial-rail .catalog-inspector').is_visible())
