@@ -61,6 +61,10 @@ class CampusScene extends FacilityScene {
     if(campusFeature()){this.inspect(campusState.feature,false);if(!camera&&state.spatialLevel===5)this.frameSelectedFeature();}else this.features.forEach(f=>f.selected=false);
     this.dirty=true;
   }
+  buildGeometry(neighbors){
+    this.features=[this.record,...neighbors].map(record=>({record,selected:false,polygons:record.geometry.coordinates.map(poly=>poly.map(ring=>ring.map(p=>this.local(...p))))}));
+    this.extent=20;this.baseExtent=20;this.frameCenter=[0,0];
+  }
   local(lon,lat){const R=6378137,rad=Math.PI/180,merc=x=>Math.log(Math.tan(Math.PI/4+x*rad/2)),k=Math.cos(this.lat*rad);return [R*(lon-this.lon)*rad*k,R*(merc(lat)-merc(this.lat))*k];}
   resize(){super.resize();this.labelMinY=this.w<500?86:70;
     // Keep the rotating north arrow above the phone's roof-label region and
