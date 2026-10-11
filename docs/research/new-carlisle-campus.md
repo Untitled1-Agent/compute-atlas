@@ -50,7 +50,7 @@ The source is nominal **3-inch / 0.25-foot, four-band** imagery; metadata report
 
 ### Edison context: 16 pinned tiles
 
-Requested WGS84 bounds **`[-86.4702, 41.6838, -86.4598, 41.6945]`**, **1100 × 1500** pixels, maximum derivative download **2,000,000 bytes**. This includes both address-associated parcel components and road landmarks. The crop is context; not all land inside it has verified AWS identity.
+Requested WGS84 bounds **`[-86.4702, 41.6838, -86.4598, 41.6945]`**, **1200 × 1600** pixels, maximum derivative download **2,000,000 bytes**. This includes both address-associated parcel components and road landmarks. The crop is context; not all land inside it has verified AWS identity.
 
 | Native OBJECTID | Native Name |
 | --- | --- |
@@ -131,7 +131,7 @@ No photo-center points intersect the two returned Edison parcel rings. Nearby we
   "bbox": "-86.4702,41.6838,-86.4598,41.6945",
   "bboxSR": 4326,
   "imageSR": 3857,
-  "size": "1100,1500",
+  "size": "1200,1600",
   "format": "jpg",
   "compressionQuality": 88,
   "bandIds": "0,1,2",
