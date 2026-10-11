@@ -5,6 +5,17 @@ const ATLAS_CONTEXT = JSON.parse(document.getElementById('context-data')?.textCo
 const geographicRadians = Math.PI / 180;
 const mercatorY = lat => Math.log(Math.tan(Math.PI / 4 + Math.max(-83, Math.min(83, lat)) * geographicRadians / 2));
 const contextBounds = new WeakMap();
+function researchClusterName(sites){
+  const countries=[...new Set(sites.map(s=>s.country))],continents=[...new Set(sites.map(spatialContinent))];
+  if(countries.length===1){
+    if(countries[0]==='United States'){
+      const regions=new Set(sites.map(s=>s.lon < -106?'US West':s.lon < -97&&s.lat < 38?'US South':'US East & Midwest'));
+      if(regions.size===1)return [...regions][0]+(sites.length>1?' cluster':'');
+    }
+    return countries[0]+(sites.length>1?' cluster':'');
+  }
+  return (continents.length===1?continents[0]:'Cross-region')+' cluster';
+}
 function lineBounds(line) {
   let bounds = contextBounds.get(line);
   if (!bounds) {
@@ -175,7 +186,7 @@ class ResearchMap {
     if (moved) return;
     const rect = this.canvas.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
     const hit = this.groups.find(g => Math.hypot(g.x - x, g.y - y) < g.r + 8);
-    if (hit) spatialTransition({selected: hit.sites[0].id, level: Math.min(5, this.level + 1)});
+    if (hit) {state.spatialCluster=hit.sites.map(s=>s.id);spatialTransition({selected: hit.sites[0].id});}
   }
   path(line, stroke, width, fill = null) {
     const c = this.ctx;
@@ -198,7 +209,7 @@ class ResearchMap {
     const c = this.ctx, w = this.w, h = this.h;
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.prepare();
     const canvasRect=this.canvas.getBoundingClientRect();
-    this.labelExclusions=[...this.canvas.parentElement.querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
+    this.labelExclusions=[...(this.canvas.closest('.atlas-map-panel')||this.canvas.parentElement).querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom,.workspace-toolbar')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
     c.fillStyle = '#08121b'; c.fillRect(0, 0, w, h);
     for (const star of this.stars) { c.fillStyle = '#38616c88'; c.fillRect(star.x * w, star.y * h, star.r, star.r); }
     const R = this.radius, cx = this.cx, cy = this.cy;
@@ -289,7 +300,7 @@ class ResearchMap {
     const ranked = [...visible].sort((a, b) => Number(b.s.id === selected) - Number(a.s.id === selected) || (b.mw || 0) - (a.mw || 0));
     const labels = [], labeled = new Set();this.markerLabels=labels;
     if (this.labels) for (const item of ranked) {
-      const {s, p, r} = item, name = item.members.length>1 ? (s.name.length>16?s.name.slice(0,15)+'…':s.name)+' + '+(item.members.length-1) : s.name.length > 26 ? s.name.slice(0, 24) + '…' : s.name;
+      const {s, p, r} = item, name = this.level<=1?researchClusterName(item.members.map(m=>m.s)):item.members.length>1?researchClusterName(item.members.map(m=>m.s)):s.name.length > 26 ? s.name.slice(0, 24) + '…' : s.name;
       c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
       const width = Math.max(c.measureText(name).width, 112), x = p.x + r + 9, y = p.y - 14;
       const left = x + width > this.w - 16 ? p.x - r - width - 12 : x;

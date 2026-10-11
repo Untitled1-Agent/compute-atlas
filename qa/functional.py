@@ -42,7 +42,7 @@ with sync_playwright() as p:
  g=page.evaluate("(()=>{let g=ATLAS.getGlobe(),p=g.groups.find(p=>p.sites.some(s=>s.name==='Zhangbei'));return p?{x:p.x,y:p.y,id:p.sites[0].id}:null})()")
  check('China facility belongs to a selectable evidence cluster',g is not None)
  if g:
-  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas cluster drills to next semantic scale',page.evaluate('ATLAS.state.spatialLevel')==1,{'point':g,'level':page.evaluate('ATLAS.state.spatialLevel')})
+  box=canvas.bounding_box();page.mouse.click(box['x']+g['x'],box['y']+g['y']);check('actual canvas cluster inspects without changing scale',page.evaluate('ATLAS.state.spatialLevel')==0 and page.locator('.workspace-selection').is_visible(),{'point':g,'level':page.evaluate('ATLAS.state.spatialLevel')})
  page.evaluate("ATLAS.navigate('facilities')");page.locator('[data-filter="country"]').select_option('China');check('country filter reaches all seven China dossiers',page.locator('#content tbody tr').count()==7)
  page.locator('[data-action="site-layout"][data-id="chart"]').click();check('linked facility scatter shows two quantified China sites',page.locator('.scatter-point').count()==2)
  page.locator('.scatter-point circle').first.click();check('scatter point opens facility dossier',page.locator('#drawer').is_visible());page.locator('[data-action="close-drawer"]').click()

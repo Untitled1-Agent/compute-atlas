@@ -59,6 +59,7 @@ function spatialFiltered() {
 function spatialMapped() { return spatialFiltered().filter(s => spatialFinite(s.lat) && spatialFinite(s.lon)); }
 function spatialDefaultSite() {
   const pool = spatialFiltered(), st = spatialState();
+  if(st.spatialSelectionActive&&site(st.spatialSelected))return site(st.spatialSelected);
   const selected = pool.find(s => s.id === st.spatialSelected) || pool.find(s => s.id === 'amazon-anthropic-new-carlisle') || pool[0];
   st.spatialSelected = selected?.id || null;
   return selected || null;
@@ -231,6 +232,7 @@ function spatialURL(view=state.view) {
   if(!['overview','globe'].includes(view))return '#'+view;
   const st=spatialState(),params=new URLSearchParams();params.set('scale',ATLAS_SCALE_LEVELS[st.spatialLevel].key);
   if(st.spatialSelected)params.set('site',st.spatialSelected);
+  if(st.spatialSelectionActive)params.set('inspect','1');
   if(st.spatialPhase!=='snapshot')params.set('phase',st.spatialPhase);
   if(state.filter.company&&state.filter.company!=='all')params.set('company',state.filter.company);
   if(state.filter.country&&state.filter.country!=='all')params.set('country',state.filter.country);
@@ -239,8 +241,8 @@ function spatialURL(view=state.view) {
   return '#'+view+'?'+params.toString();
 }
 function spatialTransition({level,selected,phase,evidence,replace=false}={}) {
-  if(selected&&site(selected))state.spatialSelected=selected;
-  if(level!=null)state.spatialLevel=Math.max(0,Math.min(5,Math.trunc(Number(level)||0)));
+  if(selected&&site(selected)){state.spatialSelected=selected;state.spatialSelectionActive=true;}
+  if(level!=null){state.spatialLevel=Math.max(0,Math.min(5,Math.trunc(Number(level)||0)));state.spatialFiltersOpen=false;}
   if(['snapshot','target'].includes(phase)){state.spatialPhase=phase;state.globeLayer=phase;}
   if(evidence)state.spatialEvidence=evidence;
   if(!['overview','globe'].includes(state.view))state.view='globe';
@@ -261,7 +263,7 @@ routeFromHash=function() {
   const hash=location.hash.slice(1), [path,query='']=hash.split('?'), params=new URLSearchParams(query);
   if(['overview','globe',''].includes(path)) {
     const key=params.get('scale'), found=ATLAS_SCALE_LEVELS.find(x=>x.key===key);
-    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;
+    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[];
     state.spatialPhase=params.get('phase')==='target'?'target':'snapshot';state.globeLayer=state.spatialPhase;
     state.spatialEvidence=params.get('evidence')||'all';state.filter.q=params.get('q')||'';
     state.filter.company=company(params.get('company'))?.id||'all';state.filter.country=params.get('country')||'all';
@@ -310,9 +312,9 @@ document.addEventListener('click',event=>{
     if(action==='phase')spatialTransition({phase:id});
     if(action==='zoom-in')spatialTransition({level:st.spatialLevel+1});
     if(action==='zoom-out')spatialTransition({level:st.spatialLevel-1});
-    if(action==='select')spatialTransition({selected:id,level:Math.min(5,st.spatialLevel+1)});
+    if(action==='select'){state.spatialCluster=globe?.groups?.find(g=>g.sites.some(s=>s.id===id))?.sites.map(s=>s.id)||[id];spatialTransition({selected:id});}
     if(action==='dossier')openDrawer('site',id);
-    if(action==='reset'){state.filter={q:'',company:'all',country:'all',review:'all',stage:'all'};state.spatialSelected=null;state.spatialFly='all';state.spatialCamera={};if(globe)globe.skipCameraSave=true;spatialTransition({level:0,evidence:'all',phase:'snapshot'});}
+    if(action==='reset'){state.filter={q:'',company:'all',country:'all',review:'all',stage:'all'};state.spatialSelected=null;state.spatialSelectionActive=false;state.spatialCluster=[];state.spatialFly='all';state.spatialCamera={};if(globe)globe.skipCameraSave=true;spatialTransition({level:0,evidence:'all',phase:'snapshot'});}
     return;
   }
   const control=event.target.closest('[data-atlas-action]');if(!control)return;
