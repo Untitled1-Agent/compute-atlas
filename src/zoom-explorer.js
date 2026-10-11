@@ -263,7 +263,7 @@ routeFromHash=function() {
   const hash=location.hash.slice(1), [path,query='']=hash.split('?'), params=new URLSearchParams(query);
   if(['overview','globe',''].includes(path)) {
     const key=params.get('scale'), found=ATLAS_SCALE_LEVELS.find(x=>x.key===key);
-    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[...new Set((params.get('members')||'').split(',').filter(id=>site(id)))];if(!state.spatialSelectionActive||!state.spatialCluster.includes(state.spatialSelected))state.spatialCluster=[];
+    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[...new Set((params.get('members')||'').split(',').filter(id=>site(id)))];if(state.spatialLevel>=4||!state.spatialSelectionActive||!state.spatialCluster.includes(state.spatialSelected))state.spatialCluster=[];
     state.spatialPhase=params.get('phase')==='target'?'target':'snapshot';state.globeLayer=state.spatialPhase;
     state.spatialEvidence=params.get('evidence')||'all';state.filter.q=params.get('q')||'';
     state.filter.company=company(params.get('company'))?.id||'all';state.filter.country=params.get('country')||'all';

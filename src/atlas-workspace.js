@@ -80,7 +80,7 @@ function workspaceProjectTabs(s){
 function workspaceMobileRail(level,scope,s,phase){
   const members=(state.spatialCluster||[]).map(site).filter(Boolean),selected=s&&(state.spatialSelectionActive||level>=2),row=level>=4&&s?workspaceSelected(s):null;
   const title=selected?(members.length>1?researchClusterName(members):s.name):'Analysis & evidence';
-  const quantity=row?fmt(row.value)+' '+row.unit+' · '+statusLabel(row.status):selected?spatialPower(s,phase)==null?'IT not quantified':fmt(spatialPower(s,phase))+' MW · '+phase+' estimate':scope.sites.length+' named research projects';
+  const quantity=row?row.scope+' · '+fmt(row.value)+' '+row.unit+' · '+statusLabel(row.status)+' · '+(row.as_of||'Undated'):selected?spatialPower(s,phase)==null?'IT not quantified':fmt(spatialPower(s,phase))+' MW · '+phase+' estimate · '+(s[phase]?.date||'Undated'):scope.sites.length+' named research projects';
   return `<aside class="atlas-spatial-rail workspace-mobile-rail" data-expanded="${workspaceState.mobileExpanded}" aria-label="Analysis and evidence"><button class="workspace-mobile-summary" data-workspace-inspector aria-expanded="${workspaceState.mobileExpanded}" aria-controls="workspace-selection-detail"><span><small>${selected?'SELECTED '+(members.length>1?'CLUSTER':'PROJECT'):'IN THIS VIEW'}</small><strong>${esc(title)}</strong><span>${esc(quantity)}</span></span><span class="workspace-mobile-expand">${workspaceState.mobileExpanded?'Close ↑':'Inspect ↓'}</span></button><div id="workspace-selection-detail">${workspaceRail(level,scope,s,phase)}</div></aside>`;
 }
 function workspaceResearchView(){
@@ -180,6 +180,7 @@ function workspaceShareContent(){return `<h1>Share this view.</h1><p>The link re
 const workspaceOriginalTransition=spatialTransition;
 spatialTransition=function(update={}){
   workspaceState.records.page=0;
+  if(Number(update.level)>=4)state.spatialCluster=[];
   if(update.selected){workspaceState.mobileExpanded=false;workspaceState.visibleIds=null;}
   workspaceOriginalTransition(update);
   if(update.selected&&matchMedia('(max-width:640px)').matches)document.querySelector('[data-workspace-inspector]')?.focus({preventScroll:true});

@@ -1704,7 +1704,7 @@ routeFromHash=function() {
   const hash=location.hash.slice(1), [path,query='']=hash.split('?'), params=new URLSearchParams(query);
   if(['overview','globe',''].includes(path)) {
     const key=params.get('scale'), found=ATLAS_SCALE_LEVELS.find(x=>x.key===key);
-    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[...new Set((params.get('members')||'').split(',').filter(id=>site(id)))];if(!state.spatialSelectionActive||!state.spatialCluster.includes(state.spatialSelected))state.spatialCluster=[];
+    state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[...new Set((params.get('members')||'').split(',').filter(id=>site(id)))];if(state.spatialLevel>=4||!state.spatialSelectionActive||!state.spatialCluster.includes(state.spatialSelected))state.spatialCluster=[];
     state.spatialPhase=params.get('phase')==='target'?'target':'snapshot';state.globeLayer=state.spatialPhase;
     state.spatialEvidence=params.get('evidence')||'all';state.filter.q=params.get('q')||'';
     state.filter.company=company(params.get('company'))?.id||'all';state.filter.country=params.get('country')||'all';
@@ -3529,7 +3529,7 @@ function workspaceProjectTabs(s){
 function workspaceMobileRail(level,scope,s,phase){
   const members=(state.spatialCluster||[]).map(site).filter(Boolean),selected=s&&(state.spatialSelectionActive||level>=2),row=level>=4&&s?workspaceSelected(s):null;
   const title=selected?(members.length>1?researchClusterName(members):s.name):'Analysis & evidence';
-  const quantity=row?fmt(row.value)+' '+row.unit+' · '+statusLabel(row.status):selected?spatialPower(s,phase)==null?'IT not quantified':fmt(spatialPower(s,phase))+' MW · '+phase+' estimate':scope.sites.length+' named research projects';
+  const quantity=row?row.scope+' · '+fmt(row.value)+' '+row.unit+' · '+statusLabel(row.status)+' · '+(row.as_of||'Undated'):selected?spatialPower(s,phase)==null?'IT not quantified':fmt(spatialPower(s,phase))+' MW · '+phase+' estimate · '+(s[phase]?.date||'Undated'):scope.sites.length+' named research projects';
   return `<aside class="atlas-spatial-rail workspace-mobile-rail" data-expanded="${workspaceState.mobileExpanded}" aria-label="Analysis and evidence"><button class="workspace-mobile-summary" data-workspace-inspector aria-expanded="${workspaceState.mobileExpanded}" aria-controls="workspace-selection-detail"><span><small>${selected?'SELECTED '+(members.length>1?'CLUSTER':'PROJECT'):'IN THIS VIEW'}</small><strong>${esc(title)}</strong><span>${esc(quantity)}</span></span><span class="workspace-mobile-expand">${workspaceState.mobileExpanded?'Close ↑':'Inspect ↓'}</span></button><div id="workspace-selection-detail">${workspaceRail(level,scope,s,phase)}</div></aside>`;
 }
 function workspaceResearchView(){
@@ -3629,6 +3629,7 @@ function workspaceShareContent(){return `<h1>Share this view.</h1><p>The link re
 const workspaceOriginalTransition=spatialTransition;
 spatialTransition=function(update={}){
   workspaceState.records.page=0;
+  if(Number(update.level)>=4)state.spatialCluster=[];
   if(update.selected){workspaceState.mobileExpanded=false;workspaceState.visibleIds=null;}
   workspaceOriginalTransition(update);
   if(update.selected&&matchMedia('(max-width:640px)').matches)document.querySelector('[data-workspace-inspector]')?.focus({preventScroll:true});
