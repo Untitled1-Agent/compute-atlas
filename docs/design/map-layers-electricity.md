@@ -11,13 +11,15 @@ available, enables a context layer, selects a mapped feature, reads its native
 attributes and source, and returns to the same camera and project. The layer is
 useful without implying a campus service connection or contributing IT MW.
 
-The compact Layers panel belongs to the map toolbar. Its rows show an on/off
+Layers opens the existing responsive side drawer from the map toolbar. This keeps
+controls readable on phones and leaves the camera in place. Its rows show an on/off
 control, source, date or vintage, coverage and a source-inspection action. Research
 markers, community locations, labels and road context are independently controlled.
 Electricity has bounded source coverage. Fiber has an explicit unavailable reason;
 no decorative connection is drawn. Active layers remain visible in a concise
 legend. Camera/selection are retained when toggling. Keyboard and phone controls
-have the same behavior. The panel closes with Escape and restores focus.
+have the same behavior. The panel closes with Escape and restores focus. Layer changes update the shared
+route while the panel is open; return retains those changes.
 
 Cartographic text uses the measured bounds of both the project name and its native
 quantity/subtitle. Try alternate anchor positions before dropping a label. Reserve
