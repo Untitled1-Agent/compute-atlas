@@ -78,3 +78,9 @@ inspection, clearing roof/context identity without replacing the canvas or camer
 Keep keyboard focus on the permanent selector when the inspector is replaced.
 Exports require a selected reviewed feature. A context-only scene's image error
 offers its source record without claiming that reviewed roof geometry exists.
+
+Render every roof in the active reviewed component. The community-map renderer's
+450-metre neighbor heuristic is inappropriate for an explicitly reviewed image
+inventory: SR2's five roofs span a larger area. Campus geometry uses the bounded
+manifest's complete feature set and preserves each source polygon and identity.
+Verify that all five native chooser items have a corresponding hit surface.
