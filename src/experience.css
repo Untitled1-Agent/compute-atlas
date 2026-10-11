@@ -117,3 +117,60 @@ body{background:#07141b}
  .workspace-phase-plot{padding:68px 12px 85px}.workspace-phase-rows{grid-auto-columns:minmax(140px,1fr);gap:12px;max-width:100%}.workspace-phase-row{display:flex;min-height:155px;padding:15px;gap:18px}.workspace-phase-row>strong{font-size:29px}.workspace-phase-label b{font-size:10px}.workspace-phase-status{font-size:10px}.workspace-phase-status small{font-size:9px}.workspace-phase-boundary{font-size:8px;line-height:1.7}.workspace-timeline-entry{grid-template-columns:70px 1fr;gap:12px}
  .atlas-editorial .workspace-collections{gap:13px;flex-wrap:wrap}.workspace-selection .workspace-dossier-actions{flex-wrap:wrap}.workspace-cluster-members{max-height:190px}
 }
+
+/* Map-linked research: controls remain stable while the canvas updates the rows. */
+.workspace-share-button{font-size:10px;padding:5px 7px;min-height:28px;color:#a6d4c6;background:#091e27bd;border:0;border-radius:2px;white-space:nowrap}
+.workspace-mobile-summary{display:none}
+.workspace-records{margin-top:22px;border-top:1px solid #24434c}
+.workspace-records>summary{font-size:12px;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;gap:20px;color:#b3c8d1}
+.workspace-records>summary>span:last-child{font-size:10px;color:#88a7b5}
+.workspace-records .workspace-record-controls{display:flex;align-items:end;gap:20px;padding:13px 0 20px;border:0}
+.workspace-record-controls label{display:grid;gap:7px;font-size:10px;color:#96afbb}
+.workspace-record-controls select{background:#0c202a;border:1px solid #294550;border-radius:2px;color:#c4dbe1;padding:8px;font-size:11px;max-width:100%}
+.workspace-records button{background:none;color:#a9d9ca;border:0;border-radius:2px;font-size:11px;text-align:left;cursor:pointer}
+.workspace-records button:disabled{opacity:.4;cursor:default}
+.workspace-records .workspace-record-table{width:100%;min-width:630px;table-layout:fixed}
+.workspace-record-table th{font-size:10px;color:#96b3c0;letter-spacing:.3px;font-weight:400;padding:12px;text-align:left;background:#0b1b25}
+.workspace-record-table th:first-child{width:32%}.workspace-record-table th:nth-child(2){width:23%}.workspace-record-table th:nth-child(3){width:27%}
+.workspace-record-table td{font-size:11px;line-height:1.5;padding:13px 12px;vertical-align:top;border-bottom:1px solid #203740;overflow-wrap:anywhere}
+.workspace-record-table tr.selected{background:#16382f80}.workspace-records .workspace-record-name{display:block;width:auto;padding:0;font-size:13px;color:#cde9de}
+.workspace-record-table small{display:block;color:#89a6b4;font-size:10px;margin:7px 0 0}.workspace-record-table .source-links{display:block;margin-top:7px}
+.workspace-record-table td:last-child button{display:block;padding:5px 0}
+.workspace-records .workspace-record-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;padding:18px 0}
+.workspace-record-footer>div{display:flex;align-items:center;gap:15px}.workspace-record-footer button{padding:6px}
+.workspace-records .workspace-record-boundary{font-size:10px;line-height:1.6;color:#83a3b2;padding:0 0 15px}
+#workspace-share-url{display:block;width:100%;margin:10px 0 18px;padding:12px;font-size:12px;background:#0a202a;border:1px solid #345661;color:#d2e6e4;border-radius:2px}
+.workspace-share-status{font-size:12px;color:#a2c6bd}
+@media(max-width:640px){
+ .atlas-editorial .atlas-map-column{display:contents}
+ .atlas-editorial .atlas-spatial-layout{gap:14px}
+ .atlas-editorial .atlas-map-panel{order:0;width:100%}
+ .atlas-editorial .workspace-mobile-rail{order:1;margin:0;border:1px solid #2b514a;background:#102820;border-radius:2px;padding:0}
+ .workspace-mobile-summary{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:16px;width:100%;min-height:44px;text-align:left;border:0;background:none;color:#d1ecde;cursor:pointer}
+ .workspace-mobile-summary>span:first-child{min-width:0}.workspace-mobile-summary small{display:block;font-size:8px;letter-spacing:1.3px;color:#91b8aa}.workspace-mobile-summary strong{display:block;font:22px/1.16 Georgia,serif;margin:8px 0;overflow-wrap:anywhere}
+ .workspace-mobile-summary>span>span{font-size:10px;color:#9ebfb4}.workspace-mobile-expand{font-size:11px;white-space:nowrap;color:#b6e4ce}
+ .workspace-mobile-rail[data-expanded=false] #workspace-selection-detail{display:none}
+ #workspace-selection-detail{padding:0 16px 16px}
+ .atlas-editorial .atlas-kpi-grid,.atlas-editorial .atlas-detail-pair,.atlas-editorial .workspace-evidence-bottom,.atlas-editorial .workspace-topic-content{order:2;width:100%;margin-top:5px}
+ .atlas-editorial .workspace-map-context{order:3;padding:5px 0;width:100%}.atlas-editorial .workspace-collections{order:4;width:100%}
+ .workspace-mobile-rail .workspace-dossier-actions{flex-wrap:wrap;gap:12px}.workspace-mobile-rail .btn,.workspace-mobile-rail .text-button,.workspace-mobile-rail .atlas-source-ref{min-height:44px;padding:10px 4px!important;font-size:11px!important;display:inline-flex;align-items:center}
+ .atlas-editorial .workspace-project-tabs{flex-wrap:nowrap;overflow-x:auto;gap:20px}.workspace-project-tabs button{white-space:nowrap;min-height:44px}
+ .workspace-records>summary{display:block;line-height:1.7}.workspace-records>summary>span{display:block}
+ .workspace-records .workspace-record-controls{display:grid;grid-template-columns:1fr;gap:14px}.workspace-record-controls select{min-height:44px;width:100%}
+ .workspace-records button{min-height:44px}.workspace-records .workspace-record-footer{display:grid;gap:12px}.workspace-record-footer>div{justify-content:space-between;gap:4px}
+ .workspace-record-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+ .workspace-share-button,.atlas-editorial .atlas-filter-toggle{min-height:36px}
+}
+
+/* The DOM follows map → inspector → research on phones and with a screen reader. */
+.atlas-editorial .atlas-spatial-layout{row-gap:0}
+.atlas-editorial .atlas-map-column{grid-column:1;grid-row:1}
+.atlas-editorial .atlas-spatial-rail{grid-column:2;grid-row:1 / span 2}
+.workspace-map-lower{grid-column:1;grid-row:2;min-width:0}
+.workspace-map-lower .metric-value{font-size:27px}
+.workspace-map-lower .metric-label{line-height:1.4}
+@media(max-width:640px){.atlas-editorial .atlas-map-column{display:block;order:0}.atlas-editorial .workspace-map-lower{order:2;width:100%}.atlas-editorial .atlas-spatial-layout{gap:14px}}
+.workspace-records>[data-workspace-record-table]{display:block;padding:0;max-height:none;overflow:visible}
+.workspace-records .workspace-record-scroll{width:100%;max-width:100%;max-height:none}
+.workspace-records{border-left:0;border-right:0;border-bottom:0;border-radius:0;background:none}
+.workspace-records>summary{padding-left:0;padding-right:0}

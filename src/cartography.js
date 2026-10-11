@@ -5,6 +5,7 @@ const ATLAS_CONTEXT = JSON.parse(document.getElementById('context-data')?.textCo
 const geographicRadians = Math.PI / 180;
 const mercatorY = lat => Math.log(Math.tan(Math.PI / 4 + Math.max(-83, Math.min(83, lat)) * geographicRadians / 2));
 const contextBounds = new WeakMap();
+const researchCameraKey = (level, scope) => [level,scope.label,state.filter.company,state.filter.country,state.filter.q,state.spatialEvidence].join('|');
 function researchClusterName(sites){
   const countries=[...new Set(sites.map(s=>s.country))],continents=[...new Set(sites.map(spatialContinent))];
   if(countries.length===1){
@@ -40,8 +41,9 @@ class ResearchMap {
     this.flat = this.level >= 2;
     this.labels = state.spatialLabels !== false;
     this.bounds = [...this.scope.bounds];
-    this.cameraKey=[this.level,this.scope.label,state.filter.company,state.filter.country,state.filter.q,state.spatialEvidence].join('|');
-    const camera=state.spatialCamera?.[this.cameraKey];
+    this.cameraKey=researchCameraKey(this.level,this.scope);
+    const camera=state.spatialRouteCamera || state.spatialCamera?.[this.cameraKey];
+    delete state.spatialRouteCamera;
     if(camera){this.lat=camera.lat;this.lon=camera.lon;this.zoom=camera.zoom;this.bounds=[...camera.bounds];this.flat=camera.flat;}
     this.groups = []; this.target = null; this.drag = null; this.hover = null;
     this.dirty = true; this.destroyed = false; this.listeners = [];
@@ -72,11 +74,11 @@ class ResearchMap {
     this.on('wheel', event => this.wheel(event), {passive: false});
     this.on('keydown', event => {
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
-      event.preventDefault();
+      event.preventDefault();this.markCustom();
       const dx = event.key === 'ArrowLeft' ? -1 : event.key === 'ArrowRight' ? 1 : 0;
       const dy = event.key === 'ArrowUp' ? 1 : event.key === 'ArrowDown' ? -1 : 0;
       if (this.flat) {
-        const x = (this.bounds[2] - this.bounds[0]) * .08 * dx, y = (this.bounds[3] - this.bounds[1]) * .08 * dy;
+        const x = (this.bounds[2] - this.bounds[0]) * .08 * dx, requestedY = (this.bounds[3] - this.bounds[1]) * .08 * dy, y=Math.max(-82-this.bounds[1],Math.min(82-this.bounds[3],requestedY));
         this.bounds = [this.bounds[0] + x, this.bounds[1] + y, this.bounds[2] + x, this.bounds[3] + y];
       } else { this.lon += dx * 12; this.lat = Math.max(-80, Math.min(80, this.lat + dy * 9)); }
       this.dirty = true;
@@ -105,11 +107,13 @@ class ResearchMap {
     this.canvas.style.width = this.w + 'px'; this.canvas.style.height = this.h + 'px'; this.dirty = true;
   }
   destroy() {
-    if(!this.skipCameraSave){state.spatialCamera ||= {};state.spatialCamera[this.cameraKey]={lat:this.lat,lon:this.lon,zoom:this.zoom,bounds:[...this.bounds],flat:this.flat};}
+    if(!this.skipCameraSave){state.spatialCamera ||= {};state.spatialCamera[this.cameraKey]=this.snapshot();}
     this.destroyed = true; cancelAnimationFrame(this.raf); this.resizeObserver.disconnect();
     this.gestures.destroy();
     this.listeners.forEach(([type, fn, options]) => this.canvas.removeEventListener(type, fn, options)); hideTip();
   }
+  markCustom() {state.spatialFly='custom';document.querySelectorAll('[data-atlas-action="fly"]').forEach(b=>b.classList.remove('active'));}
+  snapshot() { return {lat:this.lat,lon:this.lon,zoom:this.zoom,bounds:[...this.bounds],flat:this.flat}; }
   flyTo(lat, lon, zoom = 1.5) {
     // Compatibility with existing tours / research links; a requested hemisphere
     // never reclassifies the underlying evidence or changes geographic coordinates.
@@ -133,6 +137,7 @@ class ResearchMap {
     else {const rect=this.canvas.getBoundingClientRect();this.zoomTo(next,{x:event.clientX-rect.left,y:event.clientY-rect.top});}
   }
   zoomTo(zoom,anchor=null) {
+    this.markCustom();
     const next = Math.min(12, Math.max(.6, zoom));
     if (this.flat) {
       this.prepare();
@@ -256,6 +261,9 @@ class ResearchMap {
     if (position) position.textContent = this.flat ? 'MERCATOR · GENERALIZED CONTEXT · APPROXIMATE ANCHORS' : `${this.lat.toFixed(1)}° N  ${Math.abs(this.lon).toFixed(1)}° ${this.lon < 0 ? 'W' : 'E'}  ·  DRAG TO ROTATE`;
     const live = document.getElementById('globe-live');
     if (live) live.textContent = `${this.scope.sites.length} research records; ${this.groups.length} visible markers or clusters. Use the record list for keyboard access.`;
+    // Notify only when the camera or canvas changes; hover repaint is not navigation.
+    const signature=JSON.stringify([this.snapshot(),this.w,this.h]);
+    if(signature!==this.lastCameraSignature){this.lastCameraSignature=signature;document.dispatchEvent(new CustomEvent('atlas-camera-change',{detail:this}));}
   }
   drawPlaces() {
     const c = this.ctx, occupied = [...(this.markerLabels||[])];
