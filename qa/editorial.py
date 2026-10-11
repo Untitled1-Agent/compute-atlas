@@ -44,7 +44,8 @@ try:
             phase_url=page.url
             page.locator('.workspace-selected-phase [data-atlas-action="source"]').first.click()
             check(entry+' selected phase opens original source',page.locator('#drawer').is_visible())
-            page.keyboard.press('Escape')
+            page.keyboard.press('Escape');page.locator('#drawer').wait_for(state='hidden')
+            if page.url!=phase_url:print('SOURCE_RETURN_URL',phase_url,page.url,flush=True)
             check(entry+' source close preserves phase/topic URL',page.url==phase_url)
             page.locator('[data-workspace-topic="energy"]').focus();page.keyboard.press('ArrowRight')
             check(entry+' topic arrow keys select and focus',page.locator('[data-workspace-topic="technical"]').evaluate('e=>e===document.activeElement&&e.getAttribute("aria-selected")==="true"'))

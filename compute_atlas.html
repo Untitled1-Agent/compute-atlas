@@ -3704,10 +3704,16 @@ renderNav=function(){
 };
 // Reading a source must preserve the campus/topic/phase return point.
 const workspaceOpenDrawer=openDrawer;
-openDrawer=function(kind,id,opts={}){workspaceOpenDrawer(kind,id,opts);if(kind==='project-comparison'){$('#drawer-type').textContent='PROJECT COMPARISON';$('#drawer-content').innerHTML=workspaceCompareContent();}if(kind==='workspace-share'){$('#drawer-type').textContent='SHARE EXPLORATION';$('#drawer-content').innerHTML=workspaceShareContent();}};
+openDrawer=function(kind,id,opts={}){
+  if(!state.drawer&&['overview','globe'].includes(state.view))workspaceState.drawerRoute=spatialURL();
+  const map=globe instanceof ResearchMap?globe:null,camera=map?.snapshot();
+  workspaceOpenDrawer(kind,id,opts);
+  // Reading a dossier must not run the legacy locate animation behind its drawer.
+  if(kind==='site'&&map===globe&&camera){Object.assign(map,camera);map.target=null;map.dirty=true;}
+  if(kind==='project-comparison'){$('#drawer-type').textContent='PROJECT COMPARISON';$('#drawer-content').innerHTML=workspaceCompareContent();}if(kind==='workspace-share'){$('#drawer-type').textContent='SHARE EXPLORATION';$('#drawer-content').innerHTML=workspaceShareContent();}};
 ATLAS.openDrawer=openDrawer;
 const workspaceCloseDrawer=closeDrawer;
-closeDrawer=function(){const wasOpen=!$('#drawer').hidden;workspaceCloseDrawer();if(wasOpen&&['overview','globe'].includes(state.view))history.replaceState(null,'',spatialURL());};
+closeDrawer=function(){const wasOpen=!$('#drawer').hidden,returnRoute=workspaceState.drawerRoute;workspaceCloseDrawer();if(wasOpen){workspaceState.drawerRoute=null;if(['overview','globe'].includes(state.view))history.replaceState(null,'',returnRoute||spatialURL());}};
 // Phase inspection survives sharing and reload without changing the research ledger.
 const workspaceSpatialURL=spatialURL;
 spatialURL=function(view=state.view){
