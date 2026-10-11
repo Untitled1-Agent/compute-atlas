@@ -33,3 +33,9 @@ in order; page composition and map construction wait for the completed registry.
 After clearing the boundary, invoke the final decorated renderer once. Explicit
 catalog, operator, publisher and source routes must retain their existing state
 and drawers. Verify these routes as well as geographic and physical startup.
+
+Begin optional monitor/publication polling after the completed render boundary,
+so their eight-second network deadlines do not run during module registration.
+Emit one ready event from both entrypoints; a service-client loaded without a boot
+boundary retains immediate polling. Keep genuine network errors, dated fallback,
+manual retries and the existing five-minute visible-page refresh behavior.
