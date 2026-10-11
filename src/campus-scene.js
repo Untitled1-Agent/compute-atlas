@@ -15,7 +15,7 @@ function campusCameraParam(c){return c?[c.yaw,c.pitch,c.zoom,c.pan.x,c.pan.y].ma
 class CampusScene extends FacilityScene {
   constructor(canvas,manifest){
     super(canvas,manifest.features[0],manifest.features.slice(1));
-    this.manifest=manifest;this.showContext=true;this.assumptions=false;this.labelBasis='ROOF INTERPRETATION · 2022';
+    this.manifest=manifest;this.showContext=true;this.assumptions=false;this.labels=state.spatialLabels!==false;this.labelBasis='ROOF INTERPRETATION · 2022';
     const e=manifest.image.extent_3857,R=6378137;
     const ll=(x,y)=>[x/R*180/Math.PI,(2*Math.atan(Math.exp(y/R))-Math.PI/2)*180/Math.PI];
     this.imageCorners=[ll(e.xmin,e.ymax),ll(e.xmax,e.ymax),ll(e.xmin,e.ymin)].map(p=>this.local(...p));
@@ -103,4 +103,4 @@ const campusOriginalNav=renderNav;
 renderNav=function(){campusOriginalNav();if(campusSpatial()&&campusFeature())$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
 ATLAS.campus={scene:campusScene,state:campusState,parseCamera:campusCameraParse,select:campusSelectFeature};
 routeFromHash();
-document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready');
+// The final map-layer integration marks the complete workspace ready.
