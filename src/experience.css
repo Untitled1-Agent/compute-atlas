@@ -273,3 +273,26 @@ body{background:#07141b}
  .campus-feature-inspector .workspace-dossier-actions .btn{min-height:44px}
  .campus-return-feature{display:block}.campus-return-feature>span{display:block;margin-top:8px}
 }
+
+/* Component identity and controls occupy their own rows above the drawing stage. */
+.atlas-editorial .atlas-map-panel:has(.campus-component-header){display:flex;flex-direction:column}
+.campus-component-header.campus-scene-head{position:static;order:-2;display:flex;align-items:center;gap:16px;margin:0;padding:10px 12px;border:0;border-bottom:1px solid var(--line);background:#081820}
+.campus-component-identity{min-width:0}.campus-component-identity h2{font-size:13px}.campus-frame-actions{display:flex;gap:14px;margin-top:4px}.campus-frame-actions .text-button{font-size:10px;min-height:30px}
+.campus-component-views{display:flex;align-items:center;gap:12px;flex-shrink:0}.campus-component-control{display:flex;flex-direction:column;gap:3px;font-size:9px;color:var(--muted)}
+.campus-component-control select,.campus-feature-control select{font:11px system-ui;min-height:38px;background:#0a2028;color:var(--text);border:1px solid #30515a;padding:7px;max-width:100%}
+.atlas-editorial .atlas-map-panel:has(.campus-component-header) .workspace-toolbar{position:relative;order:-1;top:auto;left:auto;right:auto;margin:0;padding:8px 12px;min-height:44px;border:0;background:#071620}
+.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:300px;min-height:300px}
+.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-historic-badge{top:12px}
+.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-image-status{top:86px}
+.campus-feature-control{display:flex;align-items:center;gap:10px;flex:1;color:var(--muted);font-size:11px;min-width:0}.campus-feature-control select{flex:1;min-width:0}.campus-feature-strip{padding:8px 12px;gap:7px}
+.campus-outline-metric{margin:14px 0;color:var(--muted);font-size:10px}.campus-outline-metric strong{display:block;font:30px Georgia,serif;color:var(--text);margin:5px 0}.campus-outline-metric small{font-size:10px}.campus-outline-metric+.campus-feature-boundary{margin:12px 0}.campus-outline-metric+.campus-feature-boundary strong{font:16px system-ui}
+.campus-component-evidence-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;font-size:11px;color:var(--muted)}
+.campus-route-recovery{padding:12px;border:1px solid #6b6950;background:#191f20;color:#d8cda1;font-size:11px;overflow-wrap:anywhere}.campus-route-recovery p{margin:0 0 6px}.campus-route-recovery button{min-height:44px}
+@media(min-width:1100px){.atlas-compact-attributes .atlas-data-row{padding:7px 0}.atlas-compact-attributes .atlas-evidence-link,.atlas-compact-attributes .atlas-identity-launch{display:inline-flex;margin:8px 10px 0 0;font-size:9px;padding:0;border:0}.atlas-compact-attributes .atlas-identity-launch button{font-size:9px;min-height:25px}.atlas-compact-attributes .atlas-evidence-link{min-height:25px}}
+@media(max-width:1099px){.campus-component-header.campus-scene-head{align-items:start}.campus-component-views{display:block}.campus-component-control{margin-bottom:6px}}
+@media(max-width:640px){
+ .campus-component-header.campus-scene-head{display:block;padding:8px 10px}.campus-component-views{display:flex;justify-content:space-between;gap:6px}.campus-component-control{max-width:48%;margin:0}.campus-component-control select{min-height:44px;font-size:10px;width:100%}.campus-component-header .campus-view-toggle{margin-top:0;flex-shrink:0}.campus-component-header .campus-view-toggle button{min-height:44px;padding:5px 6px;font-size:10px}
+ .campus-frame-actions{gap:10px;margin:0}.campus-frame-actions button{min-height:44px;font-size:10px}.campus-component-identity{margin-bottom:4px}.campus-component-identity h2{font-size:12px}
+ .atlas-editorial .atlas-map-panel:has(.campus-component-header) .workspace-toolbar{padding:8px 10px;min-height:76px}.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:320px;min-height:320px}
+ .campus-feature-control{display:block;width:100%}.campus-feature-control>span{display:block;margin-bottom:5px}.campus-feature-control select{min-height:44px;width:100%}.campus-component-evidence-header{flex-wrap:wrap}.campus-route-recovery{font-size:10px}
+}
