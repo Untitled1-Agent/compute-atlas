@@ -1,6 +1,6 @@
 # Compute Atlas experience design
 
-Design proposal, 11 October 2026. The six approved references define the visual direction. This proposal specifies the complete experience before implementation. The prototype is kept on `prototype/atlas-experience-design`; production remains at `e3c635f`.
+Design proposal, 11 October 2026. The six approved references define the visual direction. This proposal specifies the complete experience before implementation. The prototype is kept on `prototype/atlas-experience-design`. The first production implementation shipped in PR #29; the remaining workstreams below stay open.
 
 [Visual review and three alternatives](https://github.com/Untitled1-Agent/compute-atlas/pull/28). The recommendation is A; the next implementation follows its hierarchy and interaction model. The prototype itself remains outside main.
 
