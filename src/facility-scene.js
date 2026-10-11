@@ -42,13 +42,14 @@ class FacilityScene {
   buildGeometry(neighbors){
     const selected=this.record, basePoints=(selected.geometry?.coordinates||[]).flat(2).map(p=>this.local(...p));
     this.extent=Math.max(20,...basePoints.map(p=>Math.hypot(...p)))*1.15;
-    this.baseExtent=this.extent;
+    this.baseExtent=this.extent;this.frameCenter=[0,0];
     this.features=[selected,...neighbors.filter(r=>r.id!==selected.id&&r.geometry&&spatialDistance(selected,r)<.45).slice(0,60)]
       .map(r=>({record:r,selected:r.id===selected.id,polygons:(r.geometry?.coordinates||[]).map(poly=>poly.map(ring=>ring.map(p=>this.local(...p))))}));
   }
   setContext(enabled) {
     this.showContext=enabled;
-    this.extent=enabled?Math.max(this.baseExtent,...this.features.flatMap(f=>f.polygons.flat(2).map(p=>Math.hypot(...p))))*1.1:this.baseExtent;
+    const points=(enabled?this.features:this.features.filter(f=>f.record.id===this.record.id)).flatMap(f=>f.polygons.flat(2));
+    if(points.length){const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);this.frameCenter=[(x0+x1)/2,(y0+y1)/2];this.extent=Math.max(20,(x1-x0)/2,(y1-y0)/2)*1.12;}else{this.frameCenter=[0,0];this.extent=this.baseExtent;}
     this.zoom=1;this.pan={x:0,y:0};
     if(!enabled&&this.inspected.id!==this.record.id)this.inspect(this.record.id);
     this.dirty=true;
@@ -89,9 +90,10 @@ class FacilityScene {
   destroy(){this.destroyed=true;cancelAnimationFrame(this.raf);this.resizeObserver.disconnect();this.gestures.destroy();this.listeners.forEach(([t,f,o])=>this.canvas.removeEventListener(t,f,o));}
   height(feature){return feature.record.kind==='building' ? (feature.record.height_m??(this.assumptions?this.displayHeight:0)):0;}
   project3(x,y,z=0){
+    x-=this.frameCenter[0];y-=this.frameCenter[1];
     const a=x*Math.cos(this.yaw)-y*Math.sin(this.yaw), b=x*Math.sin(this.yaw)+y*Math.cos(this.yaw);
     const depth=b*Math.cos(this.pitch)-z*Math.sin(this.pitch), vertical=-b*Math.sin(this.pitch)-z*Math.cos(this.pitch);
-    const scale=Math.min(this.w*.38,this.h*.36)/this.extent*this.zoom;
+    const scale=Math.min(this.w*.42,this.h*.4)/this.extent*this.zoom;
     const perspective=1/Math.max(.45,1+depth/(this.extent*8));
     return {x:this.w*.5+this.pan.x+a*scale*perspective,y:this.h*.53+this.pan.y+vertical*scale*perspective,depth};
   }
@@ -100,8 +102,8 @@ class FacilityScene {
     this.hitSurfaces=[];
     const c=this.ctx,w=this.w,h=this.h;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.fillStyle='#07141d';c.fillRect(0,0,w,h);
     const halo=c.createRadialGradient(w*.5,h*.5,5,w*.5,h*.5,w*.55);halo.addColorStop(0,'#123e413d');halo.addColorStop(1,'#06131b00');c.fillStyle=halo;c.fillRect(0,0,w,h);
-    const step=10**Math.floor(Math.log10(this.extent/3)),extent=this.extent*2.5;
-    c.lineWidth=.6;c.strokeStyle='#29464f70';
+    const step=10**Math.floor(Math.log10(this.extent)),extent=this.extent*2.5;
+    c.lineWidth=.5;c.strokeStyle='#29464f36';
     for(let n=-Math.ceil(extent/step);n<=Math.ceil(extent/step);n++){
       for(const pair of [[[n*step,-extent],[n*step,extent]],[[-extent,n*step],[extent,n*step]]]){const a=this.project3(...pair[0]),b=this.project3(...pair[1]);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}}
     const features=this.features.filter(f=>f.record.id===this.record.id||this.showContext).sort((a,b)=>this.project3(...(b.polygons[0]?.[0]?.[0]||[0,0])).depth-this.project3(...(a.polygons[0]?.[0]?.[0]||[0,0])).depth);

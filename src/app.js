@@ -1,4 +1,5 @@
 'use strict';
+const ATLAS_ENTRY_HASH=location.hash;
 const D=JSON.parse(document.getElementById('atlas-data').textContent), A=JSON.parse(document.getElementById('archive-data').textContent), W=JSON.parse(document.getElementById('world-data').textContent);
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

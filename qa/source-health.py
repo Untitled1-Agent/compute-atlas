@@ -156,7 +156,7 @@ with tempfile.TemporaryDirectory() as directory:
             offline.on('request',lambda request:offline_requests.append(request.url))
             if args.in_memory:offline.set_content((ROOT/'compute_atlas.html').read_text(),wait_until='load')
             else:offline.goto(base+'/compute_atlas.html',wait_until='networkidle');offline_requests.clear()
-            offline.wait_for_function('window.ATLAS?.monitor')
+            offline.wait_for_function('window.ATLAS?.monitor && document.documentElement.classList.contains("workspace-ready")')
             offline.locator('[data-atlas-action="monitor"]').click()
             check('Standalone never pretends the worker is running','self-contained publication' in offline.locator('#drawer-content').inner_text())
             check('Standalone monitor never probes API or remote assets',not offline_requests,offline_requests)

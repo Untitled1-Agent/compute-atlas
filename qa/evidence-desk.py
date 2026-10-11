@@ -39,7 +39,7 @@ try:
             page.on('request',lambda r:external.append(r.url) if r.url.startswith('http') and not r.url.startswith(base or 'about:') else None)
             if args.in_memory: page.set_content((ROOT/entry).read_text(),wait_until='load')
             else: check(entry+' HTTP response',page.goto(base+entry,wait_until='load').status==200)
-            page.wait_for_function('window.ATLAS?.evidence && window.ATLAS?.publication')
+            page.wait_for_function('window.ATLAS?.evidence && window.ATLAS?.publication && document.documentElement.classList.contains("workspace-ready")')
             page.evaluate("ATLAS.navigate('globe');ATLAS.spatial.select('coreweave-ellendale');ATLAS.spatial.setLevel(5)")
             check(entry+' October commissioned subtotal is 250 MW','250 MW' in page.locator('.atlas-feature-number').inner_text())
             check(entry+' historical July subtotal absent from headline cards','175' not in page.locator('.atlas-evidence-schematic').inner_text())

@@ -67,6 +67,7 @@ with tempfile.TemporaryDirectory() as directory:
                         'failed_requests':failed,'console_errors':console_errors,
                         'requests':requests[-20:]}, indent=2), flush=True)
                     raise
+                page.evaluate("ATLAS.navigate('catalog')")
                 check(label+' complete research reaches the browser', page.evaluate('ATLAS_PRIMARY.research_coverage.projects.length') == 79)
                 page.evaluate("ATLAS.openDrawer('site','microsoft-fairwater-wisconsin')")
                 check(label+' regional investment remains wider context in the dossier',

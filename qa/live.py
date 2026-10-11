@@ -161,7 +161,7 @@ with sync_playwright() as p:
     failed = context.new_page()
     failure_errors = []
     failed.on("pageerror", lambda e: failure_errors.append(str(e)))
-    failed.route("**/src/enhancements.js", lambda route: route.abort())
+    failed.route("**/src/enhancements.js*", lambda route: route.abort())
     failed.goto(base + "index.html", wait_until="networkidle")
     failed.wait_for_selector(".boot-error")
     check("hosted asset failure renders visible error state", "Could not load src/enhancements.js" in failed.locator("#boot-error-message").inner_text())

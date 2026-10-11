@@ -88,7 +88,7 @@ with tempfile.TemporaryDirectory() as folder:
                 page=context.new_page();page.set_default_timeout(12000);errors=[];requests=[]
                 page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:requests.append(r.url))
                 check(label+' launches over actual HTTP',page.goto(url).status==200)
-                page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+                page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
                 before=page.evaluate('({sites:ATLAS.data.sites.length,quantities:ATLAS.coverage.metrics().quantities,features:ATLAS.catalog.data.records.length})')
                 page.locator('[data-coverage-candidates]').first.click();page.locator('#atlas-candidate-query').fill('atNorth')
                 check(label+' research search finds three Nordic leads',page.locator('.atlas-coverage-candidate').count()==3)
@@ -119,7 +119,7 @@ with tempfile.TemporaryDirectory() as folder:
                 check(label+' accessible geometry selection preserves the camera',camera==page.evaluate('JSON.stringify([ATLAS.catalog.scene().yaw,ATLAS.catalog.scene().pitch,ATLAS.catalog.scene().zoom,ATLAS.catalog.scene().pan])') and page.evaluate('ATLAS.catalog.scene().inspected.id')==other)
                 check(label+' inspector links actual geometry and keeps identity uncertain',page.locator('#scene-inspector-detail a').first.get_attribute('href')==page.evaluate('ATLAS.catalog.feature(ATLAS.catalog.scene().inspected.id).source_url') and 'common ownership' in page.locator('#scene-inspector-detail').inner_text())
                 saved_url=page.url
-                page.reload();page.wait_for_function('document.documentElement.classList.contains("publisher-ready")')
+                page.reload();page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
                 check(label+' deep link restores the inspected source feature',page.url==saved_url and page.evaluate('ATLAS.catalog.scene().inspected.id')==other and page.locator('#scene-context').is_checked())
                 # Find a genuinely visible sourced surface, then select it with the mouse.
                 hit=page.evaluate('''(()=>{const s=ATLAS.catalog.scene();s.draw();for(let y=110;y<s.h-100;y+=8)for(let x=30;x<s.w-30;x+=8){const rect=s.canvas.getBoundingClientRect(),f=s.hit({clientX:rect.left+x,clientY:rect.top+y});if(f&&f.record.id!==s.inspected.id)return {x,y,id:f.record.id};}return null;})()''')
