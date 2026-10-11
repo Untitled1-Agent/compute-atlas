@@ -170,3 +170,7 @@ body{background:#07141b}
 .workspace-map-lower .metric-value{font-size:27px}
 .workspace-map-lower .metric-label{line-height:1.4}
 @media(max-width:640px){.atlas-editorial .atlas-map-column{display:block;order:0}.atlas-editorial .workspace-map-lower{order:2;width:100%}.atlas-editorial .atlas-spatial-layout{gap:14px}}
+.workspace-records>[data-workspace-record-table]{display:block;padding:0;max-height:none;overflow:visible}
+.workspace-records .workspace-record-scroll{width:100%;max-width:100%;max-height:none}
+.workspace-records{border-left:0;border-right:0;border-bottom:0;border-radius:0;background:none}
+.workspace-records>summary{padding-left:0;padding-right:0}
