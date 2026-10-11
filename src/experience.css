@@ -66,3 +66,16 @@
  .atlas-project-shortcuts{gap:6px}.atlas-project-shortcuts button{font-size:10px;padding:8px}
  .atlas-evidence-schematic{min-height:0}.atlas-schematic-heading h2{font-size:25px}
 }
+/* Short desktop windows keep the overview legible; the evidence rail scrolls
+   independently instead of forcing the metrics below an oversized hero. */
+@media(min-width:1100px){
+ .catalog-experience{--map-height:clamp(340px,calc(100dvh - 450px),520px)}
+ .catalog-experience .catalog-map-stage{height:var(--map-height)!important}
+ .catalog-experience #catalog-rail,.atlas-level-0 .atlas-spatial-rail,.atlas-level-1 .atlas-spatial-rail,.atlas-level-2 .atlas-spatial-rail,.atlas-level-3 .atlas-spatial-rail{max-height:var(--map-height);overflow:auto;scrollbar-width:thin;scrollbar-color:#355b62 transparent;overscroll-behavior:contain}
+}
+@media(min-width:1100px) and (max-height:850px){
+ .atlas-experience{--map-height:clamp(300px,calc(100dvh - 420px),420px)}
+ .catalog-experience{--map-height:clamp(300px,calc(100dvh - 440px),420px)}
+ .atlas-intro h1,.catalog-experience .atlas-intro h1{font-size:36px}
+ .atlas-intro-aside p{font-size:11px}.atlas-intro .btn{padding:7px 12px}
+}
