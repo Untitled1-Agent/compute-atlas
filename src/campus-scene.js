@@ -53,7 +53,7 @@ class CampusScene extends FacilityScene {
     this.extent=Math.max(Math.abs(b[0]-a[0]),Math.abs(d[1]-a[1]))/2;
     this.baseExtent=this.extent;
     this.image=new Image();this.image.onload=()=>{if(this.destroyed)return;this.imageReady=true;this.dirty=true;canvas.dataset.image='ready';const status=document.querySelector('.campus-image-status');if(status)status.hidden=true;};
-    this.image.onerror=()=>{if(this.destroyed)return;this.imageReady=false;canvas.dataset.image='error';const status=document.querySelector('.campus-image-status');if(status){status.hidden=false;status.innerHTML='Historical image unavailable. The interpreted outline and source record remain accessible. <button class="text-button" data-campus-retry>Retry image ↻</button>';}this.dirty=true;};
+    this.image.onerror=()=>{if(this.destroyed)return;this.imageReady=false;canvas.dataset.image='error';const status=document.querySelector('.campus-image-status');if(status){status.hidden=false;status.innerHTML=(manifest.features.length?'Historical image unavailable. The interpreted outline and source record remain accessible. ':'Historical image unavailable. This context-only scene has no reviewed roof geometry; its source record remains accessible. ')+'<button class="text-button" data-campus-retry>Retry image ↻</button>';}this.dirty=true;};
     this.image.src=manifest.image.data_url||new URL(manifest.image.path+'?v='+manifest.image.sha256.slice(0,12),location.href).href;
     this.reset();
     const camera=campusState.routeCamera||campusState.camera;if(camera){Object.assign(this,camera,{pan:{...camera.pan}});this.setSourceFocus(camera.focus_pixel||this.focusPixel);}
@@ -178,7 +178,7 @@ document.addEventListener('click',event=>{
   const tool=event.target.closest('[data-campus-tool]');if(tool&&globe instanceof CampusScene){tool.dataset.campusTool==='reset'?globe.reset():globe.zoomTo(globe.zoom*(tool.dataset.campusTool==='in'?1.2:1/1.2));}
   if(event.target.closest('[data-campus-retry]')&&globe instanceof CampusScene){const im=globe.manifest.image;globe.image.src=im.data_url||new URL(im.path+'?v='+im.sha256.slice(0,12)+'&retry='+Date.now(),location.href).href;}
   if(event.target.closest('[data-campus-source]'))openDrawer('campus-source');
-  if(event.target.closest('[data-campus-export]')){const m=campusScene(),f=campusFeature()||m.features[0],{data_url,...image}=m.image;download(f.id+'-cited-feature.json',{collection:'Historical campus interpretation; excluded from project and OSM capacity inventories',project_id:m.project_id,scene_id:m.id,feature:f,image,review:m.review,review_sha256:f.review_sha256,sources:m.sources});}
+  if(event.target.closest('[data-campus-export]')){const m=campusScene(),f=campusFeature();if(!f)return;const {data_url,...image}=m.image;download(f.id+'-cited-feature.json',{collection:'Historical campus interpretation; excluded from project and OSM capacity inventories',project_id:m.project_id,scene_id:m.id,feature:f,image,review:m.review,review_sha256:f.review_sha256,sources:m.sources});}
 });
 // Set the selection type before the existing phase handler renders its view.
 document.addEventListener('click',event=>{if(event.target.closest('[data-workspace-phase]')){campusRememberCamera();campusState.mode='evidence';workspaceState.location=false;}},true);
@@ -249,7 +249,15 @@ document.addEventListener('click',event=>{
 routeFromHash();
 // The final map-layer integration marks the complete workspace ready.
 
-document.addEventListener('change',event=>{if(event.target.matches('[data-campus-component]'))campusChangeComponent(event.target.value);if(event.target.matches('[data-campus-feature-select]')&&event.target.value)campusSelectFeature(event.target.value);});
+document.addEventListener('change',event=>{if(event.target.matches('[data-campus-component]'))campusChangeComponent(event.target.value);if(event.target.matches('[data-campus-feature-select]')){event.target.value?campusSelectFeature(event.target.value):campusClearFeature();document.querySelector('.campus-feature-strip [data-campus-feature-select]')?.focus({preventScroll:true});}});
 document.addEventListener('click',event=>{const component=event.target.closest('[data-campus-component-button]');if(component)campusChangeComponent(component.dataset.campusComponentButton);if(event.target.closest('[data-campus-recover]'))campusRecover();const frame=event.target.closest('[data-campus-frame]');if(frame&&globe instanceof CampusScene){frame.dataset.campusFrame==='feature'?globe.frameSelectedFeature():globe.frameComponentContext();campusState.camera=globe.snapshot();workspaceSyncURL();}});
 
 document.addEventListener('click',event=>{const b=event.target.closest('[data-campus-review-saved]');if(!b)return;const r=saved.sourceFeatures.find(r=>r.project_id===b.dataset.project&&r.feature_id===b.dataset.campusReviewSaved);if(!r)return;const m=campusScenesFor(site(r.project_id)).find(m=>m.features.some(f=>f.id===r.feature_id));const p=new URLSearchParams({scale:'facility',site:r.project_id,scene:r.scene_id||m?.id||'unavailable',feature:r.feature_id,imageversion:r.image_sha256,...(r.review_sha256?{featureversion:r.review_sha256}:{})});location.hash='#overview?'+p;});
+
+function campusClearFeature(){
+ if(!(globe instanceof CampusScene))return;
+ campusState.feature=null;campusState.recovery=null;if(ATLAS.layers?.state)ATLAS.layers.state.feature=null;
+ globe.features.forEach(f=>f.selected=false);globe.dirty=true;
+ document.querySelectorAll('[data-campus-feature-select]').forEach(el=>el.value='');document.querySelectorAll('[data-campus-frame=feature]').forEach(el=>el.disabled=true);
+ const s=spatialDefaultSite(),rail=document.querySelector('.workspace-mobile-rail');rail.outerHTML=workspaceMobileRail(state.spatialLevel,spatialScope(state.spatialLevel,s),s,state.spatialPhase);renderNav();history.pushState(null,'',spatialURL());
+}
