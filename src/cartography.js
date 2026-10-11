@@ -215,7 +215,7 @@ class ResearchMap {
     const c = this.ctx, w = this.w, h = this.h;
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.prepare();
     const canvasRect=this.canvas.getBoundingClientRect();
-    this.labelExclusions=[...(this.canvas.closest('.atlas-map-panel')||this.canvas.parentElement).querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom,.workspace-toolbar')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
+    this.labelExclusions=[...(this.canvas.closest('.atlas-map-panel')||this.canvas.parentElement).querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom,.workspace-toolbar,.workspace-selection-notice:not([hidden])')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
     c.fillStyle = '#08121b'; c.fillRect(0, 0, w, h);
     for (const star of this.stars) { c.fillStyle = '#38616c88'; c.fillRect(star.x * w, star.y * h, star.r, star.r); }
     const R = this.radius, cx = this.cx, cy = this.cy;

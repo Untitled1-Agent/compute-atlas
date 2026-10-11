@@ -252,8 +252,9 @@ body{background:#07141b}
 .campus-native-rasters>summary{cursor:pointer;min-height:44px;font-size:12px}
 .campus-shelf article{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
 .campus-shelf small{display:block;font-size:11px;color:var(--muted);margin-top:6px}
-.workspace-selection-notice{font-size:11px;line-height:1.5;color:#d8cda1;padding:10px 0;border-bottom:1px solid var(--line)}
+.workspace-selection-notice{position:absolute;z-index:6;right:17px;bottom:90px;max-width:min(310px,calc(100% - 34px));font-size:11px;line-height:1.5;color:#d8cda1;background:#091c23ed;border:1px solid #3a4d47;padding:10px 12px}
 .workspace-selection-notice .text-button{font-size:11px}
+@media(max-width:640px){.workspace-selection-notice{left:11px;right:11px;top:155px;bottom:auto;max-width:none;font-size:10px}.workspace-selection-notice .text-button{min-height:44px}}
 @media(min-width:1100px){
  .atlas-workspace.atlas-level-4,.atlas-workspace.atlas-level-5{--map-height:clamp(340px,calc(100dvh - 650px),430px)}
  .campus-spatial-hero{min-height:0}

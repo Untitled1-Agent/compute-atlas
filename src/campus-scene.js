@@ -184,9 +184,10 @@ const campusOriginalSelectionRail=workspaceSelectionRail;
 workspaceSelectionRail=function(s,scope){const html=campusOriginalSelectionRail(s,scope);return campusScene(s)?html.replace('<button class="text-button" data-workspace-compare=', '<button class="text-button" data-campus-locate-scene>Locate reviewed scene ↗</button><button class="text-button" data-workspace-compare='):html;};
 function workspaceSelectionNotice(){
  const root=document.querySelector('.atlas-workspace'),s=spatialDefaultSite();if(!root||!(globe instanceof ResearchMap)||!s||!(state.spatialSelectionActive||state.spatialLevel>=2))return;
- let node=root.querySelector('.workspace-selection-notice');if(!node){node=document.createElement('div');node.className='workspace-selection-notice';node.setAttribute('role','status');root.querySelector('.atlas-map-panel')?.after(node);}
+ let node=root.querySelector('.workspace-selection-notice');if(!node){node=document.createElement('div');node.className='workspace-selection-notice';node.hidden=true;node.setAttribute('role','status');root.querySelector('.atlas-map-panel')?.append(node);}
  const excluded=!spatialFiltered().some(x=>x.id===s.id);globe.prepare();const p=globe.project(s.lon,s.lat),offscreen=p.z<=.015||p.x<10||p.x>globe.w-10||p.y<64||p.y>globe.h-58;
- node.hidden=excluded||layerOn('research')&&!offscreen;
+ const hidden=excluded||layerOn('research')&&!offscreen,changed=node.hidden!==hidden;node.hidden=hidden;
+ if(changed){const map=globe;requestAnimationFrame(()=>{if(!map.destroyed&&globe===map)map.dirty=true;});}
  if(!node.hidden)node.innerHTML=layerOn('research')?`Selected project anchor is outside the current map view. <button class="text-button" data-workspace-locate>Locate project anchor →</button>`:`Selected project anchor is hidden by the Research anchors layer. <button class="text-button" data-workspace-show-anchor>Show research anchors →</button>`;
 }
 document.addEventListener('click',event=>{
