@@ -197,6 +197,8 @@ class ResearchMap {
     if (!this.w || !this.h) return;
     const c = this.ctx, w = this.w, h = this.h;
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.prepare();
+    const canvasRect=this.canvas.getBoundingClientRect();
+    this.labelExclusions=[...this.canvas.parentElement.querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
     c.fillStyle = '#08121b'; c.fillRect(0, 0, w, h);
     for (const star of this.stars) { c.fillStyle = '#38616c88'; c.fillRect(star.x * w, star.y * h, star.r, star.r); }
     const R = this.radius, cx = this.cx, cy = this.cy;
@@ -251,6 +253,7 @@ class ResearchMap {
       const p = this.project(place.lon, place.lat), text = place.name;
       if (p.x < 25 || p.x > this.w - 70 || p.y < 90 || p.y > this.h - 100) continue;
       const width = c.measureText(text).width;
+      if(this.labelExclusions.some(b=>p.x+width+8>b.x&&p.x<b.x+b.w&&p.y+8>b.y&&p.y-12<b.y+b.h))continue;
       if (occupied.some(b => Math.abs(b.y - p.y) < 26 && p.x < b.x + b.w + 30 && p.x + width > b.x - 30)) continue;
       if (occupied.length > (this.level >= 3 ? 11 : 17)) break;
       occupied.push({x: p.x, y: p.y, w: width}); c.fillStyle = '#72aab9'; c.beginPath(); c.arc(p.x, p.y, 1.8, 0, Math.PI * 2); c.fill();
@@ -290,6 +293,7 @@ class ResearchMap {
       c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
       const width = Math.max(c.measureText(name).width, 112), x = p.x + r + 9, y = p.y - 14;
       const left = x + width > this.w - 16 ? p.x - r - width - 12 : x;
+      if(this.labelExclusions.some(b=>left+width>b.x&&left<b.x+b.w&&y+30>b.y&&y<b.y+b.h))continue;
       if (left < 8 || y < 85 || y > this.h - 135 || labels.some(b => Math.abs(b.y - y) < 46 && left < b.x + b.w + 8 && left + width > b.x - 8)) continue;
       if (labels.length >= (this.flat ? 8 : 7)) break;
       labels.push({x: left, y, w: width}); labeled.add(s.id);

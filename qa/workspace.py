@@ -41,6 +41,8 @@ try:
             for level in range(6):
                 page.locator(f'[data-spatial-action="stage"][data-id="{level}"]').click()
                 check(entry+f' scale {level} retains analysis rail',page.locator('.atlas-spatial-rail').is_visible())
+                if level==2:
+                    check(entry+' regional labels avoid the legend',page.evaluate('(()=>{const g=ATLAS.getGlobe();g.draw();const c=g.canvas.getBoundingClientRect(),r=document.querySelector(".atlas-map-legend").getBoundingClientRect();return g.markerLabels.every(b=>b.x+b.w<=r.left-c.left||b.x>=r.right-c.left||b.y+30<=r.top-c.top||b.y>=r.bottom-c.top)})()'))
                 page.screenshot(path=str(OUT/f'{entry}-workspace-scale-{level}.png'))
             page.evaluate("ATLAS.spatial.select('coreweave-helios');ATLAS.spatial.setLevel(4)")
             before=page.url
