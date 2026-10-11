@@ -97,6 +97,8 @@ jobs:
         run: python qa/campus.py
       - name: Physical feature, phase return, shelf and sourced campus journeys
         run: python qa/physical.py
+      - name: Reviewed components, version recovery and responsive cameras
+        run: python qa/components.py
       - name: Source-aware layers and independent electricity context
         run: python qa/layers.py
       - name: Geographic continuity, local roads and release integrity

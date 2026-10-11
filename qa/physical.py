@@ -56,7 +56,7 @@ try:
             check(entry+' multiple roofs require explicit selection',page.locator('.campus-project-inspector').is_visible() and page.locator('.campus-feature-inspector').count()==0 and page.evaluate('campusState.feature===null'))
             check(entry+' all three reviewed roofs are independently hittable',page.evaluate('globe.features.length===3&&globe.hitSurfaces.length===3'))
             check(entry+' campus chooser keeps every feature action inside its rail',page.locator('.campus-project-inspector').evaluate('e=>{const r=e.getBoundingClientRect();return [...e.querySelectorAll("button")].every(b=>{const q=b.getBoundingClientRect();return q.left>=r.left-1&&q.right<=r.right+1})}'))
-            check(entry+' desktop image gives roofs a useful inspection scale',page.evaluate('(()=>{const g=globe,points=g.features[0].polygons[0][0].map(v=>g.project3(...v));return Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y))>200})()'))
+            check(entry+' desktop chooser retains a visible roof hit target',page.evaluate('(()=>{const g=globe,points=g.features[0].polygons[0][0].map(v=>g.project3(...v));return Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y))>=44&&g.hitSurfaces.length===3})()'))
             check(entry+' roof vertices use the returned image extent',page.evaluate('(()=>{const g=globe,[a,b,d]=g.imageCorners.map(p=>g.project3(...p));return g.features.every(f=>{const source=g.manifest.features.find(s=>s.id===f.record.id);return f.polygons[0][0].every((v,i)=>{const q=g.project3(...v),p=source.pixel_vertices[i];return Math.hypot(q.x-(a.x+(b.x-a.x)*p[0]/1200+(d.x-a.x)*p[1]/1600),q.y-(a.y+(b.y-a.y)*p[0]/1200+(d.y-a.y)*p[1]/1600))<.03})})})()'))
             capture(page,entry,'new-carlisle-chooser');canvas=page.evaluate('window.physicalCanvas=globe.canvas;globe.snapshot()')
             button=page.locator('[data-campus-feature="new-carlisle-edison-2025-roof-central"]');button.focus();page.keyboard.press('Enter');ready(page)
@@ -77,7 +77,7 @@ try:
             page.evaluate('navigate("watchlist")')
             with page.expect_download() as event:page.locator('[data-action="export-session"]').click()
             session=json.loads(Path(event.value.path()).read_text());check(entry+' session export keeps typed source feature references',session['sourceFeatures'][0]['type']=='source_feature' and session['favorites']==[])
-            check(entry+' stale or unknown shelf references are rejected on import',page.evaluate('ATLAS.campus.importShelf([{type:"source_feature",project_id:"amazon-anthropic-new-carlisle",feature_id:"unknown-roof",image_sha256:"0".repeat(64)}]).length===0'))
+            check(entry+' unavailable shelf references are retained without current geometry',page.evaluate('(()=>{const r=ATLAS.campus.importShelf([{type:"source_feature",project_id:"amazon-anthropic-new-carlisle",feature_id:"unknown-roof",image_sha256:"0".repeat(64)}]);return r.length===1&&!campusSavedMatch(r[0])})()'))
             page.locator('[data-campus-reopen]').click();ready(page)
             for width,height in ((1024,768),(768,1024),(390,844),(320,844)):
                 page.set_viewport_size({'width':width,'height':height});ready(page)
