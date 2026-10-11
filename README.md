@@ -62,6 +62,17 @@ At each scale the app recomputes the visible research scope from the checked-in 
 
 The finest scale deliberately distinguishes sourced facility facts from physical geometry. When parcel/building boundaries are not present in the research package, the UI renders an **evidence schematic explicitly labeled as not a parcel/building survey** rather than inventing site plans from the design mockups.
 
+Layers beside Refine controls research anchors, community locations, labels,
+roads, boundaries and a bounded Helios-area electricity snapshot. Select an
+actual mapped line/substation or its keyboard-accessible list entry to inspect
+native voltage, tags, source revision and capture date without losing the camera.
+Source export preserves complete original geometry and ODbL attribution;
+display paths are separately clipped. The community snapshot and historic aerial
+retain separate dates. No campus service or IT capacity is inferred. See the
+[design](docs/design/map-layers-electricity.md),
+[checkpoint](docs/checkpoints/2026-10-11-source-aware-layers.md) and
+[source boundaries](data/layers/README.md).
+
 ## How to explore
 
 Open `index.html` from a web server for the repository-native app, or open `compute_atlas.html` directly for the offline build. Two routes in:

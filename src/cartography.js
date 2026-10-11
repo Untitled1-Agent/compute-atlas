@@ -1,4 +1,6 @@
 'use strict';
+function researchLabelOverlap(a,b,pad=4){return a.x<b.x+b.w+pad&&a.x+a.w+pad>b.x&&a.y<b.y+(b.h||32)+pad&&a.y+(a.h||32)+pad>b.y;}
+function researchLabelCircle(b,p,r,pad=3){return Math.hypot(p.x-Math.max(b.x,Math.min(p.x,b.x+b.w)),p.y-Math.max(b.y,Math.min(p.y,b.y+b.h)))<r+pad;}
 /* Offline cartography. Every geographical line comes from the attributed source
  * layer. Land stippling is map texture, never synthetic facility observations. */
 const ATLAS_CONTEXT = JSON.parse(document.getElementById('context-data')?.textContent || '{}');
@@ -179,9 +181,11 @@ class ResearchMap {
     }
     const rect = this.canvas.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
     const hit = this.groups.find(g => Math.hypot(g.x - x, g.y - y) < g.r + 7);
+    const context=!hit&&typeof energyHit==='function'?energyHit(this,x,y):null;
     if (hit !== this.hover) { this.hover = hit || null; this.dirty = true; }
-    this.canvas.style.cursor = hit ? 'pointer' : 'grab';
+    this.canvas.style.cursor = hit||context ? 'pointer' : 'grab';
     if (hit) { const s = hit.sites[0]; showTip(event.clientX, event.clientY, `<b>${esc(s.name)}</b><br>${esc(s.location)}<br>${spatialPower(s) == null ? 'IT power not quantified' : fmt(spatialPower(s)) + ' MW · estimate'}${hit.sites.length>1?'<br>'+hit.sites.length+' clustered records · '+hit.known+' quantified<br>'+(hit.mw==null?'No comparable aggregate':fmt(hit.mw)+' MW cluster subtotal'):''}<br><small>Research anchor · click to explore</small>`); }
+    else if(context)showTip(event.clientX,event.clientY,`<b>${esc(energyName(context))}</b><br>${esc(energyVoltage(context))} · source-tagged voltage<br><small>Community context · click to inspect</small>`);
     else hideTip();
   }
   pointerUp(event) {
@@ -192,6 +196,7 @@ class ResearchMap {
     const rect = this.canvas.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
     const hit = this.groups.find(g => Math.hypot(g.x - x, g.y - y) < g.r + 8);
     if (hit) {state.spatialCluster=hit.sites.map(s=>s.id);spatialTransition({selected: hit.sites[0].id});}
+    else if(typeof energyHit==='function'){const f=energyHit(this,x,y);if(f)energySelect(f.id);}
   }
   path(line, stroke, width, fill = null) {
     const c = this.ctx;
@@ -244,19 +249,20 @@ class ResearchMap {
     for (const line of (this.flat && ATLAS_CONTEXT.coast?.length ? ATLAS_CONTEXT.coast : W.lines || [])) this.path(line, this.flat ? '#46717a' : '#37616c65', this.flat ? .85 : .6);
     if (this.flat) {
       for (const line of ATLAS_CONTEXT.lakes || []) this.path(line, '#32708490', .8, '#091a28');
-      c.setLineDash([3, 4]); for (const line of ATLAS_CONTEXT.states || []) this.path(line, '#43809470', .65); c.setLineDash([]);
+      c.setLineDash([3, 4]); if(state.spatialBoundaries!==false)for (const line of ATLAS_CONTEXT.states || []) this.path(line, '#43809470', .65); c.setLineDash([]);
       if (state.spatialRoads !== false) for (const line of ATLAS_CONTEXT.roads || []) this.path(line, this.level >= 3 ? '#467d8a69' : '#3358654a', this.level >= 3 ? .8 : .55);
     }
     const shade = c.createLinearGradient(0, 0, w, h); shade.addColorStop(0, '#07121a00'); shade.addColorStop(.65, '#04101900'); shade.addColorStop(1, '#040c1870');
     c.fillStyle = shade; c.fillRect(0, 0, w, h); c.restore();
     if (!this.flat) { c.strokeStyle = '#4b9eab25'; c.lineWidth = 1; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.stroke(); }
     // Source-backed location context, visually separate from the 79-project capacity layer.
-    if(this.canvas.closest('.atlas-workspace')&&state.view!=='catalog'){
+    if(this.canvas.closest('.atlas-workspace')&&state.view!=='catalog'&&state.spatialLocations!==false){
       c.fillStyle='#b2d3d180';
       for(const r of CATALOG.records){const p=this.project(r.lon,r.lat);if(p.z>.025&&p.x>8&&p.x<w-8&&p.y>60&&p.y<h-65){c.beginPath();c.arc(p.x,p.y,this.flat?1.25:.85,0,Math.PI*2);c.fill();}}
     }
+    if(typeof energyDraw==='function')energyDraw(this);
     this.drawMarkers();
-    if(this.flat)this.drawPlaces();
+    if(this.flat&&this.labels)this.drawPlaces();
     const position = document.getElementById('geo-position');
     if (position) position.textContent = this.flat ? 'MERCATOR · GENERALIZED CONTEXT · APPROXIMATE ANCHORS' : `${this.lat.toFixed(1)}° N  ${Math.abs(this.lon).toFixed(1)}° ${this.lon < 0 ? 'W' : 'E'}  ·  DRAG TO ROTATE`;
     const live = document.getElementById('globe-live');
@@ -266,22 +272,23 @@ class ResearchMap {
     if(signature!==this.lastCameraSignature){this.lastCameraSignature=signature;document.dispatchEvent(new CustomEvent('atlas-camera-change',{detail:this}));}
   }
   drawPlaces() {
-    const c = this.ctx, occupied = [...(this.markerLabels||[])];
+    const c = this.ctx, occupied = [...(this.markerLabels||[])];this.placeLabels=[];
     c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left';
     for (const place of [...(ATLAS_CONTEXT.places || [])].sort((a, b) => a.rank - b.rank)) {
       const p = this.project(place.lon, place.lat), text = place.name;
       if (p.x < 25 || p.x > this.w - 70 || p.y < 90 || p.y > this.h - 100) continue;
       const width = c.measureText(text).width;
-      if(this.labelExclusions.some(b=>p.x+width+8>b.x&&p.x<b.x+b.w&&p.y+8>b.y&&p.y-12<b.y+b.h))continue;
-      if (occupied.some(b => Math.abs(b.y - p.y) < 26 && p.x < b.x + b.w + 30 && p.x + width > b.x - 30)) continue;
+      const box=[{x:p.x+6,y:p.y-10,w:width,h:16},{x:p.x-width-7,y:p.y-10,w:width,h:16},{x:p.x-width/2,y:p.y-25,w:width,h:16}].find(b=>b.x>8&&b.x+b.w<this.w-8&&!this.labelExclusions.some(e=>researchLabelOverlap(b,e))&&!occupied.some(e=>researchLabelOverlap(b,e))&&!this.groups.some(g=>researchLabelCircle(b,{x:g.x,y:g.y},g.r)));
+      if(!box)continue;
       if (occupied.length > (this.level >= 3 ? 11 : 17)) break;
-      occupied.push({x: p.x, y: p.y, w: width}); c.fillStyle = '#72aab9'; c.beginPath(); c.arc(p.x, p.y, 1.8, 0, Math.PI * 2); c.fill();
-      c.shadowColor = '#051019'; c.shadowBlur = 5; c.fillStyle = '#8eafbc'; c.fillText(text, p.x + 6, p.y + 4); c.shadowBlur = 0;
+      occupied.push(box);this.placeLabels.push(box); c.fillStyle = '#72aab9'; c.beginPath(); c.arc(p.x, p.y, 1.8, 0, Math.PI * 2); c.fill();
+      c.shadowColor = '#051019'; c.shadowBlur = 5; c.fillStyle = '#8eafbc'; c.fillText(text, box.x, box.y+14); c.shadowBlur = 0;
     }
   }
   drawMarkers() {
     const c = this.ctx, phase = state.spatialPhase || 'snapshot', selected = state.spatialSelected;
     this.groups = [];
+    if(state.spatialResearch===false){this.markerLabels=[];for(const node of this.markerNodes){node.hidden=true;node.tabIndex=-1;}return;}
     const points = [];
     for (const s of this.scope.sites) {
       const p = this.project(s.lon, s.lat);
@@ -310,13 +317,13 @@ class ResearchMap {
     if (this.labels) for (const item of ranked) {
       const {s, p, r} = item, name = this.level<=1?researchClusterName(item.members.map(m=>m.s)):item.members.length>1?researchClusterName(item.members.map(m=>m.s)):s.name.length > 26 ? s.name.slice(0, 24) + '…' : s.name;
       c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
-      const width = Math.max(c.measureText(name).width, 112), x = p.x + r + 9, y = p.y - 14;
-      const left = x + width > this.w - 16 ? p.x - r - width - 12 : x;
-      if(this.labelExclusions.some(b=>left+width>b.x&&left<b.x+b.w&&y+30>b.y&&y<b.y+b.h))continue;
-      if (left < 8 || y < 85 || y > this.h - 135 || labels.some(b => Math.abs(b.y - y) < 46 && left < b.x + b.w + 8 && left + width > b.x - 8)) continue;
+      const nameWidth=c.measureText(name).width,subtitle=item.mw==null?'Native / unquantified':(item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW')+(item.members.length>1?' · '+item.known+' estimates':' · estimate');
+      c.font='10px ui-monospace,monospace';const width=Math.max(nameWidth,c.measureText(subtitle).width),h=32;
+      const box=[{x:p.x+r+9,y:p.y-14,w:width,h},{x:p.x-r-width-9,y:p.y-14,w:width,h},{x:p.x-width/2,y:p.y-r-h-9,w:width,h},{x:p.x-width/2,y:p.y+r+9,w:width,h}].find(b=>b.x>=8&&b.x+b.w<=this.w-8&&b.y>=85&&b.y+h<=this.h-100&&!this.labelExclusions.some(e=>researchLabelOverlap(b,e))&&!labels.some(e=>researchLabelOverlap(b,e,8))&&!visible.some(v=>researchLabelCircle(b,v.p,v.r)));
+      if(!box)continue;
       if (labels.length >= (this.flat ? 8 : 7)) break;
-      labels.push({x: left, y, w: width}); labeled.add(s.id);
-      item.label = {left, y, width, name};
+      labels.push(box); labeled.add(s.id);
+      item.label = {left:box.x,y:box.y,width,name,subtitle};
     }
     for (const item of visible) {
       const {s, p, r} = item, chosen = s.id === selected;
@@ -335,7 +342,7 @@ class ResearchMap {
         c.save();c.shadowColor='#04101a';c.shadowBlur=5;
         c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left'; c.fillStyle = '#e5eeec'; c.fillText(b.name, b.left, b.y + 10);
         c.font = '10px ui-monospace,monospace'; c.fillStyle = '#8eb3bd';
-        c.fillText(item.mw == null ? 'Native / unquantified' : (item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW') + (item.members.length>1?' · '+item.known+' estimates':' · estimate'), b.left, b.y + 25);c.restore();
+        c.fillText(b.subtitle, b.left, b.y + 25);c.restore();
       }
     }
     for (const node of this.markerNodes) {
