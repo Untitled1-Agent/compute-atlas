@@ -72,3 +72,9 @@ The publication stores a SHA-256 fingerprint of canonical UTF-8 JSON (sorted obj
 
 
 Well-formed saved/session identities whose source version is unavailable remain in the local shelf with an explicit review-required state. Import never turns them into current geometry. Preserve only bounded identity/version and display fields, never imported geometry or quantities. Offer a named source-version review/recovery action; reopening a current reviewed feature remains an explicit selection. Legacy migration uses the known prior geometry commit and its unchanged image/outline, without claiming a candidate commit was already deployed.
+
+Choosing the native roof selector's empty option explicitly returns to component
+inspection, clearing roof/context identity without replacing the canvas or camera.
+Keep keyboard focus on the permanent selector when the inspector is replaced.
+Exports require a selected reviewed feature. A context-only scene's image error
+offers its source record without claiming that reviewed roof geometry exists.
