@@ -34,6 +34,7 @@ try:
    if args.in_memory:page.set_content((ROOT/entry).read_text(),wait_until='load')
    else:check(entry+' returns actual HTTP 200',page.goto(base+entry).status==200)
    page.wait_for_function('document.documentElement.classList.contains("publisher-ready")');page.wait_for_timeout(120)
+   page.evaluate("ATLAS.navigate('catalog')")
    check(entry+' world map keeps all four headline metrics visible',page.locator('.catalog-kpis').first.evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
    original=page.evaluate('JSON.stringify([ATLAS.data,ATLAS.catalog.data,ATLAS.operators.data])')
    page.screenshot(path=str(OUT/f'{Path(entry).stem}-publisher-world-layout.png'))
