@@ -203,7 +203,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058"
         }
       ],
       "id": "helios-naip-20220905"
@@ -580,7 +581,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "872a4f862f4a363fd3df11fd604fb063d2abcc780673b6f62797bed10492e51c"
         },
         {
           "id": "new-carlisle-edison-2025-roof-central",
@@ -719,7 +721,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "aa9a39e1f84ec527802d0d823a5f9d5238f581287d5cd95c1c45b75debeda398"
         },
         {
           "id": "new-carlisle-edison-2025-roof-east",
@@ -794,7 +797,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "617dde9d2cf8c6f5b6344150964169333f78dccb2b58cb54fb0b2760d19c33fd"
         }
       ]
     },
@@ -1162,7 +1166,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "a8088d6733ccf73f294b66cad3f9b706fd82a9cf26ff9d99d4da655b1944b53f"
         },
         {
           "id": "new-carlisle-sr2-2025-roof-west-middle",
@@ -1269,7 +1274,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "84bd17b7916862bf90c9f80ae9e8e23ea477444285832302396dd482cd9cdc03"
         },
         {
           "id": "new-carlisle-sr2-2025-roof-west-lower",
@@ -1408,7 +1414,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "ad91a6a39c7074804ebea8fee0bff728c73020c367af9a7d902d081f3d0bff3c"
         },
         {
           "id": "new-carlisle-sr2-2025-roof-east-upper",
@@ -1547,7 +1554,8 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "1d2806b8d79e00a51de1805dbd0e49cd9f48e996aa5d86ff1c35fd676bc6ca2c"
         },
         {
           "id": "new-carlisle-sr2-2025-roof-east-lower",
@@ -1654,9 +1662,44 @@
             "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
             "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
             "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
-          }
+          },
+          "review_sha256": "a579d0b306539e406627eadcf2777106a4d712b938c9cb43961625279bd0cdd0"
         }
       ]
+    }
+  ],
+  "legacy_image_only_versions": [
+    {
+      "scene_id": "helios-naip-20220905",
+      "project_id": "coreweave-helios",
+      "feature_id": "helios-naip2022-roof-01",
+      "image_sha256": "ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7",
+      "review_sha256": "ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-west",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "872a4f862f4a363fd3df11fd604fb063d2abcc780673b6f62797bed10492e51c",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-central",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "aa9a39e1f84ec527802d0d823a5f9d5238f581287d5cd95c1c45b75debeda398",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-east",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "617dde9d2cf8c6f5b6344150964169333f78dccb2b58cb54fb0b2760d19c33fd",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
     }
   ]
 }

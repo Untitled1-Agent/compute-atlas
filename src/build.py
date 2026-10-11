@@ -32,7 +32,9 @@ hosted_path.write_text(hosted)
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
 for key,path in [('POWER_REVIEWS','data/layers/helios-power-reviews.json'),('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
+from campus_versions import validate_physical_versions
 campus=json.loads((ROOT/'data/campus/scenes.json').read_text())
+validate_physical_versions(campus)
 for scene in campus['scenes']:
     image=scene['image'];content=(ROOT/image['path']).read_bytes()
     if hashlib.sha256(content).hexdigest()!=image['sha256']:
