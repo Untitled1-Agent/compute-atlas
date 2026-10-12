@@ -23,7 +23,7 @@ if not base:
 fragment='#overview?scale=facility&site=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&selection=feature&feature=new-carlisle-sr2-2025-roof-west-upper'
 def ready(page):page.wait_for_function('document.documentElement.classList.contains("layers-ready")&&typeof globe!=="undefined"&&globe&&!globe.dirty&&!globe.target')
 def terminal(page):return page.evaluate('window.ATLAS_BOOT_FAILED===true&&window.ATLAS_BOOTSTRAPPING===true&&!document.documentElement.classList.contains("atlas-ready")&&document.querySelector(".app-shell").inert&&document.activeElement.id==="atlas-boot-reload"')
-def covers_viewport(page):return page.evaluate('(()=>{const p=document.querySelector("#atlas-boot-failure"),r=p.getBoundingClientRect();return Math.abs(r.x)<1&&Math.abs(r.y)<1&&Math.abs(r.width-innerWidth)<1&&Math.abs(r.height-innerHeight)<1&&document.documentElement.scrollWidth<=innerWidth+1&&[".app-shell",".sidebar",".skip"].every(s=>document.querySelector(s).inert&&getComputedStyle(document.querySelector(s)).visibility==="hidden")})()')
+def covers_viewport(page):return page.evaluate('(()=>{const p=document.querySelector("#atlas-boot-failure"),r=p.getBoundingClientRect();return Math.abs(r.x)<1&&Math.abs(r.y)<1&&Math.abs(r.width-innerWidth)<1&&Math.abs(r.height-innerHeight)<1&&p.lastElementChild.getBoundingClientRect().top-p.querySelector("button").getBoundingClientRect().bottom>=20&&document.documentElement.scrollWidth<=innerWidth+1&&[".app-shell",".sidebar",".skip"].every(s=>document.querySelector(s).inert&&getComputedStyle(document.querySelector(s)).visibility==="hidden")})()')
 
 try:
  with sync_playwright() as driver:
