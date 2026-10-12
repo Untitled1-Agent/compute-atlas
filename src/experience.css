@@ -313,3 +313,6 @@ body{background:#07141b}
  .atlas-workspace .atlas-compact-attributes>.atlas-data-row{grid-template-columns:minmax(90px,.75fr) minmax(0,1.5fr)}
  .atlas-workspace.atlas-level-4 .workspace-evidence-bottom,.atlas-workspace.atlas-level-5 .workspace-evidence-bottom{margin-top:4px}
 }
+
+/* Separately attributable native electricity captures. */
+.energy-collection-cards{display:grid;gap:12px;margin:18px 0}.energy-collection-card{border:1px solid var(--line);padding:14px}.energy-collection-card.current{border-color:#b08f5680;background:#b08f5609}.energy-collection-card h3{font-size:16px;margin:0 0 8px}.energy-collection-card p{font-size:12px;line-height:1.6}.energy-collection-card>.text-button{display:block;text-align:left;margin:8px 0;min-height:32px}.energy-native-nodes{margin:18px 0;overflow-wrap:anywhere}.energy-native-nodes summary{cursor:pointer;min-height:44px}.energy-native-nodes small{display:block;color:var(--muted);margin-top:5px}.energy-route-recovery{overflow-wrap:anywhere}.campus-source-page .atlas-metric-row small{display:block;margin-top:6px}

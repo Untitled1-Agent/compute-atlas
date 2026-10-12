@@ -5,7 +5,7 @@
       "schema_version": 1,
       "collection": "Bounded community electricity context",
       "license": "ODbL-1.0",
-      "attribution": "© OpenStreetMap contributors",
+      "attribution": "\u00a9 OpenStreetMap contributors",
       "license_url": "https://www.openstreetmap.org/copyright",
       "captured_at": "2026-10-11T21:07:31.128095+00:00",
       "coverage_bbox": [
@@ -17,7 +17,7 @@
       "query_url": "https://api.openstreetmap.org/api/0.6/map?bbox=-86.4702,41.6838,-86.4598,41.6945",
       "response_sha256": "30b8df9a296f0ed31b82d92935de8f6bae974d49ac09bd4c251b3113d3c81fd7",
       "method": "Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.",
-      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
+      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the 2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
       "features": [
         {
           "id": "osm-way-1466907494",
@@ -1131,13 +1131,14 @@
         "reviewed_at": "2026-10-11",
         "reviewed_by": "Untitled1-Agent",
         "scope": "Native line/substation inventory within this bounded capture; no project service, operating status or IT allocation accepted"
-      }
+      },
+      "source_capture_revision": "d47c06d350d4b311de0375b46909f693fd9c93cb"
     },
     {
       "schema_version": 1,
       "collection": "Bounded community electricity context",
       "license": "ODbL-1.0",
-      "attribution": "© OpenStreetMap contributors",
+      "attribution": "\u00a9 OpenStreetMap contributors",
       "license_url": "https://www.openstreetmap.org/copyright",
       "captured_at": "2026-10-11T21:07:31.462999+00:00",
       "coverage_bbox": [
@@ -1149,7 +1150,7 @@
       "query_url": "https://api.openstreetmap.org/api/0.6/map?bbox=-86.4828,41.6569,-86.4616,41.6726",
       "response_sha256": "59fbaa7a177c00be0727a5f44cd2fdc6bc73f20bc7dbf7d737939d6c46aadeb2",
       "method": "Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.",
-      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
+      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the 2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
       "features": [
         {
           "id": "osm-way-1463187602",
@@ -2247,7 +2248,8 @@
         "reviewed_at": "2026-10-11",
         "reviewed_by": "Untitled1-Agent",
         "scope": "Native line/substation inventory within this bounded capture; no project service, operating status or IT allocation accepted"
-      }
+      },
+      "source_capture_revision": "d47c06d350d4b311de0375b46909f693fd9c93cb"
     }
   ]
 }
