@@ -69,6 +69,9 @@ jobs:
           node --check src/atlas-workspace.js
           node --check src/campus-scene.js
           node --check src/map-layers.js
+      - name: Bounded startup and recovery over real HTTP
+        if: ${{ !cancelled() }}
+        run: python qa/startup.py
       - name: Functional suite
         if: ${{ !cancelled() }}
         run: python qa/functional.py
