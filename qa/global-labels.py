@@ -11,7 +11,9 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 base=os.environ.get('ATLAS_TEST_BASE');server=None
 if not base:server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/'
-def ready(page):page.wait_for_function('document.documentElement.classList.contains("layers-ready")&&globe&&!globe.dirty&&!globe.target')
+def ready(page):
+ page.wait_for_function('document.documentElement.classList.contains("layers-ready")&&globe&&!globe.dirty&&!globe.target&&Math.abs(globe.canvas.getBoundingClientRect().width-globe.canvas.parentElement.clientWidth)<1&&Math.abs(globe.canvas.getBoundingClientRect().height-globe.canvas.parentElement.clientHeight)<1')
+ page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');page.wait_for_function('!globe.dirty&&!globe.target')
 try:
  with sync_playwright() as d:
   browser=d.chromium.launch(executable_path=shutil.which('chromium') or d.chromium.executable_path,args=['--no-sandbox'])

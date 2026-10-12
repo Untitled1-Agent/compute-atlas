@@ -42,9 +42,9 @@ class ResearchMap {
     this.level = state.spatialLevel || 0;
     this.scope = spatialScope(this.level, spatialDefaultSite());
     const selected = spatialDefaultSite();
-    const asia = selected && spatialContinent(selected) === 'Asia';
-    this.lat = this.level === 1 ? (asia ? 30 : 40) : 24;
-    this.lon = this.level === 1 ? (asia ? 105 : -43) : -18;
+    const continent=spatialContinent(selected),asia=continent==='Asia',atlantic=['North America','Europe'].includes(continent),b=this.scope.bounds;
+    this.lat = this.level === 1 ? (asia ? 30 : atlantic?40:(b[1]+b[3])/2) : 24;
+    this.lon = this.level === 1 ? (asia ? 105 : atlantic?-43:(b[0]+b[2])/2) : -18;
     this.zoom = this.level === 1 ? 1.53 : 1;
     this.flat = this.level >= 2;
     this.labels = state.spatialLabels !== false;
@@ -325,7 +325,8 @@ class ResearchMap {
       c.font = (backed?'12px':'11px')+' -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
       const nameWidth=c.measureText(name).width,subtitle=item.mw==null?'Native / unquantified':(item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW')+(item.members.length>1?' · '+item.known+' estimates':' · estimate');
       c.font='10px ui-monospace,monospace';const width=Math.max(nameWidth,c.measureText(subtitle).width)+(backed?14:0),h=backed?38:32;
-      const box=[{x:p.x+r+9,y:p.y-14,w:width,h},{x:p.x-r-width-9,y:p.y-14,w:width,h},{x:p.x-width/2,y:p.y-r-h-9,w:width,h},{x:p.x-width/2,y:p.y+r+9,w:width,h}].find(b=>b.x>=8&&b.x+b.w<=this.w-8&&b.y>=85&&b.y+h<=this.h-100&&!this.labelExclusions.some(e=>researchLabelOverlap(b,e))&&!labels.some(e=>researchLabelOverlap(b,e,8))&&!visible.some(v=>researchLabelCircle(b,v.p,v.r)));
+      const candidates=(backed?[9,23,45,70]:[9]).flatMap(gap=>[{x:p.x+r+gap,y:p.y-14,w:width,h},{x:p.x-r-width-gap,y:p.y-14,w:width,h},{x:p.x-width/2,y:p.y-r-h-gap,w:width,h},{x:p.x-width/2,y:p.y+r+gap,w:width,h}]);
+      const box=candidates.find(b=>b.x>=8&&b.x+b.w<=this.w-8&&b.y>=85&&b.y+h<=this.h-100&&!this.labelExclusions.some(e=>researchLabelOverlap(b,e))&&!labels.some(e=>researchLabelOverlap(b,e,8))&&!visible.some(v=>researchLabelCircle(b,v.p,v.r)));
       if(!box)continue;
       if (labels.length >= researchLabelBudget(this)) break;
       labels.push({...box,name,project_id:s.id,native:item.mw==null}); labeled.add(s.id);
@@ -347,7 +348,7 @@ class ResearchMap {
         const b = item.label;
         const backed=this.level<=1,pad=backed?7:0;
         c.save();c.shadowBlur=0;
-        if(backed){c.fillStyle='#071b24ee';c.fillRect(b.left,b.y,b.width,38);c.strokeStyle='#2c525955';c.lineWidth=1;c.strokeRect(b.left,b.y,b.width,38);}
+        if(backed){const ax=Math.max(b.left,Math.min(p.x,b.left+b.width)),ay=Math.max(b.y,Math.min(p.y,b.y+38)),length=Math.hypot(ax-p.x,ay-p.y);if(length>r+18){c.strokeStyle='#8caeb270';c.lineWidth=.8;c.setLineDash([2,3]);c.beginPath();c.moveTo(p.x+(ax-p.x)*r/length,p.y+(ay-p.y)*r/length);c.lineTo(ax,ay);c.stroke();c.setLineDash([]);}c.fillStyle='#071b24ee';c.fillRect(b.left,b.y,b.width,38);c.strokeStyle='#2c525955';c.lineWidth=1;c.strokeRect(b.left,b.y,b.width,38);}
         c.shadowColor='#04101a';c.shadowBlur=backed?3:5;
         c.font = (backed?'12px':'11px')+' -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left'; c.fillStyle = '#e5eeec'; c.fillText(b.name, b.left+pad, b.y+(backed?14:10));
         c.font = '10px ui-monospace,monospace'; c.fillStyle = '#8eb3bd';
