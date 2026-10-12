@@ -43,6 +43,7 @@ try:
             check(entry+' every SR2 roof has geometry and a hit surface',page.evaluate('globe.features.length===5&&globe.hitSurfaces.length===5&&globe.features.every(f=>globe.manifest.features.some(s=>s.id===f.record.id))'))
             check(entry+' component change requires explicit roof selection',page.evaluate('campusState.feature===null&&ATLAS.workspace.activeSelection().type==="project"') and page.locator('.campus-project-inspector').is_visible())
             check(entry+' five-roof chooser includes an explicit empty state',page.locator('.campus-feature-strip [data-campus-feature-select] option').count()==6 and page.locator('.campus-feature-strip [data-campus-feature-select]').input_value()=='')
+            capture(page,entry,'chooser')
             page.locator('[data-campus-mode="aerial"]').click();ready(page);before=camera(page);page.evaluate('window.componentCanvas=globe.canvas')
             page.locator('.campus-project-inspector [data-campus-feature-select]').select_option(roof);ready(page)
             check(entry+' keyboard chooser retains the source canvas and camera',page.evaluate('globe.canvas===window.componentCanvas') and camera(page)==before and page.locator('.campus-feature-inspector h2').inner_text()=='West upper roof')
