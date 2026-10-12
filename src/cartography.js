@@ -1,5 +1,11 @@
 'use strict';
 function researchLabelOverlap(a,b,pad=4){return a.x<b.x+b.w+pad&&a.x+a.w+pad>b.x&&a.y<b.y+(b.h||32)+pad&&a.y+(a.h||32)+pad>b.y;}
+function researchLabelBudget(map){return map.level<=1?(map.w<500?2:map.w<800||innerWidth<=1050?3:5):(map.flat?8:7);}
+function researchLabelPriority(rows,selected,level){
+ if(level>1)return rows;
+ const picked=rows.find(row=>row.s.id===selected)||rows[0],native=picked?.mw==null?null:rows.find(row=>row.mw==null&&row!==picked);
+ return [picked,native,...rows.filter(row=>row!==picked&&row!==native)].filter(Boolean);
+}
 function researchLabelCircle(b,p,r,pad=3){return Math.hypot(p.x-Math.max(b.x,Math.min(p.x,b.x+b.w)),p.y-Math.max(b.y,Math.min(p.y,b.y+b.h)))<r+pad;}
 /* Offline cartography. Every geographical line comes from the attributed source
  * layer. Land stippling is map texture, never synthetic facility observations. */
@@ -313,15 +319,16 @@ class ResearchMap {
     if(this.level<=1)for(const item of points){c.fillStyle='#95dce399';c.beginPath();c.arc(item.p.x,item.p.y,1.7,0,Math.PI*2);c.fill();}
     const ranked = [...visible].sort((a, b) => Number(b.s.id === selected) - Number(a.s.id === selected) || (b.mw || 0) - (a.mw || 0));
     const labels = [], labeled = new Set();this.markerLabels=labels;
-    if (this.labels) for (const item of ranked) {
+    if (this.labels) for (const item of researchLabelPriority(ranked,selected,this.level)) {
       const {s, p, r} = item, name = this.level<=1?researchClusterName(item.members.map(m=>m.s)):item.members.length>1?researchClusterName(item.members.map(m=>m.s)):s.name.length > 26 ? s.name.slice(0, 24) + '…' : s.name;
-      c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
+      const backed=this.level<=1;
+      c.font = (backed?'12px':'11px')+' -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
       const nameWidth=c.measureText(name).width,subtitle=item.mw==null?'Native / unquantified':(item.mw>=1000?fmt(item.mw/1000,2)+' GW':fmt(item.mw)+' MW')+(item.members.length>1?' · '+item.known+' estimates':' · estimate');
-      c.font='10px ui-monospace,monospace';const width=Math.max(nameWidth,c.measureText(subtitle).width),h=32;
+      c.font='10px ui-monospace,monospace';const width=Math.max(nameWidth,c.measureText(subtitle).width)+(backed?14:0),h=backed?38:32;
       const box=[{x:p.x+r+9,y:p.y-14,w:width,h},{x:p.x-r-width-9,y:p.y-14,w:width,h},{x:p.x-width/2,y:p.y-r-h-9,w:width,h},{x:p.x-width/2,y:p.y+r+9,w:width,h}].find(b=>b.x>=8&&b.x+b.w<=this.w-8&&b.y>=85&&b.y+h<=this.h-100&&!this.labelExclusions.some(e=>researchLabelOverlap(b,e))&&!labels.some(e=>researchLabelOverlap(b,e,8))&&!visible.some(v=>researchLabelCircle(b,v.p,v.r)));
       if(!box)continue;
-      if (labels.length >= (this.flat ? 8 : 7)) break;
-      labels.push(box); labeled.add(s.id);
+      if (labels.length >= researchLabelBudget(this)) break;
+      labels.push({...box,name,project_id:s.id,native:item.mw==null}); labeled.add(s.id);
       item.label = {left:box.x,y:box.y,width,name,subtitle};
     }
     for (const item of visible) {
@@ -338,10 +345,13 @@ class ResearchMap {
       c.restore();
       if (item.label) {
         const b = item.label;
-        c.save();c.shadowColor='#04101a';c.shadowBlur=5;
-        c.font = '11px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left'; c.fillStyle = '#e5eeec'; c.fillText(b.name, b.left, b.y + 10);
+        const backed=this.level<=1,pad=backed?7:0;
+        c.save();c.shadowBlur=0;
+        if(backed){c.fillStyle='#071b24ee';c.fillRect(b.left,b.y,b.width,38);c.strokeStyle='#2c525955';c.lineWidth=1;c.strokeRect(b.left,b.y,b.width,38);}
+        c.shadowColor='#04101a';c.shadowBlur=backed?3:5;
+        c.font = (backed?'12px':'11px')+' -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif'; c.textAlign = 'left'; c.fillStyle = '#e5eeec'; c.fillText(b.name, b.left+pad, b.y+(backed?14:10));
         c.font = '10px ui-monospace,monospace'; c.fillStyle = '#8eb3bd';
-        c.fillText(b.subtitle, b.left, b.y + 25);c.restore();
+        c.fillText(b.subtitle, b.left+pad, b.y+(backed?29:25));c.restore();
       }
     }
     for (const node of this.markerNodes) {
