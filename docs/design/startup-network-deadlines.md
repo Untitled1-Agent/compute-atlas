@@ -29,3 +29,10 @@ installation requires an available administrator. Keep anonymous routes protecte
 Schema preloads retain native hash-pinned HTML discovery without parser blocking.
 Their executable load still uses the controlled20-second deadline and the same
 release integrity pin. This preserves early transfer and bounded execution.
+The authenticated public cold world took about11 seconds under the unchanged
+CPU cap, while same-document campus navigation took about1 second. Preload the
+initial module bytes together with native integrity pins so transfer can overlap.
+Execution remains ordered and deadline-controlled, with one final composition.
+Generate preloads from the declared loadScript calls, using the same source hashes
+and asset version. Retain all existing source/integrity gates and compare normal
+startup in a capped browser; preloading never authorizes partial readiness.
