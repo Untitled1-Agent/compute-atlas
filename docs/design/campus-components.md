@@ -84,3 +84,10 @@ Render every roof in the active reviewed component. The community-map renderer's
 inventory: SR2's five roofs span a larger area. Campus geometry uses the bounded
 manifest's complete feature set and preserves each source polygon and identity.
 Verify that all five native chooser items have a corresponding hit surface.
+
+In the compact overview, place source-map precision and the full quantities
+ledger inside the additional-attributes expander. Keep all four summary facts
+and readable source rows. Desktop spacing may tighten around these groups;
+phone controls retain their 44-pixel targets. Expanded campus maps allocate the
+remaining panel height to the drawing stage, with identity/control rows outside
+it and scrolling when a short viewport cannot fit the complete panel.
