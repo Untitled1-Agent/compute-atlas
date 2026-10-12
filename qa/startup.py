@@ -23,6 +23,8 @@ if not base:
 fragment='#overview?scale=facility&site=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&selection=feature&feature=new-carlisle-sr2-2025-roof-west-upper'
 def ready(page):page.wait_for_function('document.documentElement.classList.contains("layers-ready")&&typeof globe!=="undefined"&&globe&&!globe.dirty&&!globe.target')
 def terminal(page):return page.evaluate('window.ATLAS_BOOT_FAILED===true&&window.ATLAS_BOOTSTRAPPING===true&&!document.documentElement.classList.contains("atlas-ready")&&document.querySelector(".app-shell").inert&&document.activeElement.id==="atlas-boot-reload"')
+def covers_viewport(page):return page.evaluate('(()=>{const p=document.querySelector("#atlas-boot-failure"),r=p.getBoundingClientRect();return Math.abs(r.x)<1&&Math.abs(r.y)<1&&Math.abs(r.width-innerWidth)<1&&Math.abs(r.height-innerHeight)<1&&document.documentElement.scrollWidth<=innerWidth+1&&[".app-shell",".sidebar",".skip"].every(s=>document.querySelector(s).inert&&getComputedStyle(document.querySelector(s)).visibility==="hidden")})()')
+
 try:
  with sync_playwright() as driver:
   browser=driver.chromium.launch(executable_path=shutil.which('chromium') or driver.chromium.executable_path,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
@@ -65,9 +67,12 @@ try:
    page.locator('#atlas-boot-failure').wait_for()
    check(asset+' stalled I/O becomes named accessible failure',terminal(page) and kind+' timed out' in page.locator('#boot-error-message').inner_text() and asset in page.locator('#boot-error-message').inner_text())
    check(asset+' failure starts no optional service polling',not optional)
-   check(asset+' failure fits a390px phone',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
+   check(asset+'390px failure covers the viewport and hides the incomplete shell',covers_viewport(page))
    page.screenshot(path=str(OUT/('index.html-startup-failure-'+asset.split('/')[-1]+'.png')))
    mime='application/json' if asset.endswith('.json') else 'text/css' if asset.endswith('.css') else 'text/javascript'
+   page.set_viewport_size({'width':320,'height':844});page.wait_for_timeout(150)
+   check(asset+'320px failure remains readable across the whole viewport',covers_viewport(page))
+   page.screenshot(path=str(OUT/('index.html-startup-failure320-'+asset.split('/')[-1]+'.png')))
    for route in held:
     try:route.fulfill(status=200,body=(ROOT/asset).read_bytes(),content_type=mime)
     except Exception:pass # Aborted requests can no longer be fulfilled.
@@ -80,5 +85,7 @@ try:
 finally:
  if server:server.should_exit=True;thread.join(timeout=10)
  if folder:folder.cleanup()
-print(str(sum(c['pass'] for c in checks))+'/'+str(len(checks))+' passed',flush=True)
+result={'checks':checks,'passed':sum(c['pass'] for c in checks),'total':len(checks)}
+(ROOT/'qa/startup_results.json').write_text(json.dumps(result,indent=2)+'\n')
+print(str(result['passed'])+'/'+str(result['total'])+' passed',flush=True)
 raise SystemExit(0 if all(c['pass'] for c in checks) else 1)

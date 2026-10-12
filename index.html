@@ -54,10 +54,10 @@
    if(bootFailure)return;
    bootFailure=err instanceof Error?err:new Error(String(err));window.ATLAS_BOOT_FAILED=true;window.ATLAS_BOOTSTRAPPING=true;
    for(const controller of pendingData)controller.abort();
-   document.querySelector('.app-shell').inert=true;document.querySelector('.sidebar').inert=true;
-   const panel=document.createElement('section');panel.id='atlas-boot-failure';panel.className='empty boot-error';panel.setAttribute('role','alert');
-   panel.style.cssText='position:fixed;inset:0;z-index:10000;background:#071620;color:#e8f0ed;padding:clamp(24px,8vw,100px);overflow:auto;font:16px/1.6 system-ui';
-   panel.innerHTML='<h1>Could not open Compute Atlas</h1><p>This page could not load its matching release assets. Reload to open the latest complete release.</p><p id="boot-error-message"></p><button id="atlas-boot-reload" style="padding:12px 20px;min-height:44px;background:#9fefd7;color:#071620;border:0;font:inherit;cursor:pointer">Reload atlas ↻</button><p>The self-contained publication remains available in <a href="compute_atlas.html" style="color:#9fefd7">compute_atlas.html</a>.</p>';
+   document.querySelectorAll('.app-shell,.sidebar,.skip').forEach(el=>{el.inert=true;el.style.visibility='hidden';});
+   const panel=document.createElement('section');panel.id='atlas-boot-failure';panel.className='boot-error';panel.setAttribute('role','alert');
+   panel.style.cssText='position:fixed;inset:0;z-index:10000;display:block;margin:0;width:auto;max-width:none;height:auto;min-height:0;box-sizing:border-box;border:0;border-radius:0;text-align:left;background:#071620;color:#e8f0ed;padding:clamp(24px,8vw,100px);overflow:auto;overflow-wrap:anywhere;font:16px/1.6 system-ui';
+   panel.innerHTML='<h1 style="margin:0 0 24px;font:400 32px/1.15 Georgia,serif">Could not open Compute Atlas</h1><p>This page could not load its matching release assets. Reload to open the latest complete release.</p><p id="boot-error-message"></p><button id="atlas-boot-reload" style="padding:12px 20px;min-height:44px;background:#9fefd7;color:#071620;border:0;font:inherit;cursor:pointer">Reload atlas ↻</button><p>The self-contained publication remains available in <a href="compute_atlas.html" style="color:#9fefd7">compute_atlas.html</a>.</p>';
    document.body.appendChild(panel);document.getElementById('atlas-boot-reload').onclick=()=>location.reload();document.getElementById('atlas-boot-reload').focus();
    const message=document.getElementById('boot-error-message');
    if(message)message.textContent=String(err?.message||err||'Unknown loading error');
@@ -67,7 +67,7 @@
  const loadStyle=link=>new Promise((resolve,reject)=>{
    checkBoot();let settled=false;
    const finish=error=>{if(settled)return;settled=true;clearTimeout(timer);link.onload=link.onerror=null;error?reject(error):resolve();};
-   const timer=setTimeout(()=>{link.remove();finish(new Error('Stylesheet timed out after30 seconds: '+link.getAttribute('href')));},30000);
+   const timer=setTimeout(()=>{link.remove();finish(new Error('Stylesheet timed out after 30 seconds: '+link.getAttribute('href')));},30000);
    link.onload=()=>{try{checkBoot();if(!link.sheet)throw new Error('Matching stylesheet unavailable: '+link.getAttribute('href'));finish();}catch(error){finish(error);}};
    link.onerror=()=>finish(new Error('Could not load matching stylesheet: '+link.getAttribute('href')));
    link.rel='stylesheet';link.removeAttribute('as');
@@ -76,7 +76,7 @@
  const loadScript=src=>new Promise((resolve,reject)=>{
    checkBoot();const el=document.createElement('script');let settled=false;
    const finish=error=>{if(settled)return;settled=true;clearTimeout(timer);el.onload=el.onerror=null;error?reject(error):resolve();};
-   const timer=setTimeout(()=>{el.remove();finish(new Error('Script timed out after20 seconds: '+src));},20000);
+   const timer=setTimeout(()=>{el.remove();finish(new Error('Script timed out after 20 seconds: '+src));},20000);
    el.src=src+'?v='+ASSET_VERSION;el.integrity=ASSET_INTEGRITY[src];el.crossOrigin='anonymous';
    el.onload=()=>{try{checkBoot();finish();}catch(error){finish(error);}};
    el.onerror=()=>finish(new Error('Could not load '+src));document.body.appendChild(el);
@@ -93,7 +93,7 @@
      if(id==='digital-realty-data')DigitalRealtySchema.validate(parsed);
      if(id==='catalog-data'&&(!Array.isArray(parsed.records)||!parsed.records.length||parsed.schema_version!==1||parsed.license!=='ODbL-1.0'||parsed.counts?.features!==parsed.records.length))throw new Error('Invalid catalog publication');
      const el=document.createElement('script');el.type='application/json';el.id=id;el.textContent=text;document.body.appendChild(el);
-   }catch(error){if(timedOut)throw new Error('Data request timed out after'+seconds+' seconds: '+url);throw error;}
+   }catch(error){if(timedOut)throw new Error('Data request timed out after '+seconds+' seconds: '+url);throw error;}
    finally{clearTimeout(timer);pendingData.delete(controller);}
  };
  Promise.all([...document.querySelectorAll('link[rel="preload"][as="style"]')].map(loadStyle).concat([
