@@ -26,3 +26,6 @@ only for the declared outage cases. No dummy data or relaxed integrity checks.
 Authenticated public acceptance uses a newly generated dedicated Atlas login,
 never stored user credentials. The existing auth file is Atlas-only but root-owned;
 installation requires an available administrator. Keep anonymous routes protected.
+Schema preloads retain native hash-pinned HTML discovery without parser blocking.
+Their executable load still uses the controlled20-second deadline and the same
+release integrity pin. This preserves early transfer and bounded execution.
