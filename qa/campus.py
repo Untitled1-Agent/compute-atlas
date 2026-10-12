@@ -62,7 +62,10 @@ try:
             page.locator('#globe-canvas').focus();page.keyboard.press('ArrowRight');page.keyboard.press('Shift+ArrowDown');page.keyboard.press('+');ready(page)
             moved=camera(page);share=page.url;page.reload();ready(page)
             restored=camera(page)
-            check(entry+' shared orbit pan and zoom restore',all(abs(restored[k]-moved[k])<.00002 for k in ('yaw','pitch','zoom')) and restored['pan']==moved['pan'] and 'feature=helios-naip2022-roof-01' in page.url)
+            # The shared camera rounds all seven values to five decimal places.
+            # Compare within half that quantum, including pan and image focus.
+            quantum=.00000500001
+            check(entry+' shared orbit pan and zoom restore',all(abs(restored[k]-moved[k])<=quantum for k in ('yaw','pitch','zoom')) and all(abs(restored['pan'][k]-moved['pan'][k])<=quantum for k in ('x','y')) and all(abs(a-b)<=quantum for a,b in zip(restored['focus_pixel'],moved['focus_pixel'])) and page.url==share and 'feature=helios-naip2022-roof-01' in page.url)
             check(entry+' shared topic and oblique view restore','campusview=oblique' in page.url and page.locator('[data-workspace-topic-content="technical"]').is_visible())
             capture(page,entry,'oblique')
             page.locator('[data-campus-tool="reset"]').click();ready(page)
