@@ -24,3 +24,5 @@ The normal QA mode uses real HTTP and Chromium in CI. In restricted browser envi
 - [Worldwide explorer + source-outline 3D](2026-10-07-catalog-3d-explorer.md): continuous wheel zoom, Europe/global discovery, typed geometry, offline/SQL parity and fresh browser regression coverage.
 
 - [Reviewed primary-operator explorer](2026-10-09-operator-explorer.md) — directory publication, provisional map links, SQL persistence and exact capture acceptance.
+
+Superseded validation PNGs were removed from the active checkout on 12 October 2026 to recover shared VPS space. Historical screenshot links resolve to the immutable prior Git commit; original mockups and research captures are retained.

@@ -76,9 +76,9 @@ identical SHA-256
 `930d23546e16f0002f4072184bcd8b67a2c552c9a0e231f26c8cec485ec0840a`.
 
 Fresh [QA results](evidence/2026-10-10/research-navigation-qa.json) and inspected
-[desktop search](evidence/2026-10-10/research-navigation-index-desktop.png),
-[desktop disclosures](evidence/2026-10-10/research-navigation-brief-desktop.png)
-and [mobile disclosures](evidence/2026-10-10/research-navigation-brief-mobile.png)
+[desktop search](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/research-navigation-index-desktop.png),
+[desktop disclosures](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/research-navigation-brief-desktop.png)
+and [mobile disclosures](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/research-navigation-brief-mobile.png)
 are retained. The original attachment/integrity checks, affected browser regression
 suites, JavaScript parsing and deterministic standalone generation are required
 before release. Exact-head CI runs the complete backend and browser suites.
