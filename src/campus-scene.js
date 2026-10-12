@@ -105,7 +105,7 @@ class CampusScene extends FacilityScene {
   snapshot(){return {yaw:this.yaw,pitch:this.pitch,zoom:this.zoom,pan:{...this.pan},focus_pixel:[...this.focusPixel]};}
   inspect(id,notify=true){const result=super.inspect(id,false);if(result&&notify)this.canvas.dispatchEvent(new CustomEvent('atlas-campus-feature',{bubbles:true,detail:{id}}));return result;}
   draw(){super.draw();const readout=document.getElementById('scene-readout');if(readout)readout.textContent=`${Math.round(this.pitch*180/Math.PI)}° tilt · ${this.zoom.toFixed(2)}× · historic ground plane`;
-    const value=campusCameraParam(this.snapshot());if(value!==this.publishedCamera){this.publishedCamera=value;clearTimeout(this.cameraTimer);this.cameraTimer=setTimeout(()=>{if(this.destroyed||globe!==this)return;campusState.camera=this.snapshot();workspaceSyncURL();},220);}
+    const value=campusCameraParam(this.snapshot());if(value!==this.publishedCamera){this.publishedCamera=value;clearTimeout(this.cameraTimer);const route=location.hash;this.cameraTimer=setTimeout(()=>{if(this.destroyed||globe!==this||location.hash!==route)return;campusState.camera=this.snapshot();workspaceSyncURL();},220);}
   }
   destroy(){if(!this.skipCameraSave){campusState.camera=this.snapshot();campusState.viewCameras[this.campusMode]=campusState.camera;campusState.memory.set(this.manifest.id,{feature:campusState.feature,physicalMode:this.campusMode,viewCameras:{...campusState.viewCameras}});}clearTimeout(this.cameraTimer);super.destroy();this.image.onload=null;this.image.onerror=null;}
 }

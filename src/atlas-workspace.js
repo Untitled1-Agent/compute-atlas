@@ -167,9 +167,9 @@ function workspaceSyncURL(){
 }
 let workspaceCameraTimer;
 document.addEventListener('atlas-camera-change',event=>{
-  const map=event.detail;clearTimeout(workspaceCameraTimer);
+  const map=event.detail,route=location.hash;clearTimeout(workspaceCameraTimer);
   workspaceCameraTimer=setTimeout(()=>{
-    if(map.destroyed||globe!==map)return;
+    if(map.destroyed||globe!==map||location.hash!==route)return;
     state.spatialCamera||={};state.spatialCamera[map.cameraKey]=map.snapshot();
     workspaceState.visibleIds=workspaceVisibleIds(map);
     if(workspaceState.records.scope==='visible'&&workspaceState.records.open){if(map.workspacePublished)workspaceState.records.page=0;workspaceRefreshRecords();}map.workspacePublished=true;
