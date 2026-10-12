@@ -1,0 +1,2253 @@
+{
+  "schema_version": 1,
+  "collections": [
+    {
+      "schema_version": 1,
+      "collection": "Bounded community electricity context",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "captured_at": "2026-10-11T21:07:31.128095+00:00",
+      "coverage_bbox": [
+        -86.4702,
+        41.6838,
+        -86.4598,
+        41.6945
+      ],
+      "query_url": "https://api.openstreetmap.org/api/0.6/map?bbox=-86.4702,41.6838,-86.4598,41.6945",
+      "response_sha256": "30b8df9a296f0ed31b82d92935de8f6bae974d49ac09bd4c251b3113d3c81fd7",
+      "method": "Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.",
+      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
+      "features": [
+        {
+          "id": "osm-way-1466907494",
+          "osm_type": "way",
+          "osm_id": 1466907494,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "6",
+            "circuits": "2",
+            "power": "line",
+            "tiger:cfcc": "C20",
+            "tiger:county": "St. Joseph, IN",
+            "voltage": "345000;345000"
+          },
+          "node_refs": [
+            "1436008189",
+            "1436008171",
+            "1436008166",
+            "1436008164"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4765634,
+                41.6990172
+              ],
+              [
+                -86.4743157,
+                41.6965851
+              ],
+              [
+                -86.4720824,
+                41.6941634
+              ],
+              [
+                -86.469856,
+                41.6917533
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4702,
+                41.6921257
+              ],
+              [
+                -86.469856,
+                41.6917533
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907494",
+          "referenced_node_versions": [
+            {
+              "osm_id": 1436008189,
+              "version": 1,
+              "edited_at": "2011-09-17T22:51:26Z",
+              "coordinates": [
+                -86.4765634,
+                41.6990172
+              ]
+            },
+            {
+              "osm_id": 1436008171,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4743157,
+                41.6965851
+              ]
+            },
+            {
+              "osm_id": 1436008166,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4720824,
+                41.6941634
+              ]
+            },
+            {
+              "osm_id": 1436008164,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.469856,
+                41.6917533
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907495",
+          "osm_type": "way",
+          "osm_id": 1466907495,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "tiger:cfcc": "C20",
+            "tiger:county": "St. Joseph, IN",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "1436008164",
+            "1436008161",
+            "1436008159"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.469856,
+                41.6917533
+              ],
+              [
+                -86.4674728,
+                41.6890592
+              ],
+              [
+                -86.4649071,
+                41.6861919
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.469856,
+                41.6917533
+              ],
+              [
+                -86.4674728,
+                41.6890592
+              ],
+              [
+                -86.4649071,
+                41.6861919
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907495",
+          "referenced_node_versions": [
+            {
+              "osm_id": 1436008164,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.469856,
+                41.6917533
+              ]
+            },
+            {
+              "osm_id": 1436008161,
+              "version": 3,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4674728,
+                41.6890592
+              ]
+            },
+            {
+              "osm_id": 1436008159,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4649071,
+                41.6861919
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907496",
+          "osm_type": "way",
+          "osm_id": 1466907496,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "tiger:cfcc": "C20",
+            "tiger:county": "St. Joseph, IN",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "1436008159",
+            "13454434616",
+            "13454434615"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4649071,
+                41.6861919
+              ],
+              [
+                -86.4668355,
+                41.6885022
+              ],
+              [
+                -86.4660103,
+                41.688488
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4649071,
+                41.6861919
+              ],
+              [
+                -86.4668355,
+                41.6885022
+              ],
+              [
+                -86.4660103,
+                41.688488
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907496",
+          "referenced_node_versions": [
+            {
+              "osm_id": 1436008159,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4649071,
+                41.6861919
+              ]
+            },
+            {
+              "osm_id": 13454434616,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4668355,
+                41.6885022
+              ]
+            },
+            {
+              "osm_id": 13454434615,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4660103,
+                41.688488
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907497",
+          "osm_type": "way",
+          "osm_id": 1466907497,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "tiger:cfcc": "C20",
+            "tiger:county": "St. Joseph, IN",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434614",
+            "13454434613",
+            "1436008164"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4660103,
+                41.6894099
+              ],
+              [
+                -86.4676263,
+                41.6894294
+              ],
+              [
+                -86.469856,
+                41.6917533
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4660103,
+                41.6894099
+              ],
+              [
+                -86.4676263,
+                41.6894294
+              ],
+              [
+                -86.469856,
+                41.6917533
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907497",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434614,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4660103,
+                41.6894099
+              ]
+            },
+            {
+              "osm_id": 13454434613,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4676263,
+                41.6894294
+              ]
+            },
+            {
+              "osm_id": 1436008164,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.469856,
+                41.6917533
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907498",
+          "osm_type": "way",
+          "osm_id": 1466907498,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "barrier": "fence",
+            "power": "substation",
+            "substation": "transmission",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434617",
+            "13454434618",
+            "13454434619",
+            "13454434620",
+            "13454434621",
+            "13454434617"
+          ],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -86.4648543,
+                  41.6901197
+                ],
+                [
+                  -86.4667925,
+                  41.6901288
+                ],
+                [
+                  -86.4668056,
+                  41.6885807
+                ],
+                [
+                  -86.4660845,
+                  41.6878655
+                ],
+                [
+                  -86.464873,
+                  41.68786
+                ],
+                [
+                  -86.4648543,
+                  41.6901197
+                ]
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4648543,
+                41.6901197
+              ],
+              [
+                -86.4667925,
+                41.6901288
+              ],
+              [
+                -86.4668056,
+                41.6885807
+              ],
+              [
+                -86.4660845,
+                41.6878655
+              ],
+              [
+                -86.464873,
+                41.68786
+              ],
+              [
+                -86.4648543,
+                41.6901197
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907498",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434617,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4648543,
+                41.6901197
+              ]
+            },
+            {
+              "osm_id": 13454434618,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4667925,
+                41.6901288
+              ]
+            },
+            {
+              "osm_id": 13454434619,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4668056,
+                41.6885807
+              ]
+            },
+            {
+              "osm_id": 13454434620,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4660845,
+                41.6878655
+              ]
+            },
+            {
+              "osm_id": 13454434621,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.464873,
+                41.68786
+              ]
+            },
+            {
+              "osm_id": 13454434617,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4648543,
+                41.6901197
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907499",
+          "osm_type": "way",
+          "osm_id": 1466907499,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "barrier": "fence",
+            "power": "substation",
+            "substation": "industrial",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434622",
+            "13454434623",
+            "13454434624",
+            "13454434625",
+            "13454434622"
+          ],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -86.4636826,
+                  41.6897064
+                ],
+                [
+                  -86.4646711,
+                  41.689707
+                ],
+                [
+                  -86.464673,
+                  41.6879873
+                ],
+                [
+                  -86.4636841,
+                  41.6879867
+                ],
+                [
+                  -86.4636826,
+                  41.6897064
+                ]
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4636826,
+                41.6897064
+              ],
+              [
+                -86.4646711,
+                41.689707
+              ],
+              [
+                -86.464673,
+                41.6879873
+              ],
+              [
+                -86.4636841,
+                41.6879867
+              ],
+              [
+                -86.4636826,
+                41.6897064
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907499",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434622,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4636826,
+                41.6897064
+              ]
+            },
+            {
+              "osm_id": 13454434623,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4646711,
+                41.689707
+              ]
+            },
+            {
+              "osm_id": 13454434624,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.464673,
+                41.6879873
+              ]
+            },
+            {
+              "osm_id": 13454434625,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4636841,
+                41.6879867
+              ]
+            },
+            {
+              "osm_id": 13454434622,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4636826,
+                41.6897064
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907500",
+          "osm_type": "way",
+          "osm_id": 1466907500,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434636",
+            "13454434637"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4644723,
+                41.688279
+              ],
+              [
+                -86.4653541,
+                41.6882554
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4644723,
+                41.688279
+              ],
+              [
+                -86.4653541,
+                41.6882554
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907500",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434636,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644723,
+                41.688279
+              ]
+            },
+            {
+              "osm_id": 13454434637,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4653541,
+                41.6882554
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907501",
+          "osm_type": "way",
+          "osm_id": 1466907501,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434628",
+            "13454434629"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4644684,
+                41.689289
+              ],
+              [
+                -86.4656008,
+                41.6892498
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4644684,
+                41.689289
+              ],
+              [
+                -86.4656008,
+                41.6892498
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907501",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434628,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644684,
+                41.689289
+              ]
+            },
+            {
+              "osm_id": 13454434629,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4656008,
+                41.6892498
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907502",
+          "osm_type": "way",
+          "osm_id": 1466907502,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434630",
+            "13454434631"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4656006,
+                41.6890262
+              ],
+              [
+                -86.4644694,
+                41.6890355
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4656006,
+                41.6890262
+              ],
+              [
+                -86.4644694,
+                41.6890355
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907502",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434630,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4656006,
+                41.6890262
+              ]
+            },
+            {
+              "osm_id": 13454434631,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644694,
+                41.6890355
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907503",
+          "osm_type": "way",
+          "osm_id": 1466907503,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434632",
+            "13454434633"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4644703,
+                41.6887832
+              ],
+              [
+                -86.4656005,
+                41.6888713
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4644703,
+                41.6887832
+              ],
+              [
+                -86.4656005,
+                41.6888713
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907503",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434632,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644703,
+                41.6887832
+              ]
+            },
+            {
+              "osm_id": 13454434633,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4656005,
+                41.6888713
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907504",
+          "osm_type": "way",
+          "osm_id": 1466907504,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434634",
+            "13454434635"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4656002,
+                41.6886308
+              ],
+              [
+                -86.4644713,
+                41.6885267
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4656002,
+                41.6886308
+              ],
+              [
+                -86.4644713,
+                41.6885267
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907504",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434634,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4656002,
+                41.6886308
+              ]
+            },
+            {
+              "osm_id": 13454434635,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644713,
+                41.6885267
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907505",
+          "osm_type": "way",
+          "osm_id": 1466907505,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434626",
+            "13454434627"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.465601,
+                41.6894077
+              ],
+              [
+                -86.4644674,
+                41.6895455
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.465601,
+                41.6894077
+              ],
+              [
+                -86.4644674,
+                41.6895455
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907505",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434626,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.465601,
+                41.6894077
+              ]
+            },
+            {
+              "osm_id": 13454434627,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4644674,
+                41.6895455
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907506",
+          "osm_type": "way",
+          "osm_id": 1466907506,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "6",
+            "circuits": "2",
+            "power": "line",
+            "tiger:cfcc": "C20",
+            "tiger:county": "St. Joseph, IN",
+            "voltage": "345000;345000"
+          },
+          "node_refs": [
+            "1436008159",
+            "1436008156",
+            "1436008152",
+            "1425807928",
+            "1425807927",
+            "1425807925",
+            "1425807924"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4649071,
+                41.6861919
+              ],
+              [
+                -86.4627777,
+                41.6831581
+              ],
+              [
+                -86.4606819,
+                41.6801127
+              ],
+              [
+                -86.458747,
+                41.677273
+              ],
+              [
+                -86.4568261,
+                41.6744835
+              ],
+              [
+                -86.4548175,
+                41.6714803
+              ],
+              [
+                -86.4529784,
+                41.6684054
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4649071,
+                41.6861919
+              ],
+              [
+                -86.4632282,
+                41.6838
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907506",
+          "referenced_node_versions": [
+            {
+              "osm_id": 1436008159,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4649071,
+                41.6861919
+              ]
+            },
+            {
+              "osm_id": 1436008156,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4627777,
+                41.6831581
+              ]
+            },
+            {
+              "osm_id": 1436008152,
+              "version": 2,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4606819,
+                41.6801127
+              ]
+            },
+            {
+              "osm_id": 1425807928,
+              "version": 3,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.458747,
+                41.677273
+              ]
+            },
+            {
+              "osm_id": 1425807927,
+              "version": 2,
+              "edited_at": "2011-09-17T22:51:32Z",
+              "coordinates": [
+                -86.4568261,
+                41.6744835
+              ]
+            },
+            {
+              "osm_id": 1425807925,
+              "version": 3,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4548175,
+                41.6714803
+              ]
+            },
+            {
+              "osm_id": 1425807924,
+              "version": 3,
+              "edited_at": "2023-06-23T05:33:40Z",
+              "coordinates": [
+                -86.4529784,
+                41.6684054
+              ]
+            }
+          ]
+        }
+      ],
+      "id": "osm-power-new-carlisle-edison-20261011",
+      "scene_id": "new-carlisle-edison-2025",
+      "title": "Edison / IEC-2 electricity context",
+      "source_snapshot_path": "data/layers/edison-power-native-20261011.xml",
+      "infrastructure_observed_at": null,
+      "inventory_review": {
+        "reviewed_at": "2026-10-11",
+        "reviewed_by": "Untitled1-Agent",
+        "scope": "Native line/substation inventory within this bounded capture; no project service, operating status or IT allocation accepted"
+      }
+    },
+    {
+      "schema_version": 1,
+      "collection": "Bounded community electricity context",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "captured_at": "2026-10-11T21:07:31.462999+00:00",
+      "coverage_bbox": [
+        -86.4828,
+        41.6569,
+        -86.4616,
+        41.6726
+      ],
+      "query_url": "https://api.openstreetmap.org/api/0.6/map?bbox=-86.4828,41.6569,-86.4616,41.6726",
+      "response_sha256": "59fbaa7a177c00be0727a5f44cd2fdc6bc73f20bc7dbf7d737939d6c46aadeb2",
+      "method": "Complete OSM ways with native tags; independent display-path clipping to query bounds. Editor account metadata excluded.",
+      "policy": "Community mapping, not a survey, operating-status confirmation, project ownership, service connection or IT-capacity measurement. Edit times are not commissioning or image dates. Coverage is partial; absence is not proof of absence. Capture is independent of the2025 aerial image. Dense cable and point details remain source inventory and are excluded from this initial display.",
+      "features": [
+        {
+          "id": "osm-way-1463187602",
+          "osm_type": "way",
+          "osm_id": 1463187602,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "barrier": "fence",
+            "power": "substation",
+            "substation": "industrial",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13421650262",
+            "13421650263",
+            "13421650264",
+            "13421650265",
+            "13421650266",
+            "13454434642",
+            "13421650262"
+          ],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -86.4724571,
+                  41.6675997
+                ],
+                [
+                  -86.4693631,
+                  41.6675936
+                ],
+                [
+                  -86.4693712,
+                  41.665371
+                ],
+                [
+                  -86.4713208,
+                  41.6653751
+                ],
+                [
+                  -86.47132,
+                  41.6656072
+                ],
+                [
+                  -86.4724641,
+                  41.6656094
+                ],
+                [
+                  -86.4724571,
+                  41.6675997
+                ]
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4724571,
+                41.6675997
+              ],
+              [
+                -86.4693631,
+                41.6675936
+              ],
+              [
+                -86.4693712,
+                41.665371
+              ],
+              [
+                -86.4713208,
+                41.6653751
+              ],
+              [
+                -86.47132,
+                41.6656072
+              ],
+              [
+                -86.4724641,
+                41.6656094
+              ],
+              [
+                -86.4724571,
+                41.6675997
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187602",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13421650262,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4724571,
+                41.6675997
+              ]
+            },
+            {
+              "osm_id": 13421650263,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4693631,
+                41.6675936
+              ]
+            },
+            {
+              "osm_id": 13421650264,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4693712,
+                41.665371
+              ]
+            },
+            {
+              "osm_id": 13421650265,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4713208,
+                41.6653751
+              ]
+            },
+            {
+              "osm_id": 13421650266,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.47132,
+                41.6656072
+              ]
+            },
+            {
+              "osm_id": 13454434642,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4724641,
+                41.6656094
+              ]
+            },
+            {
+              "osm_id": 13421650262,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4724571,
+                41.6675997
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1463187603",
+          "osm_type": "way",
+          "osm_id": 1463187603,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434645",
+            "13421650270",
+            "13421650269",
+            "13421650268",
+            "13421650274",
+            "13421650275"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4701167,
+                41.6660871
+              ],
+              [
+                -86.4690411,
+                41.6661191
+              ],
+              [
+                -86.4679816,
+                41.6653958
+              ],
+              [
+                -86.4648488,
+                41.6653277
+              ],
+              [
+                -86.4618237,
+                41.6671695
+              ],
+              [
+                -86.458301,
+                41.6672542
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4701167,
+                41.6660871
+              ],
+              [
+                -86.4690411,
+                41.6661191
+              ],
+              [
+                -86.4679816,
+                41.6653958
+              ],
+              [
+                -86.4648488,
+                41.6653277
+              ],
+              [
+                -86.4618237,
+                41.6671695
+              ],
+              [
+                -86.4616,
+                41.6671749
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187603",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434645,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4701167,
+                41.6660871
+              ]
+            },
+            {
+              "osm_id": 13421650270,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4690411,
+                41.6661191
+              ]
+            },
+            {
+              "osm_id": 13421650269,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4679816,
+                41.6653958
+              ]
+            },
+            {
+              "osm_id": 13421650268,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4648488,
+                41.6653277
+              ]
+            },
+            {
+              "osm_id": 13421650274,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4618237,
+                41.6671695
+              ]
+            },
+            {
+              "osm_id": 13421650275,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.458301,
+                41.6672542
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1463187604",
+          "osm_type": "way",
+          "osm_id": 1463187604,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434644",
+            "13421650271",
+            "13421650272",
+            "13421650273",
+            "13454434643",
+            "13421650275"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4701144,
+                41.6662476
+              ],
+              [
+                -86.4688023,
+                41.6662734
+              ],
+              [
+                -86.4679226,
+                41.665534
+              ],
+              [
+                -86.4649453,
+                41.6654699
+              ],
+              [
+                -86.4618467,
+                41.6672895
+              ],
+              [
+                -86.458301,
+                41.6672542
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4701144,
+                41.6662476
+              ],
+              [
+                -86.4688023,
+                41.6662734
+              ],
+              [
+                -86.4679226,
+                41.665534
+              ],
+              [
+                -86.4649453,
+                41.6654699
+              ],
+              [
+                -86.4618467,
+                41.6672895
+              ],
+              [
+                -86.4616,
+                41.667287
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187604",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434644,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4701144,
+                41.6662476
+              ]
+            },
+            {
+              "osm_id": 13421650271,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4688023,
+                41.6662734
+              ]
+            },
+            {
+              "osm_id": 13421650272,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4679226,
+                41.665534
+              ]
+            },
+            {
+              "osm_id": 13421650273,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4649453,
+                41.6654699
+              ]
+            },
+            {
+              "osm_id": 13454434643,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4618467,
+                41.6672895
+              ]
+            },
+            {
+              "osm_id": 13421650275,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.458301,
+                41.6672542
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1463187606",
+          "osm_type": "way",
+          "osm_id": 1463187606,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "6",
+            "circuits": "2",
+            "power": "line",
+            "voltage": "345000;345000"
+          },
+          "node_refs": [
+            "13421650277",
+            "13421650278",
+            "13421650279",
+            "13421650280"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4546366,
+                41.6677017
+              ],
+              [
+                -86.458256,
+                41.6676591
+              ],
+              [
+                -86.461822,
+                41.6676379
+              ],
+              [
+                -86.4654798,
+                41.6676418
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4616,
+                41.6676392
+              ],
+              [
+                -86.461822,
+                41.6676379
+              ],
+              [
+                -86.4654798,
+                41.6676418
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187606",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13421650277,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4546366,
+                41.6677017
+              ]
+            },
+            {
+              "osm_id": 13421650278,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.458256,
+                41.6676591
+              ]
+            },
+            {
+              "osm_id": 13421650279,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.461822,
+                41.6676379
+              ]
+            },
+            {
+              "osm_id": 13421650280,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4654798,
+                41.6676418
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1463187607",
+          "osm_type": "way",
+          "osm_id": 1463187607,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13421650280",
+            "13421650281",
+            "13421650282",
+            "13454434640"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4654798,
+                41.6676418
+              ],
+              [
+                -86.468044,
+                41.667706
+              ],
+              [
+                -86.4691356,
+                41.6673774
+              ],
+              [
+                -86.4700982,
+                41.6673724
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4654798,
+                41.6676418
+              ],
+              [
+                -86.468044,
+                41.667706
+              ],
+              [
+                -86.4691356,
+                41.6673774
+              ],
+              [
+                -86.4700982,
+                41.6673724
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187607",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13421650280,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4654798,
+                41.6676418
+              ]
+            },
+            {
+              "osm_id": 13421650281,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.468044,
+                41.667706
+              ]
+            },
+            {
+              "osm_id": 13421650282,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4691356,
+                41.6673774
+              ]
+            },
+            {
+              "osm_id": 13454434640,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4700982,
+                41.6673724
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1463187608",
+          "osm_type": "way",
+          "osm_id": 1463187608,
+          "version": 2,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434641",
+            "13421650283",
+            "13421650284",
+            "13421650280"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4701004,
+                41.6672148
+              ],
+              [
+                -86.4689666,
+                41.6672311
+              ],
+              [
+                -86.4679903,
+                41.6675557
+              ],
+              [
+                -86.4654798,
+                41.6676418
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4701004,
+                41.6672148
+              ],
+              [
+                -86.4689666,
+                41.6672311
+              ],
+              [
+                -86.4679903,
+                41.6675557
+              ],
+              [
+                -86.4654798,
+                41.6676418
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1463187608",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434641,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4701004,
+                41.6672148
+              ]
+            },
+            {
+              "osm_id": 13421650283,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4689666,
+                41.6672311
+              ]
+            },
+            {
+              "osm_id": 13421650284,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4679903,
+                41.6675557
+              ]
+            },
+            {
+              "osm_id": 13421650280,
+              "version": 2,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4654798,
+                41.6676418
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907511",
+          "osm_type": "way",
+          "osm_id": 1466907511,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434648",
+            "13454434649"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4705334,
+                41.6660977
+              ],
+              [
+                -86.471657,
+                41.6660495
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4705334,
+                41.6660977
+              ],
+              [
+                -86.471657,
+                41.6660495
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907511",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434648,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705334,
+                41.6660977
+              ]
+            },
+            {
+              "osm_id": 13454434649,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.471657,
+                41.6660495
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907512",
+          "osm_type": "way",
+          "osm_id": 1466907512,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434658",
+            "13454434659"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4716507,
+                41.667333
+              ],
+              [
+                -86.4705214,
+                41.6673779
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4716507,
+                41.667333
+              ],
+              [
+                -86.4705214,
+                41.6673779
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907512",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434658,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4716507,
+                41.667333
+              ]
+            },
+            {
+              "osm_id": 13454434659,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705214,
+                41.6673779
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907513",
+          "osm_type": "way",
+          "osm_id": 1466907513,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434656",
+            "13454434657"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4705228,
+                41.6672267
+              ],
+              [
+                -86.471652,
+                41.6670734
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4705228,
+                41.6672267
+              ],
+              [
+                -86.471652,
+                41.6670734
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907513",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434656,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705228,
+                41.6672267
+              ]
+            },
+            {
+              "osm_id": 13454434657,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.471652,
+                41.6670734
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907514",
+          "osm_type": "way",
+          "osm_id": 1466907514,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434654",
+            "13454434655"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4716532,
+                41.6668157
+              ],
+              [
+                -86.4705284,
+                41.6666302
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4716532,
+                41.6668157
+              ],
+              [
+                -86.4705284,
+                41.6666302
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907514",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434654,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4716532,
+                41.6668157
+              ]
+            },
+            {
+              "osm_id": 13454434655,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705284,
+                41.6666302
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907515",
+          "osm_type": "way",
+          "osm_id": 1466907515,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434652",
+            "13454434653"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4705299,
+                41.6664786
+              ],
+              [
+                -86.4716545,
+                41.6665595
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4705299,
+                41.6664786
+              ],
+              [
+                -86.4716545,
+                41.6665595
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907515",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434652,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705299,
+                41.6664786
+              ]
+            },
+            {
+              "osm_id": 13454434653,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4716545,
+                41.6665595
+              ]
+            }
+          ]
+        },
+        {
+          "id": "osm-way-1466907516",
+          "osm_type": "way",
+          "osm_id": 1466907516,
+          "version": 1,
+          "edited_at": "2026-01-14T01:29:03Z",
+          "tags": {
+            "cables": "3",
+            "power": "line",
+            "voltage": "345000"
+          },
+          "node_refs": [
+            "13454434650",
+            "13454434651"
+          ],
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -86.4716558,
+                41.6663025
+              ],
+              [
+                -86.4705321,
+                41.6662432
+              ]
+            ]
+          },
+          "display_paths": [
+            [
+              [
+                -86.4716558,
+                41.6663025
+              ],
+              [
+                -86.4705321,
+                41.6662432
+              ]
+            ]
+          ],
+          "url": "https://www.openstreetmap.org/way/1466907516",
+          "referenced_node_versions": [
+            {
+              "osm_id": 13454434650,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4716558,
+                41.6663025
+              ]
+            },
+            {
+              "osm_id": 13454434651,
+              "version": 1,
+              "edited_at": "2026-01-14T01:29:03Z",
+              "coordinates": [
+                -86.4705321,
+                41.6662432
+              ]
+            }
+          ]
+        }
+      ],
+      "id": "osm-power-new-carlisle-sr2-20261011",
+      "scene_id": "new-carlisle-sr2-2025",
+      "title": "SR2 / IEC-3 electricity context",
+      "source_snapshot_path": "data/layers/sr2-power-native-20261011.xml",
+      "infrastructure_observed_at": null,
+      "inventory_review": {
+        "reviewed_at": "2026-10-11",
+        "reviewed_by": "Untitled1-Agent",
+        "scope": "Native line/substation inventory within this bounded capture; no project service, operating status or IT allocation accepted"
+      }
+    }
+  ]
+}
