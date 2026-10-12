@@ -22,6 +22,11 @@ hosted_path=ROOT/'index.html'
 hosted=hosted_path.read_text()
 hosted=re.sub(r"const ASSET_VERSION='[^']*'",f"const ASSET_VERSION='{asset_version}'",hosted)
 hosted=re.sub(r'const ASSET_INTEGRITY=.*?;\n',f'const ASSET_INTEGRITY={safe_json(integrity)};\n',hosted)
+# Fetch initial module bytes in parallel while the loader executes in order.
+preload_paths=list(dict.fromkeys(re.findall(r"loadScript\('([^']+)'\)",hosted)))
+preloads='<!-- ATLAS_SCRIPT_PRELOADS -->\n'+'\n'.join('<link rel="preload" as="script" href="'+path+'?v='+asset_version+'" integrity="'+integrity[path]+'" crossorigin="anonymous">' for path in preload_paths)+'\n<!-- /ATLAS_SCRIPT_PRELOADS -->'
+hosted,count=re.subn(r'<!-- ATLAS_SCRIPT_PRELOADS -->.*?<!-- /ATLAS_SCRIPT_PRELOADS -->',lambda match:preloads,hosted,flags=re.S)
+if count!=1:raise ValueError('Missing initial script preload boundary')
 hosted=re.sub(r'((?:href|src)="src/[^"?]+\.(?:css|js))(?:\?v=[^"]+)?(")',lambda m:m[1]+'?v='+asset_version+m[2],hosted)
 def pin_tag(match):
     tag=match[0];path=re.search(r'(?:href|src)="(src/[^"?]+)',tag)[1]
