@@ -46,15 +46,18 @@ try:
   if hosted:
    ready(page);page.wait_for_function('globe.imageReady&&!globe.dirty')
    check('stalled live publication uses all four named snapshot fallbacks',page.evaluate('window.ATLAS_SERVICE_WARNING&&window.ATLAS_CATALOG_WARNING&&window.ATLAS_DIRECTORY_WARNING&&window.ATLAS_DIGITAL_REALTY_WARNING'))
-   evidence=json.loads((ROOT/'data/evidence.json').read_text());check('fallback retains the bundled evidence publication identity',page.evaluate('ATLAS_PRIMARY.publication_hash')==evidence['publication_hash'])
+   evidence=json.loads((ROOT/'data/evidence.json').read_text());check('fallback retains the exact bundled evidence publication',page.evaluate('ATLAS_PRIMARY')==evidence)
    check('fallback retains the selected roof and its historical image',page.locator('.campus-feature-inspector h2').inner_text()=='West upper roof' and '2025' in page.locator('.campus-historic-badge').inner_text())
    check('fallback explains evidence service failure visibly','checked-in publication' in page.locator('.atlas-service-warning').inner_text())
    page.screenshot(path=str(OUT/'index.html-startup-fallback.png'),full_page=True)
-   for view,selector,warning in [('catalog','.workspace-data-warning','dated community-map snapshot'),('operators','.operator-warning','dated checked-in snapshot'),('publisher','.operator-warning','dated checked-in Digital Realty publication')]:
+   for view,selector,warning in [('catalog','.notice.warning','dated checked-in map snapshot'),('operators','.operator-warning','dated checked-in snapshot'),('publisher','.operator-warning','dated checked-in Digital Realty publication')]:
     page.goto(base+'index.html#'+view,wait_until='domcontentloaded');page.wait_for_function('document.documentElement.classList.contains("layers-ready")')
     check(view+' fallback is dated and visible',warning in page.locator(selector).inner_text())
   else:check('static hosted entry keeps no live-service dependency',not held)
-  ctx.close()
+  for route in held:
+   try:route.abort()
+   except Exception:pass
+  ctx.unroute_all(behavior='ignoreErrors');ctx.close()
   for asset,kind in [('data/world.json','Data request'),('src/map-layers.js','Script'),('src/directory-schema.js','Script'),('src/styles.css','Stylesheet')]:
    ctx=browser.new_context(viewport={'width':390,'height':844});page=ctx.new_page();page.set_default_timeout(120000);held=[];optional=[]
    page.on('request',lambda request:optional.append(request.url) if any(part in request.url for part in ['/api/status','/api/review-queue','/api/publication?']) else None)

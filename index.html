@@ -79,7 +79,7 @@
    const timer=setTimeout(()=>{el.remove();finish(new Error('Script timed out after20 seconds: '+src));},20000);
    el.src=src+'?v='+ASSET_VERSION;el.integrity=ASSET_INTEGRITY[src];el.crossOrigin='anonymous';
    el.onload=()=>{try{checkBoot();finish();}catch(error){finish(error);}};
-   el.onerror=()=>finish(new Error('Could not load matching script: '+src));document.body.appendChild(el);
+   el.onerror=()=>finish(new Error('Could not load '+src));document.body.appendChild(el);
  });
  const load=async(id,url)=>{
    checkBoot();const controller=new AbortController();pendingData.add(controller);
