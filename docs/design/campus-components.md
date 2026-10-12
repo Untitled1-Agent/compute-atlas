@@ -91,3 +91,9 @@ and readable source rows. Desktop spacing may tighten around these groups;
 phone controls retain their 44-pixel targets. Expanded campus maps allocate the
 remaining panel height to the drawing stage, with identity/control rows outside
 it and scrolling when a short viewport cannot fit the complete panel.
+
+Recovery URLs preserve the requested project for provenance. Its presence alone
+does not mean that the project is unavailable: resolve the ID before choosing
+that explanation. An unavailable component belonging to an existing project must
+retain the component-specific reason after canonical URL rewrite and reload.
+Verify this through both entrypoints before final acceptance.
