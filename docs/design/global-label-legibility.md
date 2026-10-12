@@ -39,3 +39,12 @@ priority is deterministic; labels fit at1440/1366/1024/768/390/320; and label
 preferences, keyboard selection, source inspection and Back/Forward still work.
 Review screenshots against the references before merge, then test the deployed
 and authenticated public views under the existing resource caps.
+
+The first live implementation exposed three specific gaps. Adjacent marker
+clusters can block all four near-label slots for the selected group; try farther
+placements with a muted cartographic leader, preserving the same marker identity
+and collision rules. Viewport tests must await the canvas matching the resized
+container before inspecting labels. Middle East Continent was scoped correctly
+but inherited the Atlantic default camera and hid every record behind the globe;
+derive the default center from the scoped extent for continents without an
+existing preset, while preserving explicit/shared and saved cameras.
