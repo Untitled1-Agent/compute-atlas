@@ -2,6 +2,8 @@
 
 12 October 2026. This refines the editorial layout selected in PR28, before implementation. The original world reference remains `docs/mockups/01-world-global.webp`. The public opening screen, rather than an opt-in campus layer, is the scope of this pass.
 
+The [completed visual study](atlas-redesign-review.md) now shows all six scales, three structural alternatives, phone/tablet layouts and the proposed missing workflows. Its standalone clickable preview is kept on `prototype/atlas-redesign-review`, outside production. A is the recommendation; no user selection or implementation approval is inferred.
+
 ## Observed gap
 
 The installed opening screen is still essentially the previous composition. Its globe fills nearly the whole map height, the four metrics sit only beneath the map, and the rail repeats a generic thesis, three projects and a company cloud. Recent campus improvements are hidden several interactions away. The reference has a balanced globe, meaningful geographic analysis and a full-width lower data edge.
