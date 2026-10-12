@@ -281,7 +281,7 @@ body{background:#07141b}
 .campus-component-views{display:flex;align-items:center;gap:12px;flex-shrink:0}.campus-component-control{display:flex;flex-direction:column;gap:3px;font-size:9px;color:var(--muted)}
 .campus-component-control select,.campus-feature-control select{font:11px system-ui;min-height:38px;background:#0a2028;color:var(--text);border:1px solid #30515a;padding:7px;max-width:100%}
 .atlas-editorial .atlas-map-panel:has(.campus-component-header) .workspace-toolbar{position:relative;order:-1;top:auto;left:auto;right:auto;margin:0;padding:8px 12px;min-height:44px;border:0;background:#071620}
-.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:300px;min-height:300px}
+.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:480px;min-height:480px}
 .atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-historic-badge{top:12px}
 .atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-image-status{top:86px}
 .campus-feature-control{display:flex;align-items:center;gap:10px;flex:1;color:var(--muted);font-size:11px;min-width:0}.campus-feature-control select{flex:1;min-width:0}.campus-feature-strip{padding:8px 12px;gap:7px}
@@ -293,7 +293,7 @@ body{background:#07141b}
 @media(max-width:640px){
  .campus-component-header.campus-scene-head{display:block;padding:8px 10px}.campus-component-views{display:flex;justify-content:space-between;gap:6px}.campus-component-control{max-width:48%;margin:0}.campus-component-control select{min-height:44px;font-size:10px;width:100%}.campus-component-header .campus-view-toggle{margin-top:0;flex-shrink:0}.campus-component-header .campus-view-toggle button{min-height:44px;padding:5px 6px;font-size:10px}
  .campus-frame-actions{gap:10px;margin:0}.campus-frame-actions button{min-height:44px;font-size:10px}.campus-component-identity{margin-bottom:4px}.campus-component-identity h2{font-size:12px}
- .atlas-editorial .atlas-map-panel:has(.campus-component-header) .workspace-toolbar{padding:8px 10px;min-height:76px}.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:320px;min-height:320px}
+ .atlas-editorial .atlas-map-panel:has(.campus-component-header) .workspace-toolbar{padding:8px 10px;min-height:76px}.atlas-editorial .atlas-map-panel:has(.campus-component-header) .campus-spatial-hero{height:420px;min-height:420px}
  .campus-feature-control{display:block;width:100%}.campus-feature-control>span{display:block;margin-bottom:5px}.campus-feature-control select{min-height:44px;width:100%}.campus-component-evidence-header{flex-wrap:wrap}.campus-route-recovery{font-size:10px}
 }
 
@@ -316,3 +316,8 @@ body{background:#07141b}
 
 /* Separately attributable native electricity captures. */
 .energy-collection-cards{display:grid;gap:12px;margin:18px 0}.energy-collection-card{border:1px solid var(--line);padding:14px}.energy-collection-card.current{border-color:#b08f5680;background:#b08f5609}.energy-collection-card h3{font-size:16px;margin:0 0 8px}.energy-collection-card p{font-size:12px;line-height:1.6}.energy-collection-card>.text-button{display:block;text-align:left;margin:8px 0;min-height:32px}.energy-native-nodes{margin:18px 0;overflow-wrap:anywhere}.energy-native-nodes summary{cursor:pointer;min-height:44px}.energy-native-nodes small{display:block;color:var(--muted);margin-top:5px}.energy-route-recovery{overflow-wrap:anywhere}.campus-source-page .atlas-metric-row small{display:block;margin-top:6px}
+
+@media(min-width:641px) and (max-height:850px){.atlas-editorial .atlas-map-panel:not(.atlas-map-expanded):has(.campus-component-header) .campus-spatial-hero{height:420px;min-height:420px}}
+.campus-native-rasters~.atlas-metric-row small,.drawer-content .atlas-metric-row small{display:block;margin-top:6px}
+
+.campus-acquisition-scope{display:block;margin-top:6px}

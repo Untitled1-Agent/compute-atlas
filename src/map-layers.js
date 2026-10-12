@@ -105,7 +105,7 @@ function energyRail(f){return `<div class="atlas-insight-stack"><section class="
 function energyRefreshRail(){const old=document.querySelector('.workspace-mobile-rail');if(old)old.outerHTML=workspaceMobileRail(state.spatialLevel,spatialScope(state.spatialLevel,spatialDefaultSite()),spatialDefaultSite(),state.spatialPhase);renderNav();}
 function energySelect(id,collectionId){
  const c=collectionId?energyCollection(collectionId):ENERGY_COLLECTIONS.find(c=>c.features.some(f=>f.id===id)),f=c?.features.find(f=>f.id===id);if(!f)return;
- if(globe instanceof CampusScene&&globe.manifest.id!==c.scene_id){const m=CAMPUS_SCENES.scenes.find(m=>m.id===c.scene_id);if(!m)return;if(m.project_id===state.spatialSelected)campusChangeComponent(m.id);else spatialTransition({level:4,selected:m.project_id});}
+ if(globe instanceof CampusScene&&globe.manifest.id!==c.scene_id){const m=CAMPUS_SCENES.scenes.find(m=>m.id===c.scene_id);if(!m)return;if(m.project_id===state.spatialSelected)campusChangeComponent(m.id);else {spatialTransition({level:4,selected:m.project_id});if(campusScene()?.id!==m.id)campusChangeComponent(m.id);}}
  const physical=globe instanceof CampusScene?energyState.returnPhysical||spatialURL():energyState.returnPhysical;
  state.spatialEnergy=true;energyState.collection=c.id;energyState.sourceCollection=null;energyState.recovery=null;energyState.returnPhysical=energyValidateReturn(physical);energyState.feature=id;workspaceState.mobileExpanded=true;if(!$('#drawer').hidden)closeDrawer();if(globe)globe.dirty=true;energyRefreshRail();layerDecorate();history.pushState(null,'',spatialURL());
 }

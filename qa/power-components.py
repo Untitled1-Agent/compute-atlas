@@ -37,6 +37,8 @@ try:
         for c in collections:
             page.locator('[data-campus-component]').select_option(c['scene_id']);ready(page)
             page.locator('[data-campus-frame="context"]').click();ready(page)
+            framed=page.evaluate('''(()=>{const [a,b,d]=globe.imageCorners,p=[a,b,d,[b[0]+d[0]-a[0],b[1]+d[1]-a[1]]].map(p=>globe.project3(...p));return {height:Math.max(...p.map(p=>p.y))-Math.min(...p.map(p=>p.y)),top:Math.min(...p.map(p=>p.y)),bottom:Math.max(...p.map(p=>p.y)),canvas:globe.h};})()''')
+            check(entry+' '+c['scene_id']+' full image has a useful unobscured inspection size',framed['height']>=250 and framed['top']>=70 and framed['bottom']<=framed['canvas']-65)
             page.locator('[data-layer-open]').first.click();page.locator('[data-map-layer="energy"]').check()
             check(entry+' '+c['scene_id']+' layer panel lists all three independently attributed captures',page.locator('.energy-collection-card').count()==3 and c['title'] in page.locator('.energy-collection-card.current').inner_text())
             page.keyboard.press('Escape');page.locator('#drawer').wait_for(state='hidden');ready(page)
@@ -46,6 +48,15 @@ try:
             if page.locator('[data-campus-feature-select]').count():page.locator('[data-campus-feature-select]').first.select_option(roof)
             else:page.locator('[data-campus-feature="'+roof+'"]').click()
             ready(page);page.locator('[data-campus-frame="context"]').click();ready(page)
+            # Test roof-first hit priority where a utility target shares a roof point.
+            priority=page.evaluate('''(()=>{const surface=globe.hitSurfaces.find(s=>s.feature.record.id===campusState.feature),ring=surface.rings[0],x=ring.reduce((n,p)=>n+p.x,0)/ring.length,y=ring.reduce((n,p)=>n+p.y,0)/ring.length,paths=globe.energyPaths,f=paths[0].feature,r=globe.canvas.getBoundingClientRect();globe.energyPaths=[{feature:f,pts:[{x:x-12,y},{x:x+12,y}],closed:false}];const native=energyHit(globe,x,y),hit=globe.hit({clientX:r.left+x,clientY:r.top+y});globe.energyPaths=paths;return !!native&&hit?.record.id===campusState.feature&&!hit.energy;})()''')
+            check(entry+' '+c['scene_id']+' overlapping utility hit cannot replace roof identity',priority)
+            native=page.evaluate('''(()=>{const r=globe.canvas.getBoundingClientRect();for(const row of globe.energyPaths)for(let i=1;i<row.pts.length;i++){const pair=AtlasSpatialMath.clipScreenSegment(row.pts[i-1],row.pts[i],globe.w,globe.h);if(!pair)continue;const x=(pair[0].x+pair[1].x)/2,y=(pair[0].y+pair[1].y)/2;if(x<20||x>globe.w-20||y<90||y>globe.h-85)continue;const hit=globe.hit({clientX:r.left+x,clientY:r.top+y});if(hit?.energy)return {x,y,id:hit.record.id};}return null;})()''')
+            if native:
+                box=page.locator('#globe-canvas').bounding_box();page.mouse.click(box['x']+native['x'],box['y']+native['y']);ready(page)
+                check(entry+' '+c['scene_id']+' actual native path click selects its captured object',page.evaluate('energyState.feature')==native['id'] and page.evaluate('energyState.collection')==c['id'])
+                page.locator('[data-energy-clear]').click();ready(page)
+            else:check(entry+' '+c['scene_id']+' actual native path click selects its captured object',False)
             before=camera(page);page.evaluate('window.powerCanvas=globe.canvas')
             f=next(f for f in c['features'] if ';' in f['tags'].get('voltage',''))
             page.locator('[data-layer-open]').first.click();page.locator('.map-layer-feature-list summary').click()
@@ -88,6 +99,11 @@ try:
         check(entry+' switching component keeps layer on and clears old utility identity',page.evaluate('ATLAS.layers.on("energy")&&energyState.feature===null&&energyState.recovery===null') and page.evaluate('(id)=>globe.energyPaths.every(r=>r.collection.id===id)',collections[1]['id']))
         page.locator('[data-campus-component]').select_option(collections[0]['scene_id']);ready(page)
         check(entry+' returning component restores its prior roof and camera',page.evaluate('campusState.feature')== 'new-carlisle-edison-2025-roof-west' and camera(page)==edison_camera)
+        page.goto(base+entry+'#overview?scale=campus&site=coreweave-helios&energy=1');ready(page)
+        page.locator('[data-layer-open]').first.click();page.locator('[data-energy-collection-source="'+collections[1]['id']+'"]').click()
+        page.locator('.map-layer-feature-list summary').click();target=collections[1]['features'][0]
+        page.locator('[data-energy-feature="'+target['id']+'"]').click();ready(page)
+        check(entry+' selecting another collection opens its matching physical component',page.evaluate('globe.manifest.id')==collections[1]['scene_id'] and page.evaluate('energyState.collection')==collections[1]['id'] and page.evaluate('energyState.feature')==target['id'])
         # Malformed links preserve the first recovery reason and original identity on reload.
         original=dict((k,v[0]) for k,v in parse_qs(urlsplit(selected_routes[0]).fragment.split('?',1)[1]).items())
         for field,value,reason in [('energycollection','missing-capture','collection is unavailable'),('energyversion','0'*64,'capture version is unavailable'),('energyfeature','osm-way-missing','feature is unavailable'),('energyobjectversion','99999','object version is unavailable'),('physicalreturn','#overview?scale=facility&scene=missing','physical return')]:

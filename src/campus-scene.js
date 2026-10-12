@@ -159,7 +159,7 @@ function campusSourceContent(){
  const m=campusScene(),im=m.image,f=campusFeature(),review=f&&campusIdentityReview(f);
  const rasters=im.native_rasters;
  return `<div class="atlas-eyebrow">DATED IMAGE / REVIEWED INTERPRETATION</div><h1>${esc(m.title)}</h1><p>${esc(m.review.limitations)}</p><h2>Image provenance</h2>
-  ${atlasRow('Image observation',esc(im.acquired_at)+(im.date_precision?' · '+esc(im.date_precision):''))}${im.acquisition_range?atlasRow('Project acquisition range',esc(im.acquisition_range.from)+' – '+esc(im.acquisition_range.to)+'<small>'+esc(im.acquisition_range.scope)+'</small>'):''}
+  ${atlasRow('Image observation',esc(im.acquired_at)+(im.date_precision?' · '+esc(im.date_precision):''))}${im.acquisition_range?atlasRow('Project acquisition range',esc(im.acquisition_range.from)+' – '+esc(im.acquisition_range.to)+'<small class="campus-acquisition-scope">'+esc(im.acquisition_range.scope)+'</small>'):''}
   ${atlasRow('Retrieved',esc(sourceUTC(im.captured_at)))}${atlasRow('Publisher',esc(im.publisher))}${atlasRow('License',esc(im.license))}${atlasRow('Native resolution',im.native_resolution_m+' m')}
   ${rasters?`<details class="campus-native-rasters"><summary>Inspect ${rasters.length} pinned native image records</summary>${rasters.map(r=>atlasRow('Raster '+r.OBJECTID,esc(r.Name))).join('')}<p>Native year/county/pixel-size fields were null. Image year and native resolution come from the separately linked project metadata.</p></details>`:atlasRow('Raster',esc(im.raster_name))}
   <p class="campus-source-hash">Derivative SHA-256: ${esc(im.sha256)}</p>
