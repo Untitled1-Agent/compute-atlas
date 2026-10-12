@@ -68,3 +68,26 @@ Manually review aerial/oblique, whole-context framing, actual source panels and
 all six desktop/tablet/phone sizes. Merge only after exact-head live/manual and
 remote gates; verify the installed tree, publication preservation and actual
 deployment. Use one capped browser and one checkout; final releases stay singular.
+
+## Visual review: component imagery needs a usable stage
+
+The first native-overlay live screenshot exposed a pre-existing layout gap. At
+1440 × 1080 the component canvas is fixed at 300 px high. Its badge, compass,
+source caption and camera controls leave only about 144 px for framing, so the
+complete portrait Edison image appears about 96 × 126 px. The native overlays
+are present but difficult to inspect.
+
+Considered three treatments: keep 300 px and crop to a substation (loses the
+explicit full-context action); increase the stage to 480 px while keeping dated
+controls outside it (chosen); move all attribution and camera controls to a new
+external footer (requires a wider interaction redesign). The chosen treatment
+uses 480 px on tall desktop/tablet, 420 px on short desktop and phone, and retains
+the existing expanded-map behavior. Whole-context framing uses the actual
+unobscured vertical interval and must visibly occupy that interval without
+crossing the image badge or source caption. The full native source coordinates,
+image registration and explicitly saved cameras stay unchanged.
+
+Acceptance adds a minimum useful projected context height on a tall desktop,
+actual native path hit testing, source/image control separation, and manual
+six-size aerial/oblique/source review. Old explicit low-zoom camera links remain
+valid; automatic layout changes must not rewrite the user's saved framing.
