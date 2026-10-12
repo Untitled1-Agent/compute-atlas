@@ -89,6 +89,7 @@ class ResearchMap {
     this.resizeObserver.observe(canvas.parentElement); this.resize();
     this.frame = () => {
       if (this.destroyed) return;
+      if(window.ATLAS_BOOTSTRAPPING){this.raf=requestAnimationFrame(this.frame);return;}
       if (this.target) {
         const dl = ((this.target.lon - this.lon + 540) % 360) - 180, da = this.target.lat - this.lat, dz = this.target.zoom - this.zoom;
         this.lon += dl * .14; this.lat += da * .14; this.zoom += dz * .14; this.dirty = true;
@@ -211,11 +212,11 @@ class ResearchMap {
     c.strokeStyle = stroke; c.lineWidth = width; c.stroke();
   }
   draw() {
-    if (!this.w || !this.h) return;
+    if (window.ATLAS_BOOTSTRAPPING || !this.w || !this.h) return;
     const c = this.ctx, w = this.w, h = this.h;
     c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.prepare();
     const canvasRect=this.canvas.getBoundingClientRect();
-    this.labelExclusions=[...(this.canvas.closest('.atlas-map-panel')||this.canvas.parentElement).querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom,.workspace-toolbar')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
+    this.labelExclusions=[...(this.canvas.closest('.atlas-map-panel')||this.canvas.parentElement).querySelectorAll('.atlas-map-legend,.catalog-map-caption,.atlas-map-head,.atlas-map-tools,.atlas-map-bottom,.workspace-toolbar,.workspace-selection-notice:not([hidden])')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left-canvasRect.left,y:r.top-canvasRect.top,w:r.width,h:r.height};});
     c.fillStyle = '#08121b'; c.fillRect(0, 0, w, h);
     for (const star of this.stars) { c.fillStyle = '#38616c88'; c.fillRect(star.x * w, star.y * h, star.r, star.r); }
     const R = this.radius, cx = this.cx, cy = this.cy;

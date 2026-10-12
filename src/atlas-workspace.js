@@ -12,7 +12,7 @@ function workspaceSelectionRail(s,scope){
   return `<section class="atlas-insight-card workspace-selection">${atlasKicker(cluster?'01 / SELECTED CLUSTER':'01 / SELECTED PROJECT')}<h2>${esc(cluster?researchClusterName(members):s.name)}</h2><p>${cluster?members.length+' research records · visual grouping, not a common campus':esc(s.location)}</p>${cluster?`<div class="workspace-cluster-members">${members.map(x=>`<button data-workspace-select="${esc(x.id)}">${esc(x.name)}<small>${esc(x.location)}</small></button>`).join('')}</div>`:`${atlasRow('Snapshot IT estimate',spatialPower(s,'snapshot')==null?'Not quantified':fmt(spatialPower(s,'snapshot'))+' MW')}${atlasRow('Target IT estimate',spatialPower(s,'target')==null?'Not quantified':fmt(spatialPower(s,'target'))+' MW')}`}<p class="atlas-card-footnote">Independent, mixed-vintage estimates; the target is not added to the snapshot.</p><div class="workspace-dossier-actions"><button class="btn primary" data-workspace-enter>Explore ${state.spatialLevel<3?'next scale':'this campus'} →</button><button class="text-button" data-workspace-compare="${esc(s.id)}">${saved.projectCompare.includes(s.id)?'✓ Comparing':'Compare +'}</button></div></section>`;
 }
 function workspaceTopicContent(s){
-  if(workspaceState.tab==='overview')return `<div class="atlas-detail-pair">${atlasPowerLadder(s)}${atlasAttributes(s)}</div><div class="workspace-evidence-bottom">${atlasSourcesPanel(s)}${atlasNotePanel(s)}</div>`;
+  if(workspaceState.tab==='overview')return `<div class="atlas-detail-pair">${atlasPowerLadder(s)}${atlasAttributes(s,{compact:true})}</div><div class="workspace-evidence-bottom">${atlasSourcesPanel(s,{compact:true})}${atlasNotePanel(s)}</div>`;
   if(workspaceState.tab==='evidence')return `<div class="workspace-evidence-bottom">${atlasSourcesPanel(s)}${atlasNotePanel(s)}</div>${atlasResearchPanel(s)}`;
   const p=atlasResearchProfile(s),topic=p.topics.find(t=>t.id===workspaceState.tab),rows=topic?.rows||[];
   const timeline=workspaceState.tab==='development';
@@ -281,7 +281,7 @@ spatialURL=function(view=state.view){
   return '#'+view+'?'+p.toString();
 };
 const workspaceRoute=routeFromHash;window.removeEventListener('hashchange',workspaceRoute);
-routeFromHash=function(){
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
   const [path,query='']=location.hash.slice(1).split('?'),p=new URLSearchParams(query),s=site(p.get('site'));
   workspaceState.tab=WORKSPACE_TOPICS.some(([id])=>id===p.get('topic'))?p.get('topic'):'overview';
   if(s){if(workspacePhases(s).some(r=>r.id===p.get('claim')))workspaceState.phaseBySite.set(s.id,p.get('claim'));else workspaceState.phaseBySite.delete(s.id);}

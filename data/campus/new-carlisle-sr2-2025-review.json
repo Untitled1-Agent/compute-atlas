@@ -1,0 +1,620 @@
+{
+  "status": "accepted_historical_interpretation",
+  "reviewed_at": "2026-10-11",
+  "reviewed_by": "Untitled1-Agent",
+  "basis": "Primary IDEM/IDHS records identify the SR2 / IEC-3 component at31100 State Road2 Highway; county-origin parcel facts corroborate the address south of SR2 and west of Strawberry Road. Five complete large visible roof surfaces are interpreted positionally from the corrected 20-raster CC0 2025 crop. No permit building-number correspondence is established.",
+  "limitations": "Bounded historical context; incomplete physical inventory. Construction areas, small/partial roofs, electrical equipment, ownership boundaries, operation, nine permit labels and IT allocations are not inferred.",
+  "image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+  "features": [
+    {
+      "id": "new-carlisle-sr2-2025-roof-west-upper",
+      "name": "West upper roof",
+      "kind": "building",
+      "lat": 41.670054019,
+      "lon": -86.479290756,
+      "country": "United States",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.481139333,
+                41.670346118
+              ],
+              [
+                -86.477447,
+                41.670346118
+              ],
+              [
+                -86.477447,
+                41.669752264
+              ],
+              [
+                -86.479125333,
+                41.669752264
+              ],
+              [
+                -86.479125333,
+                41.669884232
+              ],
+              [
+                -86.479514,
+                41.669884232
+              ],
+              [
+                -86.479514,
+                41.669752264
+              ],
+              [
+                -86.481139333,
+                41.669752264
+              ],
+              [
+                -86.481139333,
+                41.670346118
+              ]
+            ]
+          ]
+        ]
+      },
+      "pixel_vertices": [
+        [
+          94,
+          176
+        ],
+        [
+          303,
+          176
+        ],
+        [
+          303,
+          221
+        ],
+        [
+          208,
+          221
+        ],
+        [
+          208,
+          211
+        ],
+        [
+          186,
+          211
+        ],
+        [
+          186,
+          221
+        ],
+        [
+          94,
+          221
+        ],
+        [
+          94,
+          176
+        ]
+      ],
+      "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+      "interpreted_at": "2026-10-11",
+      "observed_at": "2025",
+      "date_precision": "year",
+      "height_m": null,
+      "phase_id": null,
+      "it_power_mw": null,
+      "operating_status": null,
+      "identity_reviews": [],
+      "derived_outline_area": {
+        "rounded_m2": 20000.0,
+        "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+        "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at polygon centroid; local ground-plane approximation",
+        "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+      }
+    },
+    {
+      "id": "new-carlisle-sr2-2025-roof-west-middle",
+      "name": "West middle roof",
+      "kind": "building",
+      "lat": 41.66857122,
+      "lon": -86.479300219,
+      "country": "United States",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.481139333,
+                41.668881269
+              ],
+              [
+                -86.479514,
+                41.668881269
+              ],
+              [
+                -86.479514,
+                41.668736102
+              ],
+              [
+                -86.479125333,
+                41.668736102
+              ],
+              [
+                -86.479125333,
+                41.668881269
+              ],
+              [
+                -86.477464667,
+                41.668881269
+              ],
+              [
+                -86.477464667,
+                41.668274204
+              ],
+              [
+                -86.481139333,
+                41.668274204
+              ],
+              [
+                -86.481139333,
+                41.668881269
+              ]
+            ]
+          ]
+        ]
+      },
+      "pixel_vertices": [
+        [
+          94,
+          287
+        ],
+        [
+          186,
+          287
+        ],
+        [
+          186,
+          298
+        ],
+        [
+          208,
+          298
+        ],
+        [
+          208,
+          287
+        ],
+        [
+          302,
+          287
+        ],
+        [
+          302,
+          333
+        ],
+        [
+          94,
+          333
+        ],
+        [
+          94,
+          287
+        ]
+      ],
+      "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+      "interpreted_at": "2026-10-11",
+      "observed_at": "2025",
+      "date_precision": "year",
+      "height_m": null,
+      "phase_id": null,
+      "it_power_mw": null,
+      "operating_status": null,
+      "identity_reviews": [],
+      "derived_outline_area": {
+        "rounded_m2": 20000.0,
+        "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+        "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at polygon centroid; local ground-plane approximation",
+        "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+      }
+    },
+    {
+      "id": "new-carlisle-sr2-2025-roof-west-lower",
+      "name": "West lower roof",
+      "kind": "building",
+      "lat": 41.667700531,
+      "lon": -86.479294787,
+      "country": "United States",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.481139333,
+                41.668010261
+              ],
+              [
+                -86.479514,
+                41.668010261
+              ],
+              [
+                -86.479514,
+                41.667957473
+              ],
+              [
+                -86.479125333,
+                41.667957473
+              ],
+              [
+                -86.479125333,
+                41.668010261
+              ],
+              [
+                -86.477464667,
+                41.668010261
+              ],
+              [
+                -86.477464667,
+                41.667389992
+              ],
+              [
+                -86.479125333,
+                41.667389992
+              ],
+              [
+                -86.479125333,
+                41.667521964
+              ],
+              [
+                -86.479514,
+                41.667521964
+              ],
+              [
+                -86.479514,
+                41.667389992
+              ],
+              [
+                -86.481139333,
+                41.667389992
+              ],
+              [
+                -86.481139333,
+                41.668010261
+              ]
+            ]
+          ]
+        ]
+      },
+      "pixel_vertices": [
+        [
+          94,
+          353
+        ],
+        [
+          186,
+          353
+        ],
+        [
+          186,
+          357
+        ],
+        [
+          208,
+          357
+        ],
+        [
+          208,
+          353
+        ],
+        [
+          302,
+          353
+        ],
+        [
+          302,
+          400
+        ],
+        [
+          208,
+          400
+        ],
+        [
+          208,
+          390
+        ],
+        [
+          186,
+          390
+        ],
+        [
+          186,
+          400
+        ],
+        [
+          94,
+          400
+        ],
+        [
+          94,
+          353
+        ]
+      ],
+      "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+      "interpreted_at": "2026-10-11",
+      "observed_at": "2025",
+      "date_precision": "year",
+      "height_m": null,
+      "phase_id": null,
+      "it_power_mw": null,
+      "operating_status": null,
+      "identity_reviews": [],
+      "derived_outline_area": {
+        "rounded_m2": 20000.0,
+        "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+        "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at polygon centroid; local ground-plane approximation",
+        "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+      }
+    },
+    {
+      "id": "new-carlisle-sr2-2025-roof-east-upper",
+      "name": "East upper roof",
+      "kind": "building",
+      "lat": 41.670323688,
+      "lon": -86.470602806,
+      "country": "United States",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.472447333,
+                41.670623248
+              ],
+              [
+                -86.470769,
+                41.670623248
+              ],
+              [
+                -86.470769,
+                41.670583658
+              ],
+              [
+                -86.470362667,
+                41.670583658
+              ],
+              [
+                -86.470362667,
+                41.670623248
+              ],
+              [
+                -86.468755,
+                41.670623248
+              ],
+              [
+                -86.468755,
+                41.6700162
+              ],
+              [
+                -86.470362667,
+                41.6700162
+              ],
+              [
+                -86.470362667,
+                41.670148167
+              ],
+              [
+                -86.470769,
+                41.670148167
+              ],
+              [
+                -86.470769,
+                41.6700162
+              ],
+              [
+                -86.472447333,
+                41.6700162
+              ],
+              [
+                -86.472447333,
+                41.670623248
+              ]
+            ]
+          ]
+        ]
+      },
+      "pixel_vertices": [
+        [
+          586,
+          155
+        ],
+        [
+          681,
+          155
+        ],
+        [
+          681,
+          158
+        ],
+        [
+          704,
+          158
+        ],
+        [
+          704,
+          155
+        ],
+        [
+          795,
+          155
+        ],
+        [
+          795,
+          201
+        ],
+        [
+          704,
+          201
+        ],
+        [
+          704,
+          191
+        ],
+        [
+          681,
+          191
+        ],
+        [
+          681,
+          201
+        ],
+        [
+          586,
+          201
+        ],
+        [
+          586,
+          155
+        ]
+      ],
+      "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+      "interpreted_at": "2026-10-11",
+      "observed_at": "2025",
+      "date_precision": "year",
+      "height_m": null,
+      "phase_id": null,
+      "it_power_mw": null,
+      "operating_status": null,
+      "identity_reviews": [],
+      "derived_outline_area": {
+        "rounded_m2": 20000.0,
+        "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+        "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at polygon centroid; local ground-plane approximation",
+        "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+      }
+    },
+    {
+      "id": "new-carlisle-sr2-2025-roof-east-lower",
+      "name": "East lower roof",
+      "kind": "building",
+      "lat": 41.668819501,
+      "lon": -86.470601343,
+      "country": "United States",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.472429667,
+                41.669118814
+              ],
+              [
+                -86.470786667,
+                41.669118814
+              ],
+              [
+                -86.470786667,
+                41.668973647
+              ],
+              [
+                -86.470398,
+                41.668973647
+              ],
+              [
+                -86.470398,
+                41.669118814
+              ],
+              [
+                -86.468755,
+                41.669118814
+              ],
+              [
+                -86.468755,
+                41.668524949
+              ],
+              [
+                -86.472429667,
+                41.668524949
+              ],
+              [
+                -86.472429667,
+                41.669118814
+              ]
+            ]
+          ]
+        ]
+      },
+      "pixel_vertices": [
+        [
+          587,
+          269
+        ],
+        [
+          680,
+          269
+        ],
+        [
+          680,
+          280
+        ],
+        [
+          702,
+          280
+        ],
+        [
+          702,
+          269
+        ],
+        [
+          795,
+          269
+        ],
+        [
+          795,
+          314
+        ],
+        [
+          587,
+          314
+        ],
+        [
+          587,
+          269
+        ]
+      ],
+      "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+      "interpreted_at": "2026-10-11",
+      "observed_at": "2025",
+      "date_precision": "year",
+      "height_m": null,
+      "phase_id": null,
+      "it_power_mw": null,
+      "operating_status": null,
+      "identity_reviews": [],
+      "derived_outline_area": {
+        "rounded_m2": 20000.0,
+        "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+        "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at polygon centroid; local ground-plane approximation",
+        "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "label": "IDEM SR2 / IEC-3 source notice; address identity",
+      "url": "https://ecm.idem.in.gov/cs/idcplg?IdcService=GET_FILE&allowInterrupt=1&dDocName=83762338&dID=83758295"
+    },
+    {
+      "label": "IDHS IEC-3 project; Owner / Applicant and Project Information",
+      "url": "https://oas.dhs.in.gov/reports/rwservlet?dfbsepnhtml=&p_var_id=24472&report=variance_view_application.rdf"
+    }
+  ],
+  "manual_overlay_review": "Five complete positional roof outlines reviewed against the unchanged georeferenced 20-raster derivative. Concave neck/notch edges follow visible roof surfaces; partial/small structures and electrical equipment remain outside this initial inventory. Native image SHA preserved."
+}

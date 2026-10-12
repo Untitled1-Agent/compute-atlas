@@ -18,16 +18,50 @@ def test_historical_features_do_not_duplicate_capacity_or_osm_records():
             assert feature['height_m'] is None
             assert feature['operating_status'] is None
 
-def test_reviewed_naip_bytes_and_image_date_are_pinned():
+def test_reviewed_image_bytes_and_source_identifiers_are_pinned():
     for scene in DATA['scenes']:
         im=scene['image'];path=ROOT/im['path']
         assert path.stat().st_size==im['bytes']
         assert hashlib.sha256(path.read_bytes()).hexdigest()==im['sha256']
-        assert im['license']=='Public domain'
-        assert im['publisher']=='USDA NAIP / USGS National Map'
-        assert im['acquired_at'].replace('-','') in im['raster_name']
         assert 'esriMosaicLockRaster' in im['export_url']
-        assert str(im['raster_id']) in im['export_url']
+        if 'raster_id' in im:
+            assert im['license']=='Public domain'
+            assert im['publisher']=='USDA NAIP / USGS National Map'
+            assert im['acquired_at'].replace('-','') in im['raster_name']
+            assert str(im['raster_id']) in im['export_url']
+        else:
+            assert im['license']=='CC0 / public domain'
+            assert im['acquired_at']=='2025' and im['date_precision'].startswith('year')
+            expected={'new-carlisle-edison-2025':16,'new-carlisle-sr2-2025':20}
+            assert len(im['native_rasters'])==expected[scene['id']]
+            assert len({r['OBJECTID'] for r in im['native_rasters']})==expected[scene['id']]
+            assert len(im['native_rasters'])<=20
+            assert all(str(r['OBJECTID']) in im['export_url'] for r in im['native_rasters'])
+            assert 2386 not in {r['OBJECTID'] for r in im['native_rasters']}
+            for path_key,hash_key in [('source_metadata_path','source_metadata_sha256'),('native_catalog_path','native_catalog_sha256')]:
+                assert hashlib.sha256((ROOT/im[path_key]).read_bytes()).hexdigest()==im[hash_key]
+
+def test_indiana_features_keep_positional_identity_and_separate_components():
+    scene=next(s for s in DATA['scenes'] if s['project_id']=='amazon-anthropic-new-carlisle')
+    assert scene['component']=='Edison / IEC-2'
+    assert scene['other_components'][0]['name']=='SR2 / IEC-3'
+    assert len(scene['features'])==3
+    assert {f['name'] for f in scene['features']}=={'West long roof','Central long roof','East long roof'}
+    assert all(f['identity_reviews']==[] for f in scene['features'])
+    assert 'ownership boundary' in scene['review']['limitations']
+    sr2=next(s for s in DATA['scenes'] if s['id']=='new-carlisle-sr2-2025')
+    assert sr2['project_id']==scene['project_id'] and sr2['component']=='SR2 / IEC-3'
+    assert sr2['image']['sha256']!=scene['image']['sha256']
+    assert len(sr2['features'])==5 and all(f['identity_reviews']==[] for f in sr2['features'])
+    assert {f['name'] for f in sr2['features']}=={'West upper roof','West middle roof','West lower roof','East upper roof','East lower roof'}
+
+def test_helios_identity_review_preserves_geometry_and_unallocated_power():
+    f=DATA['scenes'][0]['features'][0];r=f['identity_reviews'][0]
+    assert f['observed_at']=='2022-09-05'
+    assert r['depiction_period']=='2026-07' and r['published_at']=='2026-08-05'
+    assert r['relation']=='depicted_in_phase_update'
+    assert r['building_it_power_mw'] is None and r['operating_status'] is None
+    assert r['geometry_verified_as_current'] is False
 
 def test_roof_interpretation_uses_returned_export_extent():
     for scene in DATA['scenes']:

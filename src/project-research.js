@@ -371,7 +371,7 @@ function atlasResearchRestore(query) {
     country:pick('country',D.sites.map(s=>s.country)),operator:pick('operator',D.sites.map(s=>s.primary_company)),
     sort:params.get('sort')==='date'?'date':'name',offset:Math.max(0,Math.min(5,(parseInt(params.get('page'),10)||1)-1))*15});
 }
-routeFromHash=function() {
+routeFromHash=function() {if(window.ATLAS_BOOTSTRAPPING)return;
   const [path,query='']=location.hash.slice(1).split('?');
   if(path!=='research')return atlasResearchPreviousRoute();
   atlasResearchRestore(query);

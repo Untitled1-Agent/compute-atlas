@@ -83,15 +83,16 @@ const operatorBaseTabs=catalogModeTabs;
 catalogModeTabs=function(){return operatorBaseTabs().replace(/<\/div>$/,`<button data-action="nav" data-id="operators" class="${state.view==='operators'?'active':''}">▤ Operator directory <span>${OPERATOR_DIRECTORY.records.length}</span></button></div>`);};
 const operatorBaseRender=render;
 render=function(){
+  if(window.ATLAS_BOOTSTRAPPING)return;
   if(state.view!=='operators')return operatorBaseRender();
   if(globe){globe.destroy();globe=null;}
   renderNav();$('#content').innerHTML=operatorDirectoryView();
   if(state.tour>=0)renderTour();
 };
 const operatorBaseRoute=routeFromHash;window.removeEventListener('hashchange',operatorBaseRoute);
-routeFromHash=function(){const [path,q='']=location.hash.slice(1).split('?');if(path==='operators'){operatorRoute(q);return;}operatorBaseRoute();};
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=location.hash.slice(1).split('?');if(path==='operators'){operatorRoute(q);return;}operatorBaseRoute();};
 window.addEventListener('hashchange',routeFromHash);
 const operatorBaseSearch=searchAll;
 searchAll=function(q){operatorBaseSearch(q);if(!q.trim())return;const query=q.toLocaleLowerCase(),hits=OPERATOR_DIRECTORY.records.filter(r=>[r.name,r.metro,r.source_country].join(' ').toLocaleLowerCase().includes(query));if(hits.length)$('#search-results').insertAdjacentHTML('afterbegin',`<div class="command-hint">${hits.length} primary-directory codes · first ${Math.min(8,hits.length)} · separate from map features</div>`+hits.slice(0,8).map(r=>`<button class="search-result" data-operator-select="${esc(r.id)}"><span class="result-type">OPERATOR LISTING</span><span><b>${esc(r.name)}</b><small>${esc(r.metro)} · ${esc(r.source_country)}</small></span></button>`).join(''));};
 if(location.hash.startsWith('#operators'))routeFromHash();else render();
-document.documentElement.classList.add('operator-ready');
+if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('operator-ready');

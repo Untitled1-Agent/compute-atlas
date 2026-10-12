@@ -35,7 +35,7 @@ class FacilityScene {
       else if(e.shiftKey)this.pan={x:this.pan.x+(e.key==='ArrowLeft'?-24:e.key==='ArrowRight'?24:0),y:this.pan.y+(e.key==='ArrowUp'?-24:e.key==='ArrowDown'?24:0)};
       else if(e.key==='ArrowLeft')this.yaw-=.12;else if(e.key==='ArrowRight')this.yaw+=.12;else this.pitch=Math.max(.16,Math.min(1.48,this.pitch+(e.key==='ArrowUp'?.09:-.09)));this.dirty=true;}});
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas.parentElement);this.resize();
-    this.frame=()=>{if(this.destroyed)return;if(this.dirty){this.draw();this.dirty=false;}this.raf=requestAnimationFrame(this.frame);};this.raf=requestAnimationFrame(this.frame);
+    this.frame=()=>{if(this.destroyed)return;if(!window.ATLAS_BOOTSTRAPPING&&this.dirty){this.draw();this.dirty=false;}this.raf=requestAnimationFrame(this.frame);};this.raf=requestAnimationFrame(this.frame);
   }
   on(t,f,o){this.canvas.addEventListener(t,f,o);this.listeners.push([t,f,o]);}
   local(lon,lat){return [(lon-this.lon)*111320*Math.cos(this.lat*Math.PI/180),(lat-this.lat)*111320];}
@@ -129,13 +129,16 @@ class FacilityScene {
     const selected=this.features.find(f=>f.record.id===this.inspected.id),height=this.height(selected),center=this.local(this.inspected.lon,this.inspected.lat),anchor=this.project3(...center,height);
     if(!selected.polygons.length){c.strokeStyle='#8ceace';c.lineWidth=2;c.beginPath();c.arc(anchor.x,anchor.y,14,0,Math.PI*2);c.moveTo(anchor.x-20,anchor.y);c.lineTo(anchor.x+20,anchor.y);c.moveTo(anchor.x,anchor.y-20);c.lineTo(anchor.x,anchor.y+20);c.stroke();}
     // Labels describe the actual record, never fictional building phases.
+    this.labelRect=null;
     if(this.labels){const text=this.inspected.name.length>36?this.inspected.name.slice(0,34)+'…':this.inspected.name;
     c.font='10px ui-monospace,monospace';const basisWidth=this.labelBasis?c.measureText(this.labelBasis).width:0;
     c.font='12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const tw=Math.max(c.measureText(text).width,basisWidth);const x=Math.max(18,Math.min(w-tw-30,anchor.x+35)), y=Math.max(this.labelMinY||122,Math.min(h-120,anchor.y-80));
+    this.labelRect={x:x-5,y:y-8,width:tw+18,height:44};
     c.strokeStyle='#a1dfd2';c.beginPath();c.moveTo(anchor.x,anchor.y-4);c.lineTo(x-8,y+10);c.stroke();c.fillStyle='#081720f0';c.fillRect(x-5,y-8,tw+18,44);c.fillStyle='#e4f3ef';c.fillText(text,x+2,y+9);c.font='10px ui-monospace,monospace';c.fillStyle='#8fafa9';c.fillText(this.labelBasis|| (this.inspected.kind==='building'?'SOURCE BUILDING OUTLINE':this.inspected.geometry?'SOURCE AREA · NO EXTRUSION':'POINT ONLY · NO FOOTPRINT'),x+2,y+25);
     }
     // North is derived from the world coordinates and rotates with the camera.
-    const origin=this.project3(0,0),north=this.project3(0,this.extent*.4);const angle=Math.atan2(north.y-origin.y,north.x-origin.x),nx=w-39,ny=h-120;
+    const origin=this.project3(0,0),north=this.project3(0,this.extent*.4);const angle=Math.atan2(north.y-origin.y,north.x-origin.x),nx=this.compassPosition?.x??w-39,ny=this.compassPosition?.y??h-120;
+    this.compassRect={x:nx-16,y:ny-32,width:32,height:50};
     c.save();c.translate(nx,ny);c.rotate(angle+Math.PI/2);c.strokeStyle='#9bcabc';c.beginPath();c.moveTo(0,13);c.lineTo(0,-13);c.lineTo(-4,-5);c.moveTo(0,-13);c.lineTo(4,-5);c.stroke();c.restore();c.fillStyle='#9bcabc';c.font='10px ui-monospace,monospace';c.fillText('N',nx-3,ny-21);
     const readout=document.getElementById('scene-readout');if(readout)readout.textContent=`${Math.round(this.pitch*180/Math.PI)}° tilt · ${this.zoom.toFixed(2)}× · grid ${step} m`;
   }

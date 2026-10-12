@@ -68,6 +68,7 @@ try:
     page.set_viewport_size({'width':width,'height':height});ready(page);capture(page,entry,'metro-'+str(width))
     check(entry+f' metro {width} preserves map controls and fits',page.locator('[data-layer-open]').first.is_visible() and page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
    check(entry+' geography does not change project or catalog inventory',page.evaluate('[D.sites.length,CATALOG.records.length]')==inventory)
+   if errors:print('GEOGRAPHIC ERRORS',json.dumps(errors),flush=True)
    check(entry+' no uncaught geographic errors',not errors)
    ctx.close()
   # Native browser integrity: valid-but-changed assets must fail before mixing.

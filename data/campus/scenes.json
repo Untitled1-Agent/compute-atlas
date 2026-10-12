@@ -5,7 +5,7 @@
   "scenes": [
     {
       "project_id": "coreweave-helios",
-      "title": "Helios \u00b7 historical campus",
+      "title": "Helios · historical campus",
       "review": {
         "status": "accepted_historical_interpretation",
         "reviewed_at": "2026-10-11",
@@ -91,23 +91,23 @@
       },
       "sources": [
         {
-          "label": "TDLR \u00b7 Helios Light Speed registration",
+          "label": "TDLR · Helios Light Speed registration",
           "url": "https://www.tdlr.texas.gov/TABS/Search/Print/TABS2025012175"
         },
         {
-          "label": "TCEQ \u00b7 facility application/address",
+          "label": "TCEQ · facility application/address",
           "url": "https://records.tceq.texas.gov/cs/idcplg?IdcService=TCEQ_EXTERNAL_SEARCH_GET_FILE&Rendition=Web&dID=8718222"
         },
         {
-          "label": "EPA \u00b7 Galaxy Helios registry",
+          "label": "EPA · Galaxy Helios registry",
           "url": "https://echo.epa.gov/detailed-facility-report?fid=110071953658"
         },
         {
-          "label": "EPA \u00b7 legacy Argo Data Center registry",
+          "label": "EPA · legacy Argo Data Center registry",
           "url": "https://echo.epa.gov/detailed-facility-report?fid=110071142021"
         },
         {
-          "label": "Galaxy \u00b7 July 2026 campus aerial (page 17)",
+          "label": "Galaxy · July 2026 campus aerial (page 17)",
           "url": "https://www.sec.gov/Archives/edgar/data/1859392/000185939226000084/exhibit992-q22026overvie.htm"
         }
       ],
@@ -176,9 +176,1530 @@
           "height_m": null,
           "phase_id": null,
           "it_power_mw": null,
-          "operating_status": null
+          "operating_status": null,
+          "identity_reviews": [
+            {
+              "id": "helios-long-roof-identity-202607",
+              "status": "reviewed_visual_correspondence",
+              "interpretation": "Corresponds to the long data-center building depicted in the operator campus update.",
+              "source_url": "https://www.sec.gov/Archives/edgar/data/1859392/000185939226000084/exhibit992-q22026overvie.htm",
+              "locator": "Slide 17, callout 3 and Phase I caption",
+              "depiction_period": "2026-07",
+              "depiction_date_precision": "month; exact photographic day unknown",
+              "published_at": "2026-08-05",
+              "reviewed_at": "2026-10-11",
+              "reviewed_by": "Untitled1-Agent",
+              "basis": "Long east–west roof, parallel equipment yards, station beyond the west end, and east-end access/water landmarks; approximate visual correspondence, not photogrammetric registration.",
+              "relation": "depicted_in_phase_update",
+              "relation_scope": "Phase I campus illustration; no roof-level capacity or lease allocation",
+              "geometry_verified_as_current": false,
+              "building_it_power_mw": null,
+              "operating_status": null
+            }
+          ],
+          "derived_outline_area": {
+            "rounded_m2": 12000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058"
+        }
+      ],
+      "id": "helios-naip-20220905"
+    },
+    {
+      "id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "title": "New Carlisle · Edison / IEC-2",
+      "component": "Edison / IEC-2",
+      "component_address": "31100 Edison Road, New Carlisle, Indiana",
+      "other_components": [
+        {
+          "id": "new-carlisle-sr2-2025",
+          "name": "SR2 / IEC-3",
+          "address": "31100 State Road Highway 2, New Carlisle, Indiana",
+          "imagery_state": "Separately sourced 2025 historical scene",
+          "phase_id": null
+        }
+      ],
+      "review": {
+        "status": "accepted_historical_interpretation",
+        "reviewed_at": "2026-10-11",
+        "reviewed_by": "Untitled1-Agent",
+        "basis": "Primary IDEM/IDHS documents identify the Edison / IEC-2 component at 31100 Edison Road. Official county parcel records corroborate that address west of Larrison Road and south of Edison Road. Three complete long roofs are manually interpreted from the pinned CC0 context crop. Positional feature names are not permit Building C labels.",
+        "limitations": "2025 dated context crop, not current telemetry, an ownership boundary or a complete campus inventory. Three complete roofs only; partial edge roofs, the electrical yard and the separate SR2 component are not allocated building identities, phases or IT power.",
+        "registry_anchors": [],
+        "address_records": [
+          {
+            "source": "Indiana parcel factual record",
+            "objectid": 3684096,
+            "state_parcel_id": "710601200005000017",
+            "prop_add": "31100 EDISON RD",
+            "record_scope": "Address-associated parcel; full polygon not redistributed"
+          }
+        ]
+      },
+      "image": {
+        "path": "data/campus/new-carlisle-edison-2025.jpg",
+        "sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+        "bytes": 441096,
+        "width": 1200,
+        "height": 1600,
+        "acquired_at": "2025",
+        "date_precision": "year; exact mosaic day not established",
+        "acquisition_range": {
+          "from": "2025-03-08",
+          "to": "2025-05-07",
+          "scope": "Matching Indiana EAST Tier 1 project; not exact tile acquisition days"
+        },
+        "captured_at": "2026-10-11T20:15:44.535945+00:00",
+        "publisher": "Indiana Geographic Information Office / IndianaMap",
+        "short_publisher": "IndianaMap",
+        "context_label": "year-level image date",
+        "attribution": "Indiana Geographic Information Office · CC0",
+        "license": "CC0 / public domain",
+        "native_resolution_m": 0.0762,
+        "native_rasters": [
+          {
+            "OBJECTID": 1450,
+            "Name": "in2025_10752345_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1451,
+            "Name": "in2025_10752346_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1452,
+            "Name": "in2025_10752347_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1453,
+            "Name": "in2025_10752348_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1764,
+            "Name": "in2025_10872345_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1765,
+            "Name": "in2025_10872346_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1766,
+            "Name": "in2025_10872347_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1767,
+            "Name": "in2025_10872348_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2078,
+            "Name": "in2025_11002345_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2079,
+            "Name": "in2025_11002346_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2080,
+            "Name": "in2025_11002347_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2081,
+            "Name": "in2025_11002348_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2392,
+            "Name": "in2025_11122345_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2393,
+            "Name": "in2025_11122346_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2394,
+            "Name": "in2025_11122347_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2395,
+            "Name": "in2025_11122348_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          }
+        ],
+        "extent_3857": {
+          "xmin": -9625837.911379281,
+          "ymin": 5113731.27118051,
+          "xmax": -9624641.631501518,
+          "ymax": 5115326.311017528,
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        },
+        "export_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer/exportImage?f=json&bbox=-86.4702%2C41.6838%2C-86.4598%2C41.6945&bboxSR=4326&imageSR=3857&size=1200%2C1600&format=jpg&compressionQuality=88&bandIds=0%2C1%2C2&mosaicRule=%7B%22mosaicMethod%22%3A%22esriMosaicLockRaster%22%2C%22lockRasterIds%22%3A%5B1450%2C1451%2C1452%2C1453%2C1764%2C1765%2C1766%2C1767%2C2078%2C2079%2C2080%2C2081%2C2392%2C2393%2C2394%2C2395%5D%7D",
+        "metadata_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer/query?f=json&objectIds=1450%2C1451%2C1452%2C1453%2C1764%2C1765%2C1766%2C1767%2C2078%2C2079%2C2080%2C2081%2C2392%2C2393%2C2394%2C2395&outFields=OBJECTID%2CName%2CCategory&returnGeometry=true&outSR=4326",
+        "license_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer?f=pjson",
+        "project_metadata_url": "https://gisimageryingov.s3.us-east-2.amazonaws.com/imagerymetadata/statewide/2025/IN_2025_Statewide_EAST_Tier1_Project_Level_3inch.xml",
+        "source_metadata_path": "data/campus/new-carlisle-edison-2025-export.json",
+        "source_metadata_sha256": "83518edf2fad96a4b5e8198cea0a09fa53f4cf06b674477de04dfeb3abe64182",
+        "native_catalog_path": "data/campus/new-carlisle-edison-2025-catalog.json",
+        "native_catalog_sha256": "37ba0008a256c14489c1d0e9525ca448940f22eeebabb9e6789287188edb4fd2",
+        "focus_pixel": [
+          580,
+          288
+        ],
+        "default_zoom": 2.2,
+        "mobile_pan_y": 0,
+        "mobile_zoom": 1.2,
+        "mobile_focus_pixel": [
+          580,
+          240
+        ]
+      },
+      "sources": [
+        {
+          "label": "IDEM · Edison component permit address (T141-47750-00642)",
+          "url": "https://ecm.idem.in.gov/cs/idcplg?IdcService=GET_FILE&dDocName=83835924&dID=83831881"
+        },
+        {
+          "label": "IDHS · IEC-2 Building C application; no roof label correspondence assigned",
+          "url": "https://oas.dhs.in.gov/reports/rwservlet?dfbsepnpdf=&p_form_id=1128429&report=plan_application_information.rdf"
+        },
+        {
+          "label": "Indiana parcel records · address and native IDs only",
+          "url": "https://gisdata.in.gov/server/rest/services/Hosted/Parcel_Boundaries_of_Indiana_2025/FeatureServer/0/query?f=json&objectIds=3684096%2C3716735&outFields=objectid%2Cstate_parcel_id%2Cprop_add&returnGeometry=false"
+        },
+        {
+          "label": "IndianaMap · native image catalog and CC0 rights",
+          "url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer?f=pjson"
+        },
+        {
+          "label": "Indiana 2025 EAST project metadata · acquisition range and public-domain terms",
+          "url": "https://gisimageryingov.s3.us-east-2.amazonaws.com/imagerymetadata/statewide/2025/IN_2025_Statewide_EAST_Tier1_Project_Level_3inch.xml"
+        }
+      ],
+      "features": [
+        {
+          "id": "new-carlisle-edison-2025-roof-west",
+          "name": "West long roof",
+          "kind": "building",
+          "lat": 41.692064792,
+          "lon": -86.466847778,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.467238826,
+                    41.693443454
+                  ],
+                  [
+                    -86.466450759,
+                    41.693443454
+                  ],
+                  [
+                    -86.466450759,
+                    41.692192963
+                  ],
+                  [
+                    -86.466558223,
+                    41.692192963
+                  ],
+                  [
+                    -86.466558223,
+                    41.691932162
+                  ],
+                  [
+                    -86.466450759,
+                    41.691932162
+                  ],
+                  [
+                    -86.466450759,
+                    41.690695016
+                  ],
+                  [
+                    -86.467238826,
+                    41.690695016
+                  ],
+                  [
+                    -86.467238826,
+                    41.691932162
+                  ],
+                  [
+                    -86.467149273,
+                    41.691932162
+                  ],
+                  [
+                    -86.467149273,
+                    41.692192963
+                  ],
+                  [
+                    -86.467238826,
+                    41.692192963
+                  ],
+                  [
+                    -86.467238826,
+                    41.693443454
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              350,
+              158
+            ],
+            [
+              438,
+              158
+            ],
+            [
+              438,
+              345
+            ],
+            [
+              426,
+              345
+            ],
+            [
+              426,
+              384
+            ],
+            [
+              438,
+              384
+            ],
+            [
+              438,
+              569
+            ],
+            [
+              350,
+              569
+            ],
+            [
+              350,
+              384
+            ],
+            [
+              360,
+              384
+            ],
+            [
+              360,
+              345
+            ],
+            [
+              350,
+              345
+            ],
+            [
+              350,
+              158
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "872a4f862f4a363fd3df11fd604fb063d2abcc780673b6f62797bed10492e51c"
+        },
+        {
+          "id": "new-carlisle-edison-2025-roof-central",
+          "name": "Central long roof",
+          "kind": "building",
+          "lat": 41.692060334,
+          "lon": -86.464959701,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.465259704,
+                    41.69343008
+                  ],
+                  [
+                    -86.464668654,
+                    41.69343008
+                  ],
+                  [
+                    -86.464668654,
+                    41.692192963
+                  ],
+                  [
+                    -86.464758207,
+                    41.692192963
+                  ],
+                  [
+                    -86.464758207,
+                    41.691932162
+                  ],
+                  [
+                    -86.464650743,
+                    41.691932162
+                  ],
+                  [
+                    -86.464650743,
+                    41.690681642
+                  ],
+                  [
+                    -86.465259704,
+                    41.690681642
+                  ],
+                  [
+                    -86.465259704,
+                    41.691932162
+                  ],
+                  [
+                    -86.465161195,
+                    41.691932162
+                  ],
+                  [
+                    -86.465161195,
+                    41.692192963
+                  ],
+                  [
+                    -86.465259704,
+                    41.692192963
+                  ],
+                  [
+                    -86.465259704,
+                    41.69343008
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              571,
+              160
+            ],
+            [
+              637,
+              160
+            ],
+            [
+              637,
+              345
+            ],
+            [
+              627,
+              345
+            ],
+            [
+              627,
+              384
+            ],
+            [
+              639,
+              384
+            ],
+            [
+              639,
+              571
+            ],
+            [
+              571,
+              571
+            ],
+            [
+              571,
+              384
+            ],
+            [
+              582,
+              384
+            ],
+            [
+              582,
+              345
+            ],
+            [
+              571,
+              345
+            ],
+            [
+              571,
+              160
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 15000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "aa9a39e1f84ec527802d0d823a5f9d5238f581287d5cd95c1c45b75debeda398"
+        },
+        {
+          "id": "new-carlisle-edison-2025-roof-east",
+          "name": "East long roof",
+          "kind": "building",
+          "lat": 41.692059219,
+          "lon": -86.463652227,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.464050738,
+                    41.69343008
+                  ],
+                  [
+                    -86.463253716,
+                    41.69343008
+                  ],
+                  [
+                    -86.463253716,
+                    41.690688329
+                  ],
+                  [
+                    -86.464050738,
+                    41.690688329
+                  ],
+                  [
+                    -86.464050738,
+                    41.69343008
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              706,
+              160
+            ],
+            [
+              795,
+              160
+            ],
+            [
+              795,
+              570
+            ],
+            [
+              706,
+              570
+            ],
+            [
+              706,
+              160
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "617dde9d2cf8c6f5b6344150964169333f78dccb2b58cb54fb0b2760d19c33fd"
         }
       ]
+    },
+    {
+      "id": "new-carlisle-sr2-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "title": "New Carlisle · SR2 / IEC-3",
+      "component": "SR2 / IEC-3",
+      "component_address": "31100 State Road Highway 2, New Carlisle, Indiana",
+      "other_components": [
+        {
+          "id": "new-carlisle-edison-2025",
+          "name": "Edison / IEC-2",
+          "address": "31100 Edison Road, New Carlisle, Indiana",
+          "imagery_state": "Separately sourced 2025 historical scene",
+          "phase_id": null
+        }
+      ],
+      "review": {
+        "status": "accepted_historical_interpretation",
+        "reviewed_at": "2026-10-11",
+        "reviewed_by": "Untitled1-Agent",
+        "basis": "Primary IDEM/IDHS records identify the SR2 / IEC-3 component at31100 State Road2 Highway; county-origin parcel facts corroborate the address south of SR2 and west of Strawberry Road. Five complete large visible roof surfaces are interpreted positionally from the corrected 20-raster CC0 2025 crop. No permit building-number correspondence is established.",
+        "limitations": "Bounded historical context; incomplete physical inventory. Construction areas, small/partial roofs, electrical equipment, ownership boundaries, operation, nine permit labels and IT allocations are not inferred.",
+        "manual_overlay_review": "Five complete positional roof outlines reviewed against the unchanged georeferenced 20-raster derivative. Concave neck/notch edges follow visible roof surfaces; partial/small structures and electrical equipment remain outside this initial inventory. Native image SHA preserved.",
+        "address_records": [
+          {
+            "source": "Indiana parcel factual record · St Joseph County origin",
+            "objectid": 3684094,
+            "state_parcel_id": "710612400001000017",
+            "county_parcel_id": "71-06-12-400-001.000-017",
+            "prop_add": "31100 SR 2",
+            "record_scope": "Address-associated parcel; full polygon not redistributed"
+          }
+        ],
+        "registry_anchors": []
+      },
+      "image": {
+        "path": "data/campus/new-carlisle-sr2-2025.jpg",
+        "sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+        "bytes": 290735,
+        "width": 1200,
+        "height": 1000,
+        "acquired_at": "2025",
+        "date_precision": "year; exact mosaic day not established",
+        "acquisition_range": {
+          "from": "2025-03-08",
+          "to": "2025-05-07",
+          "scope": "Matching Indiana EAST Tier 1 project; not exact tile acquisition days"
+        },
+        "captured_at": "2026-10-11T21:57:00.225733+00:00",
+        "publisher": "Indiana Geographic Information Office / IndianaMap",
+        "short_publisher": "IndianaMap",
+        "context_label": "year-level image date",
+        "attribution": "Indiana Geographic Information Office · CC0",
+        "license": "CC0 / public domain",
+        "native_resolution_m": 0.0762,
+        "native_rasters": [
+          {
+            "OBJECTID": 815,
+            "Name": "in2025_10502336_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 816,
+            "Name": "in2025_10502337_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 817,
+            "Name": "in2025_10502338_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 818,
+            "Name": "in2025_10502340_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1129,
+            "Name": "in2025_10622336_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1130,
+            "Name": "in2025_10622337_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1131,
+            "Name": "in2025_10622338_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1132,
+            "Name": "in2025_10622340_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1443,
+            "Name": "in2025_10752336_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1444,
+            "Name": "in2025_10752337_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1445,
+            "Name": "in2025_10752338_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1446,
+            "Name": "in2025_10752340_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1757,
+            "Name": "in2025_10872336_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1758,
+            "Name": "in2025_10872337_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1759,
+            "Name": "in2025_10872338_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 1760,
+            "Name": "in2025_10872340_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2071,
+            "Name": "in2025_11002336_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2072,
+            "Name": "in2025_11002337_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2073,
+            "Name": "in2025_11002338_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          },
+          {
+            "OBJECTID": 2074,
+            "Name": "in2025_11002340_3in",
+            "Category": 1,
+            "Image_Year": null,
+            "County": null,
+            "Pixel_Size": null
+          }
+        ],
+        "extent_3857": {
+          "xmin": -9627221.25837652,
+          "ymin": 5110105.573914635,
+          "xmax": -9624861.285171703,
+          "ymax": 5112072.218251983,
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        },
+        "export_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer/exportImage?f=json&bbox=-9627221.25837652%2C5110105.573914635%2C-9624861.285171703%2C5112072.218251983&bboxSR=3857&imageSR=3857&size=1200%2C1000&format=jpg&compressionQuality=88&bandIds=0%2C1%2C2&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B815%2C+816%2C+817%2C+818%2C+1129%2C+1130%2C+1131%2C+1132%2C+1443%2C+1444%2C+1445%2C+1446%2C+1757%2C+1758%2C+1759%2C+1760%2C+2071%2C+2072%2C+2073%2C+2074%5D%7D",
+        "metadata_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer/query?f=json&objectIds=815%2C816%2C817%2C818%2C1129%2C1130%2C1131%2C1132%2C1443%2C1444%2C1445%2C1446%2C1757%2C1758%2C1759%2C1760%2C2071%2C2072%2C2073%2C2074&outFields=OBJECTID%2CName%2CCategory%2CImage_Year%2CCounty%2CPixel_Size&returnGeometry=true&outSR=3857",
+        "license_url": "https://di-ingov.img.arcgis.com/arcgis/rest/services/DynamicWebMercator/Indiana_Current_Imagery/ImageServer?f=pjson",
+        "project_metadata_url": "https://gisimageryingov.s3.us-east-2.amazonaws.com/imagerymetadata/statewide/2025/IN_2025_Statewide_EAST_Tier1_Project_Level_3inch.xml",
+        "source_metadata_path": "data/campus/new-carlisle-sr2-2025-export.json",
+        "source_metadata_sha256": "3183a7ce8ecf7b40adc6ba9412d5a5c07d138508e629d28d93dae3e8f1cbe972",
+        "native_catalog_path": "data/campus/new-carlisle-sr2-2025-catalog.json",
+        "native_catalog_sha256": "03df8670b3ffa9ec73332ff5eb93e430bcab52c7fbf06e9efb4b73841e609d30",
+        "focus_pixel": [
+          445,
+          278
+        ],
+        "default_zoom": 1.5,
+        "mobile_pan_y": 0,
+        "mobile_zoom": 0.85,
+        "mobile_focus_pixel": [
+          445,
+          278
+        ],
+        "rights_metadata_path": "data/campus/new-carlisle-sr2-2025-rights.json",
+        "rights_metadata_sha256": "5ebb12720451cd7a35e8291cd7017af20dfe337d51cd49d8a396e6753df953bb"
+      },
+      "sources": [
+        {
+          "label": "IDEM SR2 / IEC-3 source notice; address identity",
+          "url": "https://ecm.idem.in.gov/cs/idcplg?IdcService=GET_FILE&allowInterrupt=1&dDocName=83762338&dID=83758295"
+        },
+        {
+          "label": "IDHS IEC-3 project; Owner / Applicant and Project Information",
+          "url": "https://oas.dhs.in.gov/reports/rwservlet?dfbsepnhtml=&p_var_id=24472&report=variance_view_application.rdf"
+        }
+      ],
+      "features": [
+        {
+          "id": "new-carlisle-sr2-2025-roof-west-upper",
+          "name": "West upper roof",
+          "kind": "building",
+          "lat": 41.670054019,
+          "lon": -86.479290756,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.481139333,
+                    41.670346118
+                  ],
+                  [
+                    -86.477447,
+                    41.670346118
+                  ],
+                  [
+                    -86.477447,
+                    41.669752264
+                  ],
+                  [
+                    -86.479125333,
+                    41.669752264
+                  ],
+                  [
+                    -86.479125333,
+                    41.669884232
+                  ],
+                  [
+                    -86.479514,
+                    41.669884232
+                  ],
+                  [
+                    -86.479514,
+                    41.669752264
+                  ],
+                  [
+                    -86.481139333,
+                    41.669752264
+                  ],
+                  [
+                    -86.481139333,
+                    41.670346118
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              94,
+              176
+            ],
+            [
+              303,
+              176
+            ],
+            [
+              303,
+              221
+            ],
+            [
+              208,
+              221
+            ],
+            [
+              208,
+              211
+            ],
+            [
+              186,
+              211
+            ],
+            [
+              186,
+              221
+            ],
+            [
+              94,
+              221
+            ],
+            [
+              94,
+              176
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "a8088d6733ccf73f294b66cad3f9b706fd82a9cf26ff9d99d4da655b1944b53f"
+        },
+        {
+          "id": "new-carlisle-sr2-2025-roof-west-middle",
+          "name": "West middle roof",
+          "kind": "building",
+          "lat": 41.66857122,
+          "lon": -86.479300219,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.481139333,
+                    41.668881269
+                  ],
+                  [
+                    -86.479514,
+                    41.668881269
+                  ],
+                  [
+                    -86.479514,
+                    41.668736102
+                  ],
+                  [
+                    -86.479125333,
+                    41.668736102
+                  ],
+                  [
+                    -86.479125333,
+                    41.668881269
+                  ],
+                  [
+                    -86.477464667,
+                    41.668881269
+                  ],
+                  [
+                    -86.477464667,
+                    41.668274204
+                  ],
+                  [
+                    -86.481139333,
+                    41.668274204
+                  ],
+                  [
+                    -86.481139333,
+                    41.668881269
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              94,
+              287
+            ],
+            [
+              186,
+              287
+            ],
+            [
+              186,
+              298
+            ],
+            [
+              208,
+              298
+            ],
+            [
+              208,
+              287
+            ],
+            [
+              302,
+              287
+            ],
+            [
+              302,
+              333
+            ],
+            [
+              94,
+              333
+            ],
+            [
+              94,
+              287
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "84bd17b7916862bf90c9f80ae9e8e23ea477444285832302396dd482cd9cdc03"
+        },
+        {
+          "id": "new-carlisle-sr2-2025-roof-west-lower",
+          "name": "West lower roof",
+          "kind": "building",
+          "lat": 41.667700531,
+          "lon": -86.479294787,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.481139333,
+                    41.668010261
+                  ],
+                  [
+                    -86.479514,
+                    41.668010261
+                  ],
+                  [
+                    -86.479514,
+                    41.667957473
+                  ],
+                  [
+                    -86.479125333,
+                    41.667957473
+                  ],
+                  [
+                    -86.479125333,
+                    41.668010261
+                  ],
+                  [
+                    -86.477464667,
+                    41.668010261
+                  ],
+                  [
+                    -86.477464667,
+                    41.667389992
+                  ],
+                  [
+                    -86.479125333,
+                    41.667389992
+                  ],
+                  [
+                    -86.479125333,
+                    41.667521964
+                  ],
+                  [
+                    -86.479514,
+                    41.667521964
+                  ],
+                  [
+                    -86.479514,
+                    41.667389992
+                  ],
+                  [
+                    -86.481139333,
+                    41.667389992
+                  ],
+                  [
+                    -86.481139333,
+                    41.668010261
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              94,
+              353
+            ],
+            [
+              186,
+              353
+            ],
+            [
+              186,
+              357
+            ],
+            [
+              208,
+              357
+            ],
+            [
+              208,
+              353
+            ],
+            [
+              302,
+              353
+            ],
+            [
+              302,
+              400
+            ],
+            [
+              208,
+              400
+            ],
+            [
+              208,
+              390
+            ],
+            [
+              186,
+              390
+            ],
+            [
+              186,
+              400
+            ],
+            [
+              94,
+              400
+            ],
+            [
+              94,
+              353
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "ad91a6a39c7074804ebea8fee0bff728c73020c367af9a7d902d081f3d0bff3c"
+        },
+        {
+          "id": "new-carlisle-sr2-2025-roof-east-upper",
+          "name": "East upper roof",
+          "kind": "building",
+          "lat": 41.670323688,
+          "lon": -86.470602806,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.472447333,
+                    41.670623248
+                  ],
+                  [
+                    -86.470769,
+                    41.670623248
+                  ],
+                  [
+                    -86.470769,
+                    41.670583658
+                  ],
+                  [
+                    -86.470362667,
+                    41.670583658
+                  ],
+                  [
+                    -86.470362667,
+                    41.670623248
+                  ],
+                  [
+                    -86.468755,
+                    41.670623248
+                  ],
+                  [
+                    -86.468755,
+                    41.6700162
+                  ],
+                  [
+                    -86.470362667,
+                    41.6700162
+                  ],
+                  [
+                    -86.470362667,
+                    41.670148167
+                  ],
+                  [
+                    -86.470769,
+                    41.670148167
+                  ],
+                  [
+                    -86.470769,
+                    41.6700162
+                  ],
+                  [
+                    -86.472447333,
+                    41.6700162
+                  ],
+                  [
+                    -86.472447333,
+                    41.670623248
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              586,
+              155
+            ],
+            [
+              681,
+              155
+            ],
+            [
+              681,
+              158
+            ],
+            [
+              704,
+              158
+            ],
+            [
+              704,
+              155
+            ],
+            [
+              795,
+              155
+            ],
+            [
+              795,
+              201
+            ],
+            [
+              704,
+              201
+            ],
+            [
+              704,
+              191
+            ],
+            [
+              681,
+              191
+            ],
+            [
+              681,
+              201
+            ],
+            [
+              586,
+              201
+            ],
+            [
+              586,
+              155
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "1d2806b8d79e00a51de1805dbd0e49cd9f48e996aa5d86ff1c35fd676bc6ca2c"
+        },
+        {
+          "id": "new-carlisle-sr2-2025-roof-east-lower",
+          "name": "East lower roof",
+          "kind": "building",
+          "lat": 41.668819501,
+          "lon": -86.470601343,
+          "country": "United States",
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    -86.472429667,
+                    41.669118814
+                  ],
+                  [
+                    -86.470786667,
+                    41.669118814
+                  ],
+                  [
+                    -86.470786667,
+                    41.668973647
+                  ],
+                  [
+                    -86.470398,
+                    41.668973647
+                  ],
+                  [
+                    -86.470398,
+                    41.669118814
+                  ],
+                  [
+                    -86.468755,
+                    41.669118814
+                  ],
+                  [
+                    -86.468755,
+                    41.668524949
+                  ],
+                  [
+                    -86.472429667,
+                    41.668524949
+                  ],
+                  [
+                    -86.472429667,
+                    41.669118814
+                  ]
+                ]
+              ]
+            ]
+          },
+          "pixel_vertices": [
+            [
+              587,
+              269
+            ],
+            [
+              680,
+              269
+            ],
+            [
+              680,
+              280
+            ],
+            [
+              702,
+              280
+            ],
+            [
+              702,
+              269
+            ],
+            [
+              795,
+              269
+            ],
+            [
+              795,
+              314
+            ],
+            [
+              587,
+              314
+            ],
+            [
+              587,
+              269
+            ]
+          ],
+          "derivation": "Manual interpretation of a complete visible roof surface in the georeferenced Indiana 2025 crop; approximate, not surveyed",
+          "interpreted_at": "2026-10-11",
+          "observed_at": "2025",
+          "date_precision": "year",
+          "height_m": null,
+          "phase_id": null,
+          "it_power_mw": null,
+          "operating_status": null,
+          "identity_reviews": [],
+          "derived_outline_area": {
+            "rounded_m2": 20000,
+            "precision": "two significant figures; interpreted geometry, uncertainty not quantified",
+            "method": "Shoelace area in the returned spherical Web Mercator plane, scaled by cos(latitude)^2 at mean outline latitude; local ground-plane approximation",
+            "source_image_sha256": "5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+            "boundary": "Approximate interpreted roof outline area; not surveyed footprint, usable floor area, height or a capacity allocation"
+          },
+          "review_sha256": "a579d0b306539e406627eadcf2777106a4d712b938c9cb43961625279bd0cdd0"
+        }
+      ]
+    }
+  ],
+  "legacy_image_only_versions": [
+    {
+      "scene_id": "helios-naip-20220905",
+      "project_id": "coreweave-helios",
+      "feature_id": "helios-naip2022-roof-01",
+      "image_sha256": "ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7",
+      "review_sha256": "ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-west",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "872a4f862f4a363fd3df11fd604fb063d2abcc780673b6f62797bed10492e51c",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-central",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "aa9a39e1f84ec527802d0d823a5f9d5238f581287d5cd95c1c45b75debeda398",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
+    },
+    {
+      "scene_id": "new-carlisle-edison-2025",
+      "project_id": "amazon-anthropic-new-carlisle",
+      "feature_id": "new-carlisle-edison-2025-roof-east",
+      "image_sha256": "52316a7735481740b973fdb3de07781d20a8c0113b26f2acf20046a9a128087e",
+      "review_sha256": "617dde9d2cf8c6f5b6344150964169333f78dccb2b58cb54fb0b2760d19c33fd",
+      "prior_geometry_commit": "c58237f50231901fef06ca3d391b09d1e5783b1d"
     }
   ]
 }

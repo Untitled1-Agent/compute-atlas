@@ -129,3 +129,42 @@ Current licensed imagery, complete feature inventory, independently reviewed pha
 links, wider official utility/fiber geometry, directory/catalog reconciliation and
 company financial completeness remain separate workstreams. Finish them with
 source-backed deliverables before claiming full parity.
+
+## Composition refinement after direct reference review
+
+At 1440 × 1080, aim for the campus identity/topic header, spatial hero and adjacent selected inspector, then two compact paired rows. The current nine-row attribute table and eight-document list stretch the overview to roughly two screens. Keep the first four most relevant project attributes and four sources visible, with named accessible expanders for the remaining evidence. Selection-specific identity/use, geometry date, allocation boundary and three takeaways remain beside the hero. Move full source-match/registry analysis to its drawer. At short desktop heights, retain a usable hero and let the paired detail rows follow in normal scroll order. Phone reads the same compact groups and explicit expanders.
+
+Metro framing must follow the intended local geography, not the extent of every project within a 250 km research radius. Frame Chicago–New Carlisle as its named east–west corridor; use a clearly separate 250 km nearby-project context. Keep source records and totals scoped explicitly. Preserve panning, filters and an offscreen selected project with Locate at the current scale. No market census or invented location markers.
+
+
+## Source-backed New Carlisle campus
+
+The campus source journey has two independent address-established components:
+Edison / IEC-2 and SR2 / IEC-3. The first implementation uses the manually reviewed
+Edison image; the source drawer names the other component and its acquisition
+state. A later reviewed SR2 image receives its own scene identifier and chooser,
+not an invented common parcel. The imagery frame is a context crop, not ownership.
+
+Interpret only clearly visible, complete roofs in the CC0 image. Assign stable
+source-feature IDs and positional names such as West long roof, Central long roof
+and East long roof. Do not attach application labels Building A/C or permit
+phase labels without a reviewed correspondence. Keep image observation at 2025
+(year precision); project acquisition range and export/retrieval dates are
+separate. The photo-center records do not prove the mosaic's exact day.
+
+Register roof vertices against the returned EPSG:3857 export extent and actual
+1200×1600 derivative. Retain pixel vertices, native raster IDs/names, locked export
+URL, metadata/source checksums and review actor/basis. Preserve the archival city
+anchor. The shared scene supports multiple clickable roofs, a feature chooser,
+keyboard/list parity, per-view cameras, source/export and typed shelf records.
+The image's large electrical yard is visible context; no circuit, energized
+status, utility ownership or power allocation is inferred from pixels.
+
+Facility with several reviewed features presents the campus chooser until an
+explicit feature is selected. Feature selection opens the same adjacent inspector
+and keeps the current camera; a shared feature URL restores that exact roof.
+The reviewed parent correspondence is at component/address scope only.
+
+The initial imagery coverage is incomplete: crops do not establish all buildings,
+legal boundaries, current operation or the full New Carlisle campus. Additional
+roofs and components require the same separate source/georeferencing review.

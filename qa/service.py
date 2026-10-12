@@ -62,6 +62,8 @@ with tempfile.TemporaryDirectory() as folder:
             page.screenshot(path=str(OUT/'service-review-queue.png'))
             page.locator('[data-action="close-drawer"]').click()
             page.evaluate("ATLAS.spatial.select('coreweave-helios');ATLAS.spatial.setLevel(5)")
+            check('Physical roof selection does not inherit SQL project power',page.locator('.campus-feature-inspector').is_visible() and not page.locator('.atlas-feature-number').count())
+            page.locator('.campus-view-toggle [data-campus-mode="evidence"]').click()
             check('SQL publication retains delivered critical IT boundary','133 MW' in page.locator('.atlas-feature-number').inner_text() and 'Critical IT' in page.locator('.atlas-number-boundary').inner_text())
             page.locator('#atlas-local-note').fill('Persistent service-origin research note')
             page.locator('#atlas-local-note').blur();page.reload(wait_until='networkidle')
