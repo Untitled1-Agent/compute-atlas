@@ -48,6 +48,7 @@ try:
             baseline=page.evaluate('JSON.stringify(D.sites)')
             page.evaluate("ATLAS.spatial.select('hut8-river-bend');ATLAS.spatial.setLevel(5)")
             check(entry+' facility attributes have a reachable locality control',page.locator('.atlas-identity-launch [data-identity-open]').count()==1)
+            if not page.locator('.atlas-identity-launch [data-identity-open]').is_visible():page.locator('.atlas-compact-attributes .atlas-evidence-more>summary').click()
             page.locator('.atlas-identity-launch [data-identity-open]').click()
             check(entry+' primary parish stays beside original state-level anchor','West Feliciana Parish' in page.locator('.atlas-identity-claim').inner_text() and 'state-level anchor' in page.locator('.atlas-identity-anchor').inner_text())
             check(entry+' reporting and editorial dates remain separate',all(t in page.locator('.atlas-identity-claim').inner_text() for t in ('2025-12-17','2026-10-05')))
