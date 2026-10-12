@@ -91,3 +91,15 @@ Acceptance adds a minimum useful projected context height on a tall desktop,
 actual native path hit testing, source/image control separation, and manual
 six-size aerial/oblique/source review. Old explicit low-zoom camera links remain
 valid; automatic layout changes must not rewrite the user's saved framing.
+
+## Preserve immediate evidence after the larger map
+
+The 480 px stage passed native hit, framing and all six-size checks, but the
+existing component acceptance caught the first cited document at y=1210 on a
+1080 px desktop. Keeping the 300 px stage loses useful geometry inspection;
+compressing all power and attribute text into 100 px damages legibility. Move
+the compact Sources & evidence / Analyst notes row directly below the map,
+followed by the power ladder and parent attributes. This follows the campus
+reference's immediate source row and keeps project estimates secondary to the
+selected physical/native feature. Preserve every source, estimate, attribute
+and action. Retain the existing first-cited-source viewport check unchanged.
