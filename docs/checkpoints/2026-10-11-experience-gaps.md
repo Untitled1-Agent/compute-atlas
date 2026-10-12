@@ -47,9 +47,9 @@ copy of the live SQLite ledger and the standalone publication. This includes
 publication loading, real geometry selection and focused primary claims.
 The earlier full interaction pass was **50/50**; CI adds the two short-desktop
 checks and four drawer-return checks for **56** interaction assertions. See the [live receipt](evidence/2026-10-11/live-acceptance.json),
-[world](evidence/2026-10-11/world-desktop.png),
-[short desktop](evidence/2026-10-11/world-short-desktop.png), and
-[source campus](evidence/2026-10-11/source-campus.png). All six research scales
+[world](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-11/world-desktop.png),
+[short desktop](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-11/world-short-desktop.png), and
+[source campus](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-11/source-campus.png). All six research scales
 and 320/390px mobile captures were also inspected locally.
 
 Hosted regression suites now wait for complete application readiness; otherwise

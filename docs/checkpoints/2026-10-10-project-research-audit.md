@@ -87,9 +87,9 @@ are not counted as HTTP coverage.
 
 The complete browser results are retained in
 [project-research-qa.json](evidence/2026-10-10/project-research-qa.json). Inspected
-screenshots show the [desktop project/context distinction](evidence/2026-10-10/project-research-desktop.png),
-[mobile native-unit dossier](evidence/2026-10-10/project-research-mobile.png) and
-[unresolved-project index](evidence/2026-10-10/project-research-index-mobile.png).
+screenshots show the [desktop project/context distinction](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/project-research-desktop.png),
+[mobile native-unit dossier](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/project-research-mobile.png) and
+[unresolved-project index](https://github.com/Untitled1-Agent/compute-atlas/blob/3d3d5f2ab2167b76ed3d2c3f95bc44fec66c4da4/docs/checkpoints/evidence/2026-10-10/project-research-index-mobile.png).
 Earlier failures exposed stale fixed claim counts, an ambiguous export selector,
 large-HTML `set_content` timeouts and clicking a moving camera. Tests now retain
 the original claims within the richer publication, scope the intended export,
