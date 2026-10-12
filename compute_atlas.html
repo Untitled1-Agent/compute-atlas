@@ -4152,7 +4152,7 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
  const requested={scene:p.get('requestedscene')||p.get('scene')||'',feature:p.get('requestedfeature')||p.get('feature')||p.get('lastfeature')||'',imageversion:p.get('requestedimageversion')||p.get('imageversion')||'',featureversion:p.get('requestedfeatureversion')||p.get('featureversion')||''};
  let m=requested.scene?rows.find(m=>m.id===requested.scene):rows.find(m=>m.features.some(f=>f.id===requested.feature))||rows[0],reason='';
  if(requested.scene&&!m)reason='This component is unavailable for the requested project.';
- if(p.get('requestedproject')||p.get('site')&&!s)reason='The requested project identity is unavailable for this physical selection.';
+ if(p.get('requestedproject')&&!site(p.get('requestedproject'))||p.get('site')&&!s)reason='The requested project identity is unavailable for this physical selection.';
  if(!m)m=rows[0];let f=m?.features.find(f=>f.id===requested.feature);
  if(requested.feature&&!f)reason='This physical feature does not belong to the requested project and component.';
  if(requested.imageversion&&requested.imageversion!==m?.image.sha256||requested.featureversion&&requested.featureversion!==f?.review_sha256)reason='The requested image or interpretation version is unavailable in the current publication.';
