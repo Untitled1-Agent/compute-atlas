@@ -32,7 +32,10 @@ def test_reviewed_image_bytes_and_source_identifiers_are_pinned():
         else:
             assert im['license']=='CC0 / public domain'
             assert im['acquired_at']=='2025' and im['date_precision'].startswith('year')
-            assert len(im['native_rasters'])==16
+            expected={'new-carlisle-edison-2025':16,'new-carlisle-sr2-2025':20}
+            assert len(im['native_rasters'])==expected[scene['id']]
+            assert len({r['OBJECTID'] for r in im['native_rasters']})==expected[scene['id']]
+            assert len(im['native_rasters'])<=20
             assert all(str(r['OBJECTID']) in im['export_url'] for r in im['native_rasters'])
             assert 2386 not in {r['OBJECTID'] for r in im['native_rasters']}
             for path_key,hash_key in [('source_metadata_path','source_metadata_sha256'),('native_catalog_path','native_catalog_sha256')]:
@@ -46,6 +49,11 @@ def test_indiana_features_keep_positional_identity_and_separate_components():
     assert {f['name'] for f in scene['features']}=={'West long roof','Central long roof','East long roof'}
     assert all(f['identity_reviews']==[] for f in scene['features'])
     assert 'ownership boundary' in scene['review']['limitations']
+    sr2=next(s for s in DATA['scenes'] if s['id']=='new-carlisle-sr2-2025')
+    assert sr2['project_id']==scene['project_id'] and sr2['component']=='SR2 / IEC-3'
+    assert sr2['image']['sha256']!=scene['image']['sha256']
+    assert len(sr2['features'])==5 and all(f['identity_reviews']==[] for f in sr2['features'])
+    assert {f['name'] for f in sr2['features']}=={'West upper roof','West middle roof','West lower roof','East upper roof','East lower roof'}
 
 def test_helios_identity_review_preserves_geometry_and_unallocated_power():
     f=DATA['scenes'][0]['features'][0];r=f['identity_reviews'][0]
