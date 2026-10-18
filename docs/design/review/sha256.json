@@ -1,0 +1,54 @@
+{
+  "atlas-redesign-review.html": {
+    "sha256": "d0752251a9ed7ae992577c4ffd525b30ec06b18a3c8d74fc2d54fb44912eb57a",
+    "bytes": 3830913
+  },
+  "review/A-campus.png": {
+    "sha256": "e90b974fd2a3fe84ada657bdf06f0d2e3ded1501566295707d6d66b2ccf3c970",
+    "bytes": 407481
+  },
+  "review/A-continent.png": {
+    "sha256": "ff2ace460d39fedb1f83b59ed0cf06ece4d8de5f612c46a11999b6a936b77830",
+    "bytes": 502257
+  },
+  "review/A-facility.png": {
+    "sha256": "17029faccc48833003ae66508f1aa88374f2ee3647d932d99bfdf509493c07d7",
+    "bytes": 489830
+  },
+  "review/A-metro.png": {
+    "sha256": "a5707ad650a4ec145a9a427beba4d2dcdb09b7d14814f4c33dfa0556e944ef81",
+    "bytes": 247853
+  },
+  "review/A-mobile.png": {
+    "sha256": "f752daf777dabe9f347158329c3145cd3d07714df2850dae34893cffc21b0d05",
+    "bytes": 216755
+  },
+  "review/A-region.png": {
+    "sha256": "3e3a1bd124689120187870a8926d7e7a98d2db6ae52d62b9eaa388eef9f8e69f",
+    "bytes": 441016
+  },
+  "review/A-short.png": {
+    "sha256": "e565fbc4ccf948e2b45972c6b648fc33b890bef6c3cb456385e20778b860af1e",
+    "bytes": 356517
+  },
+  "review/A-tablet.png": {
+    "sha256": "07695009f211ceb1cdd0e28d3adc7b5458b62360ef9162955126f6ac77b7a09a",
+    "bytes": 329143
+  },
+  "review/A-world-mobile.png": {
+    "sha256": "2130d0d02e13a6c598a3cdae60b2c693ff21e5423f8c11ee60a16bc8ee838727",
+    "bytes": 167950
+  },
+  "review/A-world.png": {
+    "sha256": "aa914643eced813ed39d5af1596a8f97aa55e9a25023974ad1a1c884e89b9fd8",
+    "bytes": 421785
+  },
+  "review/B-world.png": {
+    "sha256": "e09b847aadab9d5031f1024b884c4c0fb7401aa2a8822ab6148cbcdc8f44e642",
+    "bytes": 237881
+  },
+  "review/C-world.png": {
+    "sha256": "4b6bc140b006e2ce36742812ab130e4f5e199fdd7f644d3bb2201eab82b21041",
+    "bytes": 501566
+  }
+}

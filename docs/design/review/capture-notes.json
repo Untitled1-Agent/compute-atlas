@@ -1,0 +1,162 @@
+{
+  "views": [
+    {
+      "name": "A-world",
+      "scale": "world",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 843.78125,
+      "map": [
+        810,
+        480
+      ],
+      "visibleMarkers": 7
+    },
+    {
+      "name": "A-short",
+      "scale": "world",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 767.96875,
+      "map": [
+        810,
+        410
+      ],
+      "visibleMarkers": 6
+    },
+    {
+      "name": "A-tablet",
+      "scale": "world",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 944.28125,
+      "map": [
+        573,
+        470
+      ],
+      "visibleMarkers": 7
+    },
+    {
+      "name": "A-campus",
+      "scale": "campus",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 1009.828125,
+      "map": [
+        810,
+        350
+      ],
+      "visibleMarkers": 5
+    },
+    {
+      "name": "A-facility",
+      "scale": "facility",
+      "variant": "A",
+      "feature": "Original long roof",
+      "overflow": false,
+      "metricsBottom": 1065.328125,
+      "map": [
+        810,
+        350
+      ],
+      "visibleMarkers": 1
+    },
+    {
+      "name": "A-mobile",
+      "scale": "campus",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 2247.375,
+      "map": [
+        360,
+        365
+      ],
+      "visibleMarkers": 5
+    },
+    {
+      "name": "B-world",
+      "scale": "world",
+      "variant": "B",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": null,
+      "map": [
+        529.125,
+        285
+      ],
+      "visibleMarkers": 2
+    },
+    {
+      "name": "C-world",
+      "scale": "world",
+      "variant": "C",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 779,
+      "map": [
+        1236,
+        749
+      ],
+      "visibleMarkers": 12
+    },
+    {
+      "name": "A-continent",
+      "scale": "continent",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 814.046875,
+      "map": [
+        810,
+        480
+      ],
+      "visibleMarkers": 9
+    },
+    {
+      "name": "A-region",
+      "scale": "region",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 891.734375,
+      "map": [
+        810,
+        480
+      ],
+      "visibleMarkers": 47
+    },
+    {
+      "name": "A-metro",
+      "scale": "metro",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 783.515625,
+      "map": [
+        810,
+        480
+      ],
+      "visibleMarkers": 1
+    },
+    {
+      "name": "A-world-mobile",
+      "scale": "world",
+      "variant": "A",
+      "feature": null,
+      "overflow": false,
+      "metricsBottom": 808.9375,
+      "map": [
+        360,
+        345
+      ],
+      "visibleMarkers": 5
+    }
+  ],
+  "errors": [],
+  "interactive_review": "regional entry, Back, campus, roof, source drawer and comparison exercised; no production API used"
+}
