@@ -47,6 +47,7 @@ jobs:
           fi
       - name: JavaScript syntax checks
         run: |
+          node --check src/prototype-atlas/design.js
           node --check src/spatial-math.js
           node --check src/pointer-gestures.js
           node --check src/app.js
@@ -69,6 +70,8 @@ jobs:
           node --check src/atlas-workspace.js
           node --check src/campus-scene.js
           node --check src/map-layers.js
+      - name: Isolated design study export and browser regressions
+        run: python qa/design-review.py
       - name: Bounded startup and recovery over real HTTP
         if: ${{ !cancelled() }}
         run: python qa/startup.py

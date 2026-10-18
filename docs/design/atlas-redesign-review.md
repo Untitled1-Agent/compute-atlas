@@ -86,6 +86,16 @@ The sidebar becomes a menu; the six scales remain visible. On phones, geographic
 
 The twelve screenshots were manually inspected at desktop, short desktop, tablet and phone sizes. The study was exercised through regional entry, browser Back, campus entry, roof selection, image/source drawers and comparison. No uncaught page errors or horizontal overflow occurred in the captured views. [Capture notes](review/capture-notes.json) record the view dimensions and observed layout.
 
+The 18 October PR review fixed two prototype defects: navigation from search and
+refinement drawers now dismisses the old drawer, and unavailable IT estimates
+remain explicitly unquantified in every layout and comparison. The exported HTML
+and its hash receipt were regenerated. `python qa/design-review.py` checks those
+journeys, regional reload/Back, source-feature inspection, deterministic export,
+artifact hashes and 40 views across the three alternatives at 1440, 1366, 1024,
+390 and 320 pixels. The backend suite passed all 271 tests; archive integrity and
+production standalone regeneration also passed. CI now includes the isolated
+design-study regression checks.
+
 This validates a design study, not production functionality or a deployment. The displayed claims come from the existing dated research collection. Historical imagery remains 2022 for Helios and 2025 for New Carlisle. Phase assignments, current imagery, surveyed geometry, heights, wider fiber service and complete facility reconciliation are not fabricated to resemble the references.
 
 Run the read-only study from the repository with `python tools/preview_atlas_design.py`, then open `http://127.0.0.1:8142/compute/?variant=A`. Re-export it after changing the prototype with `python tools/preview_atlas_design.py --export docs/design/atlas-redesign-review.html`. It never calls the production API or writes research data. The proposed production implementation must be written and verified separately after this design is reviewed.
