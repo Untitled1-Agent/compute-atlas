@@ -69,8 +69,8 @@ def main():
             page.go_back()
             assert page.evaluate('state.scale') == 'world'
 
-            # Existing native-only records exercise missing and explicit null
-            # values. Neither may become zero or an invalid numeric quantity.
+            # An existing native-only record has no snapshot IT estimate. It
+            # must not become zero or an invalid numeric quantity.
             native = page.evaluate('DATA.sites.find(s=>s.snapshot?.it_mw==null).id')
             for variant in 'ABC':
                 page.goto(base + f'?variant={variant}&scale=campus&site={native}')
@@ -84,6 +84,7 @@ def main():
             page.locator('[data-compare-add]').click()
             expect(page.locator('.comparison-table')).to_contain_text('Not quantified')
             expect(page.locator('.comparison-table')).not_to_contain_text('NaN')
+            expect(page.locator('.comparison-table')).not_to_contain_text('Not quantified MW')
 
             for width, height in [(1440, 900), (1366, 768), (1024, 768),
                                   (390, 844), (320, 800)]:
