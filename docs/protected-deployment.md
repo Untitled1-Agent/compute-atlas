@@ -102,3 +102,18 @@ publication and histories. Keep the displaced database and WAL files together.
 To roll back application code, atomically point `current` to a retained tested
 release and restart. Retain a matching backup before a schema downgrade;
 rolling back code alone does not roll back editorial decisions or migrations.
+
+## Container validation
+
+`python qa/container.py` builds the actual Dockerfile from a checkout with
+private file permissions, then starts it as the non-root `atlas` user with a
+read-only root filesystem and a dedicated writable data volume. It checks the
+health and publication APIs, both entrypoints and their assets, private-path
+rejection, and ledger persistence across container replacement. The test removes
+only its uniquely named containers, volume and image. The container-delivery
+workflow runs this test for pull requests and main.
+
+On a managed network, Docker may need the platform's proxy hostname mapping and
+trusted CA at build time. Preserve TLS verification; supply the platform CA as a
+BuildKit secret instead of committing it to the image. `--image IMAGE` can test
+an image built with that environment-specific transport configuration.
