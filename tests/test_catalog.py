@@ -1,4 +1,4 @@
-import copy, json, sqlite3
+import copy, hashlib, json, sqlite3
 from collections import Counter
 from pathlib import Path
 import pytest
@@ -15,10 +15,10 @@ def small(data):
 
 def test_global_geographic_denominators(data):
     validate(data)
-    assert len(data['records'])==5265
-    assert data['counts']['continents']['Europe']==1908
-    assert data['counts']['countries']['Germany']==320
-    assert data['counts']['countries']['France']==382
+    assert len(data['records'])==5301
+    assert data['counts']['continents']['Europe']==1913
+    assert data['counts']['countries']['Germany']==319
+    assert data['counts']['countries']['France']==384
     assert all(r['it_mw'] is None for r in data['records'])
     assert all(r['lifecycle']!='operating' for r in data['records'])
     assert len({r['country'] for r in data['records'] if r['country']!='Unknown'})==115
@@ -57,7 +57,7 @@ def test_validation_rejects_invented_or_type_confused_fields(small,mutation):
 
 def test_catalog_search_filters_before_pagination(tmp_path,data):
     c=CatalogStore(tmp_path/'a.db');key=c.stage(data);c.accept(key,actor='r',note='review',expected_current=None)
-    assert c.page(country='France',limit=1)['total']==382
+    assert c.page(country='France',limit=1)['total']==384
     assert c.page(q='Equinix',country='France')['total']>3
     assert c.page(q="%' OR 1=1 --")['total']==0
     assert c.page(continent='Europe',kind='building')['total']>500
@@ -78,7 +78,7 @@ def test_catalog_api_accepted_only_and_source_monitor(tmp_path):
     app=create_app(tmp_path/'a.db',background=False)
     with TestClient(app) as client:
         response=client.get('/api/catalog/features?country=Germany&limit=3')
-        assert response.status_code==200 and response.json()['total']==320 and len(response.json()['items'])==3
+        assert response.status_code==200 and response.json()['total']==319 and len(response.json()['items'])==3
         response=client.get('/api/catalog/publication');assert response.status_code==200
         assert client.get('/api/catalog/publication',headers={'If-None-Match':response.headers['ETag']}).status_code==304
         assert client.get('/api/catalog/features/osm-way-1121454055').json()['name']=='Equinix PA9X'
@@ -99,3 +99,14 @@ def test_catalog_decisions_and_records_immutable(tmp_path,small):
     with c.connect() as db:
         for table in ('catalog_records','catalog_decisions'):
             with pytest.raises(sqlite3.IntegrityError):db.execute('DELETE FROM '+table)
+
+
+def test_reviewed_catalog_refresh_is_hash_pinned(data):
+    review=json.loads((ROOT/'data/catalog/publication-review.json').read_text())
+    assert hashlib.sha256((ROOT/'data/catalog/osm.json').read_bytes()).hexdigest()==review['publication_sha256']
+    assert review['captured_at']==data['captured_at']
+    assert review['features']==len(data['records'])==5301
+    assert len(review['added'])==50 and len(review['absent_from_new_capture'])==14
+    ids={r['id'] for r in data['records']}
+    assert set(review['added'])<=ids and not set(review['absent_from_new_capture'])&ids
+    assert all(r['feature_id'] not in review['changed'] for r in json.loads((ROOT/'data/catalog/reviews.json').read_text())['reviews'])
