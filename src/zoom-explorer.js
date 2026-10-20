@@ -52,6 +52,7 @@ function spatialFiltered() {
   return D.sites.filter(s =>
     (!filter.q || (s.name + ' ' + s.location + ' ' + s.owner_label).toLowerCase().includes(filter.q.toLowerCase())) &&
     (!filter.country || filter.country === 'all' || s.country === filter.country) &&
+    (!filter.stage || filter.stage==='all' || filter.stage==='snapshot'&&s.snapshot || filter.stage==='target'&&s.target || filter.stage==='unknown'&&!s.snapshot&&!s.target) &&
     (!filter.company || filter.company === 'all' || s.company_ids.includes(filter.company) || primaryRelationships(s).some(r => r.company_id === filter.company)) &&
     (evidence === 'all' || evidence === 'primary' && primarySourceIds(s).length > 0 || evidence === s.review || evidence === 'native' && ['primary-noncomparable','contract-record'].includes(s.review))
   );
@@ -217,7 +218,7 @@ function spatialKpis(scope,phase) {
 }
 function atlasFilterbar() {
   const st=spatialState();
-  return `<div class="atlas-filterbar"><label><span>Find a place</span><input id="atlas-map-query" value="${esc(state.filter.q||'')}" placeholder="Site, city, or operator…" autocomplete="off"></label><label><span>Company</span><select id="atlas-company-filter"><option value="all">All companies</option>${D.companies.map(c=>`<option value="${esc(c.id)}" ${state.filter.company===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label><label><span>Country</span><select id="atlas-country-filter"><option value="all">All countries</option>${[...new Set(D.sites.map(s=>s.country))].sort().map(country=>`<option value="${esc(country)}" ${state.filter.country===country?'selected':''}>${esc(country)}</option>`).join('')}</select></label><label><span>Evidence</span><select id="atlas-evidence-filter">${[['all','All evidence'],['primary','Primary review available'],['reviewed-model','Reviewed models'],['archive','Imported estimates'],['native','Native / contract records']].map(([id,label])=>`<option value="${id}" ${st.spatialEvidence===id?'selected':''}>${label}</option>`).join('')}</select></label><button class="atlas-clear-filters" data-atlas-action="clear-filters">Reset filters</button></div>`;
+  return `<div class="atlas-filterbar"><label><span>Find a place</span><input id="atlas-map-query" value="${esc(state.filter.q||'')}" placeholder="Site, city, or operator…" autocomplete="off"></label><label><span>Company</span><select id="atlas-company-filter"><option value="all">All companies</option>${D.companies.map(c=>`<option value="${esc(c.id)}" ${state.filter.company===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label><label><span>Country</span><select id="atlas-country-filter"><option value="all">All countries</option>${[...new Set(D.sites.map(s=>s.country))].sort().map(country=>`<option value="${esc(country)}" ${state.filter.country===country?'selected':''}>${esc(country)}</option>`).join('')}</select></label><label><span>Evidence</span><select id="atlas-evidence-filter">${[['all','All evidence'],['primary','Primary review available'],['reviewed-model','Reviewed models'],['archive','Imported estimates'],['native','Native / contract records']].map(([id,label])=>`<option value="${id}" ${st.spatialEvidence===id?'selected':''}>${label}</option>`).join('')}</select></label><label><span>Estimate coverage</span><select id="atlas-stage-filter">${[['all','All records'],['snapshot','Has snapshot estimate'],['target','Has target estimate'],['unknown','No snapshot or target']].map(([id,label])=>`<option value="${id}" ${state.filter.stage===id?'selected':''}>${label}</option>`).join('')}</select></label><button class="atlas-clear-filters" data-atlas-action="clear-filters">Reset filters</button></div>`;
 }
 function atlasRecordList(scope,phase) {
   return `<details class="atlas-record-list"><summary><span>Accessible record list</span><span>${scope.sites.length} projects · select without using the map</span></summary><div>${scope.sites.map(s=>`<button data-atlas-action="campus" data-id="${esc(s.id)}"><span>${esc(s.name)}<small>${esc(s.location)} · ${esc(spatialEvidenceLabel(s.review))}</small></span><b>${spatialPower(s,phase)==null?'IT not quantified':fmt(spatialPower(s,phase))+' MW · estimate'}</b><span>↗</span></button>`).join('')||'<p>No records match these filters.</p>'}</div></details>`;
@@ -244,6 +245,7 @@ function spatialURL(view=state.view) {
   if(state.filter.company&&state.filter.company!=='all')params.set('company',state.filter.company);
   if(state.filter.country&&state.filter.country!=='all')params.set('country',state.filter.country);
   if(state.filter.q)params.set('q',state.filter.q);
+  if(['snapshot','target','unknown'].includes(state.filter.stage))params.set('stage',state.filter.stage);
   if(st.spatialEvidence!=='all')params.set('evidence',st.spatialEvidence);
   return '#'+view+'?'+params.toString();
 }
@@ -273,7 +275,7 @@ routeFromHash=function() {if(window.ATLAS_BOOTSTRAPPING)return;
     state.spatialLevel=found?.id??0;state.spatialSelected=site(params.get('site'))?.id||null;state.spatialSelectionActive=Boolean(params.get('inspect'));state.spatialCluster=[...new Set((params.get('members')||'').split(',').filter(id=>site(id)))];if(state.spatialLevel>=4||!state.spatialSelectionActive||!state.spatialCluster.includes(state.spatialSelected))state.spatialCluster=[];
     state.spatialPhase=params.get('phase')==='target'?'target':'snapshot';state.globeLayer=state.spatialPhase;
     state.spatialEvidence=params.get('evidence')||'all';state.filter.q=params.get('q')||'';
-    state.filter.company=company(params.get('company'))?.id||'all';state.filter.country=params.get('country')||'all';
+    state.filter.company=company(params.get('company'))?.id||'all';state.filter.country=params.get('country')||'all';state.filter.stage=['snapshot','target','unknown'].includes(params.get('stage'))?params.get('stage'):'all';
     navigate(path||'overview',{hash:true});return;
   }
   const parts=path.split('/'),kind=parts[0];let id;try{id=decodeURIComponent(parts.slice(1).join('/'));}catch(_){id='';}
@@ -342,12 +344,13 @@ document.addEventListener('click',event=>{
     if(globe&&views[id])globe.flyTo(...views[id]);
     document.querySelectorAll('[data-atlas-action="fly"]').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
   }
-  if(action==='journey'){state.spatialLevel=0;state.spatialSelected='amazon-anthropic-new-carlisle';startTour();}
+  if(action==='journey')startTour();
   if(action==='export'){const s=site(id);if(s)download(id+'-cited-dossier.json',atlasCitedDossier(s));}
 });
 
 document.addEventListener('change',event=>{
   if(event.target.id==='atlas-company-filter'){state.filter.company=event.target.value;spatialTransition({replace:true});}
+  if(event.target.id==='atlas-stage-filter'){state.filter.stage=event.target.value;spatialTransition({replace:true});}
   if(event.target.id==='atlas-country-filter'){state.filter.country=event.target.value;spatialTransition({replace:true});}
   if(event.target.id==='atlas-evidence-filter')spatialTransition({evidence:event.target.value,replace:true});
 });

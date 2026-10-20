@@ -44,7 +44,7 @@ jobs:
           python src/build.py
           python -m pytest tests -q
           for file in src/*.js; do node --check "$file"; done
-          for suite in camera-routes power-components global-labels startup geographic layers campus physical components exploration editorial workspace experience project-research integrity functional zoom-explorer evidence-desk smoke live service source-health global-coverage site-identity catalog-explorer operator-directory publisher-explorer inspection; do
+          for suite in analyst landing camera-routes power-components global-labels startup geographic layers campus physical components exploration editorial workspace experience project-research integrity functional zoom-explorer evidence-desk smoke live service source-health global-coverage site-identity catalog-explorer operator-directory publisher-explorer inspection; do
             python "qa/$suite.py"
           done
       - name: Commit only verified publication projections, with a head lease

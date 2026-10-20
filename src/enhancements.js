@@ -159,7 +159,8 @@ siteDossier = function(s) {
 };
 
 companyDossier = function(c) {
-  const html = coreCompanyDossier(c);
+  if(!c)return coreCompanyDossier(c);
+  const html = `<div class="company-shelf-action">${star(c.id)}<span>Save company to research shelf</span></div>`+coreCompanyDossier(c)+`<section class="company-research-note"><h2>Private company note</h2><label for="company-local-note">Questions about ${esc(c.name)}</label><textarea id="company-local-note" data-note="${esc(c.id)}" placeholder="Which assumption or disclosure should you revisit?">${esc(saved.notes[c.id]||'')}</textarea><p data-storage-status>${storageOK?'Private · saved in this browser':'Session-only · storage unavailable. Export before closing.'}</p></section>`;
   const stack = capitalStack(c);
   const mark = '<h2>Financial footnote trail</h2>';
   return stack && html.includes(mark) ? html.replace(mark, stack + mark) : html;
