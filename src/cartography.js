@@ -13,7 +13,7 @@ const ATLAS_CONTEXT = JSON.parse(document.getElementById('context-data')?.textCo
 const geographicRadians = Math.PI / 180;
 const mercatorY = lat => Math.log(Math.tan(Math.PI / 4 + Math.max(-83, Math.min(83, lat)) * geographicRadians / 2));
 const contextBounds = new WeakMap();
-const researchCameraKey = (level, scope) => [level,scope.label,state.filter.company,state.filter.country,state.filter.q,state.spatialEvidence].join('|');
+const researchCameraKey = (level, scope) => [level,scope.label,state.filter.company,state.filter.country,state.filter.q,state.filter.stage,state.spatialEvidence].join('|');
 function researchClusterName(sites){
   const countries=[...new Set(sites.map(s=>s.country))],continents=[...new Set(sites.map(spatialContinent))];
   if(countries.length===1){

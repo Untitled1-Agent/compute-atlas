@@ -28,6 +28,29 @@ function atlasCitedDossier(s) {
     revision_policy:'Earlier and rejected revisions are audit context, not current values or additional capacity. Archive estimates remain separate from issuer disclosures.'
   };
 }
+function atlasRevisionPair(row){
+  const previous=atlasEvidenceRows(site(row.site_id)).find(r=>r.id===row.supersedes&&r.kind===row.kind);
+  return previous?{previous,current:row}:null;
+}
+function atlasRevisionValue(row,key){
+  if(key==='value'&&row.kind==='observations')return observationValue(row)+(row.value==null?'':' '+esc(row.unit));
+  if(key==='source_id')return primaryRef(row.source_id);
+  if(key==='company_id')return esc(company(row.company_id)?.name||row.company_id||'Not stated');
+  if(key==='boundary')return esc(boundaryLabel(row[key]||'Not stated'));
+  if(key==='status')return esc(statusLabel(row[key]||'Not stated'));
+  return esc(row[key]==null?'Not stated':row[key]);
+}
+function atlasRevisionComparison(row){
+  if(!row.supersedes)return '';
+  const pair=atlasRevisionPair(row);
+  if(!pair)return `<p class="atlas-revision-missing">Earlier record ${esc(row.supersedes)} is unavailable in this publication. The selected claim remains available; no prior value is inferred.</p>`;
+  const fields=[['value','Value'],['comparison','Comparison'],['unit','Native unit'],['metric','Metric'],['boundary','Measurement boundary'],['scope','Scope'],['label','Attribute'],['company_id','Company'],['role','Role'],['status','Reported status'],['as_of','Reported date'],['period','Period'],['source_id','Source'],['source_locator','Source locator'],['qualifier','Qualification'],['confidence','Evidence confidence'],['review_status','Review decision']].filter(([key])=>pair.previous[key]!=null||row[key]!=null);
+  const changed=fields.filter(([key])=>pair.previous[key]!==row[key]).length;
+  return `<details class="atlas-revision-comparison" data-revision="${esc(row.id)}"><summary>Compare claim revisions · ${changed} changed fields</summary><p>${esc(pair.previous.id)} → ${esc(row.id)}. ${row.effective?'The selected revision is in the current publication.':'The selected revision is retained audit history.'} Revisions describe a measurement series; their values are not additive.</p><div class="atlas-revision-grid"><div class="atlas-revision-heading"><span>Field</span><strong>Earlier revision</strong><strong>Selected revision</strong></div>${fields.map(([key,label])=>`<div class="atlas-revision-field ${pair.previous[key]!==row[key]?'changed':''}" data-revision-field="${key}"><strong>${label}${pair.previous[key]!==row[key]?'<small>Changed</small>':''}</strong><span>${atlasRevisionValue(pair.previous,key)}</span><span>${atlasRevisionValue(row,key)}</span></div>`).join('')}</div><button class="btn small" data-export-revision="${esc(row.id)}" data-site="${esc(row.site_id)}">Export both cited revisions ↓</button></details>`;
+}
+function atlasSourceCitation(s){
+  return [s.publisher||s.issuer||'Publisher not stated', '('+(s.published_at||s.date||'Publication date not stated')+').',s.title+'.',s.url||'',s.retrieved_at?'Retrieved '+s.retrieved_at+'.':'','Compute Atlas source '+s.id+'.'].filter(Boolean).join(' ');
+}
 function atlasEvidenceCard(row) {
   const quantity = row.kind === 'observations', relation = row.kind === 'relationships';
   const title = quantity ? boundaryLabel(row.boundary) : relation ? row.role : row.label;
@@ -42,6 +65,7 @@ function atlasEvidenceCard(row) {
     ${row.qualifier?`<p class="atlas-claim-qualifier">${esc(row.qualifier)}</p>`:''}
     ${row.source_locator?`<details><summary>Find the claim in the source</summary><p>${esc(row.source_locator)}</p></details>`:''}
     ${row.supersedes?`<p class="atlas-revision-link">Replaces <code>${esc(row.supersedes)}</code>. Prior values are not added.</p>`:''}
+    ${atlasRevisionComparison(row)}
     <footer>${primaryRef(row.source_id)}<details><summary>Record identity</summary><code>${esc(row.id)}</code></details></footer>
   </article>`;
 }
@@ -78,13 +102,20 @@ openDrawer = function(kind,id,opts={}) {
     if (site(id)) atlasDeskResults(site(id));
   }
   if (kind === 'primary-source') {
+    const citation=primarySource(id);
+    if(citation)$('#drawer-content').insertAdjacentHTML('beforeend',`<section class="atlas-source-citation"><h2>Cite this source</h2><label for="atlas-citation-text">Source citation</label><textarea id="atlas-citation-text" readonly>${esc(atlasSourceCitation(citation))}</textarea><button class="btn small" data-copy-citation>Copy citation</button><button class="btn small" data-export-citation="${esc(id)}">Export citation ↓</button><p class="atlas-citation-status" role="status"></p></section>`);
     const earlier = D.sites.flatMap(atlasEvidenceRows).filter(r => !r.effective && r.source_id === id);
     if (earlier.length) $('#drawer-content').insertAdjacentHTML('beforeend',`<h2>Retained revision history</h2><p>These earlier interpretations are audit context, not current quantities.</p>${earlier.map(atlasEvidenceCard).join('')}`);
   }
 };
 ATLAS.openDrawer = openDrawer;
 ATLAS.evidence = {rows:atlasEvidenceRows,export:atlasCitedDossier,open:id=>openDrawer('evidence',id)};
-document.addEventListener('click',event => {
+document.addEventListener('click',async event => {
+  const revision=event.target.closest('[data-export-revision]');
+  if(revision){const row=atlasEvidenceRows(site(revision.dataset.site)).find(r=>r.id===revision.dataset.exportRevision),pair=row&&atlasRevisionPair(row);if(pair)download(row.id+'-revisions.json',{publication_date:ATLAS_PRIMARY.published_at,...pair,sources:[...new Set([row.source_id,pair.previous.source_id])].map(primarySource).filter(Boolean),policy:'Earlier revisions are audit context; values are not additive.'});}
+  const citation=event.target.closest('[data-export-citation]');
+  if(citation){const s=primarySource(citation.dataset.exportCitation);if(s)download(s.id+'-citation.txt',atlasSourceCitation(s),'text/plain;charset=utf-8');}
+  if(event.target.closest('[data-copy-citation]')){const input=$('#atlas-citation-text'),status=$('.atlas-citation-status');try{await navigator.clipboard.writeText(input.value);status.textContent='Citation copied.';}catch{input.focus();input.select();status.textContent='Copy the selected citation, or use Export citation.';}}
   const launch=event.target.closest('[data-atlas-action="evidence-desk"]');
   if (launch) openDrawer('evidence',launch.dataset.id);
   const filter=event.target.closest('[data-evidence-filter]');

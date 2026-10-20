@@ -181,7 +181,9 @@ a historical result is not evidence of a new pass.
 
 ## Research shelf
 
-Starred facilities and companies, personal notes and session export/import live in browser local storage. Nothing is sent to a server. Export the shelf for a portable copy.
+Starred facilities and companies, personal notes and session export/import live in browser local storage. Nothing is sent to a server. Export the shelf for a portable copy. Imports retain mapped-location notes and notes whose original record is unavailable. If storage fails, the app identifies session-only work and provides an export recovery action.
+
+The project comparison picker searches all research projects and compares up to three, retaining dates, native power boundaries, counterparties and expandable technical, development and financing claims. Cited comparison exports exclude private notes unless you opt in. The evidence desk compares exact claim revisions and exports both sources; source drawers provide copyable and downloadable citations. The five-stop tour returns to your starting exploration when finished or closed.
 
 ## Attribution
 

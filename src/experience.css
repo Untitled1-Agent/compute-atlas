@@ -393,3 +393,30 @@ body{background:#07141b}
  .workspace-landscape .atlas-insight-card{padding-top:8px}
  .workspace-landscape .workspace-campus-preview img{height:48px}
 }
+
+/* Connected research tools keep the current map and evidence context. */
+.workspace-compare-picker{margin:22px 0;border-block:1px solid var(--line);padding:18px 0}
+.workspace-compare-picker label{display:block;font-size:12px;color:#b7ced4;margin-bottom:8px}
+.workspace-compare-picker input{width:100%;padding:12px;background:#0b2029;border:1px solid #37525b;color:#e0ecef;font:14px system-ui}
+#workspace-compare-results>p{font-size:11px;margin:10px 0;color:#98b3bf}
+.workspace-compare-options{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}
+.workspace-compare-options button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;text-align:left;background:none;border:0;border-bottom:1px solid #213d46;color:#c9e9df;padding:10px 0;cursor:pointer}
+.workspace-compare-options button:disabled{opacity:.5;cursor:default}.workspace-compare-options strong{display:block;font-size:12px}.workspace-compare-options small{display:block;font-size:10px;color:#94afbb;margin-top:5px;line-height:1.5}
+.workspace-compare-options button>span:last-child{font-size:11px;white-space:nowrap}
+.workspace-comparison-scroll{max-width:100%;overflow:auto;max-height:65vh;overscroll-behavior:contain}
+.workspace-project-comparison thead th{position:sticky;top:0;z-index:2;background:#102431}
+.workspace-project-comparison tbody th{position:sticky;left:0;background:#102431;z-index:1;min-width:130px}
+.workspace-compare-private{display:flex;align-items:center;gap:10px;margin:16px 0;font-size:12px;color:#9fb9c4}.workspace-compare-private input{width:18px;height:18px;accent-color:#91ddc5}
+.atlas-storage-warning{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;background:#352d1d;border-bottom:1px solid #86724a;color:#f4ddb2;font-size:12px;line-height:1.6}.atlas-storage-warning[hidden]{display:none}.atlas-storage-warning button{flex-shrink:0}
+.atlas-revision-comparison{margin:16px 0;border-block:1px solid #38535a;padding:10px 0}.atlas-revision-comparison>summary{cursor:pointer;font-size:12px;color:#a6e0cd;min-height:36px;line-height:36px}.atlas-revision-comparison>p,.atlas-revision-missing{font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+.atlas-revision-grid{margin:14px 0}.atlas-revision-heading,.atlas-revision-field{display:grid;grid-template-columns:minmax(100px,.7fr) 1fr 1fr;gap:10px;padding:12px;border-bottom:1px solid #28424a;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+.atlas-revision-heading{background:#112832;color:#afc9d3}.atlas-revision-field.changed{background:#18352d}.atlas-revision-field>strong{font-weight:500}.atlas-revision-field small{display:block;color:#a8ddc4;font-size:9px}
+.atlas-source-citation{margin:24px 0}.atlas-source-citation label{display:block;font-size:12px;margin-bottom:8px}.atlas-source-citation textarea{display:block;width:100%;min-height:110px;background:#0b2029;border:1px solid #37525b;color:#d0e4e7;padding:12px;font:12px/1.6 system-ui;resize:vertical}.atlas-source-citation button{margin:12px 8px 0 0}.atlas-citation-status{font-size:12px}
+@media(max-width:640px){
+ .workspace-compare-options{grid-template-columns:1fr}.workspace-compare-options button{min-height:58px}.workspace-project-comparison tbody th{min-width:105px}
+ .atlas-storage-warning{display:block;padding:12px 16px}.atlas-storage-warning button{margin-top:8px}
+ .atlas-revision-heading,.atlas-revision-field{grid-template-columns:1fr 1fr;padding:10px;gap:8px}.atlas-revision-field>strong,.atlas-revision-heading>span{grid-column:1 / -1}.atlas-revision-comparison>summary{line-height:1.5;padding:10px 0}.atlas-revision-field .atlas-source-ref{min-height:44px}
+}
+.shelf-company{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.shelf-company small{display:block;font-size:11px;color:#98b4c0;margin-top:6px}.company-shelf-action{display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:18px;color:#a4c6bc}.company-research-note{margin-top:24px}.company-research-note label{display:block;font-size:12px;margin-bottom:8px}.company-research-note textarea{width:100%;min-height:110px;padding:12px;background:#0b2029;border:1px solid #37525b;color:#d6e5e9;font:13px/1.6 system-ui;resize:vertical}.company-research-note p{font-size:11px}
+
+.workspace-compare-claims{white-space:normal;min-width:220px;max-width:340px}.workspace-compare-claims summary{cursor:pointer;padding:10px 0}.workspace-compare-claims .atlas-research-claim{font-size:12px}.workspace-compare-claims .atlas-research-value{font-size:13px}
