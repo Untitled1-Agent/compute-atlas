@@ -1,0 +1,28 @@
+name: Compute Atlas container delivery
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: compute-atlas-container-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  container-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Private checkout, non-root service and persistent ledger
+        run: python qa/container.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compute-atlas-container-evidence
+          path: qa/container_results.json
+          if-no-files-found: warn

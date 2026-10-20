@@ -3,11 +3,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 ATLAS_DB=/app/var/atlas.sqlite3
 WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt && useradd --create-home --uid 10001 atlas
-COPY server ./server
-COPY src ./src
-COPY data ./data
-COPY originals ./originals
-COPY index.html compute_atlas.html ./
+COPY --chown=atlas:atlas server ./server
+COPY --chown=atlas:atlas src ./src
+COPY --chown=atlas:atlas data ./data
+COPY --chown=atlas:atlas originals ./originals
+COPY --chown=atlas:atlas index.html compute_atlas.html ./
 RUN mkdir -p /app/var && chown atlas:atlas /app/var
 USER atlas
 EXPOSE 8000
