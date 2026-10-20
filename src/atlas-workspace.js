@@ -4,7 +4,7 @@ const workspaceState={phaseBySite:new Map(),tab:'overview',location:false,mobile
 const WORKSPACE_TOPICS=[['overview','Overview'],['energy','Power & phases'],['technical','Technical design'],['development','Timeline'],['commercial','Counterparties'],['finance','Investment'],['evidence','Sources & evidence']];
 saved.projectCompare=Array.isArray(saved.projectCompare)?saved.projectCompare.filter(id=>site(id)).slice(0,3):[];
 function workspaceFilterChips(){
-  const entries=[['q',state.filter.q],['company',state.filter.company!=='all'&&company(state.filter.company)?.name],['country',state.filter.country!=='all'&&state.filter.country],['evidence',state.spatialEvidence!=='all'&&state.spatialEvidence]];
+  const entries=[['region',state.spatialRegion],['q',state.filter.q],['company',state.filter.company!=='all'&&company(state.filter.company)?.name],['country',state.filter.country!=='all'&&state.filter.country],['evidence',state.spatialEvidence!=='all'&&state.spatialEvidence]];
   return `<div class="workspace-filter-chips">${entries.filter(([,value])=>value).map(([key,value])=>`<button data-workspace-clear="${key}" aria-label="Remove ${esc(value)} filter">${esc(value)} <span>×</span></button>`).join('')}</div>`;
 }
 function workspaceSelectionRail(s,scope){
@@ -63,16 +63,59 @@ function workspacePhaseRail(s,level){
     <section class="atlas-insight-card">${atlasKicker('03 / EVIDENCE QUALITY')}<h2>${profile.sources.length} documents.<br>One traceable project.</h2><p>${profile.rows.length} project-specific claims. Surveyed building geometry is not established for this dossier.</p><button class="text-button" data-atlas-action="evidence-desk" data-id="${esc(s.id)}">Sources & revision history ↗</button></section>
   </div>`;
 }
+// Geographic analysis uses the same comparable-estimate rule as the map.
+const WORKSPACE_REGIONS=['North America','Europe','Asia','Middle East','Oceania','South America','Africa','Other'];
+const workspaceBaseDefaultSite=spatialDefaultSite;
+spatialDefaultSite=function(){
+  if(state.spatialLevel<=1&&WORKSPACE_REGIONS.includes(state.spatialRegion)&&!state.spatialSelectionActive){
+    const rows=spatialFiltered().filter(s=>spatialContinent(s)===state.spatialRegion);
+    const selected=rows.find(s=>s.id===state.spatialSelected)||rows[0];
+    state.spatialSelected=selected?.id||null;
+    return selected||null;
+  }
+  return workspaceBaseDefaultSite();
+};
+const workspaceBaseScope=spatialScope;
+spatialScope=function(level,selected){
+  if(level<=1&&WORKSPACE_REGIONS.includes(state.spatialRegion)){
+    const rows=spatialMapped().filter(s=>spatialContinent(s)===state.spatialRegion);
+    return {label:state.spatialRegion,region:state.spatialRegion,sites:rows,bounds:spatialFitBounds(rows,null),note:'Regional research scope · partial, mixed-vintage estimates; not a market census'};
+  }
+  return workspaceBaseScope(level,selected);
+};
+function workspaceRegionalRows(scope){
+  return WORKSPACE_REGIONS.map(name=>({name,...spatialAggregate(scope.sites.filter(s=>spatialContinent(s)===name),'target')})).filter(r=>r.count).sort((a,b)=>b.mw-a.mw||b.count-a.count||a.name.localeCompare(b.name));
+}
+function workspaceRegionLink(name){
+  const p=new URLSearchParams(spatialURL().split('?')[1]||'');
+  for(const key of ['site','inspect','camera','preset','members','claim','topic','page'])p.delete(key);
+  p.set('scale','continent');p.set('region',name);
+  return '#overview?'+p.toString();
+}
+function workspaceRegionalAnalysis(scope){
+  const rows=workspaceRegionalRows(scope),max=Math.max(1,...rows.map(r=>r.mw));
+  return `<div class="workspace-region-ranks">${rows.map(r=>`<a class="workspace-region-row" href="${esc(workspaceRegionLink(r.name))}" data-workspace-region="${esc(r.name)}"><span class="workspace-region-name">${esc(r.name)} <span aria-hidden="true">↗</span></span><strong>${r.known?fmt(r.mw/1000,3)+' GW':'Not quantified'}</strong><small>${r.known} quantified · ${r.unknown} unquantified</small><span class="workspace-region-track" aria-hidden="true"><i style="width:${r.mw/max*100}%"></i></span></a>`).join('')||'<p>No mapped research projects match these refinements.</p>'}</div><p class="atlas-card-footnote">Independent target IT estimates · partial, mixed-vintage subtotals. Targets are not incremental additions or live capacity. Unquantified is not zero.</p>`;
+}
+function workspaceCampusPreview(scope){
+  const scenes=JSON.parse(document.getElementById('campus-scenes')?.textContent||'{"scenes":[]}').scenes;
+  const m=scenes.find(m=>scope.sites.some(s=>s.id===m.project_id)&&m.features.length),s=scope.sites.find(s=>s.id===m?.project_id)||scope.sites[0];
+  if(!s)return '<p>No campus matches these refinements. Broaden the view to explore the research collection.</p>';
+  const p=new URLSearchParams(spatialURL().split('?')[1]||'');
+  for(const key of ['camera','preset','members','claim','topic','page','region','feature','featureversion','scenecamera'])p.delete(key);
+  p.set('scale','campus');p.set('site',s.id);p.set('inspect','1');
+  if(m){p.set('scene',m.id);p.set('imageversion',m.image.sha256);p.set('campusview','aerial');}
+  return `<a class="workspace-campus-preview" href="#overview?${esc(p.toString())}" data-workspace-preview="${esc(m?.id||s.id)}">${m?`<img src="${esc(m.image.data_url||m.image.path)}" alt="${esc(s.name)} historical source image, ${esc(m.image.acquired_at)}" loading="lazy">`:''}<strong>${esc(s.name)} <span aria-hidden="true">↗</span></strong><small>${m?esc(m.image.acquired_at)+' imagery · interpreted roofs':'Accepted historical imagery unavailable'}</small></a><p class="atlas-card-footnote">${m?'Historical physical context. Roofs do not establish current operations or phase-level IT allocation.':'Project evidence remains available. No building geometry or capacity assignment is inferred.'}</p>`;
+}
 function workspaceRail(level,scope,s,phase){
   if(level>=4)return workspacePhaseRail(s,level);
   if(level>=2){const base=spatialRail(level,scope,s,phase);if(!s)return base;const node=document.createElement('div');node.innerHTML=base;node.querySelector('.atlas-insight-card')?.remove();return '<div class="atlas-insight-stack">'+workspaceSelectionRail(s,scope)+(node.querySelector('.atlas-insight-stack')?.innerHTML||'')+'</div>';}
   if(state.spatialSelectionActive&&s)return '<div class="atlas-insight-stack">'+workspaceSelectionRail(s,scope)+'<section class="atlas-insight-card">'+atlasKicker('02 / SELECTED EVIDENCE')+'<h2>Follow the source.</h2><p>Inspect this project without losing the map. Choose a member, enter the next scale, compare or read the dossier.</p><button class="text-button" data-spatial-action="dossier" data-id="'+esc(s.id)+'">Full project dossier ↗</button></section><section class="atlas-insight-card">'+atlasKicker('03 / CONTEXT')+'<p>'+scope.sites.length+' named records in this scope. Source locations remain separate from capacity estimates.</p></section></div>';
-  const agg=spatialAggregate(scope.sites,phase),targets=spatialAggregate(scope.sites,'target'),companies=spatialCompanies(scope.sites);
+  const agg=spatialAggregate(scope.sites,phase);
   const countries=new Set(scope.sites.map(r=>r.country)).size;
-  const ranked=spatialTopSites(scope.sites,phase==='snapshot'?'target':phase,3);
+
   return `<div class="atlas-insight-stack"><section class="atlas-insight-card accent">${atlasKicker('01 / THE GLOBAL TAKEAWAY')}<h2>${level===0?'Compute is a<br>physical asset class.':esc(scope.label)+'.<br>A connected system.'}</h2><p>${agg.count} projects across ${countries} countries. Follow their power, ownership and capital.</p><p class="atlas-card-footnote">${agg.known} IT estimates · ${agg.unknown} native / unknown. Partial coverage.</p></section>
-    <section class="atlas-insight-card">${atlasKicker('02 / PROJECTED BUILDOUT')}<h2>Where capacity<br>is being planned.</h2>${atlasRankRows(ranked,'target')}<p class="atlas-card-footnote">${targets.known} dated target estimates. Targets are neither incremental additions nor live capacity.</p></section>
-    <section class="atlas-insight-card">${atlasKicker('03 / CAPITAL & COUNTERPARTIES')}<h2>The companies<br>behind it.</h2><div class="atlas-company-cloud">${companies.map(({c})=>`<button data-action="company" data-id="${esc(c.id)}"><i style="background:${esc(c.color)}"></i>${esc(c.name)}</button>`).join('')}</div><button class="text-button" data-action="nav" data-id="investment">Open the investment lens ↗</button></section></div>`;
+    <section class="atlas-insight-card">${atlasKicker('02 / PROJECTED BUILDOUT')}<h2>Where capacity is planned.</h2>${workspaceRegionalAnalysis(scope)}</section>
+    <section class="atlas-insight-card">${atlasKicker('03 / GO INSIDE A CAMPUS')}${workspaceCampusPreview(scope)}</section></div>`;
 }
 function workspaceProjectTabs(s){
   return `<nav class="workspace-project-tabs atlas-project-shortcuts" role="tablist" aria-label="Facility research sections">${WORKSPACE_TOPICS.map(([topic,label])=>`<button role="tab" aria-selected="${workspaceState.tab===topic}" tabindex="${workspaceState.tab===topic?0:-1}" data-workspace-topic="${topic}" class="${workspaceState.tab===topic?'active':''}">${label}</button>`).join('')}</nav>`;
@@ -87,7 +130,7 @@ function workspaceResearchView(){
   const st=spatialState(),s=spatialDefaultSite(),level=st.spatialLevel,phase=st.spatialPhase,scope=spatialScope(level,s),[title,description]=spatialHeadline(level,scope,s),campus=level>=4;
   const excluded=s&&!spatialFiltered().some(x=>x.id===s.id);
   const mapHTML=campus?workspacePhaseDiagram(s,level):spatialMap(scope,s,level,phase).replace('<div class="atlas-map-legend">','<div class="atlas-map-legend"><span class="workspace-context-key">· OSM locations · no capacity implied</span>');
-  return `<article class="atlas-experience atlas-workspace atlas-editorial atlas-level-${level}">
+  return `<article class="atlas-experience atlas-workspace atlas-editorial atlas-level-${level} ${level<=1?'workspace-landscape':''}">
     ${globalThis.ATLAS_CATALOG_WARNING?'<p class="workspace-data-warning" role="status">Catalog service unavailable · showing the dated community-map snapshot.</p>':''}
     <header class="atlas-intro"><div><div class="atlas-eyebrow">${campus?'FACILITY & CAMPUS':'COMPUTE, FROM THE GROUND UP'}</div><h1>${campus?esc(s?.name||'No matching project'):title}</h1>${campus?`<p class="atlas-location">⌖ ${esc(s?.location||'')} · ${esc(s?.country||'')}</p>`:''}</div><div class="atlas-intro-aside"><p>${description}</p>${campus&&s?`<button class="btn primary" data-action="favorite" data-id="${esc(s.id)}">${saved.favorites.includes(s.id)?'★ On research shelf':'Add to research shelf +'}</button>`:'<button class="btn primary" data-atlas-action="journey">Take the five-stop tour ↗</button>'}</div></header>
     ${workspaceFilterChips()}${excluded?'<p class="workspace-data-warning" role="status">Selected project is outside the current refinements. Its identity is retained. <button class="text-button" data-atlas-action="clear-filters">Clear refinements ↗</button></p>':''}
@@ -180,6 +223,7 @@ function workspaceShareContent(){return `<h1>Share this view.</h1><p>The link re
 const workspaceOriginalTransition=spatialTransition;
 spatialTransition=function(update={}){
   workspaceState.records.page=0;
+  if(Number(update.level)===0)state.spatialRegion=null;
   if(Number(update.level)>=4)state.spatialCluster=[];
   if(update.selected){workspaceState.mobileExpanded=false;workspaceState.visibleIds=null;}
   workspaceOriginalTransition(update);
@@ -225,7 +269,7 @@ document.addEventListener('click',event=>{
   if(selection){state.spatialCluster=[];spatialTransition({selected:selection.dataset.workspaceSelect});}
   if(event.target.closest('[data-workspace-enter]'))spatialTransition({level:Math.min(4,state.spatialLevel+1)});
   const clear=event.target.closest('[data-workspace-clear]');
-  if(clear){const key=clear.dataset.workspaceClear;if(key==='evidence')state.spatialEvidence='all';else state.filter[key]=key==='q'?'':'all';state.spatialFiltersOpen=false;spatialTransition({replace:true});}
+  if(clear){const key=clear.dataset.workspaceClear;if(key==='region')state.spatialRegion=null;else if(key==='evidence')state.spatialEvidence='all';else state.filter[key]=key==='q'?'':'all';state.spatialFiltersOpen=false;spatialTransition({replace:true,...(key==='region'?{level:0}:{})});}
   const compare=event.target.closest('[data-workspace-compare]');
   if(compare){const id=compare.dataset.workspaceCompare;if(!site(id))return;if(saved.projectCompare.includes(id))saved.projectCompare=saved.projectCompare.filter(x=>x!==id);else if(saved.projectCompare.length<3)saved.projectCompare.push(id);else{toast('Compare up to three projects. Remove one to add another.');workspaceCompareDrawer();return;}save();compare.textContent=saved.projectCompare.includes(id)?'✓ Comparing':'Compare +';compare.setAttribute('aria-pressed',String(saved.projectCompare.includes(id)));toast(saved.projectCompare.length+' projects in comparison');}
   if(event.target.closest('[data-workspace-open-compare]'))workspaceCompareDrawer();
@@ -271,6 +315,7 @@ const workspaceSpatialURL=spatialURL;
 spatialURL=function(view=state.view){
   const url=workspaceSpatialURL(view);if(!['overview','globe'].includes(view))return url;
   const p=new URLSearchParams(url.split('?')[1]||''),s=site(state.spatialSelected),id=s&&workspaceState.phaseBySite.get(s.id),r=workspaceState.records;
+  if(WORKSPACE_REGIONS.includes(state.spatialRegion))p.set('region',state.spatialRegion);
   if(id)p.set('claim',id);if(workspaceState.tab!=='overview')p.set('topic',workspaceState.tab);
   const camera=workspaceCameraParam(workspaceCurrentCamera());if(camera)p.set('camera',camera);
   if(state.spatialLabels===false)p.set('labels','0');if(state.spatialRoads===false)p.set('roads','0');
@@ -287,6 +332,7 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
   if(s){if(workspacePhases(s).some(r=>r.id===p.get('claim')))workspaceState.phaseBySite.set(s.id,p.get('claim'));else workspaceState.phaseBySite.delete(s.id);}
   if(['','overview','globe'].includes(path)){
     if(globe instanceof ResearchMap)globe.skipCameraSave=true;
+    state.spatialRegion=WORKSPACE_REGIONS.includes(p.get('region'))?p.get('region'):null;
     state.spatialCamera={};state.spatialRouteCamera=workspaceParseCamera(p.get('camera'));
     state.spatialLabels=p.get('labels')!=='0';state.spatialRoads=p.get('roads')!=='0';
     state.spatialFly=['americas','europe','asia','middle-east','custom'].includes(p.get('preset'))?p.get('preset'):'all';

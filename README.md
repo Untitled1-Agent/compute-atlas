@@ -54,6 +54,14 @@ and a development chronology ordered by reported/as-of date. Undated documents
 remain explicit. Regional investment programs appear as wider context rather
 than a single facility's financing. See the [navigation checkpoint](docs/checkpoints/2026-10-10-research-navigation.md).
 
+The opening analysis rail groups comparable target IT models by region, preserving
+quantified and unquantified counts. Select a region to open its exact research
+scope; refinements, camera, reload and browser history remain shareable. These are
+partial, mixed-vintage model subtotals, not live market capacity. A dated campus
+preview opens the exact historical source scene; scopes without accepted imagery
+retain an explicit availability state. `python qa/landing.py` checks both HTTP
+entrypoints and desktop, tablet and phone layouts.
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.
