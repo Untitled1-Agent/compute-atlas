@@ -1,0 +1,725 @@
+{
+  "reviewed_at": "2026-10-20",
+  "source_run": "https://github.com/Untitled1-Agent/compute-atlas/actions/runs/39242678199",
+  "previous_captured_at": "2026-10-05T22:57:10.310545+00:00",
+  "previous_sha256": "108c7065110bfb775d7d6ba7e7b6a52ce6e23559e4b72bbf45d98a221d9ea670",
+  "captured_at": "2026-10-19T11:11:58.348868+00:00",
+  "publication_sha256": "49c62841f50d05eeea281e54dccaaa74cbecab7d712831eba9c28837959cadca",
+  "features": 5301,
+  "added": [
+    "osm-node-12737798801",
+    "osm-node-14261912876",
+    "osm-node-14261912877",
+    "osm-node-14265747424",
+    "osm-node-14271475775",
+    "osm-node-14274641426",
+    "osm-node-14277048779",
+    "osm-node-14277390413",
+    "osm-node-14279486585",
+    "osm-node-14281281435",
+    "osm-relation-12893102",
+    "osm-way-1091133364",
+    "osm-way-1446760442",
+    "osm-way-1489625232",
+    "osm-way-1565614265",
+    "osm-way-1565614266",
+    "osm-way-1565893700",
+    "osm-way-1566629297",
+    "osm-way-1566676867",
+    "osm-way-1566676868",
+    "osm-way-1567475191",
+    "osm-way-1567478346",
+    "osm-way-1567478347",
+    "osm-way-1567485997",
+    "osm-way-1567486004",
+    "osm-way-1567486005",
+    "osm-way-1567781259",
+    "osm-way-1567993438",
+    "osm-way-1568001590",
+    "osm-way-1568279137",
+    "osm-way-1568496500",
+    "osm-way-1568496501",
+    "osm-way-1568581817",
+    "osm-way-1568581818",
+    "osm-way-1568615857",
+    "osm-way-1568619392",
+    "osm-way-1568876199",
+    "osm-way-1568876200",
+    "osm-way-1568876201",
+    "osm-way-1568876202",
+    "osm-way-1568876203",
+    "osm-way-1569311213",
+    "osm-way-1569311214",
+    "osm-way-1569311215",
+    "osm-way-282513938",
+    "osm-way-567894059",
+    "osm-way-769480058",
+    "osm-way-769520032",
+    "osm-way-88239907",
+    "osm-way-900152571"
+  ],
+  "absent_from_new_capture": [
+    "osm-node-11497013685",
+    "osm-node-14200418841",
+    "osm-way-1254197167",
+    "osm-way-1288320747",
+    "osm-way-1342103498",
+    "osm-way-1342103499",
+    "osm-way-1342103500",
+    "osm-way-1342103501",
+    "osm-way-1445218606",
+    "osm-way-182622783",
+    "osm-way-192215351",
+    "osm-way-320648944",
+    "osm-way-44065956",
+    "osm-way-681856582"
+  ],
+  "changed": [
+    "osm-way-278560778",
+    "osm-way-460056020",
+    "osm-way-852039781",
+    "osm-way-700738101",
+    "osm-way-216811192",
+    "osm-way-460056024",
+    "osm-way-1125276312",
+    "osm-way-1446502466",
+    "osm-way-597970806",
+    "osm-way-1540030566",
+    "osm-way-793087859",
+    "osm-way-1421212901",
+    "osm-way-1495979992",
+    "osm-way-460056019",
+    "osm-way-1535752110",
+    "osm-way-192776581",
+    "osm-way-430604130",
+    "osm-way-597970813",
+    "osm-way-450078003",
+    "osm-way-1543296494",
+    "osm-way-300969616",
+    "osm-way-1188680255",
+    "osm-way-1472128597",
+    "osm-way-794147657",
+    "osm-way-701930921",
+    "osm-way-300969619",
+    "osm-way-1536001840",
+    "osm-relation-21073054",
+    "osm-way-258148708",
+    "osm-way-350123835",
+    "osm-way-701924664",
+    "osm-way-48242814",
+    "osm-way-1558897570",
+    "osm-way-793087858",
+    "osm-way-300969615",
+    "osm-way-595216849",
+    "osm-way-701924665",
+    "osm-way-701923200",
+    "osm-way-1482076330",
+    "osm-way-746750722",
+    "osm-way-1007825570",
+    "osm-way-300969614",
+    "osm-way-701930920",
+    "osm-way-1544360246",
+    "osm-way-1019812125",
+    "osm-way-1381264361",
+    "osm-way-985207884",
+    "osm-way-460056023",
+    "osm-way-1536001839",
+    "osm-way-1510517635",
+    "osm-way-769205607",
+    "osm-way-1263819877",
+    "osm-way-1344901566",
+    "osm-way-46831933",
+    "osm-way-79159494",
+    "osm-way-1561771300",
+    "osm-way-465062052",
+    "osm-way-1450418654",
+    "osm-way-597970811",
+    "osm-way-1510517636",
+    "osm-way-931739891",
+    "osm-way-61995368",
+    "osm-way-1344901569",
+    "osm-way-79158387",
+    "osm-way-1279858474",
+    "osm-way-1276518684",
+    "osm-way-1025002889",
+    "osm-way-1450788161",
+    "osm-way-551387747",
+    "osm-way-1457383500",
+    "osm-way-1276518679",
+    "osm-way-1227777116",
+    "osm-way-1518761569",
+    "osm-way-697020850",
+    "osm-way-958662382",
+    "osm-way-585998677",
+    "osm-way-551063056",
+    "osm-way-258743341",
+    "osm-way-435817145",
+    "osm-way-1450422488",
+    "osm-way-1156034466",
+    "osm-way-59294476",
+    "osm-way-597970809",
+    "osm-way-989525011",
+    "osm-way-1317733642",
+    "osm-way-1544360248",
+    "osm-way-1462886682",
+    "osm-way-1490401523",
+    "osm-way-886028872",
+    "osm-node-13179027944",
+    "osm-way-1269259655",
+    "osm-way-489387401",
+    "osm-way-1276518687",
+    "osm-way-1544360249",
+    "osm-way-1536001841",
+    "osm-way-299929061",
+    "osm-way-48242816",
+    "osm-way-983627455",
+    "osm-way-465062053",
+    "osm-way-697020849",
+    "osm-way-460175664",
+    "osm-way-1443922535"
+  ],
+  "changed_fields": {
+    "osm-way-278560778": [
+      "geometry",
+      "lon"
+    ],
+    "osm-way-460056020": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-852039781": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-700738101": [
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-216811192": [
+      "source_version",
+      "updated_at",
+      "operator",
+      "tags"
+    ],
+    "osm-way-460056024": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1125276312": [
+      "lat",
+      "geometry",
+      "source_version",
+      "kind",
+      "updated_at",
+      "lon",
+      "operator",
+      "tags"
+    ],
+    "osm-way-1446502466": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-597970806": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1540030566": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-793087859": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1421212901": [
+      "geometry",
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1495979992": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-460056019": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1535752110": [
+      "lat",
+      "geometry",
+      "lon"
+    ],
+    "osm-way-192776581": [
+      "source_version",
+      "updated_at",
+      "address",
+      "tags"
+    ],
+    "osm-way-430604130": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-597970813": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-450078003": [
+      "geometry",
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1543296494": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-300969616": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1188680255": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1472128597": [
+      "geometry"
+    ],
+    "osm-way-794147657": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-701930921": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-300969619": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1536001840": [
+      "lat",
+      "name",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon",
+      "operator",
+      "tags"
+    ],
+    "osm-relation-21073054": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-258148708": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-350123835": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-701924664": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-48242814": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1558897570": [
+      "name",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-793087858": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-300969615": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-595216849": [
+      "geometry",
+      "source_version",
+      "updated_at",
+      "address",
+      "operator",
+      "tags"
+    ],
+    "osm-way-701924665": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-701923200": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1482076330": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-746750722": [
+      "lat",
+      "geometry",
+      "source_version",
+      "kind",
+      "updated_at",
+      "lon",
+      "tags"
+    ],
+    "osm-way-1007825570": [
+      "lat",
+      "geometry",
+      "lon"
+    ],
+    "osm-way-300969614": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-701930920": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1544360246": [
+      "city",
+      "lat",
+      "name",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "address",
+      "lon",
+      "operator",
+      "tags"
+    ],
+    "osm-way-1019812125": [
+      "name",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1381264361": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-985207884": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-460056023": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1536001839": [
+      "name",
+      "source_version",
+      "kind",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1510517635": [
+      "geometry",
+      "lon"
+    ],
+    "osm-way-769205607": [
+      "geometry",
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1263819877": [
+      "name",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1344901566": [
+      "name",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-46831933": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-79159494": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-1561771300": [
+      "city",
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon",
+      "tags"
+    ],
+    "osm-way-465062052": [
+      "name",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1450418654": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-597970811": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1510517636": [
+      "lat",
+      "geometry"
+    ],
+    "osm-way-931739891": [
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-61995368": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1344901569": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-79158387": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon",
+      "tags"
+    ],
+    "osm-way-1279858474": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1276518684": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-1025002889": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1450788161": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-551387747": [
+      "city",
+      "name",
+      "source_version",
+      "updated_at",
+      "address",
+      "operator",
+      "tags"
+    ],
+    "osm-way-1457383500": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1276518679": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1227777116": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1518761569": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-697020850": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-958662382": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-585998677": [
+      "geometry",
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-551063056": [
+      "source_version",
+      "updated_at",
+      "address",
+      "tags"
+    ],
+    "osm-way-258743341": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-435817145": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1450422488": [
+      "name",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1156034466": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-59294476": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-597970809": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-989525011": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1317733642": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1544360248": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-1462886682": [
+      "city",
+      "name",
+      "source_version",
+      "updated_at",
+      "address",
+      "operator",
+      "tags"
+    ],
+    "osm-way-1490401523": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-886028872": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-node-13179027944": [
+      "lat",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-1269259655": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-489387401": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-1276518687": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-1544360249": [
+      "lat",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon"
+    ],
+    "osm-way-1536001841": [
+      "lat",
+      "name",
+      "geometry",
+      "source_version",
+      "updated_at",
+      "lon",
+      "operator",
+      "tags"
+    ],
+    "osm-way-299929061": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-48242816": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-983627455": [
+      "source_version",
+      "updated_at",
+      "address",
+      "tags"
+    ],
+    "osm-way-465062053": [
+      "name",
+      "source_version",
+      "updated_at",
+      "tags"
+    ],
+    "osm-way-697020849": [
+      "source_version",
+      "updated_at"
+    ],
+    "osm-way-460175664": [
+      "source_version",
+      "updated_at",
+      "address",
+      "tags"
+    ],
+    "osm-way-1443922535": [
+      "source_version",
+      "updated_at",
+      "tags"
+    ]
+  },
+  "review_basis": [
+    "Re-normalized hash-verified captured source and Natural Earth country geometry; canonical output matches candidate.",
+    "Validated source identifiers, finite coordinates, polygon structure, denominator counts, null IT power and community lifecycle vocabulary.",
+    "All four operator-reviewed source records are byte-identical; no source review transferred to another identity.",
+    "Prior capture remains in Git history. Absent features are not inferred closed, demolished or merged; bookmarks show an unavailable-record recovery state."
+  ],
+  "policy": "Community geography only, independently dated and not a facility census or operating-capacity publication."
+}

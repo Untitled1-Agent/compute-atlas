@@ -105,7 +105,7 @@ try:
             check(entry+' invalid shared scene safely falls back',page.evaluate('globe.zoom===1.45&&campusState.feature===null&&Number.isFinite(globe.yaw)'))
             page.evaluate("ATLAS.spatial.select('tencent-qingyuan');ATLAS.spatial.setLevel(4)")
             check(entry+' unavailable campuses retain native evidence fallback',page.locator('.campus-spatial-hero').count()==0 and page.locator('.workspace-native').is_visible())
-            check(entry+' historical feature leaves inventories unchanged',page.evaluate('D.sites.length===79&&CATALOG.records.length===5265'))
+            check(entry+' historical feature leaves inventories unchanged',page.evaluate('D.sites.length===79&&CATALOG.records.length===5301'))
             check(entry+' no uncaught campus errors',not errors)
             page.close()
         browser.close()

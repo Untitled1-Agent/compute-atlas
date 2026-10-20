@@ -81,7 +81,7 @@ try:
    check(entry+' global search includes primary operator listings',page.locator('#search-results [data-operator-select="equinix-fr2"]').count()==1)
    page.locator('#search-results [data-operator-select="equinix-fr2"]').click()
    check(entry+' global result clears old incompatible filters',page.evaluate('ATLAS.operators.state.country==="All" && ATLAS.operators.state.q==="" && ATLAS.operators.state.selected==="equinix-fr2"'))
-   check(entry+' original research and geographic catalog remain intact',page.evaluate('ATLAS.data.sites.length===79 && ATLAS.catalog.data.records.length===5265 && ATLAS.catalog.data.counts.continents.Europe===1908'))
+   check(entry+' original research and geographic catalog remain intact',page.evaluate('ATLAS.data.sites.length===79 && ATLAS.catalog.data.records.length===5301 && ATLAS.catalog.data.counts.continents.Europe===1913'))
    check(entry+' no uncaught JavaScript exceptions',not errors,errors);check(entry+' no third-party browser requests',not external,external)
    page.close()
   if not args.in_memory:
