@@ -44,8 +44,12 @@ class ResearchMap {
     const selected = spatialDefaultSite();
     const continent=spatialContinent(selected),asia=continent==='Asia',atlantic=['North America','Europe'].includes(continent),b=this.scope.bounds;
     this.lat = this.level === 1 ? (asia ? 30 : atlantic?40:(b[1]+b[3])/2) : 24;
-    this.lon = this.level === 1 ? (asia ? 105 : atlantic?-43:(b[0]+b[2])/2) : -18;
+    this.lon = this.level === 1 ? (asia ? 105 : atlantic?-43:(b[0]+b[2])/2) : -35;
     this.zoom = this.level === 1 ? 1.53 : 1;
+    if(this.scope.region){
+      const centers={'North America':[35,-100],'Europe':[51,12],'Asia':[30,105],'Middle East':[27,47],'Oceania':[-25,135],'South America':[-20,-60],'Africa':[5,20]};
+      [this.lat,this.lon]=centers[this.scope.region]||[(b[1]+b[3])/2,(b[0]+b[2])/2];
+    }
     this.flat = this.level >= 2;
     this.labels = state.spatialLabels !== false;
     this.bounds = [...this.scope.bounds];
