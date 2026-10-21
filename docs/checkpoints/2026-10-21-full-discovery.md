@@ -9,12 +9,15 @@ The command search links directly into complete results.
 
 Native directory notes now return from the research shelf to the exact source
 record after reload. The shelf count includes notes and saved model cases without
-double-counting the same identity. Search previews use readable native metadata.
+double-counting the same identity. Moving from a physical feature to a research
+destination restores its own breadcrumb while retaining the map selection. Search previews use readable native metadata.
 
-Local validation: 54/54 full-discovery browser checks across hosted and standalone
+Local validation: 58/58 full-discovery browser checks across hosted and standalone
 entrypoints, including 320/390-pixel views, source/revision return, uncapped cell
 matches, original formula search, cited exports and the saved-note round trip.
-Screenshots were reviewed at desktop and phone sizes. Broad regressions run in CI.
+Screenshots were reviewed at desktop and phone sizes. Model checks pass 46/46,
+including unknown company and incomplete shared-link recovery without overwriting
+working assumptions. Broad regressions run in CI.
 
 This is discovery of the existing research publication, not an acquisition of new
 facility data. The production host and fresh source access remain separate open
