@@ -852,6 +852,18 @@ body{background:#07141b}
 @media(max-width:650px){.connection-grid{grid-template-columns:1fr}.connection-card{padding:16px}.connection-graph{padding:16px 5px}.connection-graph>header{align-items:start;flex-direction:column;gap:0}.connection-edge{gap:6px;grid-template-columns:minmax(0,1fr) minmax(85px,1fr) minmax(0,1fr)}.connection-card>header{align-items:start;flex-direction:column;gap:8px}.company-project-links{grid-template-columns:1fr}.connection-filters label{min-width:130px}.investment-project-evidence>.panel-head{flex-wrap:wrap}}
 
 .model-library,.model-shelf{border-top:1px solid var(--line);margin:30px 0;padding:24px 0}.model-library>header{display:flex;justify-content:space-between;align-items:center;gap:24px}.model-library h2{margin-top:10px}.model-library p{font-size:12px}.model-save-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:18px 0}.model-save-controls label{flex:1;min-width:220px;color:var(--muted);font-size:12px}.model-save-controls input{display:block;width:100%;margin-top:8px}.model-cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}.model-cases article{padding:16px;border:1px solid var(--line);overflow-wrap:anywhere}.model-cases label{display:block;font-size:11px;margin-bottom:14px}.model-cases strong,.model-cases span{display:block}.model-cases strong{font-size:14px;font-weight:500}.model-cases span{font-size:11px;color:var(--muted);margin:10px 0}.model-cases article>div{display:flex;gap:12px;flex-wrap:wrap;margin-top:15px}.model-comparison{margin:20px 0}.model-comparison table{min-width:650px}.model-comparison th small{display:block;margin-top:8px;color:var(--muted)}#model-share-url{min-height:160px;margin:14px 0}#model-feedback{color:var(--accent)}@media(max-width:700px){.model-cases{grid-template-columns:1fr}.model-library>header{flex-direction:column;align-items:start}.model-save-controls label{flex-basis:100%;min-width:0}}
+
+.discovery-search-label{display:block;font-size:12px;color:var(--muted);margin:20px 0 8px}#discovery-query{width:100%;font-size:16px;min-height:48px}
+.discovery-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;margin-top:28px;align-items:start}#discovery-types{position:sticky;top:20px}
+#discovery-types button{display:flex;justify-content:space-between;gap:12px;text-align:left;padding:13px 10px;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line)}
+#discovery-types button[aria-pressed=true]{color:var(--accent);background:#10282b}#discovery-types span{font-size:11px;color:var(--muted)}
+.discovery-count{font-size:12px;color:var(--muted);margin:10px 0 20px}.discovery-results{display:grid;gap:0}.discovery-result{padding:20px 4px;text-align:left;border-bottom:1px solid var(--line);min-width:0;overflow-wrap:anywhere}
+.discovery-result strong{display:block;font:22px Georgia,serif;margin:10px 0}.discovery-result p{font-size:12px;line-height:1.7;margin:8px 0}.discovery-result small{font-size:10px;color:var(--muted)}
+.discovery-result mark{background:#8de0c22b;color:#ceffed}.discovery-start{padding:22px 0}.discovery-start p{font-size:13px}.discovery-start>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px}
+.discovery-start span{font-size:11px;color:var(--muted)}.discovery-start b{display:block;color:var(--text);font:24px Georgia,serif;margin-bottom:7px}.discovery-all{width:100%;margin:18px 0}
+@media(max-width:800px){.discovery-layout{grid-template-columns:minmax(0,1fr);gap:18px}#discovery-types{position:static;display:flex;overflow-x:auto;gap:8px;padding-bottom:8px}#discovery-types button{white-space:nowrap;border:1px solid var(--line);flex-shrink:0}.discovery-start>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.discovery-claim-state{display:block;color:var(--amber);font-size:11px;margin-top:8px;line-height:1.5}
 </style></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -1084,7 +1096,8 @@ function storageStatus(){
 
 const state={view:'overview',filter:{q:'',company:'all',country:'all',review:'all',stage:'all'},layout:'table',sort:'power',globeLayer:'snapshot',marker:'power',report:0,section:0,reportQ:'',dataTab:'sources',dataQ:'',book:0,sheet:0,costTab:'benchmarks',costLayer:'all',costQ:'',companyRegion:'all',companyQ:'',invest:'microsoft',compare:saved.compare||[],drawer:null,drawerHistory:[],tour:-1};
 let globe=null,toastTimer=null,lastFocused=null,drawerReturn=null;
-const save=()=>{saved.compare=state.compare;try{localStorage.setItem('compute-atlas-v3',JSON.stringify(saved));storageOK=true;}catch{storageOK=false;}storageStatus();$('#shelf-count').textContent=saved.favorites.length+(saved.sourceFeatures?.length||0)};
+const shelfCount=()=>new Set([...saved.favorites,...Object.entries(saved.notes).filter(([,v])=>v.trim()).map(([id])=>id),...(saved.sourceFeatures||[]).map(r=>r.feature_id),...(saved.models||[]).map(r=>r.id)]).size;
+const save=()=>{saved.compare=state.compare;try{localStorage.setItem('compute-atlas-v3',JSON.stringify(saved));storageOK=true;}catch{storageOK=false;}storageStatus();$('#shelf-count').textContent=shelfCount()};
 const isSaved=id=>saved.favorites.includes(id);
 const star=id=>`<button class="star-button ${isSaved(id)?'saved':''}" data-action="favorite" data-id="${esc(id)}" aria-label="${isSaved(id)?'Remove from':'Add to'} research shelf" aria-pressed="${isSaved(id)}">${isSaved(id)?'★':'☆'}</button>`;
 const notice=(t,w=false)=>`<div class="notice ${w?'warning':''}">${t}</div>`;
@@ -1151,11 +1164,11 @@ function watchlistView(){
   const heading=pagehead('YOUR RESEARCH SHELF','Keep the research that matters to you.',storageOK?'Projects, companies and notes are saved locally in this browser. Export a research session to move them elsewhere; nothing is uploaded.':'Persistent browser storage is unavailable. Your research remains in this open session; export before closing.',`<button class="btn" data-action="import-session">Import session ↑</button><button class="btn primary" data-action="export-session">Export session ↓</button>`);
   const companyRows=companies.length?`<section class="panel panel-pad section-gap"><h3>Saved companies</h3>${companies.map(c=>`<div class="shelf-company"><button class="text-button" data-action="company" data-id="${esc(c.id)}">${esc(c.name)} ↗<small>${esc(c.role)} · ${esc(c.region)}</small></button>${star(c.id)}</div>`).join('')}</section>`:'';
   const notes=Object.entries(saved.notes).filter(([,v])=>v.trim()).map(([id,text])=>{
-    const project=site(id),issuer=company(id),mapped=globalThis.ATLAS?.catalog?.feature(id);
-    const link=project||issuer?`<button class="text-button" data-action="${project?'site':'company'}" data-id="${esc(id)}">${esc((project||issuer).name)} ↗</button>`:mapped?`<button class="text-button" data-catalog-open="${esc(id)}">${esc(mapped.name)} · mapped location ↗</button>`:/^osm-(node|way|relation)-\d+$/.test(id)?`<button class="text-button" data-catalog-recover="${esc(id)}">${esc(id)} · unavailable mapped record ↗</button>`:`<strong>${esc(id)}</strong><small>Saved record unavailable in this publication</small>`;
+    const project=site(id),issuer=company(id),mapped=globalThis.ATLAS?.catalog?.feature(id),native=globalThis.ATLAS?.inventory?.record(id);
+    const link=project||issuer?`<button class="text-button" data-action="${project?'site':'company'}" data-id="${esc(id)}">${esc((project||issuer).name)} ↗</button>`:mapped?`<button class="text-button" data-catalog-open="${esc(id)}">${esc(mapped.name)} · mapped location ↗</button>`:native?`<button class="text-button" data-inventory-open="${esc(id)}">${esc(native.name)} · source directory ↗</button>`:/^osm-(node|way|relation)-\d+$/.test(id)?`<button class="text-button" data-catalog-recover="${esc(id)}">${esc(id)} · unavailable mapped record ↗</button>`:`<strong>${esc(id)}</strong><small>Saved record unavailable in this publication</small>`;
     return `<div class="fact">${link}<p>${esc(text)}</p></div>`;
   }).join('');
-  return heading+(projects.length?siteCards(projects):'')+companyRows+(!projects.length&&!companies.length?'<div class="empty"><h3>Your shelf is ready.</h3><p>Star a project or company in its dossier. Notes retain the identity of their own research record.</p><button class="btn" data-action="nav" data-id="facilities">Explore facilities →</button></div>':'')+`<section class="panel panel-pad section-gap"><h3>Saved notes</h3>${notes||'<p>Open a project, company or mapped location to add a private research note.</p>'}</section>`;
+  return heading+(projects.length?siteCards(projects):'')+companyRows+(!shelfCount()?'<div class="empty"><h3>Your shelf is ready.</h3><p>Star a project or company in its dossier. Notes retain the identity of their own research record.</p><button class="btn" data-action="nav" data-id="facilities">Explore facilities →</button></div>':'')+`<section class="panel panel-pad section-gap"><h3>Saved notes</h3>${notes||'<p>Open a project, company or mapped location to add a private research note.</p>'}</section>`;
 }
 function openDrawer(kind,id,opts={}){if(!opts.back&&state.drawer)state.drawerHistory.push(state.drawer);if(!state.drawer){lastFocused=document.activeElement;state.drawerHistory=[];}state.drawer={kind,id};if(['site','company','source'].includes(kind))history.replaceState(null,'','#'+kind+'/'+encodeURIComponent(id));$('#drawer-scrim').hidden=false;$('#drawer').hidden=false;document.body.style.overflow='hidden';$('#drawer-back').style.visibility=state.drawerHistory.length?'visible':'hidden';$('#drawer-type').textContent=({site:'FACILITY DOSSIER',company:'COMPANY DOSSIER',source:'SOURCE & PROVENANCE',cost:'COST BENCHMARK',contract:'CONTRACT / PROGRAM',method:'EVIDENCE GUIDE',cell:'ORIGINAL EXCEL CELL',footnote:'FOOTNOTE OBLIGATIONS',hardware:'HARDWARE NORMALIZATION',help:'EXPLORER CONTROLS',cluster:'NEARBY SITE RECORDS',record:'SOURCE RECORD'})[kind]||'RESEARCH DOSSIER';let html='';if(kind==='site')html=siteDossier(site(id));else if(kind==='company')html=companyDossier(company(id));else if(kind==='source')html=sourceDossier(source(id));else if(kind==='cost')html=costDossier(D.costs.find(x=>x.id===id));else if(kind==='contract')html=contractDossier(D.contracts.find(x=>x.id===id));else if(kind==='method')html=methodDossier();else if(kind==='help')html=helpDossier();else if(kind==='cluster'){const ss=id.split('|').map(site).filter(Boolean);html=`<div class="eyebrow">GEOGRAPHIC NEIGHBORS</div><h1>${ss.length} nearby records</h1><p>Markers are clustered visually, not merged financially. City-level anchors can place different facilities at the same point.</p><div class="panel">${siteItems(ss)}</div><p class="footnote">Zoom further or select a record. Co-location does not establish a common campus, ownership or power denominator.</p>`;}else if(kind==='hardware'){const n=D.normalization[+id];html=`<h1>${esc(n.platform)}</h1><div class="dossier-hero"><div class="small-title">ORIGINAL COMPARISON MODEL</div><p>${esc(n.notes)}</p></div>${kv({'Platform power':n.system_kw+' kW','Accelerators per platform':n.physical_gpu,'External IT overhead':fmt(n.overhead_pct*100)+'%','H100e / accelerator':fmt(n.h100e_per_gpu,5),'IT kW / accelerator':fmt(n.kw_per_gpu_it,5),'Physical accelerators / IT GW':fmt(n.physical_per_it_gw),'H100e / IT GW':fmt(n.h100e_per_it_gw),'PUE':n.pue})}<div class="equation">${n.system_kw} ÷ ${n.physical_gpu} × (1 + ${n.overhead_pct}) = ${fmt(n.kw_per_gpu_it,5)} IT kW per accelerator</div>${srefs(n.sources)}${raw(n)}`;}else if(kind==='footnote'){const c=company(id);html=`<h1>${esc(c.name)}</h1><div class="eyebrow">ORIGINAL FINANCIAL FOOTNOTE MODEL</div>${notice('Financial records are imported from the earlier report. Source dates, scopes and overlaps must be verified before investment reliance.',true)}${c.commitment?kv(c.commitment):'<p>No populated financial record.</p>'}${srefs(c.commitment?.sources)}${raw(c.commitment)}<h2>Associated contracts</h2>${D.contracts.filter(x=>x.company_ids.includes(id)).map(x=>`<div class="fact"><button class="text-button" data-action="contract" data-id="${x.id}">${esc(x.vendor)} / ${esc(x.counterparty)} →</button></div>`).join('')}`;}else if(kind==='cell'){const b=A.workbooks[state.book],sh=b.sheets[state.sheet],c=sh.cells.find(x=>x.address===id);html=`<div class="eyebrow">READ-ONLY ORIGINAL WORKBOOK</div><h1>${esc(sh.name)}!${esc(id)}</h1><p>${esc(b.filename)}</p>${kv({'Address':id,'Cached value':c?.value??'(empty)','Formula':c?.formula??'(no formula)','Row':c?.row,'Column':c?.col})}${notice('Cached values are the stored results from the source XLSX, not freshly calculated results. A valid stored formula is not evidence that its business assumptions are valid.',true)}${raw(c||{address:id,value:null,formula:null})}`;}else if(kind==='record'){html=`<h1>Original data record</h1>${raw(JSON.parse(id),'Full record')}`;}$('#drawer-content').innerHTML=html;$('#drawer').scrollTop=0;if(opts.focus!==false)setTimeout(()=>$('#drawer .drawer-head .icon-button').focus({preventScroll:true}),20);if(kind==='site'&&typeof globe?.flyTo==='function'&&site(id)?.lat!=null)globe.flyTo(site(id).lat,site(id).lon,globe.zoom<1.6?1.6:globe.zoom);}
 function closeDrawer(){if($('#drawer').hidden)return;state.drawer=null;state.drawerHistory=[];history.replaceState(null,'','#'+state.view);$('#drawer').hidden=true;$('#drawer-scrim').hidden=true;document.body.style.overflow='';if(lastFocused?.isConnected)lastFocused.focus({preventScroll:true});}
@@ -4507,7 +4520,7 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
 const campusOriginalTransition=spatialTransition;
 spatialTransition=function(update={}){if(update.selected&&update.selected!==state.spatialSelected){if(globe instanceof CampusScene)globe.skipCameraSave=true;campusState.mode='aerial';campusState.physicalMode='aerial';campusState.feature=null;campusState.camera=null;campusState.routeCamera=null;campusState.viewCameras={};}campusOriginalTransition(update);if(globe instanceof CampusScene)workspaceSyncURL();};
 const campusOriginalNav=renderNav;
-renderNav=function(){campusEnsureSelection();campusOriginalNav();$('#shelf-count').textContent=saved.favorites.length+(saved.sourceFeatures?.length||0);if(state.spatialLevel===5&&workspaceActiveSelection().type==='project')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' Choose a physical feature');if(workspaceActiveSelection().type==='feature')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
+renderNav=function(){campusEnsureSelection();campusOriginalNav();$('#shelf-count').textContent=shelfCount();if(state.spatialLevel===5&&workspaceActiveSelection().type==='project')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' Choose a physical feature');if(workspaceActiveSelection().type==='feature')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
 ATLAS.campus={scene:campusScene,state:campusState,parseCamera:campusCameraParse,select:campusSelectFeature};ATLAS.workspace.activeSelection=workspaceActiveSelection;
 const campusOriginalShelf=watchlistView;
 watchlistView=function(){
@@ -4753,6 +4766,7 @@ if(!window.ATLAS_BOOTSTRAPPING)document.documentElement.classList.add('research-
 const inventoryState={q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',sort:'name',page:0,selected:null};
 const INVENTORY_COLLECTIONS={projects:'Research projects',osm:'Community map',equinix:'Equinix directory',digital:'Digital Realty directory'};
 let inventoryCache={inputs:[],rows:[]};
+const inventoryValues=value=>value==null?'':Array.isArray(value)?value.map(inventoryValues).join(' '):typeof value==='object'?Object.values(value).map(inventoryValues).join(' '):String(value);
 const inventoryText=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
 function inventoryRecords(){
   const inputs=[CATALOG,OPERATOR_DIRECTORY,DIGITAL_REALTY,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.relationships];
@@ -4763,7 +4777,7 @@ function inventoryRecords(){
         lat:s.lat,lon:s.lon,geometry:null,kind:'Research project',date:p.latest||s.snapshot?.date||s.target?.date||null,
         snapshot_mw:spatialPower(s,'snapshot'),target_mw:spatialPower(s,'target'),claims:p.rows.length,
         coordinate_basis:s.coordinate_precision||'Approximate archival anchor',source_urls:p.sources.map(r=>r.url).filter(Boolean),native:s,
-        search:[s.hardware,...p.searchRows.map(r=>r.text)].join(' ')};
+        search:[inventoryValues(s.hardware),...p.searchRows.map(r=>r.text)].join(' ')};
     });
     const osm=CATALOG.records.map(r=>({...r,collection:'osm',place:[r.city,r.address].filter(Boolean).join(' · '),
       date:r.updated_at,snapshot_mw:null,target_mw:null,claims:0,source_urls:[r.source_url],native:r,search:Object.values(r.tags||{}).join(' ')}));
@@ -4792,10 +4806,10 @@ function inventoryURL(){
   return '#inventory'+(p.size?'?'+p:'');
 }
 function inventoryGo(patch={},replace=false){
-  clearTimeout(inventoryTimer);if(state.tour>=0)endTour();closeDrawer();
+  const alreadyHere=state.view==='inventory';clearTimeout(inventoryTimer);if(state.tour>=0)endTour();closeDrawer();
   Object.assign(inventoryState,{page:0},patch);state.view='inventory';
   history[replace?'replaceState':'pushState'](null,'',inventoryURL());render();history.replaceState(null,'',inventoryURL());
-  document.querySelector('#sidebar')?.classList.remove('open');
+  document.querySelector('#sidebar')?.classList.remove('open');if(!alreadyHere)window.scrollTo({top:0,behavior:'instant'});
 }
 function inventoryRoute(query){
   const p=new URLSearchParams(query),countries=new Set(inventoryRecords().map(r=>r.country));
@@ -4869,6 +4883,7 @@ document.addEventListener('input',e=>{if(!['inventory-query','inventory-operator
 document.addEventListener('change',e=>{const key={'inventory-country':'country','inventory-coverage':'coverage','inventory-sort':'sort'}[e.target.id];if(key){inventoryState[key]=e.target.value;inventoryUpdate();}});
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.hasAttribute('data-inventory-open'))inventoryGo({q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',selected:b.dataset.inventoryOpen});
   if(b.hasAttribute('data-inventory-collection'))inventoryGo({collection:b.dataset.inventoryCollection});
   if(b.hasAttribute('data-inventory-select')){inventoryGo({selected:b.dataset.inventorySelect,page:inventoryState.page});$('#inventory-detail-title')?.focus({preventScroll:innerWidth>900});}
   if(b.hasAttribute('data-inventory-close'))inventoryGo({selected:null,page:inventoryState.page});
@@ -4886,7 +4901,7 @@ render=function(){if(window.ATLAS_BOOTSTRAPPING)return;if(state.view!=='inventor
 const inventoryBaseRoute=routeFromHash;window.removeEventListener('hashchange',inventoryBaseRoute);
 routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=location.hash.slice(1).split('?');if(path==='inventory')return inventoryRoute(q);inventoryBaseRoute();};
 window.addEventListener('hashchange',routeFromHash);
-ATLAS.inventory={state:inventoryState,records:inventoryRecords,rows:inventoryRows,go:inventoryGo,export:inventoryExportRows};
+ATLAS.inventory={state:inventoryState,records:inventoryRecords,record:inventoryRecord,rows:inventoryRows,go:inventoryGo,export:inventoryExportRows};
 if(!window.ATLAS_BOOTSTRAPPING){if(location.hash.startsWith('#inventory'))routeFromHash();else render();}
 
 'use strict';
@@ -5105,6 +5120,69 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=
 const modelOldShelf=watchlistView;
 watchlistView=function(){return modelOldShelf()+`<section class="model-shelf"><h2>Saved scenarios</h2><div class="model-cases">${saved.models.map(r=>`<article><strong>${esc(r.name)}</strong><span>${r.kind==='economics'?'Economics model':esc(company(r.company_id)?.name)+' · investment sensitivity'}</span><button class="text-button" data-model-load="${esc(r.id)}">Open scenario →</button></article>`).join('')||'<p>Save named assumptions in the economics lab or investment lens.</p>'}</div></section>`;};
 ATLAS.models={validate:modelValidate,normalize:modelNormalize,export:modelExport,result:modelInvestmentResult,open:modelOpen,share:modelShareURL,import:x=>{saved.models=modelNormalize(x.models);saved.modelDrafts=modelDrafts(x.modelDrafts);modelState.selected=[];if(saved.modelDrafts.economics)Object.assign(scenario,saved.modelDrafts.economics);}};
+if(!window.ATLAS_BOOTSTRAPPING)routeFromHash();
+
+'use strict';
+/* Full collection search. Result pagination never truncates the indexed corpus. */
+const discoveryState={q:'',type:'all',page:0};
+const DISCOVERY_TYPES={project:'Research projects',location:'Mapped features',listing:'Operator listings',company:'Companies',claim:'Cited claims',source:'Sources',contract:'Contracts',cost:'Cost benchmarks',report:'Report sections',cell:'Workbook cells',attachment:'Original attachments'};
+let discoveryCache={inputs:[],records:[]};
+function discoveryRecords(){
+  const inputs=[CATALOG,OPERATOR_DIRECTORY,DIGITAL_REALTY,ATLAS_PRIMARY.sources,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.relationships,ATLAS_PRIMARY.revision_history];
+  if(inputs.some((x,i)=>x!==discoveryCache.inputs[i])){
+    const rows=[],add=(type,id,title,text,attributes,record,extra='')=>rows.push({type,id,title,text:String(text||''),attributes,record,search:inventoryText([title,text,id,extra].join(' '))});
+    for(const r of inventoryRecords())add(r.collection==='projects'?'project':r.collection==='osm'?'location':'listing',r.id,r.name,[r.operator,r.place,r.country,INVENTORY_COLLECTIONS[r.collection],r.date?'Source date '+r.date.slice(0,10):'',r.claims?r.claims+' cited project claims':'',r.geometry?'Source footprint':r.mapped?'Map location':'No source coordinates'].filter(Boolean).join(' · '),`data-discovery-inventory="${esc(r.id)}"`,{collection:r.collection,record:r.native},r.search);
+    for(const c of D.companies)add('company',c.id,c.name,[c.ticker,c.role,c.region,c.thesis,c.watch,c.risk].join(' '),`data-action="company" data-id="${esc(c.id)}"`,c);
+    for(const s of D.sites)for(const r of atlasEvidenceRows(s))add('claim',r.id,atlasResearchLabel(r)+' · '+s.name,[r.effective?'Effective claim':'Earlier / rejected revision',primaryIsContext(r)?'Wider context; not a project total':'Project-specific',atlasResearchText(r)].join(' '),r.effective?`data-research-site="${esc(s.id)}" data-research-claim-target="${esc(r.id)}"`:`data-discovery-history="${esc(s.id)}" data-discovery-claim="${esc(r.id)}"`,r);
+    for(const s of ATLAS_PRIMARY.sources)add('source','primary:'+s.id,s.id+' · '+s.title,[s.publisher,s.url,s.published_at,s.retrieved_at,s.license,s.review_note].filter(Boolean).join(' '),`data-atlas-action="source" data-id="${esc(s.id)}"`,s);
+    for(const s of D.sources)add('source','archive:'+s.id,s.id+' · '+s.title,[s.issuer,s.url,s.date,s.notes].filter(Boolean).join(' '),`data-action="source" data-id="${esc(s.id)}"`,s);
+    for(const r of D.contracts)add('contract',r.id,r.vendor+' / '+r.counterparty,JSON.stringify(r),`data-action="contract" data-id="${esc(r.id)}"`,r);
+    for(const r of D.costs)add('cost',r.id,r.benchmark,JSON.stringify(r),`data-action="cost" data-id="${esc(r.id)}"`,r);
+    for(const r of searchDocs)add('report',r.ri+'|'+r.si,r.title,r.text,`data-action="search-report" data-id="${r.ri}|${r.si}"`,{filename:A.reports[r.ri].filename,section:A.reports[r.ri].sections[r.si]});
+    A.workbooks.forEach((book,bi)=>book.sheets.forEach((sheet,si)=>sheet.cells.forEach(cell=>add('cell',bi+'|'+si+'|'+cell.address,sheet.name+'!'+cell.address,[book.filename,cell.value??'',cell.formula??''].join(' '),`data-action="search-cell" data-id="${bi}|${si}|${esc(cell.address)}"`,{filename:book.filename,sheet:sheet.name,cell,policy:'Original cached value and formula; not recalculated or independently verified.'}))));
+    for(const f of D.manifest)add('attachment',f.filename,f.filename,[f.filename,f.sha256,f.bytes].join(' '),`data-action="original-file" data-id="${esc(f.filename)}"`,f);
+    discoveryCache={inputs,records:rows};
+  }
+  return discoveryCache.records;
+}
+function discoveryMatches(){const tokens=inventoryText(discoveryState.q).trim().split(/\s+/).filter(Boolean);if(!tokens.length)return [];return discoveryRecords().filter(r=>tokens.every(t=>r.search.includes(t)));}
+function discoveryRows(){const hits=discoveryMatches(),q=inventoryText(discoveryState.q).trim();return hits.filter(r=>discoveryState.type==='all'||r.type===discoveryState.type).sort((a,b)=>Number(inventoryText(b.title).includes(q))-Number(inventoryText(a.title).includes(q))||Object.keys(DISCOVERY_TYPES).indexOf(a.type)-Object.keys(DISCOVERY_TYPES).indexOf(b.type)||a.title.localeCompare(b.title)||a.id.localeCompare(b.id));}
+function discoveryURL(){const p=new URLSearchParams();if(discoveryState.q)p.set('q',discoveryState.q);if(discoveryState.type!=='all')p.set('type',discoveryState.type);if(discoveryState.page)p.set('page',String(discoveryState.page));return '#search'+(p.size?'?'+p:'');}
+function discoveryGo(patch={},replace=false){clearTimeout(discoveryTimer);closeSearch();closeDrawer();if(state.tour>=0)endTour();Object.assign(discoveryState,{page:0},patch);state.view='search';history[replace?'replaceState':'pushState'](null,'',discoveryURL());render();window.scrollTo({top:0,behavior:'instant'});}
+function discoveryExcerpt(r){const text=r.text.replace(/\s+/g,' '),term=discoveryState.q.trim().split(/\s+/).find(t=>text.toLocaleLowerCase().includes(t.toLocaleLowerCase())),index=term?text.toLocaleLowerCase().indexOf(term.toLocaleLowerCase()):0,start=Math.max(0,index-75),excerpt=(start?'…':'')+text.slice(start,start+300)+(start+300<text.length?'…':'');return atlasResearchHighlight(excerpt,term||'');}
+function discoveryResults(){
+  const rows=discoveryRows(),size=25,pages=Math.max(1,Math.ceil(rows.length/size));discoveryState.page=Math.min(pages-1,discoveryState.page);
+  if(!discoveryState.q.trim())return `<div class="discovery-start"><h2>Explore the complete collection.</h2><p>Search a place, company, claim, source ID, passage or spreadsheet formula.</p><div>${Object.entries(DISCOVERY_TYPES).map(([k,label])=>`<span><b>${fmt(discoveryRecords().filter(r=>r.type===k).length)}</b> ${label}</span>`).join('')}</div></div>`;
+  return `<p class="discovery-count" role="status">${fmt(rows.length)} matching ${discoveryState.type==='all'?'records':DISCOVERY_TYPES[discoveryState.type].toLowerCase()}${rows.length?' · '+(discoveryState.page*size+1)+'–'+Math.min(rows.length,(discoveryState.page+1)*size):''}</p><div class="discovery-results">${rows.slice(discoveryState.page*size,(discoveryState.page+1)*size).map(r=>`<button class="discovery-result" ${r.attributes}><span class="eyebrow">${DISCOVERY_TYPES[r.type]}</span>${r.type==='claim'?`<span class="discovery-claim-state">${r.record.effective?'Effective claim':'Earlier / rejected revision'} · ${primaryIsContext(r.record)?'Wider context, not a project total':'Project-specific'} · ${esc(r.record.as_of||'Undated')}</span>`:''}<strong>${atlasResearchHighlight(r.title,discoveryState.q)}</strong><p>${discoveryExcerpt(r)}</p><small>${esc(r.id)}${r.type==='attachment'?' · Download original file':' · Open matched record →'}</small></button>`).join('')||'<div class="empty"><h2>No matches.</h2><p>Use a shorter name or remove the result-type filter.</p></div>'}</div><div class="operator-pagination"><button class="btn small" data-discovery-page="-1" ${discoveryState.page===0?'disabled':''}>← Previous</button><span>Page ${discoveryState.page+1} of ${pages}</span><button class="btn small" data-discovery-page="1" ${discoveryState.page>=pages-1?'disabled':''}>Next →</button></div>`;
+}
+function discoveryFilters(){const matches=discoveryMatches();return `<button data-discovery-type="all" aria-pressed="${discoveryState.type==='all'}">All results <span>${fmt(matches.length)}</span></button>${Object.entries(DISCOVERY_TYPES).map(([k,label])=>`<button data-discovery-type="${k}" aria-pressed="${discoveryState.type===k}">${label}<span>${fmt(matches.filter(r=>r.type===k).length)}</span></button>`).join('')}`;}
+function discoveryView(){return `<div class="discovery-page">${pagehead('RESEARCH SEARCH','Every record.<br>One place to look.','Search the complete source collections, accepted claims and original research. Results retain source identities and revisions.',`<button class="btn" data-discovery-export ${discoveryState.q.trim()?'':'disabled'}>Export matched records ↓</button>`)}<label class="discovery-search-label" for="discovery-query">Search all research</label><input id="discovery-query" type="search" value="${esc(discoveryState.q)}" placeholder="Project, source, disclosure, report passage or formula…" maxlength="500"><div class="discovery-layout"><nav id="discovery-types" aria-label="Search result types">${discoveryFilters()}</nav><section id="discovery-results">${discoveryResults()}</section></div></div>`;}
+function discoveryUpdate(){if(state.view!=='search')return;discoveryState.page=0;$('#discovery-types').innerHTML=discoveryFilters();$('#discovery-results').innerHTML=discoveryResults();document.querySelector('[data-discovery-export]').disabled=!discoveryState.q.trim();history.replaceState(null,'',discoveryURL());}
+const discoveryOldSearch=searchAll;
+searchAll=function(q){discoveryOldSearch(q);if(q.trim())$('#search-results').insertAdjacentHTML('beforeend',`<button class="btn discovery-all" data-discovery-all="${esc(q)}">Search the complete collection — all result pages →</button>`);};
+NAV.push(['search','Search research']);
+const discoveryOldRender=render;
+render=function(){if(window.ATLAS_BOOTSTRAPPING)return;if(state.view!=='search')return discoveryOldRender();if(globe){globe.destroy();globe=null;}renderNav();$('#content').innerHTML=discoveryView();};
+const discoveryOldRoute=routeFromHash;window.removeEventListener('hashchange',discoveryOldRoute);
+routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=location.hash.slice(1).split('?');if(path==='search'){const p=new URLSearchParams(q);Object.assign(discoveryState,{q:(p.get('q')||'').slice(0,500),type:Object.hasOwn(DISCOVERY_TYPES,p.get('type'))?p.get('type'):'all',page:Math.max(0,Math.min(10000,parseInt(p.get('page'))||0))});navigate('search',{hash:true});return;}discoveryOldRoute();};window.addEventListener('hashchange',routeFromHash);
+const discoveryOldNavigate=navigate;
+navigate=function(view,opts={}){discoveryOldNavigate(view,opts);if(view==='search'&&state.view===view&&!opts.hash)history.replaceState(null,'',discoveryURL());};ATLAS.navigate=navigate;
+let discoveryReturn=null;
+const discoveryOldOpen=openDrawer;
+openDrawer=function(kind,id,opts={}){if(!state.drawer&&state.view==='search')discoveryReturn=discoveryURL();discoveryOldOpen(kind,id,opts);};ATLAS.openDrawer=openDrawer;
+const discoveryOldClose=closeDrawer;
+closeDrawer=function(){const open=!$('#drawer').hidden,back=discoveryReturn;discoveryOldClose();if(open){discoveryReturn=null;if(back&&state.view==='search')history.replaceState(null,'',back);}};
+let discoveryTimer;
+document.addEventListener('input',e=>{if(e.target.id==='discovery-query'){discoveryState.q=e.target.value;clearTimeout(discoveryTimer);discoveryTimer=setTimeout(discoveryUpdate,120);}});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.hasAttribute('data-discovery-all'))discoveryGo({q:b.dataset.discoveryAll,type:'all'});
+  if(b.hasAttribute('data-discovery-type')){discoveryState.type=b.dataset.discoveryType;discoveryUpdate();document.querySelector(`[data-discovery-type="${discoveryState.type}"]`)?.focus({preventScroll:true});}
+  if(b.hasAttribute('data-discovery-page')){discoveryState.page+=Number(b.dataset.discoveryPage);$('#discovery-results').innerHTML=discoveryResults();history.replaceState(null,'',discoveryURL());$('#discovery-results').scrollIntoView({block:'start'});}
+  if(b.hasAttribute('data-discovery-inventory'))inventoryGo({q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',selected:b.dataset.discoveryInventory});
+  if(b.hasAttribute('data-discovery-history')){atlasDeskFilter='all';atlasDeskQuery=b.dataset.discoveryClaim;openDrawer('evidence',b.dataset.discoveryHistory);}
+  if(b.hasAttribute('data-discovery-export')){const rows=discoveryRows(),primaryIds=new Set(rows.filter(r=>r.type==='claim').map(r=>r.record.source_id));download('compute-atlas-search-results.json',{query:discoveryState.q,type:discoveryState.type,published_at:ATLAS_PRIMARY.published_at,policy:'Native records may overlap. Earlier revisions and contextual claims are not current project totals. Workbook cells contain original cached values; formulas are not recalculated. Private notes excluded.',attribution:{community:CATALOG.attribution,license:CATALOG.license,url:CATALOG.attribution_url},records:rows.map(({type,id,title,record})=>({type,id,title,record})),claim_sources:[...primaryIds].map(primarySource).filter(Boolean)});}
+});
+ATLAS.discovery={state:discoveryState,records:discoveryRecords,rows:discoveryRows,go:discoveryGo};
 if(!window.ATLAS_BOOTSTRAPPING)routeFromHash();
 
 window.ATLAS_BOOTSTRAPPING=false;routeFromHash();document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready','catalog-ready','operator-ready','publisher-ready');document.dispatchEvent(new Event('atlas-ready'));</script>

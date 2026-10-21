@@ -18,7 +18,7 @@ Install the three units in `deploy/` into `~/.config/systemd/user/`, then:
 
 ```sh
 systemctl --user daemon-reload
-systemctl --user enable --now compute-atlas.service compute-atlas-backup.timer
+systemctl --user enable --now compute-atlas.service
 systemctl --user status compute-atlas.service
 curl --fail http://127.0.0.1:8137/api/health
 ```
@@ -77,6 +77,10 @@ deep links and mobile layout. Do not infer deployment success from a loopback
 test or an installer exit alone.
 
 ## Backup and recovery
+
+The daily backup timer remains disabled under the user’s existing instruction.
+The commands below run a manual backup and inspect timer state; deployment must
+not enable the timer implicitly.
 
 ```sh
 systemctl --user start compute-atlas-backup.service

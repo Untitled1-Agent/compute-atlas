@@ -74,11 +74,15 @@ jobs:
           node --check src/connections.js
           node --check src/location-discovery.js
           node --check src/models.js
+          node --check src/discovery.js
       - name: Isolated design study export and browser regressions
         run: python qa/design-review.py
       - name: Connected directory, company evidence and map source journeys
         if: ${{ !cancelled() }}
         run: python qa/connected.py
+      - name: Complete research search and exact source navigation
+        if: ${{ !cancelled() }}
+        run: python qa/discovery.py
       - name: Saved models, comparisons and shared assumptions
         if: ${{ !cancelled() }}
         run: python qa/models.py
