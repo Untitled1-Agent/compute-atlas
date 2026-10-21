@@ -85,6 +85,13 @@ Community points on the landscape now open their original source record without
 moving the camera. The visible-record list provides the same keyboard access.
 Nearby campus map records remain independent leads until identity is verified.
 
+**Search research** provides paginated discovery across every location, company,
+current and historical claim, source, contract, benchmark, report section,
+workbook cell and original attachment. Search formulas as well as cached values;
+open the exact cell, cited claim or native directory record. Result-type filters
+and page state survive reload. Exports contain all matching records and source
+references, with private notes excluded.
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.

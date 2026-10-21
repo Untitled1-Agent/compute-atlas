@@ -4,6 +4,7 @@
 const inventoryState={q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',sort:'name',page:0,selected:null};
 const INVENTORY_COLLECTIONS={projects:'Research projects',osm:'Community map',equinix:'Equinix directory',digital:'Digital Realty directory'};
 let inventoryCache={inputs:[],rows:[]};
+const inventoryValues=value=>value==null?'':Array.isArray(value)?value.map(inventoryValues).join(' '):typeof value==='object'?Object.values(value).map(inventoryValues).join(' '):String(value);
 const inventoryText=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
 function inventoryRecords(){
   const inputs=[CATALOG,OPERATOR_DIRECTORY,DIGITAL_REALTY,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.relationships];
@@ -14,7 +15,7 @@ function inventoryRecords(){
         lat:s.lat,lon:s.lon,geometry:null,kind:'Research project',date:p.latest||s.snapshot?.date||s.target?.date||null,
         snapshot_mw:spatialPower(s,'snapshot'),target_mw:spatialPower(s,'target'),claims:p.rows.length,
         coordinate_basis:s.coordinate_precision||'Approximate archival anchor',source_urls:p.sources.map(r=>r.url).filter(Boolean),native:s,
-        search:[s.hardware,...p.searchRows.map(r=>r.text)].join(' ')};
+        search:[inventoryValues(s.hardware),...p.searchRows.map(r=>r.text)].join(' ')};
     });
     const osm=CATALOG.records.map(r=>({...r,collection:'osm',place:[r.city,r.address].filter(Boolean).join(' · '),
       date:r.updated_at,snapshot_mw:null,target_mw:null,claims:0,source_urls:[r.source_url],native:r,search:Object.values(r.tags||{}).join(' ')}));
@@ -43,10 +44,10 @@ function inventoryURL(){
   return '#inventory'+(p.size?'?'+p:'');
 }
 function inventoryGo(patch={},replace=false){
-  clearTimeout(inventoryTimer);if(state.tour>=0)endTour();closeDrawer();
+  const alreadyHere=state.view==='inventory';clearTimeout(inventoryTimer);if(state.tour>=0)endTour();closeDrawer();
   Object.assign(inventoryState,{page:0},patch);state.view='inventory';
   history[replace?'replaceState':'pushState'](null,'',inventoryURL());render();history.replaceState(null,'',inventoryURL());
-  document.querySelector('#sidebar')?.classList.remove('open');
+  document.querySelector('#sidebar')?.classList.remove('open');if(!alreadyHere)window.scrollTo({top:0,behavior:'instant'});
 }
 function inventoryRoute(query){
   const p=new URLSearchParams(query),countries=new Set(inventoryRecords().map(r=>r.country));
@@ -120,6 +121,7 @@ document.addEventListener('input',e=>{if(!['inventory-query','inventory-operator
 document.addEventListener('change',e=>{const key={'inventory-country':'country','inventory-coverage':'coverage','inventory-sort':'sort'}[e.target.id];if(key){inventoryState[key]=e.target.value;inventoryUpdate();}});
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.hasAttribute('data-inventory-open'))inventoryGo({q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',selected:b.dataset.inventoryOpen});
   if(b.hasAttribute('data-inventory-collection'))inventoryGo({collection:b.dataset.inventoryCollection});
   if(b.hasAttribute('data-inventory-select')){inventoryGo({selected:b.dataset.inventorySelect,page:inventoryState.page});$('#inventory-detail-title')?.focus({preventScroll:innerWidth>900});}
   if(b.hasAttribute('data-inventory-close'))inventoryGo({selected:null,page:inventoryState.page});
@@ -137,5 +139,5 @@ render=function(){if(window.ATLAS_BOOTSTRAPPING)return;if(state.view!=='inventor
 const inventoryBaseRoute=routeFromHash;window.removeEventListener('hashchange',inventoryBaseRoute);
 routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;const [path,q='']=location.hash.slice(1).split('?');if(path==='inventory')return inventoryRoute(q);inventoryBaseRoute();};
 window.addEventListener('hashchange',routeFromHash);
-ATLAS.inventory={state:inventoryState,records:inventoryRecords,rows:inventoryRows,go:inventoryGo,export:inventoryExportRows};
+ATLAS.inventory={state:inventoryState,records:inventoryRecords,record:inventoryRecord,rows:inventoryRows,go:inventoryGo,export:inventoryExportRows};
 if(!window.ATLAS_BOOTSTRAPPING){if(location.hash.startsWith('#inventory'))routeFromHash();else render();}

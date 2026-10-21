@@ -220,7 +220,7 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
 const campusOriginalTransition=spatialTransition;
 spatialTransition=function(update={}){if(update.selected&&update.selected!==state.spatialSelected){if(globe instanceof CampusScene)globe.skipCameraSave=true;campusState.mode='aerial';campusState.physicalMode='aerial';campusState.feature=null;campusState.camera=null;campusState.routeCamera=null;campusState.viewCameras={};}campusOriginalTransition(update);if(globe instanceof CampusScene)workspaceSyncURL();};
 const campusOriginalNav=renderNav;
-renderNav=function(){campusEnsureSelection();campusOriginalNav();$('#shelf-count').textContent=saved.favorites.length+(saved.sourceFeatures?.length||0);if(state.spatialLevel===5&&workspaceActiveSelection().type==='project')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' Choose a physical feature');if(workspaceActiveSelection().type==='feature')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
+renderNav=function(){campusEnsureSelection();campusOriginalNav();$('#shelf-count').textContent=shelfCount();if(!['overview','globe'].includes(state.view))return;if(state.spatialLevel===5&&workspaceActiveSelection().type==='project')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' Choose a physical feature');if(workspaceActiveSelection().type==='feature')$('#breadcrumb').textContent=$('#breadcrumb').textContent.replace(/[^›]+$/, ' '+campusFeature().name);};
 ATLAS.campus={scene:campusScene,state:campusState,parseCamera:campusCameraParse,select:campusSelectFeature};ATLAS.workspace.activeSelection=workspaceActiveSelection;
 const campusOriginalShelf=watchlistView;
 watchlistView=function(){
