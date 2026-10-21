@@ -1,0 +1,35 @@
+.inventory-collections{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-block:1px solid var(--line);margin:24px 0}
+.inventory-collections button{padding:17px 12px;text-align:left;border:0;border-right:1px solid var(--line);background:transparent;color:var(--text);font-size:12px}
+.inventory-collections button[aria-pressed=true]{background:rgba(126,232,207,.1);box-shadow:inset 0 -2px var(--accent)}
+.inventory-collections span{display:block;color:var(--muted);font-size:11px;margin-top:6px}
+.inventory-filters{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:20px}
+.inventory-filters label{flex:1;min-width:140px;font-size:11px;color:var(--muted)}
+.inventory-filters label:first-child{flex:2}.inventory-filters input,.inventory-filters select{width:100%;margin-top:7px;min-height:40px}
+.inventory-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);gap:28px;align-items:start}
+.inventory-results-head{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted)}
+.inventory-results-head select{margin-left:6px;max-width:180px}
+.inventory-record{display:flex;gap:18px;justify-content:space-between;width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);padding:18px 12px;text-align:left;color:var(--text)}
+.inventory-record>span{min-width:0;flex:1}.inventory-record span span,.inventory-record strong,.inventory-record small{display:block;overflow-wrap:anywhere}
+.inventory-record strong{font:20px Georgia,serif;margin:6px 0}.inventory-record small{font-size:10px;color:var(--muted)}
+.inventory-record span span{font-size:12px;line-height:1.6}.inventory-record-meta{text-align:right;padding-top:3px}
+.inventory-record-meta b{display:block;font-size:11px;font-weight:400;margin-top:9px;color:var(--accent)}
+.inventory-record:hover,.inventory-record.selected{background:rgba(126,232,207,.06)}.inventory-record.selected{box-shadow:inset 2px 0 var(--accent)}
+.inventory-inspector{border:1px solid var(--line);padding:22px;min-width:0;overflow-wrap:anywhere;scroll-margin-top:20px}
+.inventory-inspector>header{display:flex;justify-content:space-between;gap:12px}.inventory-inspector h2{font-size:30px;margin:10px 0 16px;line-height:1.15}
+.inventory-inspector p{font-size:12px;line-height:1.7;color:var(--muted)}.inventory-inspector dl{margin:22px 0}
+.inventory-inspector dl>div{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);padding:11px 0;font-size:12px}
+.inventory-inspector dt{color:var(--muted)}.inventory-inspector dd{margin:0;text-align:right;max-width:62%}.inventory-inspector dd small{display:block;color:var(--muted);margin-top:4px}
+.inventory-detail-actions{display:flex;gap:8px;flex-wrap:wrap}.inventory-scene{height:230px;position:relative;background:#07151e;margin:8px -10px 18px;overflow:hidden}
+.inventory-scene>span{position:absolute;bottom:8px;left:10px;pointer-events:none;font-size:10px;color:var(--muted)}
+.inventory-location{border-block:1px solid var(--line);margin:10px 0 18px}.inventory-location svg{display:block;width:100%;max-height:220px;background:#07151e}
+.inventory-location path{fill:#152e38;stroke:#31505a;stroke-width:.25}.inventory-location circle{fill:var(--accent);stroke:#effff8;stroke-width:1}
+.inventory-location p{font-size:10px;margin:8px 0}.inventory-no-location{padding:24px;background:#0b1c24;text-align:center}
+.inventory-no-location strong{display:block;margin:12px 0}.inventory-no-location svg{width:32px;height:32px}
+.inventory-note{border-top:1px solid var(--line);margin-top:22px;padding-top:18px}.inventory-note summary{cursor:pointer;font-size:12px}
+.inventory-note label{display:block;font-size:12px;margin:16px 0 8px}.inventory-note textarea{width:100%;min-height:110px}
+.inventory-page .catalog-provenance{margin-top:24px}.inventory-inspector .atlas-research-claim{margin:14px 0}.inventory-inspector h3{margin-top:26px}
+@media(min-width:1100px){#inventory-inspector{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow:auto;scrollbar-gutter:stable}}
+@media(max-width:1000px){.inventory-layout{grid-template-columns:minmax(0,1fr)}#inventory-inspector:has([data-inventory-detail]){grid-row:1}.inventory-collections{grid-template-columns:repeat(3,minmax(0,1fr))}.inventory-collections button{border-bottom:1px solid var(--line)}}
+@media(max-width:600px){.inventory-collections{grid-template-columns:repeat(2,minmax(0,1fr))}.inventory-record{gap:10px;padding:16px 4px}.inventory-record strong{font-size:18px}.inventory-record-meta{max-width:40%}.inventory-results-head{align-items:start}.inventory-results-head label{max-width:55%;text-align:right}.inventory-inspector{padding:16px}.inventory-filters label:first-child{flex-basis:100%}.inventory-record-meta span{font-size:11px}.inventory-results-head select{max-width:145px}.inventory-collections button{min-height:66px}}
+
+.location-discovery{border-top:1px solid var(--line);padding:20px 0;margin:24px 0}.location-discovery>summary{display:flex;justify-content:space-between;gap:16px;cursor:pointer;font-size:14px}.location-discovery summary span{color:var(--muted);font-size:11px}.location-discovery>p,.location-discovery label,.location-discovery p{font-size:12px;color:var(--muted)}.location-discovery>p{margin-top:18px}.location-discovery input{display:block;width:100%;margin:8px 0 16px}.location-discovery-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.location-discovery-list button{text-align:left;padding:14px;border:1px solid var(--line)}.location-discovery-list strong,.location-discovery-list span,.location-discovery-list small{display:block;overflow-wrap:anywhere}.location-discovery-list strong{font-size:13px;font-weight:500}.location-discovery-list span,.location-discovery-list small{font-size:11px;color:var(--muted);margin-top:6px}.location-footprint{display:block;width:100%;max-height:280px;background:#0c202a;margin:20px 0}.location-footprint path{fill:#244d4b;stroke:var(--accent);stroke-width:1.5}.project-geography{width:100%}@media(max-width:600px){.location-discovery-list{grid-template-columns:1fr}.location-discovery>summary{flex-direction:column;gap:6px}}

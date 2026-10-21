@@ -1,0 +1,81 @@
+"""Persistent analyst assumptions, cited exports, shared inputs and zero-rate math."""
+import json,shutil,threading
+from functools import partial
+from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'qa/screenshots';OUT.mkdir(exist_ok=True);checks=[]
+def check(name,value):checks.append({'test':name,'pass':bool(value)});print(('PASS ' if value else 'FAIL ')+name,flush=True)
+class Quiet(SimpleHTTPRequestHandler):
+ def log_message(self,*_):pass
+server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/'
+def ready(page):page.wait_for_function('document.documentElement.classList.contains("atlas-ready")')
+def download(page,selector):
+ with page.expect_download() as event:page.locator(selector).click()
+ return json.loads(Path(event.value.path()).read_text())
+def input_value(page,selector,value):page.locator(selector).evaluate('(el,v)=>{el.value=v;el.dispatchEvent(new Event("input",{bubbles:true}))}',str(value))
+try:
+ with sync_playwright() as p:
+  browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
+  for entry in ['index.html','compute_atlas.html']:
+   ctx=browser.new_context(viewport={'width':1440,'height':1000});page=ctx.new_page();page.set_default_timeout(20000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page.goto(base+entry);ready(page);page.evaluate("state.costTab='scenario';ATLAS.navigate('costs')")
+   input_value(page,'#s-util',85);input_value(page,'#s-itlife',4)
+   page.locator('#model-name').fill('Base operating case');page.locator('[data-model-save]').click()
+   first=page.evaluate('saved.models[0].id')
+   input_value(page,'#s-util',55);input_value(page,'#s-itlife',3)
+   page.locator('#model-name').fill('Lower utilization');page.locator('[data-model-save]').click()
+   check(entry+' named cases retain independent assumptions',page.evaluate('saved.models.length===2&&saved.models[0].assumptions.util===85&&saved.models[1].assumptions.util===55'))
+   page.locator('[data-model-compare]').nth(0).check();page.locator('[data-model-compare]').nth(1).check()
+   exported=download(page,'[data-model-export-comparison]')
+   check(entry+' comparison exports independently calculated costs and references',len(exported['models'])==2 and exported['models'][1]['results']['unit']>exported['models'][0]['results']['unit'] and all(r['references'] for r in exported['models']))
+   page.screenshot(path=str(OUT/(entry+'-models-economics.png')),full_page=True)
+   page.evaluate("ATLAS.navigate('watchlist')")
+   check(entry+' saved models are reachable from research shelf',page.locator('.model-shelf [data-model-load]').count()==2)
+   page.locator(f'.model-shelf [data-model-load="{first}"]').click()
+   check(entry+' opening a case restores working inputs and results',page.locator('#s-util').input_value()=='85' and page.locator('#s-itlife').input_value()=='4')
+   page.locator('[data-model-share]').click();url=page.locator('#model-share-url').input_value();page.keyboard.press('Escape')
+   shared=ctx.new_page();shared.goto(url);ready(shared)
+   check(entry+' shared economics opens exact inputs without private case names',shared.locator('#s-util').input_value()=='85' and shared.locator('#s-itlife').input_value()=='4' and 'Base' not in url)
+   shared.close();page.reload();ready(page);page.evaluate("state.costTab='scenario';render()")
+   check(entry+' working assumptions and named cases survive reload',page.locator('#s-util').input_value()=='85' and page.evaluate('saved.models.length')==2)
+   page.evaluate("ATLAS.navigate('investment')");page.locator('#invest-company').select_option('google')
+   for key,value in {'market':100,'gw':2,'capex':10,'fcf':3,'rate':0,'years':10}.items():page.locator('#v-'+key).fill(str(value))
+   check(entry+' zero-rate valuation uses finite annuity limit',page.locator('#valuation-output .big-number').inner_text()=='$40.0B')
+   page.locator('#model-name').fill('Zero-rate sensitivity');page.locator('[data-model-save]').click()
+   exported=download(page,'[data-model-export-current]')
+   check(entry+' investment export preserves assumptions math and company context',exported['models'][0]['company_id']=='google' and exported['models'][0]['results']['npv_b']==40 and exported['models'][0]['results']['upfront_b']==20)
+   page.locator('[data-model-share]').click();url=page.locator('#model-share-url').input_value();page.keyboard.press('Escape')
+   shared=ctx.new_page();shared.goto(url);ready(shared)
+   check(entry+' shared valuation restores company and zero-rate inputs',shared.locator('#invest-company').input_value()=='google' and shared.locator('#v-rate').input_value()=='0' and shared.locator('#valuation-output .big-number').inner_text()=='$40.0B')
+   bookmark=shared.url;shared.locator('[data-action="company"]').first.click();shared.keyboard.press('Escape')
+   check(entry+' source/company return preserves shared scenario URL',shared.url==bookmark)
+   shared.close();page.reload();ready(page)
+   check(entry+' selected company working valuation survives reload',page.locator('#invest-company').input_value()=='google' and page.locator('#v-gw').input_value()=='2' and page.locator('#v-rate').input_value()=='0')
+   page.locator('#v-fcf').fill('-1')
+   check(entry+' negative cash flows remain negative in model results','−$40.0B' in page.locator('#valuation-output').inner_text())
+   page.locator('#v-gw').fill('');page.locator('[data-model-save]').click()
+   check(entry+' incomplete inputs cannot create a saved case','Correct invalid' in page.locator('#model-feedback').inner_text() and page.evaluate('saved.models.length')==3)
+   page.reload();ready(page)
+   check(entry+' incomplete edit does not overwrite last valid working model',page.locator('#v-gw').input_value()=='2')
+   for width in [390,320]:
+    page.set_viewport_size({'width':width,'height':844});page.evaluate("state.costTab='scenario';ATLAS.navigate('costs')")
+    page.locator('[data-model-compare]').nth(0).check();page.locator('[data-model-compare]').nth(1).check()
+    check(entry+f' saved scenarios fit {width}px and comparison scrolls internally',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1') and page.locator('.model-comparison').evaluate('e=>e.scrollWidth>e.clientWidth'))
+    page.screenshot(path=str(OUT/(entry+f'-models-{width}.png')))
+   page.evaluate("ATLAS.navigate('watchlist')")
+   session=download(page,'#content [data-action="export-session"]')
+   check(entry+' research session includes named cases and working inputs',len(session['models'])==3 and session['modelDrafts']['investment']['google']['gw']==2)
+   session['models'].append({'id':'bad','name':'Invalid','kind':'economics','assumptions':{'util':0}})
+   with page.expect_file_chooser() as chooser:page.locator('[data-action="import-session"]').click()
+   chooser.value.set_files({'name':'models.json','mimeType':'application/json','buffer':json.dumps(session).encode()});page.wait_for_timeout(200)
+   check(entry+' session import validates every saved model',page.evaluate('saved.models.length')==3 and page.evaluate('saved.models.every(r=>modelValidate(r.kind,r.assumptions))'))
+   page.reload();ready(page)
+   check(entry+' imported models persist after reload',page.locator('.model-shelf [data-model-load]').count()==3)
+   check(entry+' named model validation rejects non-finite and out-of-range assumptions',page.evaluate('modelValidate("economics",{...scenario,util:0})===null&&modelValidate("economics",{...scenario,rate:Infinity})===null'))
+   check(entry+' no browser exceptions',not errors)
+   if errors:print(errors,flush=True)
+   ctx.close()
+  browser.close()
+finally:server.shutdown();server.server_close()
+result={'passed':sum(c['pass'] for c in checks),'total':len(checks),'checks':checks};(ROOT/'qa/models_results.json').write_text(json.dumps(result,indent=2)+'\n');print(f"{result['passed']}/{result['total']} passed");raise SystemExit(result['passed']!=result['total'])

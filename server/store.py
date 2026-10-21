@@ -287,7 +287,23 @@ class Store:
                 'accepted_observations':"SELECT COUNT(*) FROM accepted_claims WHERE kind='observation'",
                 'fetch_attempts':'SELECT COUNT(*) FROM fetch_events'}.items()}
             jobs=[dict(r) for r in db.execute('SELECT source_id,next_fetch_at,last_status,last_success,last_error,failures FROM jobs ORDER BY source_id')]
-            return {'schema_version':2,'background_refresh':background,'checked_at':now(),'counts':counts,'jobs':jobs,'publication_date':self.publication().get('published_at'),'policy':'Acquisition is not publication. Changed sources require an explicit editorial decision.'}
+            return {'schema_version':2,'background_refresh':background,'checked_at':now(),'counts':counts,'jobs':jobs,'capture_storage':self.capture_storage(),'publication_date':self.publication().get('published_at'),'policy':'Acquisition is not publication. Changed sources require an explicit editorial decision.'}
+
+    def capture_storage(self) -> dict:
+        """Cheap availability inventory. Conditional revalidation checks SHA-256."""
+        with self.connect() as db:
+            bodies=db.execute('SELECT sha256,MAX(byte_length) AS byte_length FROM source_versions GROUP BY sha256').fetchall()
+        available=0
+        for row in bodies:
+            digest=row['sha256']
+            if len(digest)!=64 or any(c not in '0123456789abcdef' for c in digest): continue
+            path=self.path.parent/'blobs'/digest
+            try:
+                available+=int(not path.is_symlink() and path.is_file() and path.stat().st_size==row['byte_length'])
+            except OSError:
+                pass
+        return {'referenced_bodies':len(bodies),'present_bodies':available,'unavailable_bodies':len(bodies)-available,
+                'policy':'Presence and byte length only. Content hashes are checked before conditional requests and by complete backups. Raw captures stay private; accepted claims are independent.'}
 
     def source_activity(self, limit: int=30, offset: int=0) -> dict:
         """Capture health, not a score of factual currency or editorial confidence."""

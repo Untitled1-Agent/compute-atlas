@@ -307,8 +307,8 @@ const workspaceUtility=document.createElement('button');workspaceUtility.classNa
 const workspaceRenderNav=renderNav;
 renderNav=function(){
   workspaceRenderNav();
-  const primary=['overview','facilities','companies','contracts','investment','reports'];
-  const navButton=([id,label])=>`<button class="nav-button ${state.view===id?'active':''}" data-action="nav" data-id="${id}">${icon(id)}${id==='reports'?'Research library':label}</button>`;
+  const primary=['overview','inventory','companies','contracts','investment','reports'];
+  const navButton=([id,label])=>`<button class="nav-button ${state.view===id?'active':''}" data-action="nav" data-id="${id}">${icon(id==='inventory'?'facilities':id)}${id==='reports'?'Research library':label}</button>`;
   $('#navigation').innerHTML=primary.map(id=>NAV.find(([key])=>key===id)).filter(Boolean).map(navButton).join('')+`<details class="workspace-nav-more" ${primary.includes(state.view)?'':'open'}><summary>More research tools</summary>${NAV.filter(([id])=>!primary.includes(id)).map(navButton).join('')}</details>`;
   if(['overview','globe'].includes(state.view)){
     const s=spatialDefaultSite(),level=state.spatialLevel,scope=spatialScope(level,s);

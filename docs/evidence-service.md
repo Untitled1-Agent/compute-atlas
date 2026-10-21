@@ -193,3 +193,20 @@ The browser derives its identity panel from the analyst's loaded accepted
 publication rather than independently fetching a newer identity document. It
 updates only when a reviewed publication is explicitly applied. Source capture
 and fetch timestamps never change an identity claim's editorial review date.
+
+## Capture retention and availability
+
+The scheduled monitor caches `var/atlas.sqlite3` and `var/blobs` together. It can
+restore the older database-only cache during migration, preserving its event and
+review history. Such a restored ledger may reference unavailable documents; the
+status API and source monitor disclose present and unavailable body counts.
+Presence checks cover file type and byte length, not factual verification.
+
+Before a conditional request, the monitor verifies the current stored body’s
+SHA-256. Missing or corrupt bodies cause an unconditional request, and a 304
+without a verified body is deferred. A full response can repair its matching
+content-addressed body without altering accepted claims. A lost historical
+version is not replaced with a newer source document. The cache remains evictable
+and is not a durable backup; the persistent service and complete backup procedure
+retain that responsibility. Daily backup timers remain disabled under the user's
+existing instruction.

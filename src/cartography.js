@@ -193,10 +193,12 @@ class ResearchMap {
     const rect = this.canvas.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
     const hit = this.groups.find(g => Math.hypot(g.x - x, g.y - y) < g.r + 7);
     const context=!hit&&typeof energyHit==='function'?energyHit(this,x,y):null;
+    const location=!hit&&!context&&typeof mappedLocationHit==='function'?mappedLocationHit(this,x,y):null;
     if (hit !== this.hover) { this.hover = hit || null; this.dirty = true; }
-    this.canvas.style.cursor = hit||context ? 'pointer' : 'grab';
+    this.canvas.style.cursor = hit||context||location ? 'pointer' : 'grab';
     if (hit) { const s = hit.sites[0]; showTip(event.clientX, event.clientY, `<b>${esc(s.name)}</b><br>${esc(s.location)}<br>${spatialPower(s) == null ? 'IT power not quantified' : fmt(spatialPower(s)) + ' MW · estimate'}${hit.sites.length>1?'<br>'+hit.sites.length+' clustered records · '+hit.known+' quantified<br>'+(hit.mw==null?'No comparable aggregate':fmt(hit.mw)+' MW cluster subtotal'):''}<br><small>Research anchor · click to explore</small>`); }
     else if(context)showTip(event.clientX,event.clientY,`<b>${esc(energyName(context))}</b><br>${esc(energyVoltage(context))} · source-tagged voltage<br><small>Community context · click to inspect</small>`);
+    else if(location)showTip(event.clientX,event.clientY,`<b>${esc(location.name)}</b><br>${esc(location.operator||location.country)}<br><small>Community map ${esc(location.kind)} · click to inspect source</small>`);
     else hideTip();
   }
   pointerUp(event) {
@@ -207,7 +209,7 @@ class ResearchMap {
     const rect = this.canvas.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
     const hit = this.groups.find(g => Math.hypot(g.x - x, g.y - y) < g.r + 8);
     if (hit) {state.spatialCluster=hit.sites.map(s=>s.id);spatialTransition({selected: hit.sites[0].id});}
-    else if(typeof energyHit==='function'){const f=energyHit(this,x,y);if(f)energySelect(f.id);}
+    else {const f=typeof energyHit==='function'?energyHit(this,x,y):null;if(f)energySelect(f.id);else if(typeof mappedLocationHit==='function'){const r=mappedLocationHit(this,x,y);if(r)openDrawer('mapped-location',r.id);}}
   }
   path(line, stroke, width, fill = null) {
     const c = this.ctx;
@@ -263,9 +265,10 @@ class ResearchMap {
     c.fillStyle = shade; c.fillRect(0, 0, w, h); c.restore();
     if (!this.flat) { c.strokeStyle = '#4b9eab25'; c.lineWidth = 1; c.beginPath(); c.arc(cx, cy, R, 0, Math.PI * 2); c.stroke(); }
     // Source-backed location context, visually separate from the 79-project capacity layer.
+    this.locationHits=[];
     if(this.canvas.closest('.atlas-workspace')&&state.view!=='catalog'&&state.spatialLocations!==false){
       c.fillStyle='#b2d3d180';
-      for(const r of CATALOG.records){const p=this.project(r.lon,r.lat);if(p.z>.025&&p.x>8&&p.x<w-8&&p.y>60&&p.y<h-65){c.beginPath();c.arc(p.x,p.y,this.flat?1.25:.85,0,Math.PI*2);c.fill();}}
+      for(const r of CATALOG.records){const p=this.project(r.lon,r.lat);if(p.z>.025&&p.x>8&&p.x<w-8&&p.y>60&&p.y<h-65){c.beginPath();c.arc(p.x,p.y,this.flat?2:.95,0,Math.PI*2);c.fill();this.locationHits.push({x:p.x,y:p.y,record:r});}}
     }
     if(typeof localRoadDraw==='function')localRoadDraw(this);
     if(typeof energyDraw==='function')energyDraw(this);
