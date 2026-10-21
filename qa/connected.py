@@ -1,0 +1,111 @@
+"""Connected discovery across native collections, project evidence and map context."""
+import json, os, shutil, threading
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'qa/screenshots';OUT.mkdir(exist_ok=True);checks=[]
+def check(name,value):
+ checks.append({'test':name,'pass':bool(value)});print(('PASS ' if value else 'FAIL ')+name,flush=True)
+class Quiet(SimpleHTTPRequestHandler):
+ def log_message(self,*_):pass
+server=None;base=os.environ.get('ATLAS_TEST_BASE')
+if not base:
+ server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT)));threading.Thread(target=server.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{server.server_port}/'
+def ready(page):page.wait_for_function('document.documentElement.classList.contains("atlas-ready")')
+def payload(page,selector):
+ with page.expect_download() as event:page.locator(selector).click()
+ return json.loads(Path(event.value.path()).read_text())
+try:
+ with sync_playwright() as p:
+  browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
+  for entry in ['index.html','compute_atlas.html']:
+   context=browser.new_context(viewport={'width':1440,'height':1000});page=context.new_page();page.set_default_timeout(20000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page.goto(base+entry+'#inventory');ready(page)
+   baseline=page.evaluate('JSON.stringify([D.sites,CATALOG.records,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.relationships])')
+   check(entry+' directory exposes all source collections independently',page.evaluate('inventoryRecords().length===D.sites.length+CATALOG.records.length+OPERATOR_DIRECTORY.records.length+DIGITAL_REALTY.records.length&&new Set(inventoryRecords().map(r=>r.id)).size===inventoryRecords().length'))
+   check(entry+' directory is a primary destination',page.locator('#navigation>[data-id="inventory"]').count()==1)
+   page.locator('#inventory-query').fill('Frankfurt');page.wait_for_timeout(200)
+   page.locator('#inventory-country').select_option('Germany')
+   page.locator('#inventory-operator').fill('Equinix');page.wait_for_timeout(200)
+   check(entry+' country operator and text filters intersect across collections',page.evaluate('inventoryRows().length>0&&inventoryRows().every(r=>r.country==="Germany"&&inventoryText(r.operator).includes("equinix")&&r.search.includes("frankfurt"))'))
+   page.locator('[data-inventory-select]').first.click();bookmark=page.url;record=page.evaluate('inventoryState.selected')
+   page.reload();ready(page)
+   check(entry+' selected source and refinements survive reload',page.url==bookmark and page.evaluate('inventoryState.selected')==record and page.locator('[data-inventory-detail]').get_attribute('data-inventory-detail')==record)
+   page.locator('#inventory-query').fill('definitely-no-match');page.wait_for_timeout(200)
+   check(entry+' excluded selection remains inspectable',page.locator('[data-inventory-detail]').count()==1 and 'outside these filters' in page.locator('#inventory-inspector').inner_text())
+   page.locator('[data-inventory-reveal]').click()
+   page.locator('.inventory-note summary').click();page.locator('#inventory-note').fill('PRIVATE SOURCE NOTE')
+   exported=payload(page,'[data-inventory-export-record]')
+   check(entry+' cited export preserves native source and omits private notes',len(exported['records'])==1 and exported['records'][0]['id']==record and 'PRIVATE SOURCE NOTE' not in json.dumps(exported) and 'publications' in exported)
+   page.evaluate("ATLAS.inventory.go({selected:'coreweave-helios',collection:'projects',q:'',country:'all',operator:'',company:'all',coverage:'all'})")
+   bookmark=page.url
+   page.locator('#inventory-inspector [data-atlas-action="source"]').first.click();page.keyboard.press('Escape')
+   check(entry+' source dismissal restores exact directory selection',page.url==bookmark)
+   page.locator('#inventory-inspector [data-workspace-compare]').click()
+   check(entry+' directory participates in project comparison',page.evaluate('saved.projectCompare.includes("coreweave-helios")'))
+   page.evaluate("ATLAS.inventory.go({selected:'equinix-fr2',collection:'equinix'})")
+   check(entry+' operator entry does not acquire invented coordinates',page.locator('.inventory-no-location').is_visible() and page.evaluate('inventoryRecord("equinix-fr2").lat===null'))
+   page.locator('[data-inventory-native]').click()
+   check(entry+' operator details open the exact native record',page.evaluate('state.view==="operators"&&operatorState.selected==="equinix-fr2"'))
+   page.go_back();ready(page)
+   check(entry+' browser Back restores operator directory selection',page.evaluate('state.view==="inventory"&&inventoryState.selected==="equinix-fr2"'))
+   page.evaluate("ATLAS.inventory.go({collection:'digital',selected:DIGITAL_REALTY.records[0].id})")
+   selected=page.evaluate('inventoryState.selected');page.locator('[data-inventory-native]').click()
+   check(entry+' publisher details open exact native record',page.evaluate('publisherState.selected')==selected and page.evaluate('state.view')=='publisher')
+   page.evaluate("ATLAS.inventory.go({q:'',collection:'osm',country:'all',operator:'',coverage:'footprint',selected:'osm-way-1121454055'})")
+   page.wait_for_function('globe instanceof FacilityScene&&!globe.dirty')
+   check(entry+' mapped record has real interactive outline preview without invented height',page.locator('#inventory-scene').is_visible() and page.evaluate('!globe.assumptions&&globe.features[0].polygons.length>0'))
+   old=page.evaluate('globe.yaw');page.locator('#inventory-scene').focus();page.keyboard.press('ArrowRight')
+   check(entry+' outline preview responds to keyboard orbit',page.evaluate('globe.yaw')!=old)
+   page.screenshot(path=str(OUT/(entry+'-connected-directory.png')))
+   page.evaluate("ATLAS.connections.go({q:'',company:'google',site:'all',kind:'all',topic:'all'})")
+   check(entry+' company discovery exposes primary financing and roles',page.evaluate('connectionRows().some(r=>r.kind==="role")&&connectionRows().some(r=>r.topic==="finance")&&connectionRows().every(r=>r.company_ids.includes("google"))'))
+   bookmark=page.url;page.locator('#connection-results [data-atlas-action="source"]').first.click();page.keyboard.press('Escape')
+   check(entry+' source dismissal preserves connection filters',page.url==bookmark)
+   page.locator('#connection-query').fill('backstop');page.wait_for_timeout(200);bookmark=page.url
+   expected=page.evaluate('connectionRows().map(r=>r.id)');page.reload();ready(page)
+   check(entry+' searchable connections restore exact results',bool(expected) and page.evaluate('connectionRows().map(r=>r.id)')==expected and page.url==bookmark)
+   exported=payload(page,'[data-connection-export]')
+   check(entry+' connections export has original records and source metadata',len(exported['records'])==len(expected) and len(exported['primary_sources'])>0 and all(r['record'].get('source_id') or r['record'].get('sources') for r in exported['records']))
+   page.evaluate("ATLAS.connections.go({q:'',company:'all',site:'all',kind:'role',topic:'commercial'})")
+   check(entry+' relationship lines are generated solely from accepted role records',page.evaluate('connectionRows().every(r=>r.row.kind==="relationships")') and page.locator('.connection-edge').count()>0)
+   page.locator('[data-connection-site]').first.click()
+   check(entry+' graph project end filters the evidence',page.evaluate('connectionRows().every(r=>r.site_id===connectionState.site)&&connectionState.site!=="all"'))
+   page.evaluate("ATLAS.openDrawer('company','google')")
+   check(entry+' company dossier includes its accepted project evidence',page.locator('.company-evidence .company-project-links button').count()>10 and page.locator('.company-evidence-claim').count()>0)
+   page.locator('[data-company-inventory]').click()
+   check(entry+' company project directory uses identity rather than display-name guess',page.evaluate('inventoryRows().length>10&&inventoryState.company==="google"&&inventoryRows().every(r=>r.collection==="projects")'))
+   page.evaluate("ATLAS.navigate('overview');ATLAS.spatial.setLevel(0)")
+   page.wait_for_function('globe instanceof ResearchMap&&globe.locationHits?.length>0&&!globe.dirty')
+   page.locator('.location-discovery>summary').click();page.locator('#location-discovery-results [data-location-inspect]').first.wait_for(state='visible')
+   check(entry+' landscape has keyboard-accessible community records',page.locator('#location-discovery-results [data-location-inspect]').count()>0)
+   camera=page.evaluate('JSON.stringify(globe.snapshot())');bookmark=page.url
+   page.locator('#location-discovery-results [data-location-inspect]').first.click()
+   check(entry+' location inspection retains research camera and source boundary',page.evaluate('JSON.stringify(globe.snapshot())')==camera and 'independent of the selected capacity project' in page.locator('#drawer-content').inner_text())
+   page.keyboard.press('Escape')
+   check(entry+' location close returns to same landscape',page.evaluate('JSON.stringify(globe.snapshot())')==camera and page.url==bookmark)
+   page.evaluate("ATLAS.spatial.select('google-waltham-cross');ATLAS.spatial.setLevel(4)")
+   page.locator('.project-geography>summary').click()
+   check(entry+' project opens independently sourced local records',page.locator('.project-geography [data-location-inspect]').count()>0 and 'proximity does not establish' in page.locator('.project-geography').inner_text())
+   page.locator('.project-geography [data-location-inspect]').first.click();page.keyboard.press('Escape')
+   for width in [390,320]:
+    page.set_viewport_size({'width':width,'height':844})
+    page.evaluate("ATLAS.inventory.go({q:'',company:'all',operator:'',collection:'osm',coverage:'all',country:'all',selected:'osm-way-1121454055'})")
+    check(entry+f' directory and selected geometry fit {width}px',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1') and page.locator('#inventory-scene').is_visible())
+    page.screenshot(path=str(OUT/(entry+f'-connected-directory-{width}.png')))
+    page.evaluate("ATLAS.connections.go({q:'',company:'all',site:'all',kind:'all',topic:'all'})")
+    check(entry+f' relationship graph and disclosures fit {width}px',page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'))
+    page.screenshot(path=str(OUT/(entry+f'-connected-connections-{width}.png')))
+   page.evaluate("ATLAS.inventory.go({selected:'unavailable-source-id'})")
+   check(entry+' unavailable source retains identity and recovery note', 'unavailable-source-id' in page.locator('#inventory-inspector').inner_text() and page.locator('#inventory-note').count()==1)
+   page.reload();ready(page)
+   check(entry+' missing source does not silently select another record',page.evaluate('inventoryState.selected')=='unavailable-source-id' and page.locator('[data-inventory-detail]').count()==0)
+   check(entry+' browsing does not mutate any source publication',page.evaluate('JSON.stringify([D.sites,CATALOG.records,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.relationships])')==baseline)
+   check(entry+' no browser exceptions',not errors)
+   if errors:print(errors,flush=True)
+   context.close()
+  browser.close()
+finally:
+ if server:server.shutdown();server.server_close()
+result={'passed':sum(c['pass'] for c in checks),'total':len(checks),'checks':checks};(ROOT/'qa/connected_results.json').write_text(json.dumps(result,indent=2)+'\n');print(f"{result['passed']}/{result['total']} passed");raise SystemExit(result['passed']!=result['total'])

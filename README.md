@@ -62,6 +62,29 @@ preview opens the exact historical source scene; scopes without accepted imagery
 retain an explicit availability state. `python qa/landing.py` checks both HTTP
 entrypoints and desktop, tablet and phone layouts.
 
+## Connected analyst workspace
+
+The primary **Facility directory** searches all 5,894 source records together,
+with separate collection counts, intersecting country/operator/evidence filters,
+source geometry previews, original documents and cited exports. The original
+79-project capacity table remains available under **Capacity archive**. Source
+records can overlap; directory rows are not a deduplicated census.
+
+**Contracts & connections** brings 178 commercial/financing records and archived
+contracts into one filterable evidence view. Its company-to-project diagram uses
+only explicitly disclosed roles. Company dossiers and investment views link to
+project disclosures with their dates and source locators.
+
+The economics lab and investment lens save working assumptions locally. Name
+cases, compare up to three, share the exact inputs, and export calculations with
+references. Research-session exports include saved models and working inputs.
+Shared model links exclude case names and private notes. Zero discount rates use
+the finite annuity limit; invalid inputs cannot replace a saved valid case.
+
+Community points on the landscape now open their original source record without
+moving the camera. The visible-record list provides the same keyboard access.
+Nearby campus map records remain independent leads until identity is verified.
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.

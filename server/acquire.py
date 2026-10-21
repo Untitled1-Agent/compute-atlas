@@ -184,14 +184,27 @@ class Monitor:
         source = json.loads(job['payload'])
         hosts = {urlsplit(job['url']).hostname.lower(), *[h.lower() for h in source.get('allowed_redirect_hosts',[])]}
         headers = {}
-        if job['etag']: headers['If-None-Match'] = job['etag']
-        if job['last_modified']: headers['If-Modified-Since'] = job['last_modified']
+        # A restored ledger is not a captured document. A conditional request
+        # would strand a missing/corrupt body behind an otherwise valid 304.
+        with self.store.connect() as db:
+            baseline = db.execute('SELECT v.* FROM fetch_events e JOIN source_versions v ON v.id=e.version_id WHERE e.source_id=? ORDER BY e.id DESC LIMIT 1',(job['source_id'],)).fetchone()
+        if self._body_available(baseline):
+            if job['etag']: headers['If-None-Match'] = job['etag']
+            if job['last_modified']: headers['If-Modified-Since'] = job['last_modified']
         try:
             status, response_headers, raw, final_url = self._get(job['url'],hosts,headers)
             self._success(job,status,response_headers,raw,final_url)
         except (AcquisitionError, httpx.HTTPError, OSError, ValueError, ParseError, DefusedXmlException) as e:
             self._failure(job,e)
         return True
+
+    def _body_available(self, version) -> bool:
+        if not version or not re.fullmatch('[0-9a-f]{64}',version['sha256']): return False
+        path = self.blob_dir/version['sha256']
+        try:
+            return not path.is_symlink() and path.stat().st_size==version['byte_length'] and hashlib.sha256(path.read_bytes()).hexdigest()==version['sha256']
+        except OSError:
+            return False
 
     def _success(self, job, status, headers, raw, final_url):
         captured = now(); raw_hash = hashlib.sha256(raw).hexdigest()
@@ -203,7 +216,7 @@ class Monitor:
         if status != 304:
             # Content-addressed raw snapshots stay local; never exposed by the web server.
             dest = self.blob_dir / raw_hash
-            if not dest.exists():
+            if not dest.is_file() or dest.is_symlink() or hashlib.sha256(dest.read_bytes()).hexdigest()!=raw_hash:
                 if shutil.disk_usage(self.blob_dir).free - len(raw) < CAPTURE_DISK_RESERVE:
                     raise AcquisitionError('Capture deferred to preserve the 128 MiB disk reserve')
                 import os
@@ -224,6 +237,7 @@ class Monitor:
             vid = previous['id'] if previous else None
             outcome = 'not-modified'
             if status == 304 and not previous: raise AcquisitionError('304 returned without a captured baseline',304)
+            if status == 304 and not self._body_available(previous): raise AcquisitionError('304 returned without a readable, verified captured body',304)
             if status != 304:
                 vid = 'v-'+digest([job['source_id'],raw_hash])[:32]
                 db.execute('INSERT OR IGNORE INTO source_versions VALUES(?,?,?,?,?,?,?,?)',(vid,job['source_id'],raw_hash,semantic_hash,content_type,final_url,len(raw),captured))

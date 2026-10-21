@@ -21,7 +21,17 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Restore convenience ledger cache
+      - name: Restore private ledger and captured source bodies
+        id: restore-captures
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            var/atlas.sqlite3
+            var/blobs
+          key: source-captures-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: source-captures-${{ github.ref_name }}-
+      - name: Preserve the prior ledger when migrating the cache format
+        if: steps.restore-captures.outputs.cache-matched-key == ''
         uses: actions/cache/restore@v4
         with:
           path: var/atlas.sqlite3
@@ -41,15 +51,18 @@ jobs:
           s=json.load(open('qa/capture-report/status.json'))
           print('## Source acquisition — not automatic publication')
           print(f'Captured versions: {s["counts"]["source_versions"]}; pending review: {s["counts"]["pending_review"]}')
+          print(f'Private captured documents present: {s["capture_storage"]["present_bodies"]}; unavailable: {s["capture_storage"]["unavailable_bodies"]}')
           for j in s['jobs']:
               print(f'- {j["source_id"]}: {j["last_status"] or "deferred"}; last success {j["last_success"] or "none"}; {j["last_error"] or "no acquisition error"}')
           print('The accepted publication was unchanged. Actions cache is not a durable backup; use the persistent-volume service for an enduring ledger.')
           PY
-      - name: Save convenience ledger cache (not raw source bodies)
+      - name: Save private ledger and source-body cache
         uses: actions/cache/save@v4
         with:
-          path: var/atlas.sqlite3
-          key: source-ledger-${{ github.ref_name }}-${{ github.run_id }}
+          path: |
+            var/atlas.sqlite3
+            var/blobs
+          key: source-captures-${{ github.ref_name }}-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

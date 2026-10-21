@@ -41,6 +41,8 @@ python -m server export data/evidence.json</pre>`;
     old.after(section);
   }
   if(atlasMonitorStatus){
+    const captures=atlasMonitorStatus.capture_storage;
+    if(captures){const storage=document.createElement('div');storage.className='notice'+(captures.unavailable_bodies?' warning':'');storage.setAttribute('role','status');storage.textContent=`Captured documents: ${captures.present_bodies} present; ${captures.unavailable_bodies} unavailable of ${captures.referenced_bodies} referenced bodies. A database capture entry alone does not establish a readable original. Missing current bodies are requested again on the next scheduled fetch; lost historical versions may remain unavailable.`;body.prepend(storage);}
     const stamp=document.createElement('p');stamp.className='atlas-card-footnote';stamp.textContent='Status fetched '+monitorTime(atlasMonitorStatus.checked_at)+'. Worker '+(atlasMonitorStatus.background_refresh?'running':'paused')+'. Source capture time and editorial publication date are deliberately separate.';
     body.prepend(stamp);
   }

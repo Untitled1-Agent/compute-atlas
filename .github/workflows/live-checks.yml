@@ -70,8 +70,18 @@ jobs:
           node --check src/atlas-workspace.js
           node --check src/campus-scene.js
           node --check src/map-layers.js
+          node --check src/inventory.js
+          node --check src/connections.js
+          node --check src/location-discovery.js
+          node --check src/models.js
       - name: Isolated design study export and browser regressions
         run: python qa/design-review.py
+      - name: Connected directory, company evidence and map source journeys
+        if: ${{ !cancelled() }}
+        run: python qa/connected.py
+      - name: Saved models, comparisons and shared assumptions
+        if: ${{ !cancelled() }}
+        run: python qa/models.py
       - name: Bounded startup and recovery over real HTTP
         if: ${{ !cancelled() }}
         run: python qa/startup.py
