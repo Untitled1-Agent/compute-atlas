@@ -11,7 +11,7 @@ Native directory notes now return from the research shelf to the exact source
 record after reload. The shelf count includes notes and saved model cases without
 double-counting the same identity. Search previews use readable native metadata.
 
-Local validation: 52/52 full-discovery browser checks across hosted and standalone
+Local validation: 54/54 full-discovery browser checks across hosted and standalone
 entrypoints, including 320/390-pixel views, source/revision return, uncapped cell
 matches, original formula search, cited exports and the saved-note round trip.
 Screenshots were reviewed at desktop and phone sizes. Broad regressions run in CI.

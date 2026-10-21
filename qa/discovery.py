@@ -23,6 +23,7 @@ try:
    expected=page.evaluate('A.workbooks.flatMap(b=>b.sheets.flatMap(s=>s.cells.map(c=>[b.filename,c.value??"",c.formula??""].join(" ")))).filter(t=>t.toLowerCase().includes("microsoft")).length')
    check(entry+' workbook matches are not capped at 25',expected>25 and page.evaluate('discoveryRows().length')==expected)
    initial=page.locator('.discovery-result').first.inner_text();page.locator('[data-discovery-page="1"]').click();second=page.locator('.discovery-result').first.inner_text();bookmark=page.url
+   check(entry+' pagination retains a useful keyboard reading position',page.locator('.discovery-count').evaluate('el=>document.activeElement===el'))
    check(entry+' next page reaches previously hidden workbook matches',second!=initial and page.evaluate('discoveryState.page')==1)
    page.reload();ready(page)
    check(entry+' search query type and page survive reload',page.url==bookmark and page.locator('.discovery-result').first.inner_text()==second)
