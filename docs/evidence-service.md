@@ -210,3 +210,18 @@ version is not replaced with a newer source document. The cache remains evictabl
 and is not a durable backup; the persistent service and complete backup procedure
 retain that responsibility. Daily backup timers remain disabled under the user's
 existing instruction.
+
+## Builds behind a managed HTTPS proxy
+
+The Dockerfile accepts an optional BuildKit `proxy_ca` secret. Ordinary deployments
+need no extra flags. In a managed environment, mount its combined CA bundle while
+installing Python dependencies:
+
+```sh
+docker build --secret id=proxy_ca,src=/etc/ssl/certs/ca-certificates.crt -t compute-atlas .
+```
+
+TLS verification remains enabled. The session CA is a temporary build mount and
+is not copied into the image. Keep the environment's existing proxy and registry
+configuration. A read-only home directory can use `BUILDX_CONFIG` pointing to a
+writable build-cache directory without replacing Docker credentials.

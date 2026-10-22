@@ -26,3 +26,5 @@ The normal QA mode uses real HTTP and Chromium in CI. In restricted browser envi
 - [Reviewed primary-operator explorer](2026-10-09-operator-explorer.md) — directory publication, provisional map links, SQL persistence and exact capture acceptance.
 
 Superseded validation PNGs were removed from the active checkout on 12 October 2026 to recover shared VPS space. Historical screenshot links resolve to the immutable prior Git commit; original mockups and research captures are retained.
+
+- [22 October: portable research workspace and full local acceptance](2026-10-22-research-workspace.md)

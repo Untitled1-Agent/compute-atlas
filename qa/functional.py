@@ -1,22 +1,30 @@
 """Native offline-file checks and intercepted repository-entrypoint contracts."""
-import json,hashlib,math
+import json,hashlib,math,os,threading
+from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
+from functools import partial
 from urllib.parse import urlparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 import shutil
 ROOT=Path(__file__).resolve().parents[1]
 checks=[];errs=[];requests=[]
+http_mode=os.environ.get('ATLAS_STANDALONE_HTTP')=='1';server=None
+standalone_url=(ROOT/'compute_atlas.html').as_uri()
+if http_mode:
+ server=ThreadingHTTPServer(('127.0.0.1',0),partial(SimpleHTTPRequestHandler,directory=str(ROOT)))
+ threading.Thread(target=server.serve_forever,daemon=True).start()
+ standalone_url=f'http://127.0.0.1:{server.server_port}/compute_atlas.html'
 def check(name,ok,detail=None):
  checks.append(dict(test=name,pass_=bool(ok),detail=detail))
  print(('PASS ' if ok else 'FAIL ')+name,flush=True)
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox'])
+ b=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
  page=b.new_page(viewport={'width':1500,'height':1000},accept_downloads=True)
  page.set_default_timeout(6500)
  page.set_default_navigation_timeout(45000)
  page.on('pageerror',lambda e:errs.append(str(e)))
- page.on('request',lambda r:requests.append(r.url) if r.url.startswith(('http://','https://')) else None)
- page.goto((ROOT/'compute_atlas.html').as_uri(),wait_until='load');page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
+ page.on('request',lambda r:requests.append(r.url) if r.url.startswith(('http://','https://')) and r.url!=standalone_url else None)
+ page.goto(standalone_url,wait_until='load');page.context.set_offline(True);page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
  # Data completeness, malformed references and all original phase rows.
  d=page.evaluate('ATLAS.data');arc=page.evaluate('ATLAS.archive')
  check('all 92 original facility-phase rows preserved',sum(len(s['raw']) for s in d['sites'])==92)
@@ -114,7 +122,8 @@ with sync_playwright() as p:
  check('repository-native entrypoint surfaces asset-load failures cleanly','Could not load src/enhancements.js' in broken.locator('.boot-error').inner_text() and not broken_errs,broken_errs)
  broken.close()
  b.close()
-res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':'Native file:// standalone Chromium; repository-native index exercised with intercepted checked-in same-origin assets.'}
+if server:server.shutdown();server.server_close()
+res={'checks':checks,'passed':sum(c['pass_'] for c in checks),'total':len(checks),'errors':errs,'network_requests':requests,'execution':('HTTP-loaded standalone, then offline; native file navigation not exercised.' if http_mode else 'Native file:// standalone Chromium.')+' Repository-native index exercised with intercepted checked-in same-origin assets.'}
 (ROOT/'qa/functional_results.json').write_text(json.dumps(res,indent=2))
 print(json.dumps(res,indent=2))
 

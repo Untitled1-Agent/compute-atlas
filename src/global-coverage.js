@@ -36,7 +36,7 @@ function atlasCoverageOverview() {
     <p class="atlas-coverage-boundary">These are counts within this collection, not total facilities, market share, utilization, or a confidence score. ${m.mapped} records have approximate map anchors; ${m.total-m.mapped} remain unmapped.</p>
     <div class="atlas-coverage-country-head"><span>Geography</span><span>Primary / records</span></div>
     <div class="atlas-coverage-geographies">${atlasCoverageCountries().map(row=>`<article><div><h3>${esc(row.country)}</h3><strong>${row.reviewed} <span>/ ${row.total}</span></strong></div><div class="atlas-coverage-track" aria-hidden="true"><i style="width:${100*row.reviewed/row.total}%"></i></div><footer><span>${row.quantified} quantified disclosures · ${row.unmapped} unmapped</span><button class="text-button" data-coverage-country="${esc(row.country)}">Inspect disclosures →</button></footer></article>`).join('')}</div>
-    <section class="atlas-coverage-guide"><h3>The missing data stays visible.</h3><p>Unquantified observations remain null. Historical revisions remain in each facility’s evidence desk. This screen does not turn gross power, utility supply, critical IT, leases or native compute metrics into one denominator.</p><button class="text-button" data-coverage-tab="candidates">Review ${m.candidates} unmapped research candidates ↗</button></section>`;
+    <section class="atlas-coverage-guide"><h3>The missing data stays visible.</h3><p>Unquantified observations remain null. Historical revisions remain in each facility’s evidence desk. This screen does not turn gross power, utility supply, critical IT, leases or native compute metrics into one denominator.</p><button class="text-button" data-coverage-tab="candidates">Review ${m.candidates} unmapped research candidates →</button></section>`;
 }
 function atlasCoverageControls() {
   const st=atlasCoverageState,rows=atlasCoverageRows();
@@ -45,7 +45,7 @@ function atlasCoverageControls() {
 }
 function atlasCoverageDisclosure(row) {
   const date=row.as_of||'Reporting date not stated';
-  return `<article class="atlas-coverage-disclosure" data-coverage-record="${esc(row.id)}"><header><span class="atlas-card-kicker">${esc(row.site.country)} / ${esc(statusLabel(row.status))}</span>${primaryIsContext(row)?'<span class="atlas-coverage-context-label">Wider context</span>':''}<span>${esc(date)}</span></header><h3><button data-coverage-site="${esc(row.site_id)}">${esc(row.site.name)} <span>↗</span></button></h3><div class="atlas-coverage-value"><strong>${row.value===null?'Not disclosed':observationValue(row)}</strong>${row.value===null?'':`<span>${esc(row.unit)}</span>`}</div><p class="atlas-coverage-measurement">${esc(boundaryLabel(row.boundary))}</p><p class="atlas-coverage-scope">${esc(row.scope)}</p>${row.qualifier?`<p>${esc(row.qualifier)}</p>`:''}<footer>${primaryRef(row.source_id)}<span>${esc(row.source?.publisher||'Source not found')} · ${row.source?.published_at?'published '+esc(row.source.published_at):'retrieved '+esc(row.source?.retrieved_at||'date unknown')}</span></footer></article>`;
+  return `<article class="atlas-coverage-disclosure" data-coverage-record="${esc(row.id)}"><header><span class="atlas-card-kicker">${esc(row.site.country)} / ${esc(statusLabel(row.status))}</span>${primaryIsContext(row)?'<span class="atlas-coverage-context-label">Wider context</span>':''}<span>${esc(date)}</span></header><h3><button data-coverage-site="${esc(row.site_id)}">${esc(row.site.name)} <span>→</span></button></h3><div class="atlas-coverage-value"><strong>${row.value===null?'Not disclosed':observationValue(row)}</strong>${row.value===null?'':`<span>${esc(row.unit)}</span>`}</div><p class="atlas-coverage-measurement">${esc(boundaryLabel(row.boundary))}</p><p class="atlas-coverage-scope">${esc(row.scope)}</p>${row.qualifier?`<p>${esc(row.qualifier)}</p>`:''}<footer>${primaryRef(row.source_id)}<span>${esc(row.source?.publisher||'Source not found')} · ${row.source?.published_at?'published '+esc(row.source.published_at):'retrieved '+esc(row.source?.retrieved_at||'date unknown')}</span></footer></article>`;
 }
 function atlasCoverageResults() {
   if(!atlasCoverageOpen()||atlasCoverageState.tab!=='disclosures')return;
@@ -111,7 +111,7 @@ ATLAS.openDrawer=openDrawer;
 const atlasCoveragePreviousRail=spatialRail;
 spatialRail=function(level,...rest) {
   const html=atlasCoveragePreviousRail(level,...rest);
-  return level>=4?html:html+'<button class="atlas-coverage-launch" data-coverage-open><span>Source coverage & disclosure explorer</span><span>↗</span></button>';
+  return level>=4?html:html+'<button class="atlas-coverage-launch" data-coverage-open><span>Source coverage & disclosure explorer</span><span>→</span></button>';
 };
 const atlasCoveragePreviousKpis=spatialKpis;
 spatialKpis=function(scope,phase) {
@@ -122,7 +122,7 @@ spatialKpis=function(scope,phase) {
   if(target){
     const button=document.createElement('button');button.className='metric-card interactive';button.setAttribute('data-coverage-open','');
     button.innerHTML=target.innerHTML;
-    button.querySelector('.metric-note').textContent='Reviewed disclosure layer · inspect coverage ↗';
+    button.querySelector('.metric-note').textContent='Reviewed disclosure layer · inspect coverage →';
     target.replaceWith(button);
   }
   return template.innerHTML;

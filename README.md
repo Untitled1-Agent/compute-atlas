@@ -92,6 +92,19 @@ open the exact cell, cited claim or native directory record. Result-type filters
 and page state survive reload. Exports contain all matching records and source
 references, with private notes excluded.
 
+Source records from all three native catalogs can be saved to the **Research
+shelf**, alongside projects, companies, private notes and model cases. **Save this
+view** keeps a named search, directory filter, map/roof selection or model input
+link. Reopen or rename views, remove bookmarks with Undo, and transfer everything
+through a research-session export. Source bookmarks retain their original version
+reference; changed and unavailable publications remain explicit.
+
+The facility directory, connections and full research search also export **CSV**
+for spreadsheet analysis. Exports include every filtered match, native source
+identities and dates. Text that a spreadsheet could execute as a formula is
+escaped; numeric values retain their numeric meaning. Public record exports
+exclude private notes. JSON exports retain richer source metadata.
+
 ## Six-scale spatial explorer
 
 The globe view now behaves as a semantic research map rather than a simple camera zoom. It moves through **World → Continent → Region → Metro → Campus → Facility**, while preserving the selected site and Snapshot/Target evidence layer.

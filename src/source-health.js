@@ -69,11 +69,11 @@ function atlasHealthSource(row) {
   const url=queueURL(row.url), deferred=row.fetch_state==='deferred';
   return `<article class="atlas-health-source" data-health-source-id="${esc(row.id)}">
     <header><span class="atlas-card-kicker">${esc(row.id)} / ${esc(row.publisher)}</span><span class="atlas-health-badge" data-state="${deferred?'deferred':esc(row.capture_state)}">${deferred?'Retry deferred':capture}</span></header>
-    <h3><button data-health-source="${esc(row.id)}">${esc(row.title || row.id)} <span>↗</span></button></h3>
+    <h3><button data-health-source="${esc(row.id)}">${esc(row.title || row.id)} <span>→</span></button></h3>
     <dl class="atlas-health-dates"><div><dt>Successful fetch</dt><dd>${row.last_success?esc(atlasHealthTime(row.last_success)):'Not yet captured'}</dd></div><div><dt>Editorial retrieval</dt><dd>${esc(row.reviewed_retrieval_at || 'Not reviewed')}</dd></div></dl>
     ${row.last_error?`<p class="atlas-health-error-detail">${esc(row.last_error)}</p>`:''}
     <footer><span>${Number(row.pending_review)||0} awaiting review · ${row.last_status?'HTTP '+esc(row.last_status):'No HTTP result'}</span><button class="text-button" data-health-source="${esc(row.id)}">Fetch history →</button></footer>
-    <details class="atlas-health-identity"><summary>Source identity & schedule</summary><dl><div><dt>Publisher date</dt><dd>${esc(row.published_at || 'Not stated')}</dd></div><div><dt>Next attempt</dt><dd>${esc(atlasHealthTime(row.next_fetch_at))}</dd></div><div><dt>First capture of this body</dt><dd>${esc(atlasHealthTime(row.first_captured_at))}</dd></div><div><dt>Latest observation of this body</dt><dd>${esc(atlasHealthTime(row.observed_at))}</dd></div></dl><p>Body SHA-256 <code>${esc(row.sha256 || 'No captured body')}</code></p><p>Semantic SHA-256 <code>${esc(row.semantic_sha256 || 'No captured body')}</code></p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Read publisher source ↗</a>`:''}</details>
+    <details class="atlas-health-identity"><summary>Source identity & schedule</summary><dl><div><dt>Publisher date</dt><dd>${esc(row.published_at || 'Not stated')}</dd></div><div><dt>Next attempt</dt><dd>${esc(atlasHealthTime(row.next_fetch_at))}</dd></div><div><dt>First capture of this body</dt><dd>${esc(atlasHealthTime(row.first_captured_at))}</dd></div><div><dt>Latest observation of this body</dt><dd>${esc(atlasHealthTime(row.observed_at))}</dd></div></dl><p>Body SHA-256 <code>${esc(row.sha256 || 'No captured body')}</code></p><p>Semantic SHA-256 <code>${esc(row.semantic_sha256 || 'No captured body')}</code></p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Read publisher source →</a>`:''}</details>
   </article>`;
 }
 function atlasHealthActivity() {
@@ -91,7 +91,7 @@ function atlasHealthEvents() {
 }
 function atlasHealthQueue() {
   return `<section class="atlas-live-review"><div class="atlas-health-section-head"><div><h2>Acquisition review queue</h2><p>${atlasQueueTotal} pending items. Acknowledging a capture does not accept a claim.</p></div><button class="btn small" data-health-action="queue-refresh">Refresh queue ↻</button></div>
-    ${atlasMonitorQueue.map(row=>{const url=queueURL(row.payload.url);return `<article class="atlas-source-observation"><div class="atlas-card-kicker">${esc(row.kind)} / ${esc(row.source_id)}</div><h3>${esc(row.payload.title || row.payload.name || 'Source update')}</h3><p>${esc(row.payload.note || 'Pending explicit editorial review')}</p><p>Captured ${esc(atlasHealthTime(row.created_at))}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="text-button">Read publisher source ↗</a>`:''}<details><summary>Queue identity</summary><code>${esc(row.id)}</code></details></article>`;}).join('') || '<div class="notice">No pending items on this page. This does not establish that all sources are current or all facility facts are reviewed.</div>'}
+    ${atlasMonitorQueue.map(row=>{const url=queueURL(row.payload.url);return `<article class="atlas-source-observation"><div class="atlas-card-kicker">${esc(row.kind)} / ${esc(row.source_id)}</div><h3>${esc(row.payload.title || row.payload.name || 'Source update')}</h3><p>${esc(row.payload.note || 'Pending explicit editorial review')}</p><p>Captured ${esc(atlasHealthTime(row.created_at))}</p>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="text-button">Read publisher source →</a>`:''}<details><summary>Queue identity</summary><code>${esc(row.id)}</code></details></article>`;}).join('') || '<div class="notice">No pending items on this page. This does not establish that all sources are current or all facility facts are reviewed.</div>'}
     <div class="atlas-health-pager"><button class="btn small" data-service-page="previous" ${atlasQueueOffset===0||atlasMonitorBusy?'disabled':''}>← Previous</button><span>${atlasQueueTotal?atlasQueueOffset+1:0}–${atlasQueueOffset+atlasMonitorQueue.length} of ${atlasQueueTotal}</span><button class="btn small" data-service-page="next" ${atlasQueueNext===null||atlasMonitorBusy?'disabled':''}>Next →</button></div>
     <h3>Explicit editorial review</h3><p>The web API is read-only. Review through the local command line with an actor, source, measurement boundary and reason.</p><pre class="atlas-command">python -m server queue
 python -m server submit observation claim.json --actor analyst
@@ -134,7 +134,7 @@ openDrawer=function(kind,id,options={}) {
   atlasHealthPreviousOpenDrawer(kind,id,options);
   if (kind==='monitor' && globalThis.ATLAS_SERVICE) atlasHealthRender();
   if (kind==='primary-source' && globalThis.ATLAS_SERVICE) {
-    $('#drawer-content').insertAdjacentHTML('beforeend',`<button class="btn atlas-health-source-link" data-health-open="${esc(id)}">Inspect acquisition history ↗</button>`);
+    $('#drawer-content').insertAdjacentHTML('beforeend',`<button class="btn atlas-health-source-link" data-health-open="${esc(id)}">Inspect acquisition history →</button>`);
   }
 };
 ATLAS.openDrawer=openDrawer;
