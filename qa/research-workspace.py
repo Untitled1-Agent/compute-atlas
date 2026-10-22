@@ -33,6 +33,8 @@ try:
    address=page.evaluate('inventoryURL()');page.locator('[data-research-save-view]').click();page.locator('#research-view-name').fill('Frankfurt operator study');page.locator('#research-view-form button[type=submit]').click()
    check(entry+' named view saves exact filtered address',page.evaluate('saved.views[0].hash')==address)
    page.evaluate("ATLAS.navigate('watchlist')");page.reload();ready(page)
+   check(entry+' hosted and standalone shelf styles are actually applied',page.locator('.research-shelf-grid').first.evaluate('el=>getComputedStyle(el).display==="grid"'))
+   check(entry+' saved work leads the shelf before empty model sections',page.locator('.research-shelf').evaluate('el=>el.previousElementSibling.classList.contains("page-heading")') and page.locator('.model-shelf').count()==0)
    check(entry+' bookmarks notes and views survive reload',page.locator('[data-research-bookmark]').count()==1 and page.locator('[data-research-open-view]').count()==1)
    page.locator('[data-research-open-view]').click()
    check(entry+' saved view restores filters and collection',page.evaluate('inventoryURL()')==address and page.locator('#inventory-query').input_value()=='Frankfurt')

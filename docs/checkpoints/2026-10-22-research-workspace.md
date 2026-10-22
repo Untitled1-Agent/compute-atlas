@@ -19,7 +19,8 @@ Native quantities, dates, identifiers, source links, licensing and source metada
 remain attached; private notes are excluded. Spreadsheet formula text is escaped,
 while native negative numeric values remain numeric. JSON exports remain available.
 Help explains the actual hosted/offline mode, session replacement and the complete
-workflow. Hosted help offers the self-contained app download. Unsupported external
+workflow. Saved work leads the shelf; empty model/note sections are suppressed.
+Hosted and standalone shelf styles are explicitly checked. Hosted help offers the self-contained app download. Unsupported external
 arrow glyphs and duplicated link arrows were replaced with legible navigation.
 
 ## Local acceptance
@@ -27,7 +28,7 @@ arrow glyphs and duplicated link arrows were replaced with legible navigation.
 The user explicitly requested continued verification in this workspace and will
 handle production deployment. All 35 local regression suites passed after fixing
 a shelf/project API collision and rerunning the affected tests. The new research
-workspace suite passes 75/75 across both entrypoints; project research passes
+workspace suite passes 79/79 across both entrypoints; project research passes
 146/146. Backend tests pass 276/276. Browser runs were serial and low priority.
 
 Managed Chromium blocks native `file://` navigation. The functional and smoke
