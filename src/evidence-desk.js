@@ -89,7 +89,7 @@ function atlasEvidenceDesk(s) {
     <div class="atlas-desk-toolbar"><label for="atlas-evidence-query">Search the evidence<input id="atlas-evidence-query" type="search" autocomplete="off" placeholder="Capacity, lease, cooling, source…" value="${esc(atlasDeskQuery)}"></label><button class="btn" data-atlas-action="export" data-id="${esc(s.id)}">Export cited dossier ↓</button></div>
     <div class="atlas-evidence-filters" role="group" aria-label="Evidence category">${[['all','All current'],['observations','Quantities'],['facts','Attributes'],['relationships','Counterparties'],['history','Earlier revisions']].map(([id,label])=>`<button data-evidence-filter="${id}" aria-pressed="${atlasDeskFilter===id}">${label}</button>`).join('')}</div>
     <p id="atlas-desk-count" role="status"></p><div id="atlas-desk-records"></div>
-    <button class="text-button" data-action="site" data-id="${esc(s.id)}">Read the separate historical research dossier ↗</button>
+    <button class="text-button" data-action="site" data-id="${esc(s.id)}">Read the separate historical research dossier →</button>
   </section>`;
 }
 const atlasDeskPreviousOpen = openDrawer;

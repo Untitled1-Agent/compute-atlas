@@ -5,3 +5,9 @@ qa/screenshots
 __pycache__
 *.pyc
 .env*
+
+.venv
+.pytest_cache
+qa
+docs
+.git*

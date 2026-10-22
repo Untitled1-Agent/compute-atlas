@@ -1,4 +1,4 @@
-import json,time,threading
+import os,json,time,threading
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
 from pathlib import Path
@@ -6,16 +6,19 @@ from playwright.sync_api import sync_playwright,TimeoutError as PlaywrightTimeou
 import shutil
 ROOT=Path(__file__).resolve().parents[1]
 results=[];errors=[];network=[]
+http_mode=os.environ.get('ATLAS_STANDALONE_HTTP')=='1'
+standalone_url='http://127.0.0.1:8765/compute_atlas.html' if http_mode else (ROOT/'compute_atlas.html').as_uri()
 def record(name,passed,**detail):
  item={'test':name,'pass':bool(passed),**detail};results.append(item);return bool(passed)
 server=ThreadingHTTPServer(('127.0.0.1',8765),partial(SimpleHTTPRequestHandler,directory=str(ROOT)))
 threading.Thread(target=server.serve_forever,daemon=True).start()
 with sync_playwright() as p:
- browser=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox','--allow-file-access-from-files'])
+ browser=p.chromium.launch(executable_path=shutil.which('chromium') or shutil.which('chromium-browser') or p.chromium.executable_path,headless=True,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
  page=browser.new_page(viewport={'width':1500,'height':1040},device_scale_factor=1)
  page.on('pageerror',lambda e:errors.append(str(e)))
- page.on('request',lambda r:network.append(r.url) if r.url.startswith(('http://','https://')) else None)
- page.goto((ROOT/'compute_atlas.html').as_uri(),wait_until='load')
+ page.on('request',lambda r:network.append(r.url) if r.url.startswith(('http://','https://')) and r.url!=standalone_url else None)
+ page.goto(standalone_url,wait_until='load')
+ page.context.set_offline(True)
  page.wait_for_function('document.documentElement.classList.contains("research-ready")')
  page.wait_for_timeout(1500)
  page.screenshot(path=str(ROOT/'qa/overview.png'),full_page=True)
@@ -63,7 +66,7 @@ with sync_playwright() as p:
  record('mobile no page-wide horizontal overflow',page.evaluate('document.documentElement.scrollWidth<=window.innerWidth+1'))
  browser.close()
 server.shutdown()
-report={'tests':results,'errors':errors,'requests':network,'counts':counts,'passed':sum(t['pass'] for t in results),'total':len(results)}
+report={'execution':'HTTP-loaded standalone, then offline; native file navigation not exercised.' if http_mode else 'Native file:// standalone Chromium.','tests':results,'errors':errors,'requests':network,'counts':counts,'passed':sum(t['pass'] for t in results),'total':len(results)}
 (ROOT/'qa/smoke_results.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
 if report['passed']!=report['total'] or errors or network:
