@@ -64,8 +64,8 @@ entrypoints and desktop, tablet and phone layouts.
 
 ## Connected analyst workspace
 
-The primary **Facility directory** searches all 5,894 source records together,
-with separate collection counts, intersecting country/operator/evidence filters,
+The primary **Facility directory** searches all 6,471 source records together,
+across six native collections, with separate collection counts, intersecting country/operator/evidence filters,
 source geometry previews, original documents and cited exports. The original
 79-project capacity table remains available under **Capacity archive**. Source
 records can overlap; directory rows are not a deduplicated census.
@@ -104,6 +104,28 @@ for spreadsheet analysis. Exports include every filtered match, native source
 identities and dates. Text that a spreadsheet could execute as a formula is
 escaped; numeric values retain their numeric meaning. Public record exports
 exclude private notes. JSON exports retain richer source metadata.
+
+## Global GPU clusters and AI data-center buildout
+
+The complete public Epoch AI GPU-cluster publication adds **482 records with all
+57 source fields**, including 190 publisher-anonymized records and 30 superseded
+phases. Filter by geography, owner, accelerator and source certainty; inspect the
+published locations, compare up to three clusters, follow predecessor/successor
+links, save source records and export every matching row.
+
+The complete AI data-center publication adds **95 data centers, 567 timeline
+observations, 239 chip deployments, 143 chillers, 527 cooling towers and 32
+accelerator specifications**. Explore all six tables, switch timeline metrics,
+follow source-linked parent records, compare centers and download the original
+source ZIP byte-for-byte, including offline. All 1,603 rows are searchable.
+
+**Global coverage** shows country and territory coverage across all six native
+facility collections. Select a country/source cell to open its exact directory
+scope, or export every source publication together. Original values, source dates,
+licenses, confidence tags and unknowns are preserved. These are complete captured
+publications, not a complete census of global compute. Epoch power estimates are
+separate from the original critical-IT models; no identities are automatically
+merged. See the [source review](docs/research/2026-10-22-global-publications.md).
 
 ## Six-scale spatial explorer
 

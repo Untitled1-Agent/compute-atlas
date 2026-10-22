@@ -39,3 +39,12 @@ python -m server catalog-accept NEW_HASH --expected-current OLD_HASH --actor Rev
 Do not accept unexpected mass deletions without checking query coverage. SQLite
 keeps prior snapshots and review decisions. The accepted catalog is independent
 of the capacity ledger. `catalog-accept` does not accept any new power claim.
+
+## Complete Epoch AI publications
+
+`gpu-clusters.json` and `epoch-data-centers.json` are independent CC BY 4.0
+publications attributed to Epoch AI. The raw GPU CSV and exact data-center ZIP
+bytes are retained. All 2,085 rows and all native fields survive normalization;
+the data-center ZIP is available offline from the app. Their source models do not
+replace the accepted project evidence ledger. See the
+[source review](../../docs/research/2026-10-22-global-publications.md).

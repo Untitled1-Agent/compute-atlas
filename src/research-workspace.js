@@ -10,7 +10,7 @@ function researchHash(value){
 }
 function researchRecords(raw){
   const rows=Array.isArray(raw)?raw:[];
-  return rows.filter(r=>r&&typeof r.id==='string'&&r.id.length>0&&r.id.length<=500&&['osm','equinix','digital'].includes(r.collection))
+  return rows.filter(r=>r&&typeof r.id==='string'&&r.id.length>0&&r.id.length<=500&&['osm','equinix','digital','gpu','epochdc'].includes(r.collection))
     .filter(r=>!inventoryRecord(r.id)||inventoryRecord(r.id).collection===r.collection)
     .filter((r,i,a)=>a.findIndex(x=>x.id===r.id)===i).slice(0,500)
     .map(r=>({id:r.id,collection:r.collection,name:researchString(r.name)||r.id,source_version:researchString(r.source_version,200),captured_at:researchString(r.captured_at,50),saved_at:researchString(r.saved_at,50)}));
@@ -22,7 +22,7 @@ function researchViews(raw){
 }
 function researchImport(x){saved.records=researchRecords(x.records);saved.views=researchViews(x.views);researchState.removed=null;}
 researchImport(saved);
-function researchPublication(r){return r.collection==='osm'?CATALOG:r.collection==='equinix'?OPERATOR_DIRECTORY:r.collection==='digital'?DIGITAL_REALTY:null;}
+function researchPublication(r){return r.collection==='osm'?CATALOG:r.collection==='equinix'?OPERATOR_DIRECTORY:r.collection==='digital'?DIGITAL_REALTY:r.collection==='gpu'?GPU_CLUSTERS:r.collection==='epochdc'?EPOCH_CENTERS:null;}
 function researchVersion(r){const publication=researchPublication(r);return {source_version:String(r.native.source_version||publication?.source_version||publication?.captured_at||''),captured_at:publication?.captured_at||''};}
 function researchPinned(id){return site(id)?isSaved(id):saved.records.some(r=>r.id===id);}
 function researchPin(id){return `<button class="btn research-pin" data-research-pin="${esc(id)}" aria-pressed="${researchPinned(id)}">${researchPinned(id)?'Saved to shelf':'Save to shelf'}</button>`;}
@@ -71,7 +71,7 @@ watchlistView=function(){
   return container.innerHTML;
 };
 const researchOldInspector=inventoryInspector;
-inventoryInspector=function(rows){const html=researchOldInspector(rows),r=inventoryRecord(inventoryState.selected);return r?html.replace('<div class="inventory-detail-actions">','<div class="inventory-detail-actions">'+researchPin(r.id)):html;};
+inventoryInspector=function(rows){const html=researchOldInspector(rows),r=inventoryRecord(inventoryState.selected);return r&&!html.includes('data-research-pin=')?html.replace('<div class="inventory-detail-actions">','<div class="inventory-detail-actions">'+researchPin(r.id)):html;};
 const researchOldLocation=mappedLocationContent;
 mappedLocationContent=id=>researchOldLocation(id)+ (inventoryRecord(id)?researchPin(id):'');
 const researchOldOperatorRail=operatorRail;
@@ -88,7 +88,8 @@ function researchSourceMetadata(r){
   return {collection:r.collection,captured_at:publication.captured_at,license:publication.license||publication.rights,attribution:publication.attribution,attribution_url:publication.attribution_url,publisher_url:publication.url,record_url:r.native.source_url,source_version:researchVersion(r).source_version};
 }
 function researchSearchSources(r){
-  if(['project','location','listing'].includes(r.type))return researchSourceMetadata(inventoryRecord(r.id));
+  if(['project','location','listing','gpu','datacenter'].includes(r.type))return researchSourceMetadata(inventoryRecord(r.id));
+  if(r.type==='infrastructure')return {publisher:r.record.publisher,source_url:r.record.source_url,license:r.record.license,captured_at:r.record.captured_at};
   if(r.type==='claim')return [primarySource(r.record.source_id)].filter(Boolean);
   if(r.type==='source')return [r.record];
   if(['company','contract','cost'].includes(r.type))return ids(r.record.sources).map(source).filter(Boolean);

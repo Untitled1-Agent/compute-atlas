@@ -23,7 +23,7 @@ try:
    context=browser.new_context(viewport={'width':1440,'height':1000});page=context.new_page();page.set_default_timeout(20000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(base+entry+'#inventory');ready(page)
    baseline=page.evaluate('JSON.stringify([D.sites,CATALOG.records,ATLAS_PRIMARY.observations,ATLAS_PRIMARY.facts,ATLAS_PRIMARY.relationships])')
-   check(entry+' directory exposes all source collections independently',page.evaluate('inventoryRecords().length===D.sites.length+CATALOG.records.length+OPERATOR_DIRECTORY.records.length+DIGITAL_REALTY.records.length&&new Set(inventoryRecords().map(r=>r.id)).size===inventoryRecords().length'))
+   check(entry+' directory exposes all source collections independently',page.evaluate('inventoryRecords().length===D.sites.length+CATALOG.records.length+OPERATOR_DIRECTORY.records.length+DIGITAL_REALTY.records.length+GPU_CLUSTERS.records.length+EPOCH_CENTERS.tables.centers.records.length&&new Set(inventoryRecords().map(r=>r.id)).size===inventoryRecords().length'))
    check(entry+' directory is a primary destination',page.locator('#navigation>[data-id="inventory"]').count()==1)
    page.locator('#inventory-query').fill('Frankfurt');page.wait_for_timeout(200)
    page.locator('#inventory-country').select_option('Germany')

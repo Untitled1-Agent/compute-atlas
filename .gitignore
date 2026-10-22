@@ -35,3 +35,6 @@ qa/screenshots/
 qa/*.png
 qa/*_results.json
 qa/review/
+
+# Local implementation scratch and receipts
+work/
