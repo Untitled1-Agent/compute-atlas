@@ -33,7 +33,7 @@ remain unavailable where licensed, reviewed geometry is absent.
 
 ## Research a project or company
 
-The Facility directory searches all 5,894 native records and keeps their collection
+The Facility directory searches all 6,471 native records and keeps their collection
 identities separate. Inspect location precision, source dates, native disclosures
 and source geometry before opening a dossier or original source. The Capacity
 archive preserves the original 79-project view and independent IT power models.
@@ -51,6 +51,25 @@ claims, sources, contracts, costs, 108 report sections, 5,938 workbook cells and
 eight original files. Results are paginated without truncating the collection.
 Workbook matches open the exact original sheet/cell, including cached values and
 formula text. The original attachments remain available byte-for-byte.
+
+## Explore global source publications
+
+Global GPU clusters maps all published coordinates from Epoch AI’s complete
+482-row public CSV. Refine geography, owner, hardware, certainty or revision state;
+compare records without adding historical phases together. Anonymous rows retain
+the publisher’s anonymity. Every source field is available in the inspector.
+
+AI data center buildout exposes the complete six-table source ZIP, including
+95 center dossiers, timelines, chip deployments and equipment references. Select
+a center to plot independently defined metrics, inspect individual source points
+and follow linked chip deployments. Future points and missing values stay explicit.
+Download the original ZIP for an exact portable copy. Equipment references do not
+assert a campus installation. Both explorers support native records on the shelf,
+private notes, named views, shared URLs and complete cited exports.
+
+Global coverage compares source counts by country across all six collections.
+Select any populated cell to inspect those exact records. Source counts overlap;
+the coverage table does not report unique facility totals or market shares.
 
 ## Keep and transfer your work
 

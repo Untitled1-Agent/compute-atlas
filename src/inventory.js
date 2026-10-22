@@ -2,7 +2,7 @@
 /* A common discovery index, not a cross-source identity merge. Native records
    remain the authority; no coordinates, power or roles are transferred. */
 const inventoryState={q:'',collection:'all',country:'all',operator:'',company:'all',coverage:'all',sort:'name',page:0,selected:null};
-const INVENTORY_COLLECTIONS={projects:'Research projects',osm:'Community map',equinix:'Equinix directory',digital:'Digital Realty directory'};
+const INVENTORY_COLLECTIONS={projects:'Research projects',osm:'Community map',equinix:'Equinix directory',digital:'Digital Realty directory',gpu:'Epoch GPU clusters',epochdc:'Epoch AI data centers'};
 let inventoryCache={inputs:[],rows:[]};
 const inventoryValues=value=>value==null?'':Array.isArray(value)?value.map(inventoryValues).join(' '):typeof value==='object'?Object.values(value).map(inventoryValues).join(' '):String(value);
 const inventoryText=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
@@ -23,7 +23,7 @@ function inventoryRecords(){
       lat:r.coordinates?.lat??null,lon:r.coordinates?.lon??null,geometry:null,kind:r.facility_type,
       coordinate_basis:r.coordinates?.basis||'No source coordinates',date:d.captured_at,snapshot_mw:null,target_mw:null,claims:0,
       source_urls:[r.source_url],native:r,search:[r.code,r.service_coverage].join(' ')}));
-    const rows=[...project,...osm,...directory(OPERATOR_DIRECTORY,'equinix'),...directory(DIGITAL_REALTY,'digital')];
+    const rows=[...project,...osm,...directory(OPERATOR_DIRECTORY,'equinix'),...directory(DIGITAL_REALTY,'digital'),...gpuInventoryRows,...epochCenterRows];
     rows.forEach(r=>{r.search=inventoryText([r.id,r.name,r.country,r.place,r.operator,r.search].join(' '));r.mapped=spatialFinite(r.lat)&&spatialFinite(r.lon);});
     inventoryCache={inputs,rows};
   }
@@ -65,6 +65,7 @@ function inventoryList(rows=inventoryRows()){
   <div class="operator-pagination"><button class="btn small" data-inventory-page="-1" ${inventoryState.page===0?'disabled':''}>← Previous</button><span>Page ${inventoryState.page+1} of ${pages}</span><button class="btn small" data-inventory-page="1" ${inventoryState.page>=pages-1?'disabled':''}>Next →</button></div>`;
 }
 function inventoryLink(r){
+  if(r.collection==='gpu')return `<button class="btn primary" data-gpu-open="${esc(r.id)}">Explore GPU cluster →</button>`;
   if(r.collection==='projects')return `<button class="btn primary" data-atlas-action="campus" data-id="${esc(r.id)}">Explore campus →</button><button class="btn" data-atlas-action="evidence-desk" data-id="${esc(r.id)}">Read evidence</button><button class="text-button" data-workspace-compare="${esc(r.id)}">${saved.projectCompare.includes(r.id)?'✓ Comparing':'Compare +'}</button>`;
   if(r.collection==='osm')return `<button class="btn primary" data-catalog-open="${esc(r.id)}">${r.geometry?'Explore source geometry':'Explore map location'} →</button>`;
   if(r.collection==='equinix')return `<button class="btn primary" data-inventory-native="${esc(r.id)}">Operator details & map candidates →</button>`;
@@ -80,9 +81,10 @@ function inventoryPreview(r){
 }
 function inventoryInspector(rows=inventoryRows()){
   const id=inventoryState.selected,r=inventoryRecord(id);
+  if(['gpu','epochdc'].includes(r?.collection)){const html=r.collection==='gpu'?gpuInspector(r.native,true):epochInspector('centers',r.native,true);return rows.some(x=>x.id===id)?html:html.replace('</header>','</header><div class="notice">Selected record is outside these filters. <button class="text-button" data-inventory-reveal>Show in results</button></div>');}
   if(id&&!r)return `<section class="inventory-inspector"><h2>Record unavailable.</h2><p><code>${esc(id)}</code> is absent from this publication. The bookmark and private note are preserved.</p><button class="btn" data-inventory-close>Browse records</button>${inventoryNote(id)}</section>`;
   if(!r)return `<section class="inventory-inspector inventory-welcome"><div class="eyebrow">ONE DIRECTORY / DISTINCT SOURCES</div><h2>Find a place.<br>Follow its evidence.</h2><p>Search names, places, operators, addresses and project disclosures. Select a record to inspect its source and open its map or dossier.</p><dl>${Object.entries(inventoryCounts(inventoryRecords())).map(([k,n])=>`<div><dt>${INVENTORY_COLLECTIONS[k]}</dt><dd>${fmt(n)}</dd></div>`).join('')}</dl><p>These collections can describe the same place. Their record counts are shown separately and do not form a facility census.</p><button class="btn" data-action="nav" data-id="catalog">Explore the worldwide map →</button></section>`;
-  const source=r.collection==='osm'?CATALOG:r.collection==='equinix'?OPERATOR_DIRECTORY:r.collection==='digital'?DIGITAL_REALTY:null,p=r.collection==='projects'?atlasResearchProfile(r.native):null;
+  const source=r.collection==='osm'?CATALOG:r.collection==='equinix'?OPERATOR_DIRECTORY:r.collection==='digital'?DIGITAL_REALTY:r.collection==='gpu'?GPU_CLUSTERS:null,p=r.collection==='projects'?atlasResearchProfile(r.native):null;
   return `<section class="inventory-inspector" data-inventory-detail="${esc(r.id)}"><header><div><div class="eyebrow">${INVENTORY_COLLECTIONS[r.collection]}</div><h2 tabindex="-1" id="inventory-detail-title">${esc(r.name)}</h2></div><button class="text-button" data-inventory-close aria-label="Close selected record">×</button></header>${!rows.some(x=>x.id===id)?'<div class="notice">Selected record is outside these filters. <button class="text-button" data-inventory-reveal>Show in results</button></div>':''}
     ${inventoryPreview(r)}<p>${esc([r.place,r.country].filter(Boolean).join(' · '))}</p><div class="inventory-detail-actions">${inventoryLink(r)}</div>
     <dl><div><dt>Source identity</dt><dd><code>${esc(r.id)}</code></dd></div><div><dt>Operator / association</dt><dd>${esc(r.operator||'Not supplied')}</dd></div><div><dt>Record type</dt><dd>${esc(r.kind||'Source feature')}</dd></div>${p?`<div><dt>Snapshot IT estimate</dt><dd>${r.snapshot_mw==null?'Not quantified':fmt(r.snapshot_mw)+' MW'}<small>${esc(r.native.snapshot?.date||'')}</small></dd></div><div><dt>Target IT estimate</dt><dd>${r.target_mw==null?'Not quantified':fmt(r.target_mw)+' MW'}<small>${esc(r.native.target?.date||'')}</small></dd></div>`:`<div><dt>Source captured</dt><dd>${esc(source?.captured_at?.slice(0,10)||'Not supplied')}</dd></div>${r.collection==='osm'?`<div><dt>Map version / edited</dt><dd>${esc(r.native.source_version)} · ${esc(r.date?.slice(0,10)||'Undated')}</dd></div>`:''}<div><dt>IT power</dt><dd>Not established by this record</dd></div>`}</dl>
@@ -113,7 +115,7 @@ function inventoryUpdate(){
 function inventoryExportRows(rows){
   return {schema_version:1,exported_at:new Date().toISOString(),filters:{...inventoryState},counts_by_collection:inventoryCounts(rows),
     policy:'Source records may overlap. No cross-source identity, capacity, ownership or service relationship is inferred. Private notes excluded.',
-    publications:{projects:{published_at:ATLAS_PRIMARY.published_at},osm:{captured_at:CATALOG.captured_at,license:CATALOG.license,attribution:CATALOG.attribution,attribution_url:CATALOG.attribution_url},equinix:{captured_at:OPERATOR_DIRECTORY.captured_at,url:OPERATOR_DIRECTORY.url,rights:OPERATOR_DIRECTORY.rights},digital:{captured_at:DIGITAL_REALTY.captured_at,url:DIGITAL_REALTY.url,rights:DIGITAL_REALTY.rights}},
+    publications:{epochdc:{captured_at:EPOCH_CENTERS.captured_at,url:EPOCH_CENTERS.url,license:EPOCH_CENTERS.license,attribution:EPOCH_CENTERS.attribution,source_sha256:EPOCH_CENTERS.source_sha256},gpu:{captured_at:GPU_CLUSTERS.captured_at,url:GPU_CLUSTERS.url,license:GPU_CLUSTERS.license,license_url:GPU_CLUSTERS.license_url,attribution:GPU_CLUSTERS.attribution,source_sha256:GPU_CLUSTERS.source_sha256},projects:{published_at:ATLAS_PRIMARY.published_at},osm:{captured_at:CATALOG.captured_at,license:CATALOG.license,attribution:CATALOG.attribution,attribution_url:CATALOG.attribution_url},equinix:{captured_at:OPERATOR_DIRECTORY.captured_at,url:OPERATOR_DIRECTORY.url,rights:OPERATOR_DIRECTORY.rights},digital:{captured_at:DIGITAL_REALTY.captured_at,url:DIGITAL_REALTY.url,rights:DIGITAL_REALTY.rights}},
     records:rows.map(r=>{if(r.collection==='projects'){const {private_note,...dossier}=atlasCitedDossier(r.native);return {collection:r.collection,id:r.id,dossier};}return {collection:r.collection,id:r.id,record:r.native};})};
 }
 let inventoryTimer;
