@@ -5355,7 +5355,7 @@ const publicationBaseNav=renderNav;
 renderNav=function(){publicationBaseNav();const element=document.querySelector('.top-date'),stamp=element?.querySelector('b');if(!stamp)return;
   const mixed=['inventory','markets','search','watchlist'].includes(state.view),date=state.view==='gpu'?GPU_CLUSTERS.publisher_page_date:state.view==='datacenters'?EPOCH_CENTERS.published_at:ATLAS_PRIMARY.published_at;
   element.firstChild.textContent=mixed?'SOURCES ':['gpu','datacenters'].includes(state.view)?'SOURCE SNAPSHOT ':'DATASET ';
-  stamp.textContent=mixed?'MULTIPLE DATES':new Date(date+'T00:00:00Z').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}).toUpperCase();
+  stamp.textContent=mixed?'MULTIPLE DATES':!date?'DATE NOT SUPPLIED':new Date(date+'T00:00:00Z').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'}).toUpperCase();
 };
 
 'use strict';
