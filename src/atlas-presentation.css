@@ -2197,3 +2197,6 @@ body.ui-atlas-active {
     max-width: 44%;
   }
 }
+/* Original filenames and source URLs must wrap without widening the reader. */
+.report-body { overflow-wrap:anywhere; }
+.report-body .table-wrap { overscroll-behavior-x:contain; }

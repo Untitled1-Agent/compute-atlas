@@ -89,6 +89,17 @@ try:
     if width==320:check(entry+' narrow phone image selector clears map controls',page.evaluate('document.querySelector(".ua-scene-choice").getBoundingClientRect().right<=document.querySelector(".ua-layer-control").getBoundingClientRect().left'))
     if width==390:
      page.locator('[data-ui-mobile-details]').click();check(entry+' mobile dossier expands on demand',page.locator('.ua-rail').evaluate('e=>e.classList.contains("ui-mobile-open")'))
+   for width,height in [(1440,1000),(390,844),(320,800)]:
+    page.set_viewport_size({'width':width,'height':height})
+    for view in ['inventory','companies','contracts','investment','reports','data']:
+     page.evaluate('view=>ATLAS.navigate(view)',view)
+     check(entry+' connected '+view+' fits at '+str(width),page.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+    page.evaluate('ATLAS.navigate("reports")')
+    failures=page.evaluate('(()=>{const failed=[];for(let r=0;r<A.reports.length;r++){state.report=r;for(let s=0;s<A.reports[r].sections.length;s++){state.section=s;render();if(document.documentElement.scrollWidth>innerWidth)failed.push([r,s]);}}return failed})()')
+    check(entry+' every original report section fits at '+str(width),not failures)
+    if failures:print('REPORT OVERFLOW',width,failures,flush=True)
+   page.evaluate('state.report=0;state.section=0;render()')
+   check(entry+' original tables support keyboard scrolling',page.evaluate('[...document.querySelectorAll(".report-body .table-wrap")].every(e=>e.tabIndex===0&&e.getAttribute("aria-label"))'))
    check(entry+' no runtime errors',not errors);print('ERRORS',errors,flush=True);ctx.close()
   browser.close()
 finally:
