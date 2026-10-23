@@ -23,7 +23,8 @@ LAYERS = {
     'lakes': ('10m_physical', 'ne_10m_lakes'),
     'places': ('10m_cultural', 'ne_10m_populated_places'),
 }
-WINDOWS = [(-130, 22, -60, 53), (-15, 34, 38, 64), (73, 17, 136, 54)]
+# Global reference coverage; bounded facility captures remain a separate layer.
+WINDOWS = [(-180, -90, 180, 90)]
 
 
 def intersects(bbox, windows=WINDOWS):

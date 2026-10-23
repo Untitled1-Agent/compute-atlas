@@ -4,7 +4,7 @@ A source-cited, six-scale research atlas. Open `index.html` through a local HTTP
 
 [Interface & evidence boundaries](docs/atlas-interface.md) · [Approved visual references](docs/mockups/README.md) · [Master implementation issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2)
 
-[Global atlas implementation and visual review](docs/design/unified-atlas-review.md)
+[Rebuilt production UI: six-reference comparison and screenshots](docs/design/mockup-ui-review.md) · [Global data implementation](docs/design/unified-atlas-review.md)
 
 ## Start with the global atlas
 
@@ -12,6 +12,8 @@ The default landscape (`#atlas`) puts all **6,471 source records across 122 name
 countries and territories** in one map: project research, OpenStreetMap,
 Equinix, Digital Realty, Epoch GPU clusters and Epoch AI data centers. Native
 records may overlap; these counts are not a unique-facility census.
+
+The production interface now follows the six approved compositions: relief globe, transatlantic view, regional and metro maps, campus imagery and a selected physical-feature dossier.
 
 Move through World, Continent, Region, Metro, Campus and Facility. Filter by
 country, operator, source collection, evidence availability or search. Select a

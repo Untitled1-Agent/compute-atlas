@@ -1,0 +1,23 @@
+{
+  "publisher": "Natural Earth",
+  "title": "Natural Earth II with Shaded Relief and Water",
+  "source_url": "https://naturalearth.s3.amazonaws.com/50m_raster/NE2_50M_SR_W.zip",
+  "license": "Public domain",
+  "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "captured_at": "2026-10-23",
+  "source_sha256": "7e0e07089b699a3cccad98dd1b2446390d8e3f8c5006359d477a329cebcafaa9",
+  "source_raster_sha256": "02ae944d9ee8a64ccacbd4f535220aac10b5c95e874118b6db8d6f07cea48e71",
+  "path": "data/maps/terrain.webp",
+  "sha256": "66bf5ecf999c24b571ffad09a55770a1573c98e362f973d028fccaa7f9460e7b",
+  "width": 4096,
+  "height": 2048,
+  "projection": "Geographic WGS84, equirectangular",
+  "bounds": [
+    -180,
+    -90,
+    180,
+    90
+  ],
+  "transformation": "Lanczos downsample; WebP quality 84. Display tint and illumination are cartographic styling, not observed night lighting.",
+  "scale": "1:50 million"
+}

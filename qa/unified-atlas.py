@@ -66,7 +66,7 @@ try:
    check(entry+' project imagery retains reviewed roof identities',page.evaluate('globe instanceof UnifiedCampusScene&&globe.features.length>=3&&!!globe.manifest.image.sha256'))
    page.locator('[data-ua-scene]').select_option('new-carlisle-sr2-2025');page.wait_for_function('globe.imageReady&&!globe.dirty');check(entry+' imagery attribution names the actual publisher','Indiana' in page.locator('.ua-map-attribution').inner_text());check(entry+' source electricity features are available',page.evaluate('globe.features.some(f=>f.record.tags?.power)'));check(entry+' component selection changes imagery and roofs',page.evaluate('globe.manifest.id==="new-carlisle-sr2-2025"&&globe.features.filter(f=>f.polygons.length).length===5'))
    page.locator('[data-ua-topic="timeline"]').click();check(entry+' project timeline uses dated development evidence',page.locator('[data-workspace-topic-content="development"]').count()==1);page.locator('[data-ua-topic="finance"]').click();check(entry+' project finance retains its own claims',page.locator('[data-workspace-topic-content="finance"]').count()==1);
-   page.locator('[data-ua-topic="notes"]').click();page.locator('#ua-note').fill('Review source assumptions');page.wait_for_timeout(400);check(entry+' notes persist on original record identity',page.evaluate('saved.notes[uaState.selected]==="Review source assumptions"'))
+   page.locator('.ua-topics [data-ua-topic="notes"]').click();page.locator('#ua-note').fill('Review source assumptions');page.wait_for_timeout(400);check(entry+' notes persist on original record identity',page.evaluate('saved.notes[uaState.selected]==="Review source assumptions"'))
    page.evaluate('uaGo({scale:0,camera:null,sceneCamera:null,selected:null,compare:["amazon-anthropic-new-carlisle",GPU_CLUSTERS.records[0].id,EPOCH_CENTERS.tables.centers.records[0].id]})')
    check(entry+' cross-source comparison labels incompatible measures',page.locator('.ua-comparison').count()==1 and 'H100e' in page.locator('.ua-comparison').inner_text() and 'MW IT' in page.locator('.ua-comparison').inner_text())
    with page.expect_download() as event:page.locator('[data-ua-export-compare]').click()
@@ -81,5 +81,5 @@ try:
    check(entry+' no runtime errors',not errors);print('ERRORS',errors,flush=True);ctx.close()
   browser.close()
 finally:
- server.shutdown();(ROOT/'qa/unified-atlas_results.json').write_text(json.dumps(checks,indent=2))
+ server.shutdown();(ROOT/'qa/unified-atlas_results.json').write_text(json.dumps({'total':len(checks),'passed':sum(c['pass'] for c in checks),'checks':checks},indent=2))
 assert checks and all(c['pass'] for c in checks)
