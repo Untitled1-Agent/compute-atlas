@@ -2644,8 +2644,16 @@ body.ui-atlas-active {
     min-height:44px
   }
   .geo-image-date {
-    top:60px;
+    top:88px;
     left:10px;
+    max-width:calc(100% - 24px);
+    font-size:8px;
+    line-height:1.5
+  }
+  .ua-map-stage:has(.geo-image-date) .ua-context-status {
+    top:128px;
+    left:12px;
+    max-width:calc(100% - 24px);
     font-size:8px
   }
 }

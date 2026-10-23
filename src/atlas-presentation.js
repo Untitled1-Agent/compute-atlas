@@ -855,7 +855,7 @@ function uiVersionProblem() {
   const versions = uiSourceVersions();
   for (const [key, label] of [
     ["imageversion", "Historical image"],
-    ["featureversion", "Reviewed feature"],
+    ["featureversion", "Physical feature"],
     ["contextversion", "Native context capture"],
   ]) {
     if (uaState[key] && uaState[key] !== versions[key])

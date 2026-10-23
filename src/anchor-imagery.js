@@ -25,6 +25,8 @@ async function geoCheckedBytes(path, sha256) {
 // Use the same Mercator ground plane for the raster and native outline coordinates.
 UnifiedFacilityScene.prototype.local=CampusScene.prototype.local;
 UnifiedFacilityScene.prototype.project3=CampusScene.prototype.project3;
+const geoNativeResize=UnifiedFacilityScene.prototype.resize;
+UnifiedFacilityScene.prototype.resize=function(){geoNativeResize.call(this);this.labelMinY=this.w<500&&geoImageryFor(uaRecord(this.record.id))?176:122;};
 const geoNativeSetContext=UnifiedFacilityScene.prototype.setContext;
 UnifiedFacilityScene.prototype.setContext=function(enabled){geoNativeSetContext.call(this,enabled);if(geoImageryFor(uaRecord(this.record.id))){this.extent=Math.max(300,this.extent);this.baseExtent=this.extent;}};
 const geoNativeHeight=UnifiedFacilityScene.prototype.height;
@@ -66,7 +68,14 @@ uiMap=function(record,rows,physical,scenes){
   return html;
 };
 const geoImageVersions=uiSourceVersions;
-uiSourceVersions=function(){const versions=geoImageVersions(),capture=geoImageryFor(uaRecord(uaState.selected));if(uaState.scale>=4&&!versions.imageversion&&capture&&(!CAMPUS_SCENES.scenes.some(s=>s.project_id===uaState.selected)||uaState.scene==='anchor-'+capture.id))versions.imageversion=capture.image.sha256;return versions;};
+uiSourceVersions=function(){
+  const versions=geoImageVersions(),capture=geoImageryFor(uaRecord(uaState.selected));
+  if(uaState.scale<4)return versions;
+  if(!versions.imageversion&&capture&&(!CAMPUS_SCENES.scenes.some(s=>s.project_id===uaState.selected)||uaState.scene==='anchor-'+capture.id))versions.imageversion=capture.image.sha256;
+  const native=CATALOG.records.find(r=>r.id===uaState.feature);
+  if(!versions.featureversion&&native?.source_version!=null)versions.featureversion='osm-'+native.source_version;
+  return versions;
+};
 const geoImageDossier=uiCompactDossier;
 uiCompactDossier=function(record,rows){let html=geoImageDossier(record,rows);const capture=geoImageryFor(record),reviewed=CAMPUS_SCENES.scenes.some(s=>s.project_id===record.id&&(!uaState.scene||s.id===uaState.scene));if(uaState.scale>=4&&capture&&!reviewed)html=html.replace('</dl>',`<div><dt>Aerial context</dt><dd>${esc(capture.image.acquired_at)}</dd></div></dl>`);return html;};
 const geoImageSource=uaContextSource;
