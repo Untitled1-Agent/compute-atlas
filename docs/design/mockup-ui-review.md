@@ -19,7 +19,7 @@ The previous global atlas delivered data and interactions but did not reproduce 
 
 All six scales share filters, source selection, camera, comparison, exports and the research shelf. Refinements sit below the primary composition and are reachable from the map. Selected locations expose power, hardware, timeline, counterparties, investment, original evidence and private notes. Project power scopes are individually selectable without changing the physical camera or assigning project power to a roof. Claim drawers return focus to the originating control.
 
-Shared physical views pin image, feature-review and native context versions. An unavailable version retains its identity and requires an explicit action to review the current publication.
+Physical evidence saved from the rebuilt atlas returns to that atlas after reopening or exporting and importing a research session. Older saved views retain their original routes. Shared physical views pin image, feature-review and native context versions. An unavailable version retains its identity and requires an explicit action to review the current publication.
 
 The guided journey traverses all six references and returns to the original exploration. Metric controls explain their units and underlying source population. Source inspection exposes image rights, observation dates, native object identity, versions and exports.
 
