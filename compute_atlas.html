@@ -3317,6 +3317,12 @@ body.ui-atlas-active {
   .ui-physical-view .ua-intro { min-height: 65px; }
 }
 .ui-atlas-active .sidebar { overflow-y: auto; scrollbar-width: thin; }
+@media (min-width: 1101px) and (min-height: 851px) {
+  .ui-atlas-active .atlas-workspace:not(.atlas-level-4):not(.atlas-level-5) { --map-height: clamp(460px,calc(100dvh - 380px),720px); }
+  .ui-atlas-active .workspace-landscape .atlas-insight-stack { gap: 6px; }
+  .ui-atlas-active .workspace-landscape .atlas-insight-card:not(:first-child) { padding-top: 6px; }
+  .ui-atlas-active .workspace-landscape .atlas-kpi-grid { margin-top: 12px; }
+}
 </style></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -8002,6 +8008,7 @@ function uaRemember(){if(globe?.ua){if(globe instanceof ResearchMap)uaState.came
 function uaGo(patch={},replace=false){
   clearTimeout(uaInputTimer);closeDrawer();closeSearch();if(state.tour>=0)endTour();uaRemember();
   if('selected' in patch&&patch.selected!==uaState.selected){uaState.feature=null;uaState.scene=null;uaState.sceneCamera=null;uaState.members=[];}
+  if(['region','country','collection','q','operator','coverage','scale','scope'].some(key=>key in patch&&patch[key]!==uaState[key]))uaState.members=[];
   Object.assign(uaState,{page:0},patch);state.view='atlas';$('#sidebar')?.classList.remove('open');
   history[replace?'replaceState':'pushState'](null,'',uaURL());render();
 }
@@ -8416,7 +8423,7 @@ class UnifiedAtlasMap extends CatalogMap {
       const p=this.project(r.lon,r.lat);if(p.z<.02||p.x<8||p.x>this.w-8||p.y<38||p.y>this.h-48)continue;
       const color=r.collection==='projects'||r.collection==='epochdc'?'#b9f6e0':r.collection==='gpu'?'#b1b3ff':'#c2e6f3';
       const lightKey=Math.round(p.x/2.5)+':'+Math.round(p.y/2.5);if(!lightPixels.has(lightKey)){lightPixels.add(lightKey);c.shadowColor=color;c.shadowBlur=r.collection==='osm'?4:7;c.fillStyle=color;c.globalAlpha=.4+.5*Math.max(.1,p.z);c.beginPath();c.arc(p.x,p.y,r.collection==='osm'?.7:1.25,0,Math.PI*2);c.fill();c.shadowBlur=0;c.globalAlpha=1;}
-      const key=this.flat?Math.floor(p.x/cell)+':'+Math.floor(p.y/cell):Math.floor((r.lon+180)/(12/this.zoom))+':'+Math.floor((r.lat+90)/(8/this.zoom));let g=grid.get(key);if(!g){g={x:0,y:0,r:3,sites:[],selected:false};grid.set(key,g);}g.x+=p.x;g.y+=p.y;g.sites.push(r);g.selected||=r.id===selected;
+      const key=this.flat?Math.floor(p.x/cell)+':'+Math.floor(p.y/cell):Math.floor((r.lon+180)/(12/this.zoom))+':'+Math.floor((r.lat+90)/(8/this.zoom));let g=grid.get(key);if(!g){g={x:0,y:0,r:3,sites:[],pickPoints:[],selected:false};grid.set(key,g);}g.x+=p.x;g.y+=p.y;g.sites.push(r);g.pickPoints.push({x:p.x,y:p.y});g.selected||=r.id===selected;
     }
     const sorted=[...grid.values()].sort((a,b)=>Number(b.selected)-Number(a.selected)||b.sites.length-a.sites.length);
     const prominent=[],budget=this.w<450?4:this.flat?6:7;
@@ -8425,6 +8432,7 @@ class UnifiedAtlasMap extends CatalogMap {
       g.prominent=g.selected||g.sites.length>=12&&prominent.length<budget&&prominent.every(p=>Math.hypot(p.x-g.x,p.y-g.y)>Math.min(85,this.w*.115));
       if(g.prominent)prominent.push(g);
       g.r=g.selected?13:g.prominent?Math.min(this.w<450?12:19,7+Math.sqrt(g.sites.length)*.42):3;this.groups.push(g);
+      g.pickRadius=Math.max(g.r+8,...g.pickPoints.map(p=>Math.hypot(p.x-g.x,p.y-g.y)+8));
       g.representative=g.sites.find(r=>r.id===selected)||g.sites.find(r=>r.collection==='projects')||g.sites[0];
       if(!g.prominent){if(g.sites.length>5){c.shadowColor='#b9daff';c.shadowBlur=9;c.fillStyle='#c7e7ffb0';c.fillRect(g.x-1,g.y-1,2,2);c.shadowBlur=0;}continue;}
       const color=g.selected?'#c8ffe7':'#94f0c8';
@@ -8447,8 +8455,20 @@ class UnifiedAtlasMap extends CatalogMap {
     }
     this.persistCamera();const status=$('#ua-coordinate');if(status)status.textContent=this.flat?`${Math.abs((this.bounds[1]+this.bounds[3])/2).toFixed(2)}° ${this.bounds[1]+this.bounds[3]>=0?'N':'S'} · ${Math.abs((this.bounds[0]+this.bounds[2])/2).toFixed(2)}° ${this.bounds[0]+this.bounds[2]>=0?'E':'W'}`:`${Math.abs(this.lat).toFixed(1)}° ${this.lat<0?'S':'N'} · ${Math.abs(this.lon).toFixed(1)}° ${this.lon<0?'W':'E'} · DRAG TO ROTATE`;
   }
-  pointerMove(e){if(this.drag){ResearchMap.prototype.pointerMove.call(this,e);return;}const rect=this.canvas.getBoundingClientRect(),hit=this.groups.find(g=>Math.hypot(g.x-e.clientX+rect.left,g.y-e.clientY+rect.top)<g.r+7);this.canvas.style.cursor=hit?'pointer':'grab';if(hit)showTip(e.clientX,e.clientY,`<b>${esc(hit.representative.name)}</b><br>${hit.sites.length} independent source record${hit.sites.length===1?'':'s'}<br><small>Click to inspect without moving the map</small>`);else hideTip();}
-  pointerUp(e){if(!this.drag)return;const moved=this.drag.moved;this.drag=null;if(moved)return;const rect=this.canvas.getBoundingClientRect(),hit=this.groups.find(g=>Math.hypot(g.x-e.clientX+rect.left,g.y-e.clientY+rect.top)<g.r+8);if(!hit)return;hideTip();uaRemember();if(hit.sites.length===1)uaSelect(hit.sites[0].id);else{uaState.members=uaSort(hit.sites).map(r=>r.id);$('#ua-cluster-members').innerHTML=uaMembersHTML();$('#ua-cluster-members button')?.focus({preventScroll:true});}}
+  hitGroup(e){
+    const rect=this.canvas.getBoundingClientRect(),x=e.clientX-rect.left,y=e.clientY-rect.top;
+    let nearest=null,best=Infinity;
+    for(const g of this.groups){
+      const center=Math.hypot(g.x-x,g.y-y);
+      if(center>(g.pickRadius||g.r+8))continue;
+      let distance=center<g.r+8?8+Math.max(0,center-g.r):Infinity;
+      for(const p of g.pickPoints||[]){const d=Math.hypot(p.x-x,p.y-y);if(d<=8)distance=Math.min(distance,d);}
+      if(distance<best){best=distance;nearest=g;}
+    }
+    return nearest;
+  }
+  pointerMove(e){if(this.drag){ResearchMap.prototype.pointerMove.call(this,e);return;}const hit=this.hitGroup(e);this.canvas.style.cursor=hit?'pointer':'grab';if(hit)showTip(e.clientX,e.clientY,`<b>${esc(hit.sites.length>1?uaClusterTitle(hit.sites):hit.representative.name)}</b><br>${hit.sites.length} independent source record${hit.sites.length===1?'':'s'}<br><small>Click to inspect without moving the map</small>`);else hideTip();}
+  pointerUp(e){if(!this.drag)return;const moved=this.drag.moved;this.drag=null;if(moved)return;const hit=this.hitGroup(e);if(!hit)return;hideTip();uaRemember();if(hit.sites.length===1)uaSelect(hit.sites[0].id);else{uaState.members=uaSort(hit.sites).map(r=>r.id);$('#ua-cluster-members').innerHTML=uaMembersHTML();$('#ua-cluster-members button')?.focus({preventScroll:true});}}
   drawContext(){
     if(!uaContext||this.bounds[2]-this.bounds[0]>3)return;const c=this.ctx;
     for(const f of uaContextNearby(uaRecord(uaState.selected))){const tags=f.tags;if(tags.building&&!uaState.layers.buildings||tags.highway&&!uaState.layers.roads||tags.power&&!uaState.layers.power||tags.telecom&&!uaState.layers.telecom)continue;const color=tags.power?'#c6a0efaa':tags.highway?'#6e89967a':tags.waterway?'#368aab90':'#86acb18a';this.path(f.line,color,tags.power?1.6:tags.highway?.9:.8,tags.building&&f.geometry?'#40656e40':null);if(f.line.length===1){const p=this.project(f.lon,f.lat);c.strokeStyle=color;c.beginPath();c.arc(p.x,p.y,4,0,Math.PI*2);c.stroke();}}
@@ -8951,6 +8971,7 @@ uaPhysicalRail = function (record, source) {
 };
 function uiPreset(id) {
   const common = {
+    members: [],
     region: "All",
     country: "All",
     q: "",

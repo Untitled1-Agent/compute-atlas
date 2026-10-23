@@ -19,7 +19,7 @@ The production atlas follows the six supplied compositions. The current review c
 
 The sidebar, content inset and analysis-rail widths now follow the reference proportions. The same navigation shell continues through the directory, company, contract, investment, library and data-room pages. Economics, guided exploration and original sources are directly accessible. Guided exploration restores the original research page when launched outside the map.
 
-Cartography uses a dark blue relief treatment, a soft atmospheric edge and a limited set of prominent green hubs. Smaller source locations remain lights; large halos are no longer painted around every group. Nearby lights share display pixels without removing records from inspection, filtering or export. The underlying geography and source membership remain unchanged.
+Cartography uses a dark blue relief treatment, a soft atmospheric edge and a limited set of prominent green hubs. Smaller source locations remain lights; large halos are no longer painted around every group. Nearby lights share display pixels without removing records from inspection, filtering or export. The underlying geography and source membership remain unchanged. Hit detection follows both the visible source lights and their grouped hubs, so a light away from the hub center still opens its source members without moving the camera.
 
 The regional screen has a distinct market-focus rail and a working Northern Virginia drill-down. Regional and metro measurements sit beneath their map, beside the analytical rail. World and continent measurements span the composition. All first-screen measurements and rail content fit the reference-ratio viewport.
 

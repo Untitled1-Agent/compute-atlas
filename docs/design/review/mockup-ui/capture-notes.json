@@ -115,7 +115,7 @@
     }
   ],
   "browser_acceptance": {
-    "passed": 225,
-    "total": 225
+    "passed": 235,
+    "total": 235
   }
 }

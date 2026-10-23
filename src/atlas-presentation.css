@@ -2419,3 +2419,9 @@ body.ui-atlas-active {
   .ui-physical-view .ua-intro { min-height: 65px; }
 }
 .ui-atlas-active .sidebar { overflow-y: auto; scrollbar-width: thin; }
+@media (min-width: 1101px) and (min-height: 851px) {
+  .ui-atlas-active .atlas-workspace:not(.atlas-level-4):not(.atlas-level-5) { --map-height: clamp(460px,calc(100dvh - 380px),720px); }
+  .ui-atlas-active .workspace-landscape .atlas-insight-stack { gap: 6px; }
+  .ui-atlas-active .workspace-landscape .atlas-insight-card:not(:first-child) { padding-top: 6px; }
+  .ui-atlas-active .workspace-landscape .atlas-kpi-grid { margin-top: 12px; }
+}

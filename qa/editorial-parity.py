@@ -29,6 +29,16 @@ try:
    page.goto(base+entry);page.wait_for_function('document.documentElement.classList.contains("atlas-ready")');page.wait_for_function('document.querySelector("#ua-map").dataset.terrain==="natural-earth"');settle(page)
    if entry=='compute_atlas.html':
     check(entry+' cold startup uses embedded assets only',not requests);ctx.set_offline(True)
+   point=page.evaluate('(()=>{for(const g of globe.groups){if(g.sites.length<2||g.prominent)continue;for(const r of g.sites){const p=globe.project(r.lon,r.lat);if(p.z>.2&&p.y>120&&p.y<globe.h-140&&Math.hypot(p.x-g.x,p.y-g.y)>g.r+9&&!globe.groups.some(other=>Math.hypot(p.x-other.x,p.y-other.y)<other.r+9))return {id:r.id,x:p.x,y:p.y};}}return null})()')
+   check(entry+' isolated source-light interaction fixture is present',point is not None)
+   if point:
+    before=page.evaluate('JSON.stringify(globe.snapshot())');rect=page.locator('#ua-map').bounding_box();page.mouse.click(rect['x']+point['x'],rect['y']+point['y'])
+    check(entry+' visible source light opens its records away from the hub center',page.evaluate('id=>uaState.selected===id||uaState.members.includes(id)',point['id']))
+    check(entry+' precise source-light inspection preserves the camera',page.evaluate('JSON.stringify(globe.snapshot())')==before)
+    page.locator('[data-ua-region="Europe"]').first.click();settle(page)
+    check(entry+' changing geography clears the previous cluster membership',page.evaluate('uaState.members.length===0&&uaRows().every(r=>r.region==="Europe")'))
+    page.evaluate('uiPreset("world")');settle(page)
+   check(entry+' every visible source point resolves to its own group',page.evaluate('(()=>{const rect=globe.canvas.getBoundingClientRect();return globe.groups.every(g=>g.pickPoints.every((p,i)=>globe.hitGroup({clientX:rect.left+p.x,clientY:rect.top+p.y})?.sites.some(r=>r.id===g.sites[i].id)))})()'))
    check(entry+' US cluster labels distinguish East Coast from Midwest',page.evaluate('(()=>{const group=(lon,lat)=>[0,1].map(i=>({country:"United States",region:"North America",lon:lon+i*.1,lat,native:{}}));return uaClusterTitle(group(-74,41))==="US East"&&uaClusterTitle(group(-87.6,42))==="US Midwest"&&uaClusterTitle(group(-122.4,38))==="US West"})()'))
    for preset in ['world','atlantic','region','metro','campus','facility']:
     page.evaluate('id=>uiPreset(id)',preset);settle(page)
