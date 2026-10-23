@@ -37,7 +37,7 @@ hosted_path.write_text(hosted)
 terrain=json.loads((ROOT/'data/maps/terrain.json').read_text())
 terrain_bytes=(ROOT/terrain['path']).read_bytes()
 if hashlib.sha256(terrain_bytes).hexdigest()!=terrain['sha256']: raise ValueError('Terrain checksum mismatch')
-template=template.replace('</body>', '<img hidden id="atlas-terrain-image" alt="" src="data:image/webp;base64,'+base64.b64encode(terrain_bytes).decode()+'"></body>')
+template=template.replace('<script type="application/json" id="terrain-data">', '<img hidden id="atlas-terrain-image" alt="" src="data:image/webp;base64,'+base64.b64encode(terrain_bytes).decode()+'"><script type="application/json" id="terrain-data">')
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
 for key,path in [('TERRAIN','data/maps/terrain.json'),('ATLAS_LOCATIONS','data/catalog/atlas-locations.json'),('GLOBAL_CONTEXT_INDEX','data/layers/global-context-index.json'),('EPOCH_CENTERS','data/catalog/epoch-data-centers.json'),('GPU_CLUSTERS','data/catalog/gpu-clusters.json'),('CAMPUS_POWER_CONTEXT','data/layers/campus-power.json'),('POWER_REVIEWS','data/layers/helios-power-reviews.json'),('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
