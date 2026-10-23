@@ -4,6 +4,32 @@ A source-cited, six-scale research atlas. Open `index.html` through a local HTTP
 
 [Interface & evidence boundaries](docs/atlas-interface.md) · [Approved visual references](docs/mockups/README.md) · [Master implementation issue #2](https://github.com/Untitled1-Agent/compute-atlas/issues/2)
 
+[Global atlas implementation and visual review](docs/design/unified-atlas-review.md)
+
+## Start with the global atlas
+
+The default landscape (`#atlas`) puts all **6,471 source records across 122 named
+countries and territories** in one map: project research, OpenStreetMap,
+Equinix, Digital Realty, Epoch GPU clusters and Epoch AI data centers. Native
+records may overlap; these counts are not a unique-facility census.
+
+Move through World, Continent, Region, Metro, Campus and Facility. Filter by
+country, operator, source collection, evidence availability or search. Select a
+record without moving the camera; inspect its power, hardware, timeline,
+counterparties, sources and notes inline. Compare up to three source records,
+export their original fields, or save/share the complete view.
+
+The atlas includes 42 separately attributed address geocodes, native physical
+context containing **244,002 features at 169 locations in 32 countries**, and the existing licensed
+historical campus imagery. Source outlines and tagged heights remain independent
+of project ownership and power estimates. Context is loaded in checksum-pinned
+chunks on the hosted app and embedded in the offline edition. Optional street
+tiles require a connection; the captured map does not.
+
+The previous project landscape remains at `#overview` under More research tools.
+The complete source directories, report/workbook archive, company research,
+models, evidence service and research shelf remain available.
+
 ## Run the live evidence service
 
 ```sh

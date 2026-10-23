@@ -213,6 +213,7 @@ def create_app(db_path: Path | None = None, *, background: bool = True, root: Pa
         full=(root/candidate).resolve()
         if not full.is_relative_to(root.resolve()) or not full.is_file(): raise HTTPException(404)
         # Source .py is never a web asset; no ledger, backups, snapshots, environment or server code.
-        if full.suffix not in {'.js','.css','.json','.html','.png','.webp','.jpg','.pdf','.xlsx','.docx','.txt'}: raise HTTPException(404)
+        context_chunk=bool(re.fullmatch(r'data/layers/global-context/[a-f0-9]{64}\.json\.gz',path))
+        if not context_chunk and full.suffix not in {'.js','.css','.json','.html','.png','.webp','.jpg','.pdf','.xlsx','.docx','.txt'}: raise HTTPException(404)
         return FileResponse(full,headers={'Cache-Control':'public,max-age=300'})
     return app

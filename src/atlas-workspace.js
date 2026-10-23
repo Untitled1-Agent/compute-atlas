@@ -360,6 +360,6 @@ routeFromHash=function(){if(window.ATLAS_BOOTSTRAPPING)return;
   workspaceRoute();
 };window.addEventListener('hashchange',routeFromHash);
 // Preserve existing explicit catalog links. A fresh visit opens the approved landscape.
-if(!ATLAS_ENTRY_HASH){state.spatialLevel=0;state.view='overview';if(location.protocol!=='about:')history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
+if(!ATLAS_ENTRY_HASH&&!window.ATLAS_BOOTSTRAPPING){state.spatialLevel=0;state.view='overview';if(location.protocol!=='about:')history.replaceState(null,'',spatialURL('overview'));render();}else routeFromHash();
 ATLAS.workspace={phases:workspacePhases,selected:workspaceSelected,state:workspaceState,compare:()=>saved.projectCompare,compareDrawer:workspaceCompareDrawer,records:workspaceRecordData,parseCamera:workspaceParseCamera};
 // The final campus integration marks the complete workspace ready.

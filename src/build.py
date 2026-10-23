@@ -9,8 +9,8 @@ ROOT=Path(__file__).resolve().parents[1]
 def safe_json(x):
     return json.dumps(x,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
 template=(ROOT/'src/index.html').read_text()
-css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css','src/source-health.css','src/global-coverage.css','src/site-identity.css','src/catalog-explorer.css','src/operator-directory.css','src/publisher-explorer.css','src/project-research.css','src/experience.css','src/gpu-clusters.css','src/inventory.css','src/connections.css','src/discovery.css','src/research-workspace.css'))
-js='\n'.join((ROOT/p).read_text() for p in ('src/directory-schema.js','src/digital-realty-schema.js','src/spatial-math.js','src/pointer-gestures.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/global-coverage.js','src/site-identity.js','src/responsive-nav.js','src/facility-scene.js','src/catalog-explorer.js','src/operator-directory.js','src/publisher-explorer.js','src/project-research.js','src/atlas-workspace.js','src/campus-scene.js','src/map-layers.js','src/gpu-data.js','src/inventory.js','src/connections.js','src/location-discovery.js','src/models.js','src/discovery.js','src/gpu-clusters.js','src/epoch-centers.js','src/research-workspace.js'))
+css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css','src/source-health.css','src/global-coverage.css','src/site-identity.css','src/catalog-explorer.css','src/operator-directory.css','src/publisher-explorer.css','src/project-research.css','src/experience.css','src/gpu-clusters.css','src/inventory.css','src/connections.css','src/discovery.css','src/research-workspace.css','src/unified-atlas.css'))
+js='\n'.join((ROOT/p).read_text() for p in ('src/directory-schema.js','src/digital-realty-schema.js','src/spatial-math.js','src/pointer-gestures.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/global-coverage.js','src/site-identity.js','src/responsive-nav.js','src/facility-scene.js','src/catalog-explorer.js','src/operator-directory.js','src/publisher-explorer.js','src/project-research.js','src/atlas-workspace.js','src/campus-scene.js','src/map-layers.js','src/gpu-data.js','src/inventory.js','src/connections.js','src/location-discovery.js','src/models.js','src/discovery.js','src/gpu-clusters.js','src/epoch-centers.js','src/research-workspace.js','src/unified-atlas.js','src/unified-map.js'))
 # Source-only updates also change release identity. Native browser integrity checks
 # reject stale HTML receiving changed scripts, styles or publication JSON.
 asset_paths=sorted({str(p.relative_to(ROOT)) for p in (ROOT/'src').iterdir() if p.suffix in ('.css','.js')})
@@ -35,7 +35,7 @@ def pin_tag(match):
 hosted=re.sub(r'<(?:link|script)\b[^>]*(?:href|src)="src/[^"?]+\.(?:css|js)(?:\?v=[^"]+)?"[^>]*>',pin_tag,hosted)
 hosted_path.write_text(hosted)
 template=template.replace('/*__CSS__*/',css).replace('/*__JS__*/',js)
-for key,path in [('EPOCH_CENTERS','data/catalog/epoch-data-centers.json'),('GPU_CLUSTERS','data/catalog/gpu-clusters.json'),('CAMPUS_POWER_CONTEXT','data/layers/campus-power.json'),('POWER_REVIEWS','data/layers/helios-power-reviews.json'),('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
+for key,path in [('ATLAS_LOCATIONS','data/catalog/atlas-locations.json'),('GLOBAL_CONTEXT_INDEX','data/layers/global-context-index.json'),('EPOCH_CENTERS','data/catalog/epoch-data-centers.json'),('GPU_CLUSTERS','data/catalog/gpu-clusters.json'),('CAMPUS_POWER_CONTEXT','data/layers/campus-power.json'),('POWER_REVIEWS','data/layers/helios-power-reviews.json'),('ROAD_CONTEXT','data/layers/helios-roads.json'),('POWER_CONTEXT','data/layers/helios-power.json'),('DATA','data/atlas.json'),('ARCHIVE','data/archive.json'),('WORLD','data/world.json'),('EVIDENCE','data/evidence.json'),('CONTEXT','data/context.json'),('CATALOG','data/catalog/osm.json'),('CATALOG_REVIEWS','data/catalog/reviews.json'),('OPERATOR_DIRECTORY','data/catalog/operator-directory.json'),('DIGITAL_REALTY','data/catalog/digital-realty.json')]:
     template=template.replace('/*__'+key+'__*/',safe_json(json.loads((ROOT/path).read_text())))
 from campus_versions import validate_physical_versions
 campus=json.loads((ROOT/'data/campus/scenes.json').read_text())
@@ -46,6 +46,9 @@ for scene in campus['scenes']:
         raise ValueError('Campus imagery checksum mismatch: '+image['path'])
     image['data_url']='data:image/jpeg;base64,'+base64.b64encode(content).decode()
 template=template.replace('/*__CAMPUS_SCENES__*/',safe_json(campus))
+context_index=json.loads((ROOT/'data/layers/global-context-index.json').read_text())
+context_pack='<div hidden id="global-context-pack">'+''.join('<script type="application/octet-stream" id="global-context-'+c['id']+'">'+base64.b64encode((ROOT/c['path']).read_bytes()).decode()+'</script>' for c in context_index['captures'])+'</div>'
+template=template.replace('<script type="application/json" id="global-context-pack">/*__GLOBAL_CONTEXT_PACK__*/</script>',context_pack)
 manifest=json.loads((ROOT/'data/manifest.json').read_text())
 files={}
 for item in manifest:

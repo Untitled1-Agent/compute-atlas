@@ -29,7 +29,7 @@ try:
             page.goto(base+entry)
             page.wait_for_function('document.documentElement.classList.contains("research-ready")')
             page.wait_for_timeout(300)
-            check(entry+' compute landscape is the landing', page.evaluate('ATLAS.state.view')=='overview')
+            check(entry+' compute landscape is the landing', page.evaluate('ATLAS.state.view')=='atlas')
             page.evaluate("ATLAS.navigate('catalog')")
             page.wait_for_timeout(250)
             page.screenshot(path=str(OUT/(entry+'-experience-world.png')))

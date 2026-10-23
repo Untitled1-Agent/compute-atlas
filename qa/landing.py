@@ -37,7 +37,7 @@ try:
             def ready():
                 page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
 
-            def go(query=''):
+            def go(query='#overview'):
                 page.goto(base + entry + query)
                 ready()
 

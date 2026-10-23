@@ -24,7 +24,7 @@ with sync_playwright() as p:
  page.set_default_navigation_timeout(45000)
  page.on('pageerror',lambda e:errs.append(str(e)))
  page.on('request',lambda r:requests.append(r.url) if r.url.startswith(('http://','https://')) and r.url!=standalone_url else None)
- page.goto(standalone_url,wait_until='load');page.context.set_offline(True);page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
+ page.goto(standalone_url+'#overview',wait_until='load');page.context.set_offline(True);page.wait_for_function('document.documentElement.classList.contains("research-ready")',timeout=30000)
  # Data completeness, malformed references and all original phase rows.
  d=page.evaluate('ATLAS.data');arc=page.evaluate('ATLAS.archive')
  check('all 92 original facility-phase rows preserved',sum(len(s['raw']) for s in d['sites'])==92)

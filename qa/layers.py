@@ -23,7 +23,7 @@ try:
   browser=p.chromium.launch(executable_path=shutil.which('chromium') or p.chromium.executable_path,args=['--no-sandbox','--disable-gpu','--no-zygote','--renderer-process-limit=1'])
   for entry in ['index.html','compute_atlas.html']:
    ctx=browser.new_context(viewport={'width':1440,'height':1080});page=ctx.new_page();page.set_default_timeout(120000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-   page.goto(base+entry);ready(page)
+   page.goto(base+entry+'#overview');ready(page)
    check(entry+' independent electricity starts disabled',not page.evaluate('ATLAS.layers.on("energy")'))
    check(entry+' community context has visible attribution',page.locator('.map-layer-attribution a').is_visible())
    inventory=page.evaluate('[D.sites.length,CATALOG.records.length]')

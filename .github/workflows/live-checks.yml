@@ -79,8 +79,12 @@ jobs:
           node --check src/models.js
           node --check src/discovery.js
           node --check src/research-workspace.js
+          node --check src/unified-atlas.js
+          node --check src/unified-map.js
       - name: Isolated design study export and browser regressions
         run: python qa/design-review.py
+      - name: Primary global atlas and native physical context
+        run: python qa/unified-atlas.py
       - name: Complete global source publications and offline export
         run: python qa/global-publications.py
       - name: Connected directory, company evidence and map source journeys

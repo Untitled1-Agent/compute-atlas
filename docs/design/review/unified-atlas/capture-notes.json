@@ -1,0 +1,75 @@
+{
+  "captures": [
+    {
+      "view": "01-world",
+      "url": "atlas?scale=world&camera=0%2C27%2C-18%2C1%2C-180%2C-60%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "02-continent",
+      "url": "atlas?scale=continent&region=Europe&camera=0%2C50%2C10%2C1.7%2C-180%2C-60%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "03-region",
+      "url": "atlas?scale=region&region=Europe&country=Germany&camera=1%2C50%2C10%2C1%2C5.898529%2C47.659995%2C14.486429%2C54.466352&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "04-metro",
+      "url": "atlas?scale=metro&region=Europe&country=Germany&selected=osm-way-764604919&camera=1%2C50%2C10%2C1%2C7.94311%2C49.629631%2C9.54311%2C50.589631&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "05-campus",
+      "url": "atlas?scale=campus&selected=amazon-anthropic-new-carlisle&scene=new-carlisle-edison-2025&mode=aerial&sceneCamera=%7B%22yaw%22%3A0%2C%22pitch%22%3A1.5707963267948966%2C%22zoom%22%3A2.2%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B580%2C288%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "06-facility",
+      "url": "atlas?scale=facility&selected=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&feature=new-carlisle-sr2-2025-roof-west-upper&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.5%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B445%2C278%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "07-global-native-3d",
+      "url": "atlas?scale=facility&selected=osm-way-764604919&feature=osm-way-764604919&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "view": "08-phone",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "view": "09-short-desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "runtime_errors": []
+}

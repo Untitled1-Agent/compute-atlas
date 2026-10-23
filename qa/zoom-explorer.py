@@ -55,7 +55,7 @@ try:
             if ARGS.in_memory:
                 page.set_content((ROOT / entry).read_text(), wait_until='load')
             else:
-                response = page.goto(base + entry, wait_until='load', timeout=30000)
+                response = page.goto(base + entry + '#overview', wait_until='load', timeout=30000)
                 check(entry + ' returns real HTTP 200', response.status == 200)
             page.wait_for_function('window.ATLAS && ATLAS.spatial && document.documentElement.classList.contains("atlas-ready")')
             page.evaluate("ATLAS.navigate('globe')")

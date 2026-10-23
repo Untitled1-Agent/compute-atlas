@@ -29,7 +29,7 @@ try:
             page.set_default_timeout(120000 if os.environ.get('ATLAS_TEST_BASE') else 30000)
             errors=[];page.on('pageerror',lambda e:(errors.append(str(e)),print('BROWSER ERROR',str(e),flush=True)))
             page.on('response',lambda r:print('HTTP ERROR',r.status,r.url,flush=True) if r.status>=400 else None)
-            check(entry+' HTTP entrypoint',page.goto(base+entry).status==200)
+            check(entry+' HTTP entrypoint',page.goto(base+entry+'#overview').status==200)
             try:page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
             except Exception:
                 print('STARTUP',page.url,page.locator('#content').inner_text()[:1200],errors,flush=True)
