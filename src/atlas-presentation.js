@@ -606,7 +606,7 @@ document.addEventListener("click", (e) => {
   )?.record;
   if (!record) return;
   if (globe.manifest?.features.some((f) => f.id === record.id)) {
-    const entry = campusVersionEntry(globe.manifest, record);
+    const entry = { ...campusVersionEntry(globe.manifest, record), atlas_view: true };
     saved.sourceFeatures = saved.sourceFeatures.filter(
       (x) =>
         x.feature_id !== entry.feature_id || x.project_id !== entry.project_id,
