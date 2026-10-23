@@ -130,7 +130,7 @@ class FacilityScene {
     if(!selected.polygons.length){c.strokeStyle='#8ceace';c.lineWidth=2;c.beginPath();c.arc(anchor.x,anchor.y,14,0,Math.PI*2);c.moveTo(anchor.x-20,anchor.y);c.lineTo(anchor.x+20,anchor.y);c.moveTo(anchor.x,anchor.y-20);c.lineTo(anchor.x,anchor.y+20);c.stroke();}
     // Labels describe the actual record, never fictional building phases.
     this.labelRect=null;
-    if(this.labels){const text=this.inspected.name.length>36?this.inspected.name.slice(0,34)+'…':this.inspected.name;
+    if(this.labels&&(!this.ua||!this.manifest||selected.selected)){const text=this.inspected.name.length>36?this.inspected.name.slice(0,34)+'…':this.inspected.name;
     c.font='10px ui-monospace,monospace';const basisWidth=this.labelBasis?c.measureText(this.labelBasis).width:0;
     c.font='12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';const tw=Math.max(c.measureText(text).width,basisWidth);const x=Math.max(18,Math.min(w-tw-30,anchor.x+35)), y=Math.max(this.labelMinY||122,Math.min(h-120,anchor.y-80));
     this.labelRect={x:x-5,y:y-8,width:tw+18,height:44};
