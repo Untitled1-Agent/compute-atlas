@@ -105,15 +105,8 @@ function uiKicker(text, action = "") {
 function uiTopics() {
   return `<nav class="ua-topics" aria-label="Research topics">${UI_TOPICS.map(([id, name]) => `<button data-ua-topic="${id}" aria-pressed="${uaState.topic === id}">${name}</button>`).join("")}</nav>`;
 }
-function uiFilters() {
-  return `<div class="ui-refinements">${uaFilters()}<nav class="ua-collections" aria-label="Map source collection"><button data-ua-collection="all" aria-pressed="${uaState.collection === "all"}">All compute <span>${fmt(uaRecords().length)}</span></button>${Object.entries(
-    UA_SHORT,
-  )
-    .map(
-      ([id, name]) =>
-        `<button data-ua-collection="${id}" aria-pressed="${uaState.collection === id}"><i style="background:${UA_COLORS[id]}"></i>${name}</button>`,
-    )
-    .join("")}</nav><div class="ui-active-filters">${[
+function uiFilterChips() {
+  return [
     ["region", uaState.region !== "All" && uaState.region],
     ["country", uaState.country !== "All" && uaState.country],
     ["q", uaState.q],
@@ -125,7 +118,19 @@ function uiFilters() {
       ([k, v]) =>
         `<button data-ui-clear-filter="${k}">${esc(v)} <span>×</span></button>`,
     )
-    .join("")}</div></div>`;
+    .join("");
+}
+function uiFilters() {
+  return `<div class="ui-refinements">${uaFilters()}<nav class="ua-collections" aria-label="Map source collection"><button data-ua-collection="all" aria-pressed="${uaState.collection === "all"}">All compute <span>${fmt(uaRecords().length)}</span></button>${Object.entries(
+    UA_SHORT,
+  )
+    .map(
+      ([id, name]) =>
+        `<button data-ua-collection="${id}" aria-pressed="${uaState.collection === id}"><i style="background:${UA_COLORS[id]}"></i>${name}</button>`,
+    )
+    .join(
+      "",
+    )}</nav><div class="ui-active-filters">${uiFilterChips()}</div></div>`;
 }
 uaKpis = function (rows) {
   const model = uiModel(rows),
@@ -722,3 +727,13 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-ui-export-terrain]"))
     download("compute-atlas-relief-provenance.json", AtlasTerrain.source);
 });
+
+const uiBaseRefreshData = uaRefreshData;
+uaRefreshData = function () {
+  uiBaseRefreshData();
+  const chips = document.querySelector(".ui-active-filters");
+  if (chips) chips.innerHTML = uiFilterChips();
+};
+// Public integrations resolve the current production route owners.
+ATLAS.explorer.url = () => uaURL();
+ATLAS.explorer.go = (...args) => uaGo(...args);
