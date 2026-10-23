@@ -47,13 +47,17 @@ function uaClusterTitle(rows) {
     lon = rows.reduce((s, r) => s + r.lon, 0) / rows.length,
     lat = rows.reduce((s, r) => s + r.lat, 0) / rows.length;
   if (country.length === 1 && country[0] === "United States")
-    return lon < -112
+    return lon < -114
       ? "US West"
-      : lon < -98
-        ? "Texas & the Plains"
-        : lat > 39
-          ? "US Midwest"
-          : "US East";
+      : lon < -103
+        ? "US Mountain West"
+        : lon < -94
+          ? lat < 36
+            ? "Texas & the Plains"
+            : "US Plains"
+          : lon < -82 && lat >= 37
+            ? "US Midwest"
+            : "US East";
   if (country.length === 1) {
     const cities = rows.map((r) => r.native.city).filter(Boolean);
     return cities.length > rows.length * 0.4

@@ -28,6 +28,7 @@ try:
    ctx=browser.new_context(viewport={'width':1440,'height':1000});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(base+entry);page.wait_for_function('document.documentElement.classList.contains("atlas-ready")');page.wait_for_function('document.querySelector("#ua-map").dataset.terrain==="natural-earth"');settle(page)
    if entry=='compute_atlas.html':ctx.set_offline(True)
+   check(entry+' US cluster labels distinguish East Coast from Midwest',page.evaluate('(()=>{const group=(lon,lat)=>[0,1].map(i=>({country:"United States",region:"North America",lon:lon+i*.1,lat,native:{}}));return uaClusterTitle(group(-74,41))==="US East"&&uaClusterTitle(group(-87.6,42))==="US Midwest"&&uaClusterTitle(group(-122.4,38))==="US West"})()'))
    for preset in ['world','atlantic','region','metro','campus','facility']:
     page.evaluate('id=>uiPreset(id)',preset);settle(page)
     if preset in ['campus','facility']:page.wait_for_function('globe.imageReady&&!globe.dirty')
