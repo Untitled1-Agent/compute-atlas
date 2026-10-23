@@ -29,6 +29,16 @@ try:
    page.goto(base+entry);page.wait_for_function('document.documentElement.classList.contains("atlas-ready")');page.wait_for_function('document.querySelector("#ua-map").dataset.terrain==="natural-earth"');settle(page)
    if entry=='compute_atlas.html':
     check(entry+' cold startup uses embedded assets only',not requests);ctx.set_offline(True)
+   point=page.evaluate('(()=>{for(const g of globe.groups){if(g.sites.length<2||g.prominent)continue;for(const r of g.sites){const p=globe.project(r.lon,r.lat);if(p.z>.2&&p.y>120&&p.y<globe.h-140&&Math.hypot(p.x-g.x,p.y-g.y)>g.r+9&&!globe.groups.some(other=>Math.hypot(p.x-other.x,p.y-other.y)<other.r+9))return {id:r.id,x:p.x,y:p.y};}}return null})()')
+   check(entry+' isolated source-light interaction fixture is present',point is not None)
+   if point:
+    before=page.evaluate('JSON.stringify(globe.snapshot())');rect=page.locator('#ua-map').bounding_box();page.mouse.click(rect['x']+point['x'],rect['y']+point['y'])
+    check(entry+' visible source light opens its records away from the hub center',page.evaluate('id=>uaState.selected===id||uaState.members.includes(id)',point['id']))
+    check(entry+' precise source-light inspection preserves the camera',page.evaluate('JSON.stringify(globe.snapshot())')==before)
+    page.locator('[data-ua-region="Europe"]').first.click();settle(page)
+    check(entry+' changing geography clears the previous cluster membership',page.evaluate('uaState.members.length===0&&uaRows().every(r=>r.region==="Europe")'))
+    page.evaluate('uiPreset("world")');settle(page)
+   check(entry+' every visible source point resolves to its own group',page.evaluate('(()=>{const rect=globe.canvas.getBoundingClientRect();return globe.groups.every(g=>g.pickPoints.every((p,i)=>globe.hitGroup({clientX:rect.left+p.x,clientY:rect.top+p.y})?.sites.some(r=>r.id===g.sites[i].id)))})()'))
    check(entry+' US cluster labels distinguish East Coast from Midwest',page.evaluate('(()=>{const group=(lon,lat)=>[0,1].map(i=>({country:"United States",region:"North America",lon:lon+i*.1,lat,native:{}}));return uaClusterTitle(group(-74,41))==="US East"&&uaClusterTitle(group(-87.6,42))==="US Midwest"&&uaClusterTitle(group(-122.4,38))==="US West"})()'))
    for preset in ['world','atlantic','region','metro','campus','facility']:
     page.evaluate('id=>uiPreset(id)',preset);settle(page)
@@ -42,6 +52,26 @@ try:
      check(entry+' '+preset+' evidence sits under the map',page.evaluate('(()=>{const map=document.querySelector("#ua-map").getBoundingClientRect(),deck=document.querySelector(".ui-evidence-deck").getBoundingClientRect();return deck.left===map.left&&Math.abs(deck.width-map.width)<2&&deck.top<innerHeight*.83})()'))
     if preset=='atlantic':check(entry+' Atlantic scope includes both continents only',page.evaluate('uaRows().length>3000&&new Set(uaRows().map(r=>r.region)).size===2&&uaRows().every(r=>["Europe","North America"].includes(r.region))'))
     if preset=='metro':check(entry+' metro viewport includes Chicago and New Carlisle',page.evaluate('uaRows().some(r=>r.lon< -87.5)&&uaRows().some(r=>r.id==="amazon-anthropic-new-carlisle")'))
+   page.set_viewport_size({'width':1280,'height':960})
+   for preset in ['world','atlantic','region','metro','campus','facility']:
+    page.evaluate('id=>uiPreset(id)',preset);settle(page)
+    if preset in ['campus','facility']:page.wait_for_function('globe.imageReady&&!globe.dirty')
+    capture(page,entry+'-reference-'+preset)
+    if preset in ['world','atlantic','region','metro']:
+     check(entry+' '+preset+' reference-ratio measurements are fully visible',page.locator('.ua-kpis').evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
+     check(entry+' '+preset+' reference-ratio rail is fully visible',page.locator('.ua-rail').evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
+     check(entry+' '+preset+' restrained hub hierarchy preserves all source groups',page.evaluate('globe.groups.filter(g=>g.prominent).length<=8&&globe.groups.every(g=>g.sites.length>0)'))
+    else:
+     check(entry+' '+preset+' complete lower evidence deck fits the reference',page.locator('.ui-evidence-deck').evaluate('e=>e.getBoundingClientRect().bottom<=innerHeight'))
+     check(entry+' '+preset+' feature selector is on the physical map',page.evaluate('document.querySelector(".ua-map-stage").contains(document.querySelector("#ua-feature-choice"))'))
+    if preset=='region':
+     page.locator('[data-ui-market="virginia"]').click();settle(page)
+     check(entry+' regional market action drills into its bounded source scope',page.evaluate('uaState.scale===3&&uaState.scope==="viewport"&&globe.bounds[0]===-78.5&&uaRows().length>100'))
+    if preset=='campus':
+     check(entry+' campus prioritizes source evidence and takeaways',page.locator('.ui-campus-deck > section').count()==2)
+     page.locator('#ui-campus-note').fill('Verify image observation against the project disclosure.');page.wait_for_timeout(200)
+     check(entry+' inline campus note saves on the original project',page.evaluate('saved.notes[uaState.selected]')=='Verify image observation against the project disclosure.')
+   page.set_viewport_size({'width':1440,'height':1000});page.evaluate('uiPreset("facility")');page.wait_for_function('globe.imageReady&&!globe.dirty')
    check(entry+' feature inspector matches selected roof',page.evaluate('document.querySelector("#ua-feature-selection h2").textContent===globe.inspected.name&&uaState.feature===globe.inspected.id'))
    page.locator('[data-ui-save-feature]').click();check(entry+' physical evidence saves source versions',page.evaluate('saved.sourceFeatures.some(r=>r.feature_id===uaState.feature&&r.image_sha256===globe.manifest.image.sha256)'))
    original=page.evaluate('saved.sourceFeatures.find(r=>r.feature_id===uaState.feature)')
@@ -119,6 +149,10 @@ try:
     failures=page.evaluate('(()=>{const failed=[];for(let r=0;r<A.reports.length;r++){state.report=r;for(let s=0;s<A.reports[r].sections.length;s++){state.section=s;render();if(document.documentElement.scrollWidth>innerWidth)failed.push([r,s]);}}return failed})()')
     check(entry+' every original report section fits at '+str(width),not failures)
     if failures:print('REPORT OVERFLOW',width,failures,flush=True)
+   page.set_viewport_size({'width':1440,'height':1000});page.evaluate('state.report=1;state.section=3;ATLAS.navigate("reports")')
+   return_route=page.evaluate('researchCurrentHash()')
+   page.locator('.ui-guide-nav').click();settle(page);page.locator('[data-ui-return-guide]').click();page.wait_for_function('state.view==="reports"')
+   check(entry+' sidebar guided exploration returns to the original research page',page.evaluate('researchCurrentHash()')==return_route)
    page.evaluate('state.report=0;state.section=0;render()')
    check(entry+' original tables support keyboard scrolling',page.evaluate('[...document.querySelectorAll(".report-body .table-wrap")].every(e=>e.tabIndex===0&&e.getAttribute("aria-label"))'))
    check(entry+' no runtime errors',not errors);print('ERRORS',errors,flush=True);ctx.close()

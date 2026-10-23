@@ -52,6 +52,7 @@ function uaRemember(){if(globe?.ua){if(globe instanceof ResearchMap)uaState.came
 function uaGo(patch={},replace=false){
   clearTimeout(uaInputTimer);closeDrawer();closeSearch();if(state.tour>=0)endTour();uaRemember();
   if('selected' in patch&&patch.selected!==uaState.selected){uaState.feature=null;uaState.scene=null;uaState.sceneCamera=null;uaState.members=[];}
+  if(['region','country','collection','q','operator','coverage','scale','scope'].some(key=>key in patch&&patch[key]!==uaState[key]))uaState.members=[];
   Object.assign(uaState,{page:0},patch);state.view='atlas';$('#sidebar')?.classList.remove('open');
   history[replace?'replaceState':'pushState'](null,'',uaURL());render();
 }

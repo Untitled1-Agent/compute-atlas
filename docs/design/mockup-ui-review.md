@@ -1,42 +1,40 @@
-# Production UI rebuild against the six references
+# Compute Atlas — six-reference visual comparison
 
-The previous global atlas delivered data and interactions but did not reproduce the approved visual composition. This rebuild replaces the production presentation: sidebar, typography, header, map proportions, cartography, analytical rail, metric edge and physical dossier. Both the hosted entrypoint and the offline download use it.
+The production atlas follows the six supplied compositions. The current review compares actual **1280 × 960** browser captures with the **640 × 480** reference copies at the same 4:3 aspect ratio. The hosted app and the downloadable standalone share the implementation.
 
-[Side-by-side visual review](mockup-ui-review.html) · [Capture routes and viewport receipts](review/mockup-ui/capture-notes.json) · [Reference definitions](../mockups/README.md)
+[Side-by-side comparison and adjustable overlays](mockup-ui-review.html) · [Capture routes and viewport receipts](review/mockup-ui/capture-notes.json) · [Approved references](../mockups/README.md)
 
-| Reference | Production view | Delivered composition |
+| Reference | Production capture | Composition |
 | --- | --- | --- |
-| World | [World](review/mockup-ui/world.png) | Large relief globe, native source lights, three-part analysis rail, four scoped measurements |
-| Continent | [North America–Europe](review/mockup-ui/atlantic.png) | Transatlantic camera and two-continent data scope |
-| Region | [Midwest and East Coast](review/mockup-ui/region.png) | Reference roads, boundaries, cities and viewport-scoped records |
-| Metro | [Chicago–New Carlisle](review/mockup-ui/metro.png) | Local corridor, selected campus, source-specific power and entry to physical evidence |
-| Campus | [New Carlisle](review/mockup-ui/campus.png) | Historical imagery, independent outlines, dossier, phases, attributes and sources |
-| Facility | [Helios roof](review/mockup-ui/facility.png) | Selected source feature, illuminated outline, native dimensions, versioned evidence and counterparties |
+| World | [World](review/mockup-ui/world.png) | Dark relief globe, atmospheric edge, sparse luminous hubs, three editorial sections, four scoped measurements |
+| Continent | [North America–Europe](review/mockup-ui/atlantic.png) | Transatlantic framing, regional analysis, country ranking and complete two-continent source scope |
+| Region | [Midwest and East Coast](review/mockup-ui/region.png) | Restrained roads and source lights, Northern Virginia focus, bounded market drill-down and operator links |
+| Metro | [Chicago–New Carlisle](review/mockup-ui/metro.png) | Local corridor, compact selected-campus dossier, dated power scopes, cited development evidence and disclosed relationships |
+| Campus | [New Carlisle](review/mockup-ui/campus.png) | Historical imagery, mint reviewed roof outlines, evidence and takeaways beneath the map, power ladder and editable private notes alongside |
+| Facility | [Helios](review/mockup-ui/facility.png) | Selected physical feature, adjacent evidence inspector and counterparties, four lower panels for power, attributes, sources and takeaways |
 
-[Short desktop](review/mockup-ui/world-1280.png), [tablet](review/mockup-ui/world-768.png), [phone](review/mockup-ui/world-390.png), [tablet physical inspection](review/mockup-ui/facility-768.png) and [phone physical inspection](review/mockup-ui/facility-390.png) are also captured. Tablet maintains adjacent map and analysis. Phone places the dossier below the map with an expandable summary.
+[Short desktop](review/mockup-ui/world-1280.png) · [Tablet](review/mockup-ui/world-768.png) · [Phone](review/mockup-ui/world-390.png) · [Tablet physical inspection](review/mockup-ui/facility-768.png) · [Phone physical inspection](review/mockup-ui/facility-390.png)
 
-## Connected functionality
+## What changed in the fidelity pass
 
-All six scales share filters, source selection, camera, comparison, exports and the research shelf. Refinements sit below the primary composition and are reachable from the map. Selected locations expose power, hardware, timeline, counterparties, investment, original evidence and private notes. Project power scopes are individually selectable without changing the physical camera or assigning project power to a roof. Claim drawers return focus to the originating control.
+The sidebar, content inset and analysis-rail widths now follow the reference proportions. The same navigation shell continues through the directory, company, contract, investment, library and data-room pages. Economics, guided exploration and original sources are directly accessible. Guided exploration restores the original research page when launched outside the map.
 
-Physical evidence saved from the rebuilt atlas returns to that atlas after reopening or exporting and importing a research session. Older saved views retain their original routes. Shared physical views pin image, feature-review and native context versions. An unavailable version retains its identity and requires an explicit action to review the current publication.
+Cartography uses a dark blue relief treatment, a soft atmospheric edge and a limited set of prominent green hubs. Smaller source locations remain lights; large halos are no longer painted around every group. Nearby lights share display pixels without removing records from inspection, filtering or export. The underlying geography and source membership remain unchanged. Hit detection follows both the visible source lights and their grouped hubs, so a light away from the hub center still opens its source members without moving the camera.
 
-The guided journey traverses all six references and returns to the original exploration. Metric controls explain their units and underlying source population. Source inspection exposes image rights, observation dates, native object identity, versions and exports.
+The regional screen has a distinct market-focus rail and a working Northern Virginia drill-down. Regional and metro measurements sit beneath their map, beside the analytical rail. World and continent measurements span the composition. All first-screen measurements and rail content fit the reference-ratio viewport.
 
-## Global data and geography
+Campus and facility now have different lower structures. Physical source selection sits on the map. Campus prioritizes original sources and takeaways below the hero, with a compact dossier, power ladder and editable private notes in the rail. Facility exposes all four lower evidence panels in the first reference-ratio viewport. Roof outlines use mint emphasis; separately sourced electricity context uses a quieter violet treatment.
 
-The full six captured publications remain: 6,471 native records across 122 named countries and territories, 6,126 mapped positions and 4,394 native facility outlines. Supporting rows, original workbook fields and attachments remain available. The global physical-context archive contains 244,002 native objects at 169 published locations in 32 countries, with separate geocode provenance.
+## Connected functionality and global data
 
-Generalized geographic context now covers the whole world, including roads and places in South America, Africa, Asia and Oceania. A public-domain Natural Earth relief raster is supplied with source and output checksums, geographic bounds, license and reproducible capture code. Hosted and offline editions share the same raster and geometry.
+All six scales share filtering, source selection, camera state, comparison, exports and the research shelf. Topics retain the map while exposing power, hardware, timeline, counterparties, investment, sources and private notes. Feature and phase identities remain independent. Saved physical evidence returns to the rebuilt atlas through shelf reopening and session export/import. Shared views pin source versions; unavailable versions require explicit recovery.
 
-The current global facility-power subtotal uses only Epoch's published current-power model. It does not add GPU estimates or project MW IT. Native records can overlap. The app does not imply a complete census of undisclosed facilities, and missing imagery, height or power remains unknown. Historical campus forms and quantities deliberately follow evidence rather than fictional reference numbers.
+All six captured publications remain: **6,471 native records across 122 named countries and territories**, **6,126 mapped positions**, and **4,394 native facility outlines**. Complete native fields, supporting rows, original reports, workbooks and eight attachments remain available. The global physical-context archive contains **244,002 native objects at 169 locations in 32 countries**, with separate geocode provenance. Worldwide Natural Earth reference geography and licensed relief are embedded in the offline edition.
+
+Source records can overlap. These publications are not a census of every undisclosed facility. Current facility-power subtotals use only Epoch's current-power model; project IT models, GPU estimates and infrastructure tags remain separate. Real source dates, roof geometry, location names and quantities replace the mockups' illustrative content. Unreported heights, capacities and building-to-phase assignments remain unknown.
 
 ## Validation
 
-The rebuild is covered by `qa/editorial-parity.py`: six compositions, adjacent inspectors, metric placement, transatlantic/metro scope, phase and source interactions, source-version saving and unavailable-version recovery, phase/feature separation, native electricity export, guided return, responsive layouts down to 320 pixels and offline operation. Screenshots are manually reviewed in addition to assertions. `qa/unified-atlas.py` covers the 88 primary global-data and physical-context checks. Two additional data tests verify worldwide reference geometry and byte-identical offline relief provenance.
+`qa/editorial-parity.py` checks both entrypoints, the six reference-ratio compositions, complete lower evidence panels, visible measurements and rails, bounded market navigation, inline note saving, guided return from research pages, source-version recovery, actual session export/import, independent phase and feature identities, original source exports and responsive layouts down to 320 pixels. The original reports are checked section by section for viewport overflow. Screenshots are visually reviewed separately from assertions.
 
-The connected directory, company, contract, investment, research-library and data-room pages are checked at desktop and two phone widths. Every section of both original reports is tested for page-width overflow; original wide tables remain available through keyboard-accessible horizontal scrolling.
-
-Map rendering prepares the relief tint once, reuses Mercator scanline coordinates and finds nearby place labels with a linear scan. In the same local eight-frame camera-change sample, median redraw time fell from about 141 to 56 ms for the regional view and from 106 to 18 ms for the metro view. Individual frames varied; these measurements describe the test environment, not a universal frame-rate guarantee.
-
-The complete existing backend and browser workflows remain required in CI. Each merge is followed by a fresh review on the merged commit; a green test count alone is not a visual quality score.
+`qa/unified-atlas.py` covers the primary global-data, camera, source-selection and physical-context journeys. Existing backend, source integrity, research-workspace, campus, native file, service and delivery suites remain required in CI. Each merge is followed by verification of the actual merged tree and rebuilt download. A passing test count is not a claim of pixel identity between real evidence and illustrative reference content.
