@@ -37,6 +37,6 @@ The rebuild is covered by `qa/editorial-parity.py`: six compositions, adjacent i
 
 The connected directory, company, contract, investment, research-library and data-room pages are checked at desktop and two phone widths. Every section of both original reports is tested for page-width overflow; original wide tables remain available through keyboard-accessible horizontal scrolling.
 
-Map rendering prepares the relief tint once, reuses Mercator scanline coordinates and finds nearby place labels with a linear scan. Local warmed redraw samples improved from roughly 100–170 ms for regional/metro views to roughly 17–40 ms, with occasional higher samples; these measurements describe the test environment, not a universal frame-rate guarantee.
+Map rendering prepares the relief tint once, reuses Mercator scanline coordinates and finds nearby place labels with a linear scan. In the same local eight-frame camera-change sample, median redraw time fell from about 141 to 56 ms for the regional view and from 106 to 18 ms for the metro view. Individual frames varied; these measurements describe the test environment, not a universal frame-rate guarantee.
 
 The complete existing backend and browser workflows remain required in CI. Each merge is followed by a fresh review on the merged commit; a green test count alone is not a visual quality score.
