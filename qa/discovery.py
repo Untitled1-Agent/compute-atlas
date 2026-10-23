@@ -36,7 +36,10 @@ try:
    bookmark=page.url;target=page.locator('[data-research-claim-target]').first.get_attribute('data-research-claim-target');page.locator('[data-research-claim-target]').first.click()
    check(entry+' claim result reveals exact cited statement',page.locator(f'#drawer [data-research-claim="{target}"]').is_visible())
    page.keyboard.press('Escape')
-   check(entry+' claim drawer returns to exact search filters',page.url==bookmark)
+   # Wait for the browser's navigation notification, not the driver's cached URL.
+   # A real restoration failure still times out on the exact original bookmark.
+   page.wait_for_url(bookmark)
+   check(entry+' claim drawer returns to exact search filters',page.url==bookmark and page.locator('#drawer').is_hidden() and page.locator('#discovery-query').input_value()=='helios' and page.evaluate('discoveryState.type')=='claim')
    page.evaluate("ATLAS.discovery.go({q:'ellendale-live-july',type:'claim'})")
    check(entry+' earlier evidence remains searchable with revision boundary','Earlier / rejected revision' in page.locator('.discovery-result').inner_text())
    page.locator('[data-discovery-history]').click()
