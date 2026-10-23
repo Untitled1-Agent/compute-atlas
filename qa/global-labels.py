@@ -18,7 +18,7 @@ try:
  with sync_playwright() as d:
   browser=d.chromium.launch(executable_path=shutil.which('chromium') or d.chromium.executable_path,args=['--no-sandbox'])
   for entry in ['index.html','compute_atlas.html']:
-   ctx=browser.new_context(viewport={'width':1440,'height':1080});page=ctx.new_page();page.set_default_timeout(120000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.goto(base+entry);ready(page)
+   ctx=browser.new_context(viewport={'width':1440,'height':1080});page=ctx.new_page();page.set_default_timeout(120000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.goto(base+entry+'#overview');ready(page)
    inventory=page.evaluate('JSON.stringify([D.sites.map(s=>[s.id,s.lon,s.lat]),CATALOG.records.map(r=>r.id),ATLAS_PRIMARY.observations])')
    for width,height in [(1440,1080),(1366,768),(1024,1080),(768,1080),(390,844),(320,844)]:
     page.set_viewport_size({'width':width,'height':height});ready(page)

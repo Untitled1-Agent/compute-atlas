@@ -26,7 +26,7 @@ try:
             context=browser.new_context(viewport={'width':1440,'height':1080})
             page=context.new_page();page.set_default_timeout(15000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(base+entry);ready(page)
+            page.goto(base+entry+'#overview');ready(page)
             page.evaluate('ATLAS.workspace.compareDrawer()')
             check(entry+' empty comparison is directly searchable',page.locator('#workspace-compare-query').is_visible())
             for query,project in [('Helios','coreweave-helios'),('New Carlisle','amazon-anthropic-new-carlisle'),('Ellendale','coreweave-ellendale')]:
@@ -105,7 +105,7 @@ try:
             context=browser.new_context(viewport={'width':390,'height':844})
             context.add_init_script("Storage.prototype.setItem=function(){throw new DOMException('Storage unavailable','QuotaExceededError')}")
             page=context.new_page();page.set_default_timeout(15000)
-            page.goto(base+entry);ready(page)
+            page.goto(base+entry+'#overview');ready(page)
             page.evaluate("openDrawer('company','coreweave')")
             page.locator('#company-local-note').fill('RECOVERABLE SESSION NOTE')
             check(entry+' failed storage immediately identifies session-only note','Session-only' in page.locator('[data-storage-status]').inner_text())

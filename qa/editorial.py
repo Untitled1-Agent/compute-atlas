@@ -25,7 +25,7 @@ try:
             context=browser.new_context(viewport={'width':1440,'height':1080})
             page=context.new_page();page.set_default_timeout(120000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(base+entry);page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+            page.goto(base+entry+'#overview');page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
             page.wait_for_function('!ATLAS.getGlobe().dirty')
             page.screenshot(path=str(OUT/(entry+'-editorial-world.png')))
             page.evaluate("ATLAS.spatial.select('coreweave-helios');ATLAS.spatial.setLevel(4)")

@@ -1,7 +1,8 @@
 # Using Compute Atlas
 
-Start with the landscape for geographic context, the Facility directory for a
-known place, or Search research for a company, disclosure, source or formula.
+Start with the global landscape (`#atlas`), which brings all 6,471 source records
+into one geographic journey. The Facility directory offers a second tabular entry
+point; Search research reaches companies, disclosures, sources and original cells.
 The [approved references](mockups/README.md) define the six-scale visual hierarchy.
 The records and source imagery define what the app can actually show.
 
@@ -10,7 +11,9 @@ The records and source imagery define what the app can actually show.
 World → Continent → Region → Metro → Campus → Facility. Select a visible marker
 or use the keyboard-accessible record list. Inspect the selection before entering
 the next scale. Drag or use arrow keys to pan/orbit; scroll, pinch or use the +/−
-controls to zoom. Country, company, stage, evidence and text refinements intersect.
+controls to zoom. On the main atlas, country, operator, source collection,
+evidence availability and text refinements intersect. Source-specific directories
+retain their detailed status and measurement filters.
 Map-linked lists can follow the viewport or the full geographic scope. Back,
 Forward, reload and shared addresses retain camera, selection, filters and topic.
 
@@ -19,7 +22,11 @@ source features. Three historical imagery scenes across Helios and New Carlisle
 contain nine accepted roof interpretations. Select a roof to inspect its dated
 image and versioned geometry. Its area does not establish IT power, operating
 status or a phase allocation. Other projects retain useful evidence schematics
-and explicit image availability instead of invented buildings.
+and explicit image availability instead of invented buildings. The global atlas
+adds independently sourced nearby geometry around published compute locations;
+its footprints, roads, electricity and telecommunications features retain native
+source identities. Unmapped records stay selected when a geographic drill is
+unavailable. They are never replaced by another facility.
 
 The worldwide catalog contains 5,301 community map records. Geometry supports
 plan and orbit views; missing building heights remain unknown unless an explicitly
@@ -28,8 +35,18 @@ contribute 253 and 261 separate source listings. Publisher pins and nearby map
 features are not automatically reconciled into the same facility.
 
 Road and electricity layers expose native geometry, source dates and coverage.
-Nearby electricity infrastructure does not prove campus service. Fiber routes
-remain unavailable where licensed, reviewed geometry is absent.
+Nearby electricity or telecommunications infrastructure does not prove campus
+service. Untagged heights remain flat in the primary atlas. The layer controls
+identify captured vectors separately from optional live OpenStreetMap street tiles.
+Image provenance names the selected image publisher, date, rights and checksum.
+
+JSON and CSV scope exports retain source identities. Compare up to three records
+across collections without blending MW, MW IT and H100 equivalents. Share or save
+the current camera, selected physical feature, research topic, timeline measure,
+filters and comparison. Private notes are excluded from public data exports.
+
+The previous project-only landscape is still available at `#overview`, under
+More research tools.
 
 ## Research a project or company
 

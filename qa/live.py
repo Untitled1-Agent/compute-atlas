@@ -174,7 +174,7 @@ with sync_playwright() as p:
     standalone_requests = []
     standalone.on("pageerror", lambda e: standalone_errors.append(str(e)))
     standalone.on("request", lambda r: standalone_requests.append(r.url))
-    standalone_response = standalone.goto(base + "compute_atlas.html", wait_until="load", timeout=30000)
+    standalone_response = standalone.goto(base + "compute_atlas.html#overview", wait_until="load", timeout=30000)
     standalone.wait_for_selector(".evidence-lane", state="attached")
     check("standalone artifact returns HTTP 200", standalone_response is not None and standalone_response.status == 200)
     check("standalone artifact includes audited enhancement layer", standalone.locator(".evidence-lane").count() == 4 and standalone.locator(".investor-table").count() == 1)

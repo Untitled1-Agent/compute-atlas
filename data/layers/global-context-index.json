@@ -1,0 +1,2167 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-22T23:45:06.398845+00:00",
+  "publisher": "OpenStreetMap via Overpass",
+  "url": "https://www.openstreetmap.org",
+  "license": "ODbL-1.0",
+  "license_url": "https://www.openstreetmap.org/copyright",
+  "attribution": "© OpenStreetMap contributors",
+  "policy": "Native nearby map context around published or address-geocoded compute anchors. Proximity does not establish campus membership, ownership, utility service, energized state, fiber connectivity or IT power. Native object revisions and tags remain separate from project disclosures.",
+  "failures": [],
+  "feature_count": 244002,
+  "anchor_count": 169,
+  "captures": [
+    {
+      "id": "abb2ef5e930da56a7e4634b7a5e6f73904909f0537a75ccb74d59856c9431464",
+      "anchors": [
+        {
+          "lat": 35.069154,
+          "lon": -90.118494,
+          "ids": [
+            "epoch-484715869be350cfcce9",
+            "epoch-fde3d83a864dbb841755",
+            "epoch-56432b6769f2a3bce146"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 39.381266,
+          "lon": -97.922211,
+          "ids": [
+            "epoch-77bde55cc201a9ad8e5d",
+            "epoch-3621650f303799639baa",
+            "epoch-66fc214c3dea63ccb397",
+            "epoch-15d5f904eb1ca4a93b1b",
+            "epoch-fd8ae7563aaaeea6b3db",
+            "epoch-27e826976dbd2c43ceb4",
+            "epoch-1d59d4f98334cb019e7b",
+            "epoch-53bb9421167b7d4f98b3",
+            "epoch-3bac003d98a1d3673a1b",
+            "epoch-61fe6b8f067084286aa4",
+            "epoch-d149863e2ba9e305ad99",
+            "epoch-9c5ae00491b6704d9010",
+            "epoch-91c112a5fae83196861d",
+            "epoch-7122f56d7ec245a788e4",
+            "epoch-d6e3437d5761388c001e",
+            "epoch-8f97f4c5e31f0f54eccd",
+            "epoch-9a052717b7a36ecf5e0d",
+            "epoch-895317bee868ec9db7b6",
+            "epoch-69ddb4a455d9fc9bd883",
+            "epoch-8664927e70b648137821",
+            "epoch-a9f7aa4f1639f1c60eb7",
+            "epoch-500483fdd5f62b27d700",
+            "epoch-5fe516c98f025b75889a",
+            "epoch-151290ba357ad3563ea5",
+            "epoch-055270b6da4850712371",
+            "epoch-19294db654388e2cef3d",
+            "epoch-350c366af52bd7f32fdb",
+            "epoch-ae0360e3ee56a1b5bafa",
+            "epoch-028698aa300b6ea44f78",
+            "epoch-adc870d3dd04d41902df",
+            "epoch-793251680fa797bb0e39",
+            "epoch-aad9cd02d0ca05a4c9d1",
+            "epoch-0a5a5d05879764547de2",
+            "epoch-5145cd9d1f6720b8757a",
+            "epoch-675148c00e110ed0b44b",
+            "epoch-a06714541e4975907781",
+            "epoch-5a449b5064bbac5af6ed",
+            "epoch-5dbd64629fcac96e76af",
+            "epoch-f9122244582814cee36f",
+            "epoch-db30e2570d4f1937413b",
+            "epoch-114f258eab2d932525a4",
+            "epoch-556dd2a08a62b2b69cfd",
+            "epoch-77491836c14fbfaf824b",
+            "epoch-8b37a3203c842e0d133e",
+            "epoch-647ada37497a120cd851",
+            "epoch-54d3e25586f28c648f3a",
+            "epoch-d131d019498c4fe35494",
+            "epoch-3fb95f557a0bcf77a096",
+            "epoch-4a8e0c5ca6711b5c6088",
+            "epoch-b256ad3900630d22581a",
+            "epoch-007addad319eaa7960b0",
+            "epoch-3cc766f6f01f7d22a238",
+            "epoch-dd05e5e28493f5fd9e35",
+            "epoch-6fe5dd4e04a66a09b9ef",
+            "epoch-c23d2cb8de30ea77c73b",
+            "epoch-3c967a7aee902d744d98"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 33.190283,
+          "lon": -111.966202,
+          "ids": [
+            "epoch-3b66851ba5abea285a2b"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 30.222695,
+          "lon": -97.618788,
+          "ids": [
+            "epoch-d81fa688728ee4aab4a3"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,35.069154,-90.118494)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.069154,-90.118494)[\"power\"~\"substation|plant|generator\"];way(around:750,39.381266,-97.922211)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.381266,-97.922211)[\"power\"~\"substation|plant|generator\"];way(around:750,33.190283,-111.966202)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.190283,-111.966202)[\"power\"~\"substation|plant|generator\"];way(around:750,30.222695,-97.618788)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,30.222695,-97.618788)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "21e008c5b67aae73b487aa4009734cece4a90a0cebb82fb5e1222ba4887309e1",
+      "osm_base": "2026-10-22T22:48:36Z",
+      "path": "data/layers/global-context/abb2ef5e930da56a7e4634b7a5e6f73904909f0537a75ccb74d59856c9431464.json.gz",
+      "sha256": "e61b315b52fb1c3971875dd06f544630c85d4af85f9754254fa28d1655118220",
+      "feature_count": 483,
+      "bytes": 76018
+    },
+    {
+      "id": "c896214a2b88cd8f924347e05d47ab8af3afcfe33fc84896d3cd00f66372e382",
+      "anchors": [
+        {
+          "lat": 37.682018,
+          "lon": -121.768374,
+          "ids": [
+            "epoch-526fb077d921bacd0585",
+            "epoch-c66714d5f7207ff74e54",
+            "epoch-1f0a8648112f56e0f34e",
+            "epoch-3107a4aa86eec761b03c"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 50.921734,
+          "lon": 6.358342,
+          "ids": [
+            "epoch-27391e46f81dca4a0367",
+            "epoch-c710e10876fa1db5264e",
+            "epoch-dbbad69044ebccacfd97"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 60.205078,
+          "lon": 10.235459,
+          "ids": [
+            "epoch-fb248701fbedd81d1107"
+          ],
+          "country": "Norway"
+        },
+        {
+          "lat": 33.014978,
+          "lon": -96.764937,
+          "ids": [
+            "epoch-24541ac12a660e6f13f3"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,37.682018,-121.768374)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.682018,-121.768374)[\"power\"~\"substation|plant|generator\"];way(around:750,50.921734,6.358342)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,50.921734,6.358342)[\"power\"~\"substation|plant|generator\"];way(around:750,60.205078,10.235459)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,60.205078,10.235459)[\"power\"~\"substation|plant|generator\"];way(around:750,33.014978,-96.764937)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.014978,-96.764937)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "57645660a447d18548ea671c81ba0e9fe0f08b26e2b432e26e05bf7d303dd5d0",
+      "osm_base": "2026-10-22T22:49:34Z",
+      "path": "data/layers/global-context/c896214a2b88cd8f924347e05d47ab8af3afcfe33fc84896d3cd00f66372e382.json.gz",
+      "sha256": "e2c7204cf949321e64f81539a88af9aae52dc52b53353148db23f209ed1efa46",
+      "feature_count": 6758,
+      "bytes": 765691
+    },
+    {
+      "id": "8461829c62b212df0cac61a3e9a436570533d393392d521d5df6896b78de158e",
+      "anchors": [
+        {
+          "lat": 46.024451,
+          "lon": 8.960052,
+          "ids": [
+            "epoch-36a54a5e11f5d8af6427",
+            "epoch-164a87b4a0dbe857d780"
+          ],
+          "country": "Switzerland"
+        },
+        {
+          "lat": 42.410212,
+          "lon": -82.981595,
+          "ids": [
+            "epoch-837c9c5e60da75dc1b9e"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 60.629522,
+          "lon": 25.26336,
+          "ids": [
+            "epoch-93aec631124495cf705b",
+            "epoch-ec4751948cb2caab9970"
+          ],
+          "country": "Finland"
+        },
+        {
+          "lat": 41.584997,
+          "lon": -93.624273,
+          "ids": [
+            "epoch-74e7438a123f4d50667f"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,46.024451,8.960052)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,46.024451,8.960052)[\"power\"~\"substation|plant|generator\"];way(around:750,42.410212,-82.981595)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.410212,-82.981595)[\"power\"~\"substation|plant|generator\"];way(around:750,60.629522,25.26336)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,60.629522,25.26336)[\"power\"~\"substation|plant|generator\"];way(around:750,41.584997,-93.624273)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.584997,-93.624273)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "37c2fa060a4907f2c85baf561f3eff0082bebc6a7a545d2c138835ee18bd37f8",
+      "osm_base": "2026-10-22T22:49:34Z",
+      "path": "data/layers/global-context/8461829c62b212df0cac61a3e9a436570533d393392d521d5df6896b78de158e.json.gz",
+      "sha256": "a38774f790481a4c70684df22d4dadd4a0a070765d260b48c82bb8f16941e795",
+      "feature_count": 6658,
+      "bytes": 775605
+    },
+    {
+      "id": "899929d5e9cc1bc5b520813eac8f481da4870d0d8cffdc342c8fe651dcb52611",
+      "anchors": [
+        {
+          "lat": 26.4344,
+          "lon": 50.0982,
+          "ids": [
+            "epoch-7e990446b1da84f7e8fb"
+          ],
+          "country": "Saudi Arabia"
+        },
+        {
+          "lat": 36.010294,
+          "lon": -84.269567,
+          "ids": [
+            "epoch-9701e984e901bb834983"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 35.68882,
+          "lon": 139.692526,
+          "ids": [
+            "epoch-3082e13a1524e0fa04a0",
+            "epoch-73f1c46c9bfcc2205702",
+            "epoch-d87a59f471f089e88e7c"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 37.484236,
+          "lon": -77.237219,
+          "ids": [
+            "epoch-b9543096ac4c4512c447",
+            "epoch-21b36f306e93381e6383"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,26.4344,50.0982)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,26.4344,50.0982)[\"power\"~\"substation|plant|generator\"];way(around:750,36.010294,-84.269567)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,36.010294,-84.269567)[\"power\"~\"substation|plant|generator\"];way(around:750,35.68882,139.692526)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.68882,139.692526)[\"power\"~\"substation|plant|generator\"];way(around:750,37.484236,-77.237219)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.484236,-77.237219)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "150a26d3d5bc3efba2767f0ba54876dbc2eea99a8b24011ba21f7083d1ac8345",
+      "osm_base": "2026-10-22T23:09:05Z",
+      "path": "data/layers/global-context/899929d5e9cc1bc5b520813eac8f481da4870d0d8cffdc342c8fe651dcb52611.json.gz",
+      "sha256": "442fb3fe14be486d814bd5cae6b0b0c5ba93b8050969df74d24bed5dc60a00ed",
+      "feature_count": 7853,
+      "bytes": 860938
+    },
+    {
+      "id": "3456785fc49f7662518442534f6a6992c1711805fb16749f03bd7f6837fc89c9",
+      "anchors": [
+        {
+          "lat": 36.241172,
+          "lon": -95.330047,
+          "ids": [
+            "epoch-198dd320e0364a1a16bd",
+            "epoch-dc-centers-024cd8309ce70f23483b"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.389806,
+          "lon": 2.115513,
+          "ids": [
+            "epoch-b938a70aa43c3f096485"
+          ],
+          "country": "Spain"
+        },
+        {
+          "lat": 44.522194,
+          "lon": 11.338427,
+          "ids": [
+            "epoch-4e5adaeaebc608b64f4e"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 19.030146,
+          "lon": 73.02022,
+          "ids": [
+            "epoch-defd18a65d82334fcabc"
+          ],
+          "country": "India"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,36.241172,-95.330047)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,36.241172,-95.330047)[\"power\"~\"substation|plant|generator\"];way(around:750,41.389806,2.115513)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.389806,2.115513)[\"power\"~\"substation|plant|generator\"];way(around:750,44.522194,11.338427)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,44.522194,11.338427)[\"power\"~\"substation|plant|generator\"];way(around:750,19.030146,73.02022)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,19.030146,73.02022)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "d5ff5295387650845a59bcf7f4ddadf2995c4b9dc845716a269f5e489b6d696e",
+      "osm_base": "2026-10-22T22:51:32Z",
+      "path": "data/layers/global-context/3456785fc49f7662518442534f6a6992c1711805fb16749f03bd7f6837fc89c9.json.gz",
+      "sha256": "3be00ab6c2de077d6ea321dfcc04f2f783d93ea319efc70e537006b664c71707",
+      "feature_count": 6544,
+      "bytes": 834627
+    },
+    {
+      "id": "8d0b279f2a0ade0e2028c6269048b616a6393345c7dc38c036c5441828f59ccf",
+      "anchors": [
+        {
+          "lat": 48.853495,
+          "lon": 2.348392,
+          "ids": [
+            "epoch-3acbcc9d477e99be8e09",
+            "epoch-62aafd2777e24d8bb050",
+            "epoch-db9917896ab843707b7b",
+            "epoch-d74d00fda925dd8297c1"
+          ],
+          "country": "France"
+        },
+        {
+          "lat": 30.103242,
+          "lon": -95.446152,
+          "ids": [
+            "epoch-c28ac98340ce99b335b6",
+            "epoch-f94f2f0a2c2343def262"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 64.964875,
+          "lon": 17.675409,
+          "ids": [
+            "epoch-f005eac05176e7edd05b"
+          ],
+          "country": "Sweden"
+        },
+        {
+          "lat": 39.098485,
+          "lon": -94.578631,
+          "ids": [
+            "epoch-f7d2219ef448d2586400"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,48.853495,2.348392)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.853495,2.348392)[\"power\"~\"substation|plant|generator\"];way(around:750,30.103242,-95.446152)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,30.103242,-95.446152)[\"power\"~\"substation|plant|generator\"];way(around:750,64.964875,17.675409)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,64.964875,17.675409)[\"power\"~\"substation|plant|generator\"];way(around:750,39.098485,-94.578631)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.098485,-94.578631)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "0ea487da489ea0fb79372924cf61264bf3156e61a88d6b7bf689f2d5af898315",
+      "osm_base": "2026-10-22T22:52:33Z",
+      "path": "data/layers/global-context/8d0b279f2a0ade0e2028c6269048b616a6393345c7dc38c036c5441828f59ccf.json.gz",
+      "sha256": "d4112c4bc1741cdbb17c46d6f96a0ab967ff116f013651aab7e5eed26bd9fa40",
+      "feature_count": 10553,
+      "bytes": 1489517
+    },
+    {
+      "id": "cdcb20768288a5b575382284a0eeb2b53989c6a8ea030d6688289416b468023c",
+      "anchors": [
+        {
+          "lat": 41.802886,
+          "lon": -88.094986,
+          "ids": [
+            "epoch-efdaca0e3efa01056174"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 39.043555,
+          "lon": -77.487449,
+          "ids": [
+            "epoch-943953495b5cc496fd8d",
+            "epoch-1b27ab4edad58e83591e",
+            "epoch-fc88f7f555f1e549a8ff"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 55.963398,
+          "lon": 10.046297,
+          "ids": [
+            "epoch-7709ab55f93a4fcd88f3"
+          ],
+          "country": "Denmark"
+        },
+        {
+          "lat": 47.824905,
+          "lon": 2.618787,
+          "ids": [
+            "epoch-fe5914be6a0c56ed19bd",
+            "epoch-aa96cf978dc52ff3f416",
+            "epoch-48277130ca8398e0eec3"
+          ],
+          "country": "France"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,41.802886,-88.094986)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.802886,-88.094986)[\"power\"~\"substation|plant|generator\"];way(around:750,39.043555,-77.487449)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.043555,-77.487449)[\"power\"~\"substation|plant|generator\"];way(around:750,55.963398,10.046297)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,55.963398,10.046297)[\"power\"~\"substation|plant|generator\"];way(around:750,47.824905,2.618787)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,47.824905,2.618787)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "ae326f0283c1dcf87e07a147854369693fcb2823fc3b073c750a67ea1293b6a9",
+      "osm_base": "2026-10-22T22:52:33Z",
+      "path": "data/layers/global-context/cdcb20768288a5b575382284a0eeb2b53989c6a8ea030d6688289416b468023c.json.gz",
+      "sha256": "2327b047e3e6958cbe3da77e408be78066cea4d4967e88de63e42c0e6007f3a6",
+      "feature_count": 2486,
+      "bytes": 299652
+    },
+    {
+      "id": "085e88af3eb5ad2a011c448e4d10ca8f22709fff2d88e38ee13be06823bdf4fa",
+      "anchors": [
+        {
+          "lat": 45.101078,
+          "lon": 8.859647,
+          "ids": [
+            "epoch-a9eb7aa41495940cc73f",
+            "epoch-c55859e6a383e242af9e",
+            "epoch-be57ed89495c74a9c476",
+            "epoch-5f85e2c422e043276a64"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 35.881462,
+          "lon": -106.301781,
+          "ids": [
+            "epoch-f0674e2fecbb62c4e5ce",
+            "epoch-2252df2a7074b3c665e3"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 64.233706,
+          "lon": 27.703313,
+          "ids": [
+            "epoch-6fa0576c885e4d55d84f",
+            "epoch-d20f0abffc0d970709b6"
+          ],
+          "country": "Finland"
+        },
+        {
+          "lat": 37.877776,
+          "lon": -122.249533,
+          "ids": [
+            "epoch-4cf0702dd1d1001d8f78"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,45.101078,8.859647)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,45.101078,8.859647)[\"power\"~\"substation|plant|generator\"];way(around:750,35.881462,-106.301781)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.881462,-106.301781)[\"power\"~\"substation|plant|generator\"];way(around:750,64.233706,27.703313)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,64.233706,27.703313)[\"power\"~\"substation|plant|generator\"];way(around:750,37.877776,-122.249533)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.877776,-122.249533)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "c01e66dda45b7909c24f51853fc37f9c6868aa9387a7e3eb7f31bd919651ee02",
+      "osm_base": "2026-10-22T22:53:41Z",
+      "path": "data/layers/global-context/085e88af3eb5ad2a011c448e4d10ca8f22709fff2d88e38ee13be06823bdf4fa.json.gz",
+      "sha256": "aa8598e05f63c3655ba457c97c36c3ec5db6e88a669d63c763fd77701121fc7f",
+      "feature_count": 3554,
+      "bytes": 474354
+    },
+    {
+      "id": "d473e96fa9af1f54998bf2b01a66cade6cbca529249128eeb3540ca245ee7113",
+      "anchors": [
+        {
+          "lat": 36.08322,
+          "lon": 140.077552,
+          "ids": [
+            "epoch-8d92785d60b0e679a873",
+            "epoch-e30450b9a8b8931b4bc2"
+          ],
+          "country": "Japan"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,36.08322,140.077552)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,36.08322,140.077552)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "e53b3bbdf55b66dbb6c67caa27786e2d4287ad504a38f029f834074d816cd4a5",
+      "osm_base": "2026-10-22T23:28:49Z",
+      "path": "data/layers/global-context/d473e96fa9af1f54998bf2b01a66cade6cbca529249128eeb3540ca245ee7113.json.gz",
+      "sha256": "18530972abb322dc25cf869b27f4c21250178f48f58133f2ecdbc62356029f26",
+      "feature_count": 1790,
+      "bytes": 189686
+    },
+    {
+      "id": "ed0888c83113eeda79b9ff60e3764b72177d5b6c520dae486c22254016a092a3",
+      "anchors": [
+        {
+          "lat": 58.257573,
+          "lon": 7.89205,
+          "ids": [
+            "epoch-49961d3ac81080a82e68",
+            "epoch-316d1689257367952375"
+          ],
+          "country": "Norway"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,58.257573,7.89205)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,58.257573,7.89205)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "19938e9915db75bbfbb53a3aa895463fecc1a0b1e1603b8434e605d5d5941627",
+      "osm_base": "2026-10-22T23:30:44Z",
+      "path": "data/layers/global-context/ed0888c83113eeda79b9ff60e3764b72177d5b6c520dae486c22254016a092a3.json.gz",
+      "sha256": "0d8901347fcba9ee21f80a487ee0869c03a389010ccb613ff383176c480c0dbe",
+      "feature_count": 241,
+      "bytes": 50600
+    },
+    {
+      "id": "fc2d1e83be5e4c4eb112016ea535162d34c2da18d814d30c64693229b47526a9",
+      "anchors": [
+        {
+          "lat": 31.847261,
+          "lon": 34.841999,
+          "ids": [
+            "epoch-9e6495321928a285903d",
+            "epoch-c22697175523836a62d5"
+          ],
+          "country": "Israel"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,31.847261,34.841999)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,31.847261,34.841999)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "2dace968373fe9559df11c1888948825626e46bc2faa9fb39795d0031db8f8d0",
+      "osm_base": "2026-10-22T23:31:44Z",
+      "path": "data/layers/global-context/fc2d1e83be5e4c4eb112016ea535162d34c2da18d814d30c64693229b47526a9.json.gz",
+      "sha256": "d572f4d97b131cae4e3639b3537861914e79ae24d19ad4a5b8fb0781ded872ea",
+      "feature_count": 1126,
+      "bytes": 112505
+    },
+    {
+      "id": "a6c9ffcb429d8c0714094ecafebd3dde7be25d0870f9b78aec9d2feb0cb04914",
+      "anchors": [
+        {
+          "lat": 36.386493,
+          "lon": 138.59223,
+          "ids": [
+            "epoch-4f883da9f404bc1e1be1",
+            "epoch-8076d9bff6cd18f3d55a",
+            "epoch-d38ac0b6e29b11cd5228",
+            "epoch-227651818ac7cd99a7f1",
+            "epoch-a47f94bf242193c9812a",
+            "epoch-ba5b53b097ff054ad51b",
+            "epoch-3ea13559bb1d3e0b327e",
+            "epoch-24032a94fe53b4fd9d8c",
+            "epoch-f568581f54315121c7e3",
+            "epoch-f606140f85c2ae408b9e",
+            "epoch-021c96b05c4fbfb2c840",
+            "epoch-d7da6337a1950b9fbfa0"
+          ],
+          "country": "Japan"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,36.386493,138.59223)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,36.386493,138.59223)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "12800203a97e489459d030560593b99bae5b012a7f8bf84a5ce95bc85e90e36f",
+      "osm_base": "2026-10-22T23:38:51Z",
+      "path": "data/layers/global-context/a6c9ffcb429d8c0714094ecafebd3dde7be25d0870f9b78aec9d2feb0cb04914.json.gz",
+      "sha256": "e0b885a14ede777ce308a4023adbbcd51735bb1328d0b37f50e77bb90f563f19",
+      "feature_count": 74,
+      "bytes": 20618
+    },
+    {
+      "id": "340e55c38ec4277f95a7cf4dc7bf8c03bef5cc1c5031487d1cf88fc708e515b9",
+      "anchors": [
+        {
+          "lat": 43.172542,
+          "lon": 141.315389,
+          "ids": [
+            "epoch-80f1fae65fd0ca184493"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 46.812189,
+          "lon": -71.202785,
+          "ids": [
+            "epoch-09408d3e6cd55546e649"
+          ],
+          "country": "Canada"
+        },
+        {
+          "lat": 41.718369,
+          "lon": -87.978791,
+          "ids": [
+            "epoch-f5923eb0271e580b2286",
+            "epoch-a1177a1533f00d3be4bf"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 48.706817,
+          "lon": 2.175654,
+          "ids": [
+            "epoch-71f0958995d49ef01ef2",
+            "epoch-0f5c056ad907998922db",
+            "epoch-b14297111dc9b6b1eff4",
+            "epoch-d0d61bfddb323816c046"
+          ],
+          "country": "France"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,43.172542,141.315389)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,43.172542,141.315389)[\"power\"~\"substation|plant|generator\"];way(around:750,46.812189,-71.202785)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,46.812189,-71.202785)[\"power\"~\"substation|plant|generator\"];way(around:750,41.718369,-87.978791)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.718369,-87.978791)[\"power\"~\"substation|plant|generator\"];way(around:750,48.706817,2.175654)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.706817,2.175654)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "32934c86eba27ad877d38afbb29e61ec3380a2db7dc5c2a47b5dd8e2cb663136",
+      "osm_base": "2026-10-22T22:54:41Z",
+      "path": "data/layers/global-context/340e55c38ec4277f95a7cf4dc7bf8c03bef5cc1c5031487d1cf88fc708e515b9.json.gz",
+      "sha256": "0691f54a7ee23200d43ebdb1d142d5b00a8640dc8bccb934f05cffcd7fe29289",
+      "feature_count": 5965,
+      "bytes": 704794
+    },
+    {
+      "id": "c2bca00312f4e9864ec6cce434db1f4234d840ece21d4fdce2ee0379ccfc0eed",
+      "anchors": [
+        {
+          "lat": 35.088192,
+          "lon": -106.650945,
+          "ids": [
+            "epoch-54cc066b521903f35c70"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 37.35231,
+          "lon": -121.9619,
+          "ids": [
+            "epoch-ef064b03946c7950c52d",
+            "epoch-240a3dcfbff2be302e3d"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 23.85206,
+          "lon": 54.256172,
+          "ids": [
+            "epoch-6cc77350469268afd691",
+            "epoch-80a136bab60322bef253"
+          ],
+          "country": "United Arab Emirates"
+        },
+        {
+          "lat": 24.97428,
+          "lon": 121.44137,
+          "ids": [
+            "epoch-f3d1020491d14e57d63b"
+          ],
+          "country": "Taiwan"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,35.088192,-106.650945)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.088192,-106.650945)[\"power\"~\"substation|plant|generator\"];way(around:750,37.35231,-121.9619)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.35231,-121.9619)[\"power\"~\"substation|plant|generator\"];way(around:750,23.85206,54.256172)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,23.85206,54.256172)[\"power\"~\"substation|plant|generator\"];way(around:750,24.97428,121.44137)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,24.97428,121.44137)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "d6c42b3db2893245a57f39700aa2ddc8b0d0f116127473ba1cd2c70c7c4ee00f",
+      "osm_base": "2026-10-22T22:55:51Z",
+      "path": "data/layers/global-context/c2bca00312f4e9864ec6cce434db1f4234d840ece21d4fdce2ee0379ccfc0eed.json.gz",
+      "sha256": "a2a01ff5ae0f05859d9363bed6871940ec1e150007712f179ded7d87f753c0be",
+      "feature_count": 6459,
+      "bytes": 775202
+    },
+    {
+      "id": "1de5bedca1beb26e6c01ae23645d5f50d5b55952c50b1db6426c1d293ccfcdd5",
+      "anchors": [
+        {
+          "lat": 15.127333,
+          "lon": 101.017438,
+          "ids": [
+            "epoch-a40bb06759a723391381"
+          ],
+          "country": "Thailand"
+        },
+        {
+          "lat": 13.751996,
+          "lon": 100.640384,
+          "ids": [
+            "epoch-47aa9c5e8fec3c359665"
+          ],
+          "country": "Thailand"
+        },
+        {
+          "lat": 1.351616,
+          "lon": 103.808053,
+          "ids": [
+            "epoch-48b97e39eea565feb957",
+            "epoch-f7c3e8b6e52d57961be9",
+            "epoch-ba4649b2c4faed57a855"
+          ],
+          "country": "Singapore"
+        },
+        {
+          "lat": 41.881953,
+          "lon": -87.632362,
+          "ids": [
+            "epoch-4732ac8b180cb54d752c"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,15.127333,101.017438)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,15.127333,101.017438)[\"power\"~\"substation|plant|generator\"];way(around:750,13.751996,100.640384)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,13.751996,100.640384)[\"power\"~\"substation|plant|generator\"];way(around:750,1.351616,103.808053)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,1.351616,103.808053)[\"power\"~\"substation|plant|generator\"];way(around:750,41.881953,-87.632362)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.881953,-87.632362)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "914a331ca2bab21ff66c27b98f2d1f651c490bc84b0090b9e7fadfdad5afd130",
+      "osm_base": "2026-10-22T22:56:51Z",
+      "path": "data/layers/global-context/1de5bedca1beb26e6c01ae23645d5f50d5b55952c50b1db6426c1d293ccfcdd5.json.gz",
+      "sha256": "97a4459a378be16c0838ea8aa1b8945b3b68ce5d85e21e9b3f7bfab0e49f761b",
+      "feature_count": 5652,
+      "bytes": 620792
+    },
+    {
+      "id": "26d8db1344f2c937e4a6c475e16ada541af703cccb9169e37ca13790df3af361",
+      "anchors": [
+        {
+          "lat": 31.803973,
+          "lon": -98.822319,
+          "ids": [
+            "epoch-80331f62d0bcdaf5572f",
+            "epoch-22d8da41a193d3f7868e",
+            "epoch-919331a96ebdba30a216"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 35.518594,
+          "lon": 139.529816,
+          "ids": [
+            "epoch-a24a03e67d7cc903a725"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 53.915792,
+          "lon": -122.745087,
+          "ids": [
+            "epoch-78873f5f6049c2e0b955"
+          ],
+          "country": "Canada"
+        },
+        {
+          "lat": 36.67676,
+          "lon": -78.376502,
+          "ids": [
+            "epoch-9445c1123cebf0c35008"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,31.803973,-98.822319)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,31.803973,-98.822319)[\"power\"~\"substation|plant|generator\"];way(around:750,35.518594,139.529816)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.518594,139.529816)[\"power\"~\"substation|plant|generator\"];way(around:750,53.915792,-122.745087)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,53.915792,-122.745087)[\"power\"~\"substation|plant|generator\"];way(around:750,36.67676,-78.376502)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,36.67676,-78.376502)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "cfdc84debf050351d026e8285932f28414e25fbcd9596839cb1b09a93c7b8a54",
+      "osm_base": "2026-10-22T22:56:51Z",
+      "path": "data/layers/global-context/26d8db1344f2c937e4a6c475e16ada541af703cccb9169e37ca13790df3af361.json.gz",
+      "sha256": "da01a7a243def89e297bb2f8ab7e6102cd9e42e67cb5d04df10c27b65b560c05",
+      "feature_count": 4832,
+      "bytes": 480546
+    },
+    {
+      "id": "bc0592aa2619f9b1053271d2a099194799e5c87a8b3d33b94503fc9228690be5",
+      "anchors": [
+        {
+          "lat": -22.909534,
+          "lon": -43.209934,
+          "ids": [
+            "epoch-755b146701e193152a9e",
+            "epoch-bc39dc3d64207a62969d",
+            "epoch-708018a2f9a4ca0b8d8e",
+            "epoch-ec3dc3634654a7df5c4b",
+            "epoch-98374d0e797e38fb0b8d",
+            "epoch-ed21a3ce65a734e1137a"
+          ],
+          "country": "Brazil"
+        },
+        {
+          "lat": 47.237925,
+          "lon": -119.884972,
+          "ids": [
+            "epoch-fbed3cc217df7e044fbd"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 22.604703,
+          "lon": 120.299511,
+          "ids": [
+            "epoch-4cbc5f09bde68ab41893"
+          ],
+          "country": "Taiwan"
+        },
+        {
+          "lat": 60.610563,
+          "lon": 15.610352,
+          "ids": [
+            "epoch-dc2663867098c6672a4a"
+          ],
+          "country": "Sweden"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,-22.909534,-43.209934)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-22.909534,-43.209934)[\"power\"~\"substation|plant|generator\"];way(around:750,47.237925,-119.884972)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,47.237925,-119.884972)[\"power\"~\"substation|plant|generator\"];way(around:750,22.604703,120.299511)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,22.604703,120.299511)[\"power\"~\"substation|plant|generator\"];way(around:750,60.610563,15.610352)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,60.610563,15.610352)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "6dcac6f735f48bcf06311454df21611e5e2bd18c4ae17ee7c603d6a5941a8807",
+      "osm_base": "2026-10-22T22:57:50Z",
+      "path": "data/layers/global-context/bc0592aa2619f9b1053271d2a099194799e5c87a8b3d33b94503fc9228690be5.json.gz",
+      "sha256": "020be1da9c1fbfc8a366357037725b64e535329eae6b3acbc7f641ff0c7708eb",
+      "feature_count": 3442,
+      "bytes": 424501
+    },
+    {
+      "id": "a6bbe2ae3142199f00080db88985cfe69ad657921f33dc83a3abd9f76656caef",
+      "anchors": [
+        {
+          "lat": 37.680665,
+          "lon": -121.7099,
+          "ids": [
+            "epoch-44f2df1d8c2217f4d3af",
+            "epoch-4306ba6e89fe1b3d8ea3",
+            "epoch-52d294ebf83af1aa8769"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 40.767676,
+          "lon": -111.902638,
+          "ids": [
+            "epoch-8541696d94ea818f83aa",
+            "epoch-b3b5e5db5863dbdfc4c0"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 54.373441,
+          "lon": 41.939594,
+          "ids": [
+            "epoch-48660e312c48f74812b9",
+            "epoch-14c8eb2f916f6433d5ab"
+          ],
+          "country": "Russia"
+        },
+        {
+          "lat": 24.775309,
+          "lon": 46.648883,
+          "ids": [
+            "epoch-7cb20c2e67b922e9ffa6"
+          ],
+          "country": "Saudi Arabia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,37.680665,-121.7099)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.680665,-121.7099)[\"power\"~\"substation|plant|generator\"];way(around:750,40.767676,-111.902638)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.767676,-111.902638)[\"power\"~\"substation|plant|generator\"];way(around:750,54.373441,41.939594)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,54.373441,41.939594)[\"power\"~\"substation|plant|generator\"];way(around:750,24.775309,46.648883)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,24.775309,46.648883)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "571488a66a7b09eae704d1a53ae52ebf18e3dbbc0e07561462f38036d103cb27",
+      "osm_base": "2026-10-22T22:57:50Z",
+      "path": "data/layers/global-context/a6bbe2ae3142199f00080db88985cfe69ad657921f33dc83a3abd9f76656caef.json.gz",
+      "sha256": "67281323924fcd792855293cba3a72a8a500c26ed8c11f85adbade8886b835fc",
+      "feature_count": 2813,
+      "bytes": 349182
+    },
+    {
+      "id": "c694bfb7d770d7062b2b3c71e1667861c40650bca14e4e803764768e82008578",
+      "anchors": [
+        {
+          "lat": 50.068984,
+          "lon": 19.909203,
+          "ids": [
+            "epoch-5b9071f9b8a18ebd22b2"
+          ],
+          "country": "Poland"
+        },
+        {
+          "lat": -35.388934,
+          "lon": 149.167928,
+          "ids": [
+            "epoch-5f1dfb5f7da9895e3f5e"
+          ],
+          "country": "Australia"
+        },
+        {
+          "lat": 52.357104,
+          "lon": 4.950874,
+          "ids": [
+            "epoch-60887f69ad8e6ab19ee2",
+            "epoch-0d0494cdd3b4dcf8153b"
+          ],
+          "country": "Netherlands"
+        },
+        {
+          "lat": 23.384784,
+          "lon": 44.652426,
+          "ids": [
+            "epoch-45f95f0e8e88b4af7695"
+          ],
+          "country": "Saudi Arabia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,50.068984,19.909203)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,50.068984,19.909203)[\"power\"~\"substation|plant|generator\"];way(around:750,-35.388934,149.167928)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-35.388934,149.167928)[\"power\"~\"substation|plant|generator\"];way(around:750,52.357104,4.950874)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,52.357104,4.950874)[\"power\"~\"substation|plant|generator\"];way(around:750,23.384784,44.652426)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,23.384784,44.652426)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "fc739f42378f1eafb42c4605475f3b78cb95fca646a53c06e9246ec76e87c37e",
+      "osm_base": "2026-10-22T22:58:51Z",
+      "path": "data/layers/global-context/c694bfb7d770d7062b2b3c71e1667861c40650bca14e4e803764768e82008578.json.gz",
+      "sha256": "472ee79341cbfe0f05ddbcbda3d16ea6fcb53d36964d9509c82bc099b88658d7",
+      "feature_count": 7967,
+      "bytes": 1016801
+    },
+    {
+      "id": "65d7108d6c7b87047c55e1b7dba679f06139c3daf69e4ce0846bbae7c8985ca6",
+      "anchors": [
+        {
+          "lat": 48.025005,
+          "lon": -120.094293,
+          "ids": [
+            "epoch-b1a46aed6690b8dcc3f4"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 51.972466,
+          "lon": 5.613491,
+          "ids": [
+            "epoch-066783815ea4ea4c104f"
+          ],
+          "country": "Netherlands"
+        },
+        {
+          "lat": 37.677592,
+          "lon": -78.619053,
+          "ids": [
+            "epoch-c72576dcc09b636b1d61"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 40.34444,
+          "lon": -74.61551,
+          "ids": [
+            "epoch-6b7312b0e7f0e76eee0d",
+            "epoch-4ba8a9fe8a82970a16b5"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,48.025005,-120.094293)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.025005,-120.094293)[\"power\"~\"substation|plant|generator\"];way(around:750,51.972466,5.613491)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,51.972466,5.613491)[\"power\"~\"substation|plant|generator\"];way(around:750,37.677592,-78.619053)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.677592,-78.619053)[\"power\"~\"substation|plant|generator\"];way(around:750,40.34444,-74.61551)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.34444,-74.61551)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "5022e4287e559f920f7bd0e0abaf524ba508ac2fe593b6c29473761c1895298f",
+      "osm_base": "2026-10-22T22:59:50Z",
+      "path": "data/layers/global-context/65d7108d6c7b87047c55e1b7dba679f06139c3daf69e4ce0846bbae7c8985ca6.json.gz",
+      "sha256": "474b909c39c9200dadfe4bed09237b81b5348fe106ec2b34dbcf9a371ac5d79b",
+      "feature_count": 651,
+      "bytes": 91272
+    },
+    {
+      "id": "5fd3782623f856f08a52e4c2e7129a08039f8fe7cd3c26e8c3c115710cd21838",
+      "anchors": [
+        {
+          "lat": 33.44823,
+          "lon": -112.075098,
+          "ids": [
+            "epoch-e696a7f57ebe24066bf5"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 29.649763,
+          "lon": -82.343513,
+          "ids": [
+            "epoch-54737c4861f3f1f28102"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 52.407333,
+          "lon": 16.93123,
+          "ids": [
+            "epoch-c2e3e28733a26e2e6f3d"
+          ],
+          "country": "Poland"
+        },
+        {
+          "lat": 56.127846,
+          "lon": 40.40194,
+          "ids": [
+            "epoch-b348ed9f6a5bc77bce5b"
+          ],
+          "country": "Russia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,33.44823,-112.075098)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.44823,-112.075098)[\"power\"~\"substation|plant|generator\"];way(around:750,29.649763,-82.343513)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,29.649763,-82.343513)[\"power\"~\"substation|plant|generator\"];way(around:750,52.407333,16.93123)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,52.407333,16.93123)[\"power\"~\"substation|plant|generator\"];way(around:750,56.127846,40.40194)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,56.127846,40.40194)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "96120466999e1f8decd55b80516dbcc4780a1c91f5a893191957f54a8977e26d",
+      "osm_base": "2026-10-22T23:00:56Z",
+      "path": "data/layers/global-context/5fd3782623f856f08a52e4c2e7129a08039f8fe7cd3c26e8c3c115710cd21838.json.gz",
+      "sha256": "835451b36dcf6cdf19df68a4332309f4839f6797d321514eb89439ab07903f8b",
+      "feature_count": 13145,
+      "bytes": 1740178
+    },
+    {
+      "id": "c56aeb8bebfdd71799ed8e4df56df709a81b355384e73149bdb8fef7c36f3b57",
+      "anchors": [
+        {
+          "lat": 51.109827,
+          "lon": 17.057534,
+          "ids": [
+            "epoch-46bf20dd490fc37cab43"
+          ],
+          "country": "Poland"
+        },
+        {
+          "lat": 43.610073,
+          "lon": 3.87727,
+          "ids": [
+            "epoch-3dad3e909f8ee24c56e9"
+          ],
+          "country": "France"
+        },
+        {
+          "lat": 49.786299,
+          "lon": 6.090425,
+          "ids": [
+            "epoch-b977e6d256f3ce1a5d5f"
+          ],
+          "country": "Luxembourg"
+        },
+        {
+          "lat": 61.994573,
+          "lon": 96.669705,
+          "ids": [
+            "epoch-f5056e009b57d1d268e1",
+            "epoch-5250b77fe321fb4e2d27",
+            "epoch-94098d80cda11276d53f"
+          ],
+          "country": "Russia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,51.109827,17.057534)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,51.109827,17.057534)[\"power\"~\"substation|plant|generator\"];way(around:750,43.610073,3.87727)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,43.610073,3.87727)[\"power\"~\"substation|plant|generator\"];way(around:750,49.786299,6.090425)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,49.786299,6.090425)[\"power\"~\"substation|plant|generator\"];way(around:750,61.994573,96.669705)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,61.994573,96.669705)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "63034fa3cfad933b2bab3355707a35791cc7debd7850e0fd380493a9790a3f33",
+      "osm_base": "2026-10-22T23:11:06Z",
+      "path": "data/layers/global-context/c56aeb8bebfdd71799ed8e4df56df709a81b355384e73149bdb8fef7c36f3b57.json.gz",
+      "sha256": "030f63a3a49c47a61eab1ee2ecafa2fd2dc2c663f8234cb54074913b0626983c",
+      "feature_count": 11726,
+      "bytes": 1604951
+    },
+    {
+      "id": "2a388f93483352bf532845761fe3ba198556bf2028c142c70d112089917d520c",
+      "anchors": [
+        {
+          "lat": 44.495735,
+          "lon": 11.344672,
+          "ids": [
+            "epoch-cd4de932c05fb5097270"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 63.964569,
+          "lon": -22.538465,
+          "ids": [
+            "epoch-451170674b13618429bc"
+          ],
+          "country": "Iceland"
+        },
+        {
+          "lat": 45.706852,
+          "lon": 9.590379,
+          "ids": [
+            "epoch-f765e04bd113ee1f96b8"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 37.376673,
+          "lon": -121.953162,
+          "ids": [
+            "epoch-754cba3a70a9fd5e91f6"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,44.495735,11.344672)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,44.495735,11.344672)[\"power\"~\"substation|plant|generator\"];way(around:750,63.964569,-22.538465)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,63.964569,-22.538465)[\"power\"~\"substation|plant|generator\"];way(around:750,45.706852,9.590379)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,45.706852,9.590379)[\"power\"~\"substation|plant|generator\"];way(around:750,37.376673,-121.953162)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.376673,-121.953162)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "a872b1eceb0ec7ea42095c5dd58ad8f8bb8dd3a5af90a51a7d0487cbeadf040c",
+      "osm_base": "2026-10-22T23:01:58Z",
+      "path": "data/layers/global-context/2a388f93483352bf532845761fe3ba198556bf2028c142c70d112089917d520c.json.gz",
+      "sha256": "a526f148006dabd9acb1c3011e7259b2c03443475302d1bb8048b5762885bc74",
+      "feature_count": 8983,
+      "bytes": 1212080
+    },
+    {
+      "id": "9015808d32e24c3ac19215c76ec30045c612b1f212cf68a1ddbbeaeaf749ea15",
+      "anchors": [
+        {
+          "lat": 48.261899,
+          "lon": 11.671739,
+          "ids": [
+            "epoch-08d1531f58c300ce8792"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 58.394294,
+          "lon": 15.561061,
+          "ids": [
+            "epoch-508d063e0a3d83495706",
+            "epoch-38770a56391e0d34a753"
+          ],
+          "country": "Sweden"
+        },
+        {
+          "lat": 49.009716,
+          "lon": 8.401216,
+          "ids": [
+            "epoch-edf88646942efed174e9"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 14.020396,
+          "lon": 100.534043,
+          "ids": [
+            "epoch-9c8489f9cab5d4fc7330"
+          ],
+          "country": "Thailand"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,48.261899,11.671739)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.261899,11.671739)[\"power\"~\"substation|plant|generator\"];way(around:750,58.394294,15.561061)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,58.394294,15.561061)[\"power\"~\"substation|plant|generator\"];way(around:750,49.009716,8.401216)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,49.009716,8.401216)[\"power\"~\"substation|plant|generator\"];way(around:750,14.020396,100.534043)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,14.020396,100.534043)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "12ec16e612237e10b2594a2f48789ad14dd912eb49df02dccd65cb1362b34e9b",
+      "osm_base": "2026-10-22T23:03:01Z",
+      "path": "data/layers/global-context/9015808d32e24c3ac19215c76ec30045c612b1f212cf68a1ddbbeaeaf749ea15.json.gz",
+      "sha256": "e4829b0cfb2e8b5405a486529440f25890149fc24a3d96aebd11750c884f1366",
+      "feature_count": 7908,
+      "bytes": 1081383
+    },
+    {
+      "id": "01ea62deeee9b238acf2af26832ea8d4eb4de8d61eaf26522e29065775463f99",
+      "anchors": [
+        {
+          "lat": 43.317339,
+          "lon": -0.319579,
+          "ids": [
+            "epoch-faac3ab84a1663581bbb"
+          ],
+          "country": "France"
+        },
+        {
+          "lat": 40.114918,
+          "lon": -88.224885,
+          "ids": [
+            "epoch-a645e933032fe817c0d8"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 18.533898,
+          "lon": 73.811637,
+          "ids": [
+            "epoch-0911a80aa6bbb64e86eb",
+            "epoch-5ac788e48238a92c5786"
+          ],
+          "country": "India"
+        },
+        {
+          "lat": 55.750446,
+          "lon": 37.617494,
+          "ids": [
+            "epoch-f360cbc36eb7ba12184f"
+          ],
+          "country": "Russia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,43.317339,-0.319579)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,43.317339,-0.319579)[\"power\"~\"substation|plant|generator\"];way(around:750,40.114918,-88.224885)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.114918,-88.224885)[\"power\"~\"substation|plant|generator\"];way(around:750,18.533898,73.811637)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,18.533898,73.811637)[\"power\"~\"substation|plant|generator\"];way(around:750,55.750446,37.617494)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,55.750446,37.617494)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "f7f53a0e51d0c51b68e9e5a686b1ca00663e56659810292a833ccfaf48fb2aab",
+      "osm_base": "2026-10-22T23:04:01Z",
+      "path": "data/layers/global-context/01ea62deeee9b238acf2af26832ea8d4eb4de8d61eaf26522e29065775463f99.json.gz",
+      "sha256": "6dc25512915dea003e0e6d9d55d2ad6f0233f3888927d8a0fd0fb184b5310107",
+      "feature_count": 8396,
+      "bytes": 990101
+    },
+    {
+      "id": "dcbdf1b34e0c21119864a397539234dea078fd9ecbf8ddab22d42e358c39a611",
+      "anchors": [
+        {
+          "lat": 45.494947,
+          "lon": -73.562848,
+          "ids": [
+            "epoch-8c9c37352e6d1bf0d997",
+            "epoch-2f4969e48aab64166dd8"
+          ],
+          "country": "Canada"
+        },
+        {
+          "lat": 49.931453,
+          "lon": 8.677595,
+          "ids": [
+            "epoch-1e392e79668e37ec3004"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 49.834718,
+          "lon": 18.159458,
+          "ids": [
+            "epoch-bda2c18ff42e26c1f68b"
+          ],
+          "country": "Czechia"
+        },
+        {
+          "lat": 52.539459,
+          "lon": 13.383962,
+          "ids": [
+            "epoch-46bf3174e152c17b8444"
+          ],
+          "country": "Germany"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,45.494947,-73.562848)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,45.494947,-73.562848)[\"power\"~\"substation|plant|generator\"];way(around:750,49.931453,8.677595)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,49.931453,8.677595)[\"power\"~\"substation|plant|generator\"];way(around:750,49.834718,18.159458)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,49.834718,18.159458)[\"power\"~\"substation|plant|generator\"];way(around:750,52.539459,13.383962)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,52.539459,13.383962)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "c5002ba2145ffdb8f930391ef6d02e0cfead08e66e60ebeed0d52b4f196d23f5",
+      "osm_base": "2026-10-22T23:05:02Z",
+      "path": "data/layers/global-context/dcbdf1b34e0c21119864a397539234dea078fd9ecbf8ddab22d42e358c39a611.json.gz",
+      "sha256": "951bd96956411242487863d709f25241b8af0c2a01dbd2321c42b545be210b6a",
+      "feature_count": 10398,
+      "bytes": 1260750
+    },
+    {
+      "id": "ec6372e764f02d56ab4700f7a00002cd7700b43ceb5e2b9cee7641995811ad5c",
+      "anchors": [
+        {
+          "lat": -31.992752,
+          "lon": 115.883558,
+          "ids": [
+            "epoch-bbbbf16c78c8f6d1c42a"
+          ],
+          "country": "Australia"
+        },
+        {
+          "lat": 24.806633,
+          "lon": 120.968683,
+          "ids": [
+            "epoch-6b77ff2a3e32f0f6d1c6"
+          ],
+          "country": "Taiwan"
+        },
+        {
+          "lat": 50.021256,
+          "lon": 19.886228,
+          "ids": [
+            "epoch-0f968c5313db0c2004e7"
+          ],
+          "country": "Poland"
+        },
+        {
+          "lat": 39.166596,
+          "lon": -86.534885,
+          "ids": [
+            "epoch-e0e24c342fb6c4121d62",
+            "epoch-38ea1afd0b5521558a0a"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,-31.992752,115.883558)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-31.992752,115.883558)[\"power\"~\"substation|plant|generator\"];way(around:750,24.806633,120.968683)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,24.806633,120.968683)[\"power\"~\"substation|plant|generator\"];way(around:750,50.021256,19.886228)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,50.021256,19.886228)[\"power\"~\"substation|plant|generator\"];way(around:750,39.166596,-86.534885)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.166596,-86.534885)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "77e0a5c62409d067c0e015327bbb1ddac6b5be83afa5a1cbb6aff5502e345856",
+      "osm_base": "2026-10-22T23:05:02Z",
+      "path": "data/layers/global-context/ec6372e764f02d56ab4700f7a00002cd7700b43ceb5e2b9cee7641995811ad5c.json.gz",
+      "sha256": "1a478bd7e8e1734fbc4191fe77c36768496b3a70c3e66b8161424006d0b4aa87",
+      "feature_count": 7564,
+      "bytes": 882817
+    },
+    {
+      "id": "4f1d9f5f229ccb16be044674195bd01faaad56478b613b580f8f2b00a3ccef46",
+      "anchors": [
+        {
+          "lat": 35.71755,
+          "lon": 139.744241,
+          "ids": [
+            "epoch-94949fd93eda832eb2a0"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 34.683595,
+          "lon": 135.500784,
+          "ids": [
+            "epoch-4e4e56465aa34911f699"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 44.408115,
+          "lon": 8.931178,
+          "ids": [
+            "epoch-5d7a2edaa087b0b44980"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 42.731153,
+          "lon": -73.68903,
+          "ids": [
+            "epoch-6998fd86c12d572bcbb7",
+            "epoch-0d3f5a17098afb9760f8"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,35.71755,139.744241)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.71755,139.744241)[\"power\"~\"substation|plant|generator\"];way(around:750,34.683595,135.500784)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,34.683595,135.500784)[\"power\"~\"substation|plant|generator\"];way(around:750,44.408115,8.931178)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,44.408115,8.931178)[\"power\"~\"substation|plant|generator\"];way(around:750,42.731153,-73.68903)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.731153,-73.68903)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "42f3f41e68320c5ecef6be2e74c834539136cc834555188f774cab14ddbeee32",
+      "osm_base": "2026-10-22T23:12:06Z",
+      "path": "data/layers/global-context/4f1d9f5f229ccb16be044674195bd01faaad56478b613b580f8f2b00a3ccef46.json.gz",
+      "sha256": "96a9904afd04fc44ff72f28419448649a33466c26f777f062a79ec98d97f2d8b",
+      "feature_count": 18259,
+      "bytes": 1957356
+    },
+    {
+      "id": "5e5b3a3dee9d60e69de0e78c35a40aed9a0f690a705b5d17137ebb24cce574d0",
+      "anchors": [
+        {
+          "lat": 39.484141,
+          "lon": -76.140516,
+          "ids": [
+            "epoch-2e0876bbd823cbc419ef"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 51.049072,
+          "lon": 13.738695,
+          "ids": [
+            "epoch-2c05261f6da9c8faff60"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 44.975284,
+          "lon": -93.236347,
+          "ids": [
+            "epoch-85828dfbfefe51bd622d"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 24.453524,
+          "lon": 54.377438,
+          "ids": [
+            "epoch-e2ab15329a8f80c3f56c"
+          ],
+          "country": "United Arab Emirates"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,39.484141,-76.140516)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.484141,-76.140516)[\"power\"~\"substation|plant|generator\"];way(around:750,51.049072,13.738695)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,51.049072,13.738695)[\"power\"~\"substation|plant|generator\"];way(around:750,44.975284,-93.236347)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,44.975284,-93.236347)[\"power\"~\"substation|plant|generator\"];way(around:750,24.453524,54.377438)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,24.453524,54.377438)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "dcad000ed6a8a829394ebe9ddaedca2354f6db72d99466816a4974f4e9adb3a5",
+      "osm_base": "2026-10-22T23:08:05Z",
+      "path": "data/layers/global-context/5e5b3a3dee9d60e69de0e78c35a40aed9a0f690a705b5d17137ebb24cce574d0.json.gz",
+      "sha256": "b56bf75c6c463e3b3ccb19f1a2860e2b978a180fb4304eff140e1ea56085abd0",
+      "feature_count": 5908,
+      "bytes": 841243
+    },
+    {
+      "id": "5f988cf7783d9bb7a3dad521402474d705be5da6d3b422b6213370a65a504d5d",
+      "anchors": [
+        {
+          "lat": 50.096145,
+          "lon": 8.537956,
+          "ids": [
+            "epoch-2662ae676f19ffc16d44"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 30.387809,
+          "lon": -97.726782,
+          "ids": [
+            "epoch-cbd847bdff3f0b7e1f8f",
+            "epoch-cf406f6005dae0c113bf"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 55.526558,
+          "lon": 37.773636,
+          "ids": [
+            "epoch-780c1474f21cc469b8f0"
+          ],
+          "country": "Russia"
+        },
+        {
+          "lat": 46.563561,
+          "lon": 15.651397,
+          "ids": [
+            "epoch-fff299ba3acbc3dabe64"
+          ],
+          "country": "Slovenia"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,50.096145,8.537956)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,50.096145,8.537956)[\"power\"~\"substation|plant|generator\"];way(around:750,30.387809,-97.726782)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,30.387809,-97.726782)[\"power\"~\"substation|plant|generator\"];way(around:750,55.526558,37.773636)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,55.526558,37.773636)[\"power\"~\"substation|plant|generator\"];way(around:750,46.563561,15.651397)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,46.563561,15.651397)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "024c3cd29b97ff368abc9eb7eb3d3e9a0a1ca04cf66c868464f87d5c2fa3086e",
+      "osm_base": "2026-10-22T23:12:52Z",
+      "path": "data/layers/global-context/5f988cf7783d9bb7a3dad521402474d705be5da6d3b422b6213370a65a504d5d.json.gz",
+      "sha256": "60d59961cea438fa4e8f277256e58b71377945d0e1e9cc1a3ac1887889be0857",
+      "feature_count": 5425,
+      "bytes": 685835
+    },
+    {
+      "id": "7932707421df2ddcf86aa2c9d6aa711b5e34af96b327f4b7d06ff32913c84f76",
+      "anchors": [
+        {
+          "lat": 30.618389,
+          "lon": -96.345485,
+          "ids": [
+            "epoch-b49ebcc7cbfc2520013d"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": -23.55214,
+          "lon": -46.647198,
+          "ids": [
+            "epoch-9ab011086b924719d463"
+          ],
+          "country": "Brazil"
+        },
+        {
+          "lat": 48.624167,
+          "lon": 2.428967,
+          "ids": [
+            "epoch-42ab1ec648da17c8b4af"
+          ],
+          "country": "France"
+        },
+        {
+          "lat": 30.268072,
+          "lon": -97.742806,
+          "ids": [
+            "epoch-6b96527862e105312672"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,30.618389,-96.345485)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,30.618389,-96.345485)[\"power\"~\"substation|plant|generator\"];way(around:750,-23.55214,-46.647198)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-23.55214,-46.647198)[\"power\"~\"substation|plant|generator\"];way(around:750,48.624167,2.428967)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.624167,2.428967)[\"power\"~\"substation|plant|generator\"];way(around:750,30.268072,-97.742806)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,30.268072,-97.742806)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "3653ec8ab9570a7f6f38860a33d6ecfb80846e8f765b0e3ed4ba0c275068781f",
+      "osm_base": "2026-10-22T23:14:07Z",
+      "path": "data/layers/global-context/7932707421df2ddcf86aa2c9d6aa711b5e34af96b327f4b7d06ff32913c84f76.json.gz",
+      "sha256": "1acc89c10b1d36934b2f73b1859e69a650220ae0e41c53b1f9e3972a0992f5fd",
+      "feature_count": 11866,
+      "bytes": 1592334
+    },
+    {
+      "id": "8790b4a178737299b6f2df57510d593206a8ffda943c629790b170e847e27448",
+      "anchors": [
+        {
+          "lat": 48.739751,
+          "lon": 9.097369,
+          "ids": [
+            "epoch-6eda7cf64989bf56b69f"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 42.207101,
+          "lon": -72.607583,
+          "ids": [
+            "epoch-8d474526a7fc7d330d3a"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 35.168702,
+          "lon": 136.90338,
+          "ids": [
+            "epoch-cf3ec2bf13581b16af05"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": 46.802496,
+          "lon": 8.234392,
+          "ids": [
+            "epoch-825a4342f01e0d1641d0",
+            "epoch-abb93f85115ed49a525d"
+          ],
+          "country": "Switzerland"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,48.739751,9.097369)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,48.739751,9.097369)[\"power\"~\"substation|plant|generator\"];way(around:750,42.207101,-72.607583)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.207101,-72.607583)[\"power\"~\"substation|plant|generator\"];way(around:750,35.168702,136.90338)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.168702,136.90338)[\"power\"~\"substation|plant|generator\"];way(around:750,46.802496,8.234392)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,46.802496,8.234392)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "444cd7262c34b1d0e31dda3ed67f80520638b7277051f0f61fac0482a13ad4f6",
+      "osm_base": "2026-10-22T23:14:07Z",
+      "path": "data/layers/global-context/8790b4a178737299b6f2df57510d593206a8ffda943c629790b170e847e27448.json.gz",
+      "sha256": "c81e5fc9ca8c7b9cabeeee07cecff89b71c4262ea43da8480a0b2c6dee0a3667",
+      "feature_count": 7892,
+      "bytes": 934166
+    },
+    {
+      "id": "7f73525a2a3c54f479f02ee60ab3a1c0de2412905a30ac397b13bc0f8e9a81b1",
+      "anchors": [
+        {
+          "lat": 14.315424,
+          "lon": 108.339537,
+          "ids": [
+            "epoch-2810d1a09a40cdff94d6"
+          ],
+          "country": "Vietnam"
+        },
+        {
+          "lat": 49.276726,
+          "lon": -122.914232,
+          "ids": [
+            "epoch-871f4a056741f9e7ce93"
+          ],
+          "country": "Canada"
+        },
+        {
+          "lat": -28.052431,
+          "lon": 153.424896,
+          "ids": [
+            "epoch-e24ab444a08c0224d017"
+          ],
+          "country": "Australia"
+        },
+        {
+          "lat": 42.19959,
+          "lon": -72.59739,
+          "ids": [
+            "epoch-785581b0d2c1e5c713cd"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,14.315424,108.339537)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,14.315424,108.339537)[\"power\"~\"substation|plant|generator\"];way(around:750,49.276726,-122.914232)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,49.276726,-122.914232)[\"power\"~\"substation|plant|generator\"];way(around:750,-28.052431,153.424896)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-28.052431,153.424896)[\"power\"~\"substation|plant|generator\"];way(around:750,42.19959,-72.59739)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.19959,-72.59739)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "769f0a6d45431ad19b9a00f8f07f8ff2315e423d180d753b13f604af677fcae0",
+      "osm_base": "2026-07-28T02:16:18Z",
+      "path": "data/layers/global-context/7f73525a2a3c54f479f02ee60ab3a1c0de2412905a30ac397b13bc0f8e9a81b1.json.gz",
+      "sha256": "4ff37c5b98b71bad9f0b8d6b51034511fa734a07d38552377b38c594c7de3fcb",
+      "feature_count": 2402,
+      "bytes": 305953
+    },
+    {
+      "id": "40a83bf2606c91346e53f80427eb1ddb5581ceaabfc51bd5580b45ca5e923814",
+      "anchors": [
+        {
+          "lat": 50.110596,
+          "lon": 8.683012,
+          "ids": [
+            "epoch-827c5e27d4cafeddc07b"
+          ],
+          "country": "Germany"
+        },
+        {
+          "lat": 35.66695,
+          "lon": 139.77619,
+          "ids": [
+            "epoch-b8d66ff5ea21fca30160"
+          ],
+          "country": "Japan"
+        },
+        {
+          "lat": -22.529908,
+          "lon": -43.217158,
+          "ids": [
+            "epoch-d773b07a2f465f43f6ab"
+          ],
+          "country": "Brazil"
+        },
+        {
+          "lat": 34.662514,
+          "lon": 133.924262,
+          "ids": [
+            "epoch-f3eb0aae93310536281c",
+            "epoch-e6ae9a1d950cb40e352b"
+          ],
+          "country": "Japan"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,50.110596,8.683012)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,50.110596,8.683012)[\"power\"~\"substation|plant|generator\"];way(around:750,35.66695,139.77619)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.66695,139.77619)[\"power\"~\"substation|plant|generator\"];way(around:750,-22.529908,-43.217158)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-22.529908,-43.217158)[\"power\"~\"substation|plant|generator\"];way(around:750,34.662514,133.924262)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,34.662514,133.924262)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "80ad595a074fe14100f39c46eddc46c216248ece654917052f8127bea1e1b36f",
+      "osm_base": "2026-10-22T23:17:18Z",
+      "path": "data/layers/global-context/40a83bf2606c91346e53f80427eb1ddb5581ceaabfc51bd5580b45ca5e923814.json.gz",
+      "sha256": "fe1a91530059f642e59d1b95d396e391d72583774267d6bf68547f6a5d0b5bb5",
+      "feature_count": 17993,
+      "bytes": 1912237
+    },
+    {
+      "id": "ccedc113a2658b8d9f96297e8fad5dc89f123147284c28eb29133e1bfe245259",
+      "anchors": [
+        {
+          "lat": -12.982129,
+          "lon": -38.482414,
+          "ids": [
+            "epoch-45f99914be22b1945711"
+          ],
+          "country": "Brazil"
+        },
+        {
+          "lat": 42.504154,
+          "lon": 12.646361,
+          "ids": [
+            "epoch-e60e41d507861c2daeaa"
+          ],
+          "country": "Italy"
+        },
+        {
+          "lat": 13.752494,
+          "lon": 100.493509,
+          "ids": [
+            "epoch-d50310b7f2043e9fdf6e",
+            "epoch-952235443ba43626cd9f"
+          ],
+          "country": "Thailand"
+        },
+        {
+          "lat": 42.086951,
+          "lon": -93.496782,
+          "ids": [
+            "epoch-af5275b519c5a5883fbb"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,-12.982129,-38.482414)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,-12.982129,-38.482414)[\"power\"~\"substation|plant|generator\"];way(around:750,42.504154,12.646361)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.504154,12.646361)[\"power\"~\"substation|plant|generator\"];way(around:750,13.752494,100.493509)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,13.752494,100.493509)[\"power\"~\"substation|plant|generator\"];way(around:750,42.086951,-93.496782)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.086951,-93.496782)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "cb9740b9e4f79c1604fc9edb10f9851cf81a531aed549e76adc9f39cb7d02571",
+      "osm_base": "2026-10-22T23:17:18Z",
+      "path": "data/layers/global-context/ccedc113a2658b8d9f96297e8fad5dc89f123147284c28eb29133e1bfe245259.json.gz",
+      "sha256": "6043f8535aafb8390b7f201aac4254aa8b310c7f7ce448f5ae3a5e9297605296",
+      "feature_count": 5649,
+      "bytes": 606525
+    },
+    {
+      "id": "d0df003782e6bc0f03f7d9771f23695a94a92d50cdc45e8c1349cc22705d3ce0",
+      "anchors": [
+        {
+          "lat": 20.690992,
+          "lon": -100.50211,
+          "ids": [
+            "epoch-632729fb39f32690b09e"
+          ],
+          "country": "Mexico"
+        },
+        {
+          "lat": 14.594891,
+          "lon": 120.978262,
+          "ids": [
+            "epoch-a33daa5a1d8c8bf824d1"
+          ],
+          "country": "Philippines"
+        },
+        {
+          "lat": 3.151696,
+          "lon": 101.694237,
+          "ids": [
+            "epoch-8cda34365996bdbb3ca7"
+          ],
+          "country": "Malaysia"
+        },
+        {
+          "lat": 34.9979829,
+          "lon": -90.0348674,
+          "ids": [
+            "epoch-dc-centers-d4bd7733fff8f158c9f4"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,20.690992,-100.50211)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,20.690992,-100.50211)[\"power\"~\"substation|plant|generator\"];way(around:750,14.594891,120.978262)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,14.594891,120.978262)[\"power\"~\"substation|plant|generator\"];way(around:750,3.151696,101.694237)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,3.151696,101.694237)[\"power\"~\"substation|plant|generator\"];way(around:750,34.9979829,-90.0348674)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,34.9979829,-90.0348674)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "a144860d4276b90ec9fcd3348f352ee9816d2dd1634bda82b6e6956566f47cc9",
+      "osm_base": "2026-10-22T23:18:24Z",
+      "path": "data/layers/global-context/d0df003782e6bc0f03f7d9771f23695a94a92d50cdc45e8c1349cc22705d3ce0.json.gz",
+      "sha256": "dd4b2f92698cfdce9d69640f9ad25fe137509b9cdc86d02451d1075d5482842c",
+      "feature_count": 6215,
+      "bytes": 779179
+    },
+    {
+      "id": "667eb05f1a03218149ff73483ddcb5e7f280f894e70cc3f0414f92de873a852f",
+      "anchors": [
+        {
+          "lat": 33.4452227,
+          "lon": -84.5248259,
+          "ids": [
+            "epoch-dc-centers-bea870b7dc1266456d72"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 32.4942321,
+          "lon": -99.8009071,
+          "ids": [
+            "epoch-dc-centers-0272cf6b9f38323118fd",
+            "epoch-dc-centers-429ea379c5bc78756b64"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 42.6748722,
+          "lon": -87.8948822,
+          "ids": [
+            "epoch-dc-centers-8f6b83ea243a91e897e3"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 39.8614521,
+          "lon": -83.0039995,
+          "ids": [
+            "epoch-dc-centers-6b9f00186b363ccbb12c"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,33.4452227,-84.5248259)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.4452227,-84.5248259)[\"power\"~\"substation|plant|generator\"];way(around:750,32.4942321,-99.8009071)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,32.4942321,-99.8009071)[\"power\"~\"substation|plant|generator\"];way(around:750,42.6748722,-87.8948822)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,42.6748722,-87.8948822)[\"power\"~\"substation|plant|generator\"];way(around:750,39.8614521,-83.0039995)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.8614521,-83.0039995)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "63da38a565bf07c4828fd0eeb73aa3c069c16f574029293d2e2512a0225aa816",
+      "osm_base": "2026-10-22T23:19:25Z",
+      "path": "data/layers/global-context/667eb05f1a03218149ff73483ddcb5e7f280f894e70cc3f0414f92de873a852f.json.gz",
+      "sha256": "eba8d3f0d0b2bac719d77b1988a0e5214addfe8d66eea9121c897469e918ba62",
+      "feature_count": 765,
+      "bytes": 89272
+    },
+    {
+      "id": "5e7c07957f5ce465be8334ee14f37ffd564a53bd0d309ecad51f56c45ba1195d",
+      "anchors": [
+        {
+          "lat": 40.070051,
+          "lon": -82.754042,
+          "ids": [
+            "epoch-dc-centers-4266e9fdadd3c4320d41"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 35.0801672,
+          "lon": -90.078983,
+          "ids": [
+            "epoch-dc-centers-e546a66c957288c74a92"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.1666499,
+          "lon": -95.7977408,
+          "ids": [
+            "epoch-dc-centers-2bafa839628560246bf2"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 33.2192732,
+          "lon": -97.174715,
+          "ids": [
+            "epoch-dc-centers-18a07cadcef84bf81a74"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,40.070051,-82.754042)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.070051,-82.754042)[\"power\"~\"substation|plant|generator\"];way(around:750,35.0801672,-90.078983)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.0801672,-90.078983)[\"power\"~\"substation|plant|generator\"];way(around:750,41.1666499,-95.7977408)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.1666499,-95.7977408)[\"power\"~\"substation|plant|generator\"];way(around:750,33.2192732,-97.174715)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.2192732,-97.174715)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "75d4945d4d26ffb35a5abb7dc7d40613cfeeb3308a71130ae98e56c72ef3a5d8",
+      "osm_base": "2026-10-22T23:19:25Z",
+      "path": "data/layers/global-context/5e7c07957f5ce465be8334ee14f37ffd564a53bd0d309ecad51f56c45ba1195d.json.gz",
+      "sha256": "abdda36aed2c35661182bc6e7e90c0ab4004f0e98a12fb2732e4bd8db0155238",
+      "feature_count": 626,
+      "bytes": 104037
+    },
+    {
+      "id": "117afbb1756887638af6f1310f0bcb96df46b17c5b6f96c92767eedba9810131",
+      "anchors": [
+        {
+          "lat": 37.4888273,
+          "lon": -77.24749,
+          "ids": [
+            "epoch-dc-centers-40a4dc3cb80f10b749a3"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 33.4089905,
+          "lon": -112.3647996,
+          "ids": [
+            "epoch-dc-centers-20bb107831bdcfbe6e1e"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 31.1260165,
+          "lon": -97.3600001,
+          "ids": [
+            "epoch-dc-centers-12669ea3c5d6b715d02e"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 40.1157846,
+          "lon": -82.7390187,
+          "ids": [
+            "epoch-dc-centers-4be183cf44d89fe579e4"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,37.4888273,-77.24749)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,37.4888273,-77.24749)[\"power\"~\"substation|plant|generator\"];way(around:750,33.4089905,-112.3647996)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.4089905,-112.3647996)[\"power\"~\"substation|plant|generator\"];way(around:750,31.1260165,-97.3600001)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,31.1260165,-97.3600001)[\"power\"~\"substation|plant|generator\"];way(around:750,40.1157846,-82.7390187)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.1157846,-82.7390187)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "cbe4a470288b2354aa852f74873f866692f8faf1bf8f325df0f5660427d0692f",
+      "osm_base": "2026-10-22T23:20:24Z",
+      "path": "data/layers/global-context/117afbb1756887638af6f1310f0bcb96df46b17c5b6f96c92767eedba9810131.json.gz",
+      "sha256": "0a83c36eb783c037c4ed0c6799f1abf66a29aa0ad7845b0b69e35302211f946b",
+      "feature_count": 542,
+      "bytes": 75682
+    },
+    {
+      "id": "dc1bb9e073136acc4ae6fbeedd7e537d00017e0ca8bc8ae578a1c7b995580f37",
+      "anchors": [
+        {
+          "lat": 41.3356809,
+          "lon": -96.0523625,
+          "ids": [
+            "epoch-dc-centers-5266a66283bfd837dbda"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 40.907472,
+          "lon": -96.6457832,
+          "ids": [
+            "epoch-dc-centers-8656e9fee905c9b888da"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 45.6253889,
+          "lon": -121.2023887,
+          "ids": [
+            "epoch-dc-centers-3216305462c8f258f968"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 32.4000327,
+          "lon": -90.1971708,
+          "ids": [
+            "epoch-dc-centers-fe843053737bc1165393"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,41.3356809,-96.0523625)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.3356809,-96.0523625)[\"power\"~\"substation|plant|generator\"];way(around:750,40.907472,-96.6457832)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.907472,-96.6457832)[\"power\"~\"substation|plant|generator\"];way(around:750,45.6253889,-121.2023887)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,45.6253889,-121.2023887)[\"power\"~\"substation|plant|generator\"];way(around:750,32.4000327,-90.1971708)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,32.4000327,-90.1971708)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "4d30c3c378535bd46e132bd688c235512dde7984a6586415f8c13ab1bb19188a",
+      "osm_base": "2026-10-22T23:20:24Z",
+      "path": "data/layers/global-context/dc1bb9e073136acc4ae6fbeedd7e537d00017e0ca8bc8ae578a1c7b995580f37.json.gz",
+      "sha256": "a3fc85e8f08f514c3451193072561d92d364111dbbbd7e74c091aab54f2c9df8",
+      "feature_count": 716,
+      "bytes": 109614
+    },
+    {
+      "id": "ddb136142a4242a178fe3199b33b239926e00b1b434f16b15e1739d5b5df8855",
+      "anchors": [
+        {
+          "lat": 32.438927,
+          "lon": -97.0507991,
+          "ids": [
+            "epoch-dc-centers-2f580c287b7596759b56"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 39.7270407,
+          "lon": -82.6831433,
+          "ids": [
+            "epoch-dc-centers-94dbe8948195b5429d4c"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 45.5588758,
+          "lon": -122.9296051,
+          "ids": [
+            "epoch-dc-centers-2fb6117e6f1c445c0783"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 32.5376266,
+          "lon": -96.7966747,
+          "ids": [
+            "epoch-dc-centers-83fe006ae4224bba5706"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,32.438927,-97.0507991)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,32.438927,-97.0507991)[\"power\"~\"substation|plant|generator\"];way(around:750,39.7270407,-82.6831433)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.7270407,-82.6831433)[\"power\"~\"substation|plant|generator\"];way(around:750,45.5588758,-122.9296051)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,45.5588758,-122.9296051)[\"power\"~\"substation|plant|generator\"];way(around:750,32.5376266,-96.7966747)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,32.5376266,-96.7966747)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "dda754e069cdbc3d58d43c425fc180a9f89da4fa00b23335aab011ba72ccf773",
+      "osm_base": "2026-10-22T23:21:35Z",
+      "path": "data/layers/global-context/ddb136142a4242a178fe3199b33b239926e00b1b434f16b15e1739d5b5df8855.json.gz",
+      "sha256": "6872b1af3ccdd6220284d4157bf2792390087d6f5f21545c1c1d407a3bb5064c",
+      "feature_count": 1297,
+      "bytes": 171267
+    },
+    {
+      "id": "f65c8f71471232246748604435f8ce29b8e1c9cb411a9d502caaa5f30413383f",
+      "anchors": [
+        {
+          "lat": 34.8301645,
+          "lon": -106.7838267,
+          "ids": [
+            "epoch-dc-centers-6f95624e49f0cc1844d9"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 46.0102576,
+          "lon": -98.5686907,
+          "ids": [
+            "epoch-dc-centers-d3805276c65dd7d4d43e"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.0838485,
+          "lon": -76.1435333,
+          "ids": [
+            "epoch-dc-centers-340ff1ca9acede0e42be"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 35.1849883,
+          "lon": -83.9141225,
+          "ids": [
+            "epoch-dc-centers-4be283a117b02a1056e3"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,34.8301645,-106.7838267)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,34.8301645,-106.7838267)[\"power\"~\"substation|plant|generator\"];way(around:750,46.0102576,-98.5686907)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,46.0102576,-98.5686907)[\"power\"~\"substation|plant|generator\"];way(around:750,41.0838485,-76.1435333)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.0838485,-76.1435333)[\"power\"~\"substation|plant|generator\"];way(around:750,35.1849883,-83.9141225)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,35.1849883,-83.9141225)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "f3cb272a4feacd4518599e00094d545f14b5a20ac7d066854d3fbd32e2cbe839",
+      "osm_base": "2026-07-24T11:04:51Z",
+      "path": "data/layers/global-context/f65c8f71471232246748604435f8ce29b8e1c9cb411a9d502caaa5f30413383f.json.gz",
+      "sha256": "de44125436c5cd0b83144a079b62d2bcd7ee49e0aabd95439afc22fdcb27213e",
+      "feature_count": 829,
+      "bytes": 127624
+    },
+    {
+      "id": "5be75c371dc396261f4ebbd6fadd5e56e15e3d0cf1395663f11ef3aa0c6e7be5",
+      "anchors": [
+        {
+          "lat": 43.3586546,
+          "lon": -78.604128,
+          "ids": [
+            "epoch-dc-centers-9b34ae9b322ad4ebbf29",
+            "epoch-dc-centers-f97c467bed68905daad3"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,43.3586546,-78.604128)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,43.3586546,-78.604128)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "df78e75114131feaef7d325ee4732d7bb70df55e087b62ab1375836108ef4155",
+      "osm_base": "2026-10-22T23:40:49Z",
+      "path": "data/layers/global-context/5be75c371dc396261f4ebbd6fadd5e56e15e3d0cf1395663f11ef3aa0c6e7be5.json.gz",
+      "sha256": "b7f579a111632121350b16293ddd58995d968dc324dfa6bc172546d2d73a63c1",
+      "feature_count": 52,
+      "bytes": 10511
+    },
+    {
+      "id": "48bea540a1ec7d66978dceeb95808ad692564289afce9801bfbb1f457989df8c",
+      "anchors": [
+        {
+          "lat": 38.7458055,
+          "lon": -77.5377246,
+          "ids": [
+            "epoch-dc-centers-33067ce31ae906a3c99d"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,38.7458055,-77.5377246)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,38.7458055,-77.5377246)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "b2d0d87f2733656ce4cec6e6b7b490bf359681bfd8badc481d25ba252575826e",
+      "osm_base": "2026-10-22T23:41:57Z",
+      "path": "data/layers/global-context/48bea540a1ec7d66978dceeb95808ad692564289afce9801bfbb1f457989df8c.json.gz",
+      "sha256": "175fadcf3a9d229ba4e7fcc5cb08833282146a616363070d6c36b0faff700797",
+      "feature_count": 252,
+      "bytes": 45391
+    },
+    {
+      "id": "01078c59aa388a4a8a862cc6a3a177ff55825c1a025efc129affe19cfaf9756f",
+      "anchors": [
+        {
+          "lat": 39.4281986,
+          "lon": -75.0184088,
+          "ids": [
+            "epoch-dc-centers-4b14fcd573612fc4e5d1"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,39.4281986,-75.0184088)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,39.4281986,-75.0184088)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "91f5e0f81b6773439cd9cbfc9a70d5badbfdae305c8666f46380b3fe5ab37d8c",
+      "osm_base": "2026-10-22T23:41:57Z",
+      "path": "data/layers/global-context/01078c59aa388a4a8a862cc6a3a177ff55825c1a025efc129affe19cfaf9756f.json.gz",
+      "sha256": "5341953fa6b8a16dec29896dd1d89702e0b50676615a1d8f29d4ceb943909ce1",
+      "feature_count": 338,
+      "bytes": 40789
+    },
+    {
+      "id": "13c78ae3b0218c89c1bd95d727de5649d1cee8b7bc1c7f474be12ffa2edbce4b",
+      "anchors": [
+        {
+          "lat": 33.4194907,
+          "lon": -112.3599884,
+          "ids": [
+            "epoch-dc-centers-03b972ec9ca046523eb4"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,33.4194907,-112.3599884)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.4194907,-112.3599884)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "c646e82f9128e91b2c7539a4ac4aa63db638d655ca20f435c55d0219ee10409a",
+      "osm_base": "2026-10-22T23:42:55Z",
+      "path": "data/layers/global-context/13c78ae3b0218c89c1bd95d727de5649d1cee8b7bc1c7f474be12ffa2edbce4b.json.gz",
+      "sha256": "7c052ff48790b026b553f2ee9465b2ffacaf241db552ca86898b7efdc15a817c",
+      "feature_count": 358,
+      "bytes": 35523
+    },
+    {
+      "id": "e9477f6ad3c683cefcfa49b8946dc3599c87c379e7efe6c2bcc7e62082c090cb",
+      "anchors": [
+        {
+          "lat": 29.4771901,
+          "lon": -98.6925579,
+          "ids": [
+            "epoch-dc-centers-2d5745fcf9bbcef7db88"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 29.4168571,
+          "lon": -98.7901875,
+          "ids": [
+            "epoch-dc-centers-69b68942f5571208eb84"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 34.7134428,
+          "lon": -84.9521507,
+          "ids": [
+            "epoch-dc-centers-78e8b1681c14f84d10c8"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 33.7771892,
+          "lon": -84.4195499,
+          "ids": [
+            "epoch-dc-centers-f30f22947c09bc416c25"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,29.4771901,-98.6925579)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,29.4771901,-98.6925579)[\"power\"~\"substation|plant|generator\"];way(around:750,29.4168571,-98.7901875)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,29.4168571,-98.7901875)[\"power\"~\"substation|plant|generator\"];way(around:750,34.7134428,-84.9521507)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,34.7134428,-84.9521507)[\"power\"~\"substation|plant|generator\"];way(around:750,33.7771892,-84.4195499)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,33.7771892,-84.4195499)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "3c4efe32a5b9f8cabb222ef7bb4aea4547644699f665a47200415d07683da26c",
+      "osm_base": "2026-10-22T23:25:40Z",
+      "path": "data/layers/global-context/e9477f6ad3c683cefcfa49b8946dc3599c87c379e7efe6c2bcc7e62082c090cb.json.gz",
+      "sha256": "d1f4d0b42b5966657832da6f03bc475423f3c97042b7ec101506f86a1c959a74",
+      "feature_count": 2253,
+      "bytes": 264101
+    },
+    {
+      "id": "9023b6e45f2b1606149d28bd365b6ade3f6e0d7e00ddad7fa67052722b3a31ef",
+      "anchors": [
+        {
+          "lat": 40.0472199,
+          "lon": -76.2555314,
+          "ids": [
+            "epoch-dc-centers-581607d055200292835d"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.9221755,
+          "lon": -91.7156674,
+          "ids": [
+            "epoch-dc-centers-3973048b9585273ab558"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.0309293,
+          "lon": -85.0536261,
+          "ids": [
+            "epoch-dc-centers-ac96d5cb30802a284fe8"
+          ],
+          "country": "United States"
+        },
+        {
+          "lat": 41.9056197,
+          "lon": -91.7509874,
+          "ids": [
+            "epoch-dc-centers-2b9d162684a4a18a8083"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,40.0472199,-76.2555314)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.0472199,-76.2555314)[\"power\"~\"substation|plant|generator\"];way(around:750,41.9221755,-91.7156674)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.9221755,-91.7156674)[\"power\"~\"substation|plant|generator\"];way(around:750,41.0309293,-85.0536261)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.0309293,-85.0536261)[\"power\"~\"substation|plant|generator\"];way(around:750,41.9056197,-91.7509874)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,41.9056197,-91.7509874)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "8f8195829721b569ac17394c363c33c7d0cb484345f517cdf82c40aaceb1853f",
+      "osm_base": "2026-10-22T23:26:36Z",
+      "path": "data/layers/global-context/9023b6e45f2b1606149d28bd365b6ade3f6e0d7e00ddad7fa67052722b3a31ef.json.gz",
+      "sha256": "d822c2b6844ef5ab59b3af49301a83471d1152eeb229df4b9cd624f8505fcc55",
+      "feature_count": 570,
+      "bytes": 93224
+    },
+    {
+      "id": "9ae108da2de26a23cdc07e9872f172e40359a6e0cb07b90ad81b028a1e7cb473",
+      "anchors": [
+        {
+          "lat": 40.2688855,
+          "lon": -112.0342942,
+          "ids": [
+            "epoch-dc-centers-088602e0527dd996d636"
+          ],
+          "country": "United States"
+        }
+      ],
+      "radius_m": 750,
+      "query": "[out:json][timeout:45];(way(around:750,40.2688855,-112.0342942)[~\"^(building|highway|power|telecom|waterway)$\"~\".\"];node(around:750,40.2688855,-112.0342942)[\"power\"~\"substation|plant|generator\"];);out meta geom;",
+      "response_sha256": "cfb1aa87407a6dced1becdbf59186daaf14939d2fac2278a57dd3a0d2c908e2b",
+      "osm_base": "2026-10-22T23:43:57Z",
+      "path": "data/layers/global-context/9ae108da2de26a23cdc07e9872f172e40359a6e0cb07b90ad81b028a1e7cb473.json.gz",
+      "sha256": "26f9b21307d1906e9b70a7f3d4d5934b8ca8d73615317176930ae41f090148bf",
+      "feature_count": 43,
+      "bytes": 3040
+    }
+  ],
+  "countries": [
+    "Australia",
+    "Brazil",
+    "Canada",
+    "Czechia",
+    "Denmark",
+    "Finland",
+    "France",
+    "Germany",
+    "Iceland",
+    "India",
+    "Israel",
+    "Italy",
+    "Japan",
+    "Luxembourg",
+    "Malaysia",
+    "Mexico",
+    "Netherlands",
+    "Norway",
+    "Philippines",
+    "Poland",
+    "Russia",
+    "Saudi Arabia",
+    "Singapore",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Switzerland",
+    "Taiwan",
+    "Thailand",
+    "United Arab Emirates",
+    "United States",
+    "Vietnam"
+  ]
+}

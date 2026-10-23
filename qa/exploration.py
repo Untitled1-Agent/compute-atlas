@@ -28,7 +28,7 @@ try:
         for entry in ('index.html','compute_atlas.html'):
             context=browser.new_context(viewport={'width':1440,'height':1080});page=context.new_page();page.set_default_timeout(120000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(base+entry);ready(page)
+            page.goto(base+entry+'#overview');ready(page)
             page.locator('.workspace-records summary').click()
             check(entry+' record pagination limits DOM to twelve rows',len(ids(page))==12)
             first=set(ids(page));page.locator('[data-workspace-page="next"]').click()

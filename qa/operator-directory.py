@@ -32,6 +32,7 @@ try:
    if args.in_memory:page.set_content((ROOT/entry).read_text(),wait_until='load')
    else:check(entry+' HTTP response',page.goto(base+entry).status==200)
    page.wait_for_function('document.documentElement.classList.contains("workspace-ready")')
+   page.evaluate("ATLAS.navigate('catalog')")
    page.locator('.catalog-mode-switch [data-id="operators"]').click()
    check(entry+' primary directory is reachable from the map',page.evaluate('ATLAS.state.view')=='operators')
    check(entry+' captured primary denominator remains 253 / 33',page.evaluate('ATLAS.operators.data.records.length===253 && Object.keys(ATLAS.operators.data.counts.countries).length===33'))
