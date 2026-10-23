@@ -19,6 +19,8 @@ The previous global atlas delivered data and interactions but did not reproduce 
 
 All six scales share filters, source selection, camera, comparison, exports and the research shelf. Refinements sit below the primary composition and are reachable from the map. Selected locations expose power, hardware, timeline, counterparties, investment, original evidence and private notes. Project power scopes are individually selectable without changing the physical camera or assigning project power to a roof. Claim drawers return focus to the originating control.
 
+Shared physical views pin image, feature-review and native context versions. An unavailable version retains its identity and requires an explicit action to review the current publication.
+
 The guided journey traverses all six references and returns to the original exploration. Metric controls explain their units and underlying source population. Source inspection exposes image rights, observation dates, native object identity, versions and exports.
 
 ## Global data and geography
@@ -31,6 +33,6 @@ The current global facility-power subtotal uses only Epoch's published current-p
 
 ## Validation
 
-The rebuild is covered by `qa/editorial-parity.py`: six compositions, adjacent inspectors, metric placement, transatlantic/metro scope, phase and source interactions, source-version saving, guided return, responsive layouts and offline operation. Screenshots are manually reviewed in addition to assertions. `qa/unified-atlas.py` covers the 88 primary global-data and physical-context checks. Two additional data tests verify worldwide reference geometry and byte-identical offline relief provenance.
+The rebuild is covered by `qa/editorial-parity.py`: six compositions, adjacent inspectors, metric placement, transatlantic/metro scope, phase and source interactions, source-version saving and unavailable-version recovery, phase/feature separation, native electricity export, guided return, responsive layouts down to 320 pixels and offline operation. Screenshots are manually reviewed in addition to assertions. `qa/unified-atlas.py` covers the 88 primary global-data and physical-context checks. Two additional data tests verify worldwide reference geometry and byte-identical offline relief provenance.
 
 The complete existing backend and browser workflows remain required in CI. Each merge is followed by a fresh review on the merged commit; a green test count alone is not a visual quality score.

@@ -110,18 +110,19 @@ class UnifiedAtlasMap extends CatalogMap {
       if(g.sites.length<=5&&!g.selected)continue;
       const color=g.selected?'#c8ffe7':index<8?'#96f1c5':'#9cb5ee';
       const light=c.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*2.6);light.addColorStop(0,color+'65');light.addColorStop(.35,color+'25');light.addColorStop(1,color+'00');c.fillStyle=light;c.beginPath();c.arc(g.x,g.y,g.r*2.6,0,Math.PI*2);c.fill();
-      c.fillStyle=color+'48';c.strokeStyle=color+'c0';c.lineWidth=g.selected?1.8:1;c.beginPath();c.arc(g.x,g.y,g.r,0,Math.PI*2);c.fill();c.stroke();c.fillStyle='#e1ffed';c.beginPath();c.arc(g.x,g.y,2,0,Math.PI*2);c.fill();
+      c.fillStyle=color+'28';c.strokeStyle=color+'90';c.lineWidth=g.selected?1.8:1;c.beginPath();c.arc(g.x,g.y,g.r,0,Math.PI*2);c.fill();c.stroke();c.fillStyle='#e1ffed';c.beginPath();c.arc(g.x,g.y,2,0,Math.PI*2);c.fill();
       c.strokeStyle=color+'30';c.lineWidth=.6;c.beginPath();c.arc(g.x,g.y,g.r+4,0,Math.PI*2);c.stroke();
     }
     if(this.labels){
-      const budget=this.w<450?3:this.flat?8:7;
+      const budget=this.w<450?3:this.flat?8:7, usedTitles=new Set();
       for(const g of sorted){
         if(this.markerLabels.length>=budget)break;if(g.sites.length<3&&!g.selected&&this.level<2)continue;
         const title=g.selected?g.representative.name:uaClusterTitle(g.sites),label=title.length>27?title.slice(0,25)+'…':title;
+        if(usedTitles.has(label)&&!g.selected)continue;
         c.font='11px Arial,sans-serif';const width=Math.max(74,c.measureText(label).width+8),height=31;
         const positions=[{x:g.x+g.r+9,y:g.y-24},{x:g.x-width-g.r-9,y:g.y-23},{x:g.x-width/2,y:g.y+g.r+9}];
         const box=positions.find(b=>b.x>10&&b.x+width<this.w-10&&b.y>45&&b.y+height<this.h-82&&!this.markerLabels.some(a=>researchLabelOverlap({...b,w:width,h:height},a,8))&&!this.labelExclusions.some(a=>researchLabelOverlap({...b,w:width,h:height},a,3)));
-        if(!box)continue;this.markerLabels.push({...box,w:width,h:height});
+        if(!box)continue;usedTitles.add(label);this.markerLabels.push({...box,w:width,h:height,title:label});
         c.shadowColor='#020b12';c.shadowBlur=5;c.fillStyle='#edf6ed';c.fillText(label,box.x,box.y+12);c.font='9px Arial,sans-serif';c.fillStyle='#b2d1d0';c.fillText(g.sites.length>1?fmt(g.sites.length)+' source records':UA_SHORT[g.representative.collection],box.x,box.y+25);c.shadowBlur=0;
       }
     }

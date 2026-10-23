@@ -360,7 +360,8 @@ uaURL = function () {
 };
 const uiBaseParse = uaParse;
 uaParse = function (query) {
-  uaState.phase = new URLSearchParams(query).get("phase") || null;
+  uaState.phase =
+    new URLSearchParams(query).get("phase")?.slice(0, 500) || null;
   uiBaseParse(query);
 };
 const uiBaseNav = renderNav;
@@ -496,6 +497,11 @@ document.addEventListener("click", (e) => {
   }
   if (d.uiPhase) {
     uaState.phase = d.uiPhase;
+    document
+      .querySelectorAll("[data-ui-phase]")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.uiPhase === d.uiPhase)),
+      );
     uaState.feature = null;
     globe?.features?.forEach((f) => (f.selected = false));
     if (globe) globe.dirty = true;
@@ -553,7 +559,10 @@ document.addEventListener("click", (e) => {
       );
 });
 uaPhysicalRail = function (record, source) {
-  const area = record.derived_outline_area,
+  const canSave = Boolean(
+      globe?.manifest?.features.some((f) => f.id === record.id),
+    ),
+    area = record.derived_outline_area,
     voltage = record.tags?.voltage,
     height = record.height_m,
     date = record.observed_at || record.updated_at || "",
@@ -571,7 +580,7 @@ uaPhysicalRail = function (record, source) {
         : voltage
           ? "V native tag"
           : "No height supplied";
-  return `<section id="ua-feature-selection" class="ua-editorial ua-selected">${uiKicker("PHYSICAL SOURCE FEATURE", `<button class="text-button" data-ua-clear-feature aria-label="Clear physical selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(record.name)}</h2><p>${esc(source.name)} · ${record.observed_at ? "historical roof interpretation" : "native mapped feature"}</p><div class="ui-feature-metrics"><div><b>${esc(value)}</b><span>${unit}</span></div><div><b>${esc(date.slice(0, 4) || "—")}</b><span>${record.observed_at ? "Image observation" : "Source edit"}</span></div><div><b>${height == null ? "—" : fmt(height, 1) + " m"}</b><span>${height == null ? "Height unreported" : "Mapped height"}</span></div></div><div class="ua-actions"><button class="btn primary" ${globe?.manifest ? "data-ui-save-feature" : 'data-ua-export-feature="' + esc(record.id) + '"'}>${uiIcon("source")} ${globe?.manifest ? "Save physical evidence" : "Export physical evidence"}</button><button class="text-button" data-ua-export-feature="${esc(record.id)}">Export record ↓</button><button class="text-button" data-ua-context-source>Source provenance ${uiIcon("arrow")}</button></div><p class="ui-feature-id">${esc(record.id)} · version ${esc(record.source_version || record.review_sha256?.slice(0, 12) || "reviewed interpretation")}</p>${
+  return `<section id="ua-feature-selection" class="ua-editorial ua-selected">${uiKicker("PHYSICAL SOURCE FEATURE", `<button class="text-button" data-ua-clear-feature aria-label="Clear physical selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(record.name)}</h2><p>${esc(source.name)} · ${record.observed_at ? "historical roof interpretation" : "native mapped feature"}</p><div class="ui-feature-metrics"><div><b>${esc(value)}</b><span>${unit}</span></div><div><b>${esc(date.slice(0, 4) || "—")}</b><span>${record.observed_at ? "Image observation" : "Source edit"}</span></div><div><b>${height == null ? "—" : fmt(height, 1) + " m"}</b><span>${height == null ? "Height unreported" : "Mapped height"}</span></div></div><div class="ua-actions"><button class="btn primary" ${canSave ? "data-ui-save-feature" : 'data-ua-export-feature="' + esc(record.id) + '"'}>${uiIcon("source")} ${canSave ? "Save physical evidence" : "Export physical evidence"}</button><button class="text-button" data-ua-export-feature="${esc(record.id)}">Export record ↓</button><button class="text-button" data-ua-context-source>Source provenance ${uiIcon("arrow")}</button></div><p class="ui-feature-id">${esc(record.id)} · version ${esc(record.source_version || record.review_sha256?.slice(0, 12) || "reviewed interpretation")}</p>${
     record.tags
       ? `<details class="ui-feature-tags"><summary>Inspect all native tags</summary><dl class="ua-facts">${Object.entries(
           record.tags,
@@ -587,7 +596,7 @@ document.addEventListener("click", (e) => {
     (f) => f.record.id === uaState.feature,
   )?.record;
   if (!record) return;
-  if (globe.manifest) {
+  if (globe.manifest?.features.some((f) => f.id === record.id)) {
     const entry = campusVersionEntry(globe.manifest, record);
     saved.sourceFeatures = saved.sourceFeatures.filter(
       (x) =>
@@ -688,7 +697,11 @@ uaSelectedRail = function (r, rows) {
 };
 const uiDesktopPhysicalRail = uaPhysicalRail;
 uaPhysicalRail = function (record, source) {
-  return uiMobileRail(uiDesktopPhysicalRail(record, source));
+  const html = uiDesktopPhysicalRail(record, source);
+  const notice = !uaRows().some((r) => r.id === source.id)
+    ? `<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>`
+    : "";
+  return uiMobileRail(html.replace("</h2>", "</h2>" + notice));
 };
 const uiPreviousGo = uaGo;
 uaGo = function (patch = {}, replace = false) {
@@ -737,3 +750,170 @@ uaRefreshData = function () {
 // Public integrations resolve the current production route owners.
 ATLAS.explorer.url = () => uaURL();
 ATLAS.explorer.go = (...args) => uaGo(...args);
+
+// A shared physical view identifies the evidence version, not just its filename.
+function uiSourceVersions() {
+  const record = uaRecord(uaState.selected);
+  if (uaState.scale < 4 || !record) return {};
+  const scenes = CAMPUS_SCENES.scenes.filter((s) => s.project_id === record.id);
+  const scene = uaState.scene
+    ? scenes.find((s) => s.id === uaState.scene)
+    : scenes[0];
+  const electricity = ENERGY_COLLECTIONS.find(
+    (c) =>
+      c.scene_id === scene?.id &&
+      c.features.some((f) => f.id === uaState.feature),
+  );
+  return {
+    imageversion: scene?.image.sha256,
+    featureversion: scene?.features.find((f) => f.id === uaState.feature)
+      ?.review_sha256,
+    contextversion:
+      electricity?.response_sha256 ||
+      (!scene ? uaCaptureFor(record)?.sha256 : null),
+  };
+}
+const uiUnpinnedURL = uaURL;
+uaURL = function () {
+  const url = uiUnpinnedURL(),
+    versions = uiSourceVersions();
+  return (
+    url +
+    ["imageversion", "featureversion", "contextversion"]
+      .map((key) => {
+        const value = uaState[key] || versions[key];
+        return uaState.scale >= 4 && value
+          ? "&" + key + "=" + encodeURIComponent(value)
+          : "";
+      })
+      .join("")
+  );
+};
+const uiUnpinnedParse = uaParse;
+uaParse = function (query) {
+  const params = new URLSearchParams(query);
+  for (const key of ["imageversion", "featureversion", "contextversion"])
+    uaState[key] = params.get(key)?.slice(0, 128) || null;
+  uiUnpinnedParse(query);
+};
+const uiUnpinnedGo = uaGo;
+uaGo = function (patch = {}, replace = false) {
+  const changesRecord =
+    "selected" in patch && patch.selected !== uaState.selected;
+  const changesScene = "scene" in patch && patch.scene !== uaState.scene;
+  if (changesRecord || changesScene) {
+    for (const key of ["imageversion", "featureversion", "contextversion"])
+      if (!(key in patch)) uaState[key] = null;
+    if (changesScene && !("feature" in patch))
+      patch = { ...patch, feature: null };
+  }
+  if (
+    "feature" in patch &&
+    patch.feature !== uaState.feature &&
+    !("featureversion" in patch)
+  )
+    uaState.featureversion = null;
+  uiUnpinnedGo(patch, replace);
+};
+function uiVersionProblem() {
+  if (uaState.scale < 4) return null;
+  const versions = uiSourceVersions();
+  for (const [key, label] of [
+    ["imageversion", "Historical image"],
+    ["featureversion", "Reviewed feature"],
+    ["contextversion", "Native context capture"],
+  ]) {
+    if (uaState[key] && uaState[key] !== versions[key])
+      return { label, requested: uaState[key], available: versions[key] };
+  }
+  return null;
+}
+const uiVersionedMount = uaMount;
+uaMount = function () {
+  const problem = uiVersionProblem();
+  if (!problem) {
+    uiVersionedMount();
+    return;
+  }
+  globe?.destroy();
+  globe = null;
+  const stage = document.querySelector(".ua-map-stage");
+  if (!stage) return;
+  stage.classList.add("ui-source-unavailable");
+  stage.insertAdjacentHTML(
+    "beforeend",
+    `<section class="ui-source-recovery" role="status"><div class="eyebrow">SOURCE VERSION UNAVAILABLE</div><h2>${esc(problem.label)} has changed.</h2><p>This shared view requests evidence that is not included in this publication. Its identity is retained; the current capture has not been substituted.</p><dl><dt>Requested version</dt><dd>${esc(problem.requested)}</dd><dt>Available version</dt><dd>${esc(problem.available || "Not included")}</dd></dl><button class="btn primary" data-ui-recover-source>Review the available publication →</button></section>`,
+  );
+};
+document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-ui-recover-source]")) {
+    const scenes = CAMPUS_SCENES.scenes.filter(
+      (s) => s.project_id === uaState.selected,
+    );
+    const scene = scenes.find((s) => s.id === uaState.scene) || scenes[0];
+    uaGo(
+      {
+        imageversion: null,
+        featureversion: null,
+        contextversion: null,
+        scene: scene?.id || null,
+        feature:
+          scene &&
+          !scene.features.some((f) => f.id === uaState.feature) &&
+          !ENERGY_COLLECTIONS.some(
+            (c) =>
+              c.scene_id === scene.id &&
+              c.features.some((f) => f.id === uaState.feature),
+          )
+            ? null
+            : uaState.feature,
+      },
+      true,
+    );
+  }
+  if (event.target.closest("[data-ui-clear-phase]"))
+    uaGo({ phase: null }, true);
+});
+// Feature and phase identities are mutually exclusive, including event-only selections.
+document.addEventListener(
+  "ua-feature-select",
+  () => {
+    uaState.phase = null;
+    uaState.featureversion = null;
+    uaState.contextversion = null;
+  },
+  true,
+);
+document.addEventListener(
+  "click",
+  (event) => {
+    if (event.target.closest("[data-ui-phase],[data-ua-clear-feature]")) {
+      uaState.featureversion = null;
+      if (globe?.manifest) uaState.contextversion = null;
+    }
+  },
+  true,
+);
+document.addEventListener("change", (event) => {
+  if (
+    event.target.id === "ua-feature-choice" &&
+    !event.target.value &&
+    globe?.features
+  ) {
+    uaState.featureversion = null;
+    if (globe.manifest) uaState.contextversion = null;
+    globe.features.forEach((f) => (f.selected = false));
+    globe.dirty = true;
+    history.replaceState(null, "", uaURL());
+  }
+});
+const uiAvailablePhaseRail = uaSelectedRail;
+uaSelectedRail = function (record, rows) {
+  if (
+    record &&
+    uaState.phase &&
+    !uiPhaseRows(record).some((p) => p.id === uaState.phase)
+  )
+    return `<section class="ua-editorial ua-selected"><div class="eyebrow">REQUESTED POWER SCOPE</div><h2>Power scope unavailable.</h2><p>${esc(uaState.phase)} is not included in this publication. No other phase has been selected.</p><button class="btn primary" data-ui-clear-phase>Return to ${esc(record.name)} →</button></section>`;
+  return uiAvailablePhaseRail(record, rows);
+};

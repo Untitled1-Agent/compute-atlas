@@ -2113,3 +2113,87 @@ body.ui-atlas-active {
     display: none;
   }
 }
+.ua-context-status button {
+  pointer-events: auto;
+}
+.ui-source-unavailable > :not(.ui-source-recovery) {
+  visibility: hidden;
+}
+.ui-source-recovery {
+  position: absolute;
+  inset: 10% 7%;
+  max-width: 620px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ui-source-recovery h2 {
+  font:
+    30px/1.2 Georgia,
+    serif;
+  margin: 12px 0;
+}
+.ui-source-recovery p {
+  font-size: 12px;
+}
+.ui-source-recovery dl {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.ui-source-recovery dd {
+  margin: 3px 0 10px;
+  overflow-wrap: anywhere;
+  color: #9db6bd;
+}
+.ui-source-recovery .btn {
+  align-self: start;
+}
+@media (max-width: 640px) {
+  .ui-editorial-atlas .ua-scales button {
+    min-height: 44px;
+  }
+  .ui-editorial-atlas .ua-topics button {
+    min-height: 44px;
+    font-size: 10px;
+  }
+  .ui-editorial-atlas .ua-map-buttons button {
+    width: 44px;
+    min-height: 44px;
+  }
+  .ui-editorial-atlas .ua-map-buttons {
+    bottom: 0;
+    right: 3px;
+  }
+  .ui-editorial-atlas .ua-coordinate {
+    display: none;
+  }
+  .ui-editorial-atlas .ua-mode-tabs button {
+    min-height: 32px;
+    min-width: 32px;
+  }
+  .ui-editorial-atlas .ua-scene-choice select {
+    min-height: 32px;
+  }
+  .ui-editorial-atlas .ua-rail .btn,
+  .ui-editorial-atlas .ua-filters input,
+  .ui-editorial-atlas .ua-filters select,
+  .ui-editorial-atlas .ua-physical select,
+  .ui-editorial-atlas .ui-mobile-inspector {
+    min-height: 44px;
+  }
+  .ui-editorial-atlas .ua-rail .text-button {
+    min-height: 36px;
+  }
+  .ui-source-recovery {
+    inset: 12px;
+  }
+  .ui-source-recovery h2 {
+    font-size: 23px;
+  }
+}
+@media (max-width: 360px) {
+  .ui-physical-view .ua-scene-choice {
+    max-width: 44%;
+  }
+}
