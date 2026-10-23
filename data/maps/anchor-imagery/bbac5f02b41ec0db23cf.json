@@ -1,0 +1,380 @@
+{
+  "id": "bbac5f02b41ec0db23cf",
+  "anchor": {
+    "lat": 37.677592,
+    "lon": -78.619053,
+    "ids": [
+      "epoch-c72576dcc09b636b1d61"
+    ],
+    "country": "United States"
+  },
+  "captured_at": "2026-10-23T17:00:27.316415+00:00",
+  "status": "captured",
+  "query_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/query?f=json&where=Category%3D1&geometry=-8752970.081779575%2C4533127.109669572%2C-8750695.811439196%2C4534832.812424857&geometryType=esriGeometryEnvelope&inSR=3857&spatialRel=esriSpatialRelIntersects&outFields=%2A&returnGeometry=true&outSR=3857&orderByFields=acquisition_date+DESC&resultRecordCount=100",
+  "catalog": {
+    "objectIdFieldName": "OBJECTID",
+    "fields": [
+      {
+        "name": "OBJECTID",
+        "type": "esriFieldTypeOID",
+        "alias": "OBJECTID",
+        "domain": null
+      },
+      {
+        "name": "Shape",
+        "type": "esriFieldTypeGeometry",
+        "alias": "Shape",
+        "domain": null
+      },
+      {
+        "name": "Name",
+        "type": "esriFieldTypeString",
+        "alias": "Name",
+        "domain": null,
+        "length": 200
+      },
+      {
+        "name": "MinPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MinPS",
+        "domain": null
+      },
+      {
+        "name": "MaxPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MaxPS",
+        "domain": null
+      },
+      {
+        "name": "Category",
+        "type": "esriFieldTypeInteger",
+        "alias": "Category",
+        "domain": {
+          "type": "codedValue",
+          "name": "MosaicCatalogItemCategoryDomain",
+          "description": "Catalog item categories.",
+          "codedValues": [
+            {
+              "name": "Unknown",
+              "code": 0
+            },
+            {
+              "name": "Primary",
+              "code": 1
+            },
+            {
+              "name": "Overview",
+              "code": 2
+            },
+            {
+              "name": "Unprocessed Overview",
+              "code": 3
+            },
+            {
+              "name": "Partial Overview",
+              "code": 4
+            },
+            {
+              "name": "Inactive",
+              "code": 5
+            },
+            {
+              "name": "Uploaded",
+              "code": 253
+            },
+            {
+              "name": "Incomplete",
+              "code": 254
+            },
+            {
+              "name": "Custom",
+              "code": 255
+            }
+          ],
+          "mergePolicy": "esriMPTDefaultValue",
+          "splitPolicy": "esriSPTDefaultValue"
+        }
+      },
+      {
+        "name": "CenterX",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterX",
+        "domain": null
+      },
+      {
+        "name": "CenterY",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterY",
+        "domain": null
+      },
+      {
+        "name": "State",
+        "type": "esriFieldTypeString",
+        "alias": "State",
+        "domain": null,
+        "length": 2
+      },
+      {
+        "name": "Year",
+        "type": "esriFieldTypeSmallInteger",
+        "alias": "Year",
+        "domain": null
+      },
+      {
+        "name": "raster_name",
+        "type": "esriFieldTypeString",
+        "alias": "raster_name",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "download_url",
+        "type": "esriFieldTypeString",
+        "alias": "download_url",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "acquisition_date",
+        "type": "esriFieldTypeDate",
+        "alias": "acquisition_date",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "agency",
+        "type": "esriFieldTypeString",
+        "alias": "agency",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "vendor",
+        "type": "esriFieldTypeString",
+        "alias": "vendor",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "resolution_value",
+        "type": "esriFieldTypeDouble",
+        "alias": "resolution_value",
+        "domain": null
+      },
+      {
+        "name": "resolution_units",
+        "type": "esriFieldTypeString",
+        "alias": "resolution_units",
+        "domain": null,
+        "length": 5
+      },
+      {
+        "name": "band_count",
+        "type": "esriFieldTypeInteger",
+        "alias": "band_count",
+        "domain": null
+      },
+      {
+        "name": "sensor_type",
+        "type": "esriFieldTypeString",
+        "alias": "sensor_type",
+        "domain": null,
+        "length": 4
+      },
+      {
+        "name": "projection_name",
+        "type": "esriFieldTypeString",
+        "alias": "projection_name",
+        "domain": null,
+        "length": 64
+      },
+      {
+        "name": "projection_zone",
+        "type": "esriFieldTypeString",
+        "alias": "projection_zone",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "datum",
+        "type": "esriFieldTypeString",
+        "alias": "datum",
+        "domain": null,
+        "length": 8
+      }
+    ],
+    "geometryType": "esriGeometryPolygon",
+    "spatialReference": {
+      "wkid": 102100,
+      "latestWkid": 3857
+    },
+    "features": [
+      {
+        "attributes": {
+          "OBJECTID": 201575,
+          "Name": "m_3707819_se_17_060_20231013",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -8755970.882131744,
+          "CenterY": 4530981.265370019,
+          "State": "VA",
+          "Year": 2023,
+          "raster_name": "m_3707819_se_17_060_20231013",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3325325",
+          "acquisition_date": 1697155200000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "17N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -8752240.2779,
+                4526565.698299997
+              ],
+              [
+                -8752250.6524,
+                4526154.6109
+              ],
+              [
+                -8759926.613,
+                4526347.124600001
+              ],
+              [
+                -8759694.5368,
+                4535806.8134
+              ],
+              [
+                -8752011.6591,
+                4535613.659699999
+              ],
+              [
+                -8752240.2779,
+                4526565.698299997
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 201580,
+          "Name": "m_3707820_sw_17_060_20231013",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -8749017.227779059,
+          "CenterY": 4530982.988925774,
+          "State": "VA",
+          "Year": 2023,
+          "raster_name": "m_3707820_sw_17_060_20231013",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3325330",
+          "acquisition_date": 1697155200000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "17N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -8745285.9695,
+                4526561.4855
+              ],
+              [
+                -8745296.625,
+                4526150.086900003
+              ],
+              [
+                -8752979.7988,
+                4526347.923100002
+              ],
+              [
+                -8752741.2601,
+                4535814.791199997
+              ],
+              [
+                -8745051.1581,
+                4535616.296999998
+              ],
+              [
+                -8745285.9695,
+                4526561.4855
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      }
+    ]
+  },
+  "selected_raster_ids": [
+    201575,
+    201580
+  ],
+  "export_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?f=json&bbox=-8752970.081779575%2C4533127.109669572%2C-8750695.811439196%2C4534832.812424857&bboxSR=3857&imageSR=3857&size=1024%2C768&format=jpg&compressionQuality=68&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B201575%2C+201580%5D%2C+%22ascending%22%3A+true%7D&renderingRule=%7B%22rasterFunction%22%3A+%22NaturalColor%22%7D",
+  "export": {
+    "href": "https://imagery.nationalmap.gov/arcgis/rest/directories/imagery_output/USGSNAIPImagery_ImageServer/_ags_725ffcfc_6d67_4547_a20b_67229e440143.jpg",
+    "width": 1024,
+    "height": 768,
+    "extent": {
+      "xmin": -8752970.081779575,
+      "ymin": 4533127.109669572,
+      "xmax": -8750695.811439194,
+      "ymax": 4534832.812424857,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "scale": 0
+  },
+  "image": {
+    "path": "data/maps/anchor-imagery/bbac5f02b41ec0db23cf.jpg",
+    "sha256": "99645ad90720e17ca6d5edca6df5e95e09de7d25c2d2bd8fb25e7f23cbfa3abd",
+    "bytes": 263161,
+    "width": 1024,
+    "height": 768,
+    "extent_3857": {
+      "xmin": -8752970.081779575,
+      "ymin": 4533127.109669572,
+      "xmax": -8750695.811439194,
+      "ymax": 4534832.812424857,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "acquired_at": "2023-10-13",
+    "acquisition_dates": [
+      "2023-10-13"
+    ],
+    "native_resolution_m": [
+      0.6
+    ],
+    "publisher": "USDA NAIP / USGS National Map",
+    "license": "Public domain",
+    "license_url": "https://www.usgs.gov/centers/eros/science/usgs-eros-archive-aerial-photography-national-agriculture-imagery-program-naip"
+  }
+}

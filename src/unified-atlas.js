@@ -170,14 +170,14 @@ const uaBaseNavigate=navigate;navigate=function(view,opts={}){if(view==='atlas')
 document.querySelector('.brand')?.setAttribute('href','#atlas');
 const uaBaseClose=closeDrawer;closeDrawer=function(){const was=state.view==='atlas';uaBaseClose();if(was&&!window.ATLAS_BOOTSTRAPPING)history.replaceState(null,'',uaURL());};
 const uaBaseResearchHash=researchCurrentHash;researchCurrentHash=function(){if(state.view==='atlas'){uaRemember();return uaURL();}return uaBaseResearchHash();};
-document.addEventListener('input',e=>{if(!['ua-query','ua-operator'].includes(e.target.id))return;const key=e.target.id==='ua-query'?'q':'operator';uaState[key]=e.target.value;clearTimeout(uaInputTimer);uaInputTimer=setTimeout(()=>{uaRemember();uaState.page=0;history.replaceState(null,'',uaURL());uaRefreshData();},180);});
-document.addEventListener('change',e=>{const key=e.target.dataset.uaFilter;if(key){const patch={[key]:e.target.value};if(key==='country')Object.assign(patch,{scale:2,selected:null,camera:null,scope:'geography'});uaGo(patch);return;}if(e.target.dataset.uaLayer){uaState.layers[e.target.dataset.uaLayer]=e.target.checked;history.replaceState(null,'',uaURL());if(globe?.ua){globe.labels=uaState.layers.labels;globe.dirty=true;}return;}if(e.target.hasAttribute('data-ua-scene'))uaGo({scene:e.target.value,sceneCamera:null,mode:'aerial'});});
+document.addEventListener('input',e=>{if(!['ua-query','ua-operator'].includes(e.target.id))return;const key=e.target.id==='ua-query'?'q':'operator';uaState[key]=e.target.value;uaState.members=[];if($('#ua-cluster-members'))$('#ua-cluster-members').innerHTML='';clearTimeout(uaInputTimer);uaInputTimer=setTimeout(()=>{uaRemember();uaState.page=0;history.replaceState(null,'',uaURL());uaRefreshData();},180);});
+document.addEventListener('change',e=>{const key=e.target.dataset.uaFilter;if(key){const patch={[key]:e.target.value};if(key==='country')Object.assign(patch,{region:'All',scale:e.target.value==='All'?0:2,selected:null,feature:null,phase:null,scene:null,sceneCamera:null,camera:null,scope:'geography'});uaGo(patch);return;}if(e.target.dataset.uaLayer){uaState.layers[e.target.dataset.uaLayer]=e.target.checked;history.replaceState(null,'',uaURL());if(globe?.ua){globe.labels=uaState.layers.labels;globe.dirty=true;}return;}if(e.target.hasAttribute('data-ua-scene'))uaGo({scene:e.target.value,sceneCamera:null,mode:'aerial'});});
 document.addEventListener('click',async e=>{
   const b=e.target.closest('button,a');if(!b)return;const d=b.dataset;
   if('uaSelect'in d){uaSelect(d.uaSelect);return;}
   if('uaScale'in d){uaScale(Number(d.uaScale));return;}
   if('uaRegion'in d){uaGo({region:d.uaRegion,country:'All',selected:null,scale:d.uaRegion==='All'?0:1,camera:null,sceneCamera:null,scope:'geography'});return;}
-  if('uaCountry'in d){uaGo({country:d.uaCountry,selected:null,scale:2,camera:null,scope:'geography'});return;}
+  if('uaCountry'in d){uaGo({region:'All',country:d.uaCountry,selected:null,feature:null,phase:null,scene:null,sceneCamera:null,scale:2,camera:null,scope:'geography'});return;}
   if('uaCollection'in d){uaGo({collection:d.uaCollection});return;}
   if('uaReset'in d){uaGo({region:'All',country:'All',collection:'all',q:'',operator:'',coverage:'all',selected:null,scale:0,camera:null,scope:'geography'});return;}
   if('uaClearSelection'in d){uaGo({selected:null,scale:Math.min(uaState.scale,2),camera:null});return;}

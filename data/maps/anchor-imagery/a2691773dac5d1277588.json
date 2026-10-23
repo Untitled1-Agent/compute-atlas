@@ -1,0 +1,14 @@
+{
+  "id": "a2691773dac5d1277588",
+  "anchor": {
+    "lat": 39.484141,
+    "lon": -76.140516,
+    "ids": [
+      "epoch-2e0876bbd823cbc419ef"
+    ],
+    "country": "United States"
+  },
+  "captured_at": "2026-10-23T17:09:48.220562+00:00",
+  "status": "unavailable",
+  "reason": "Native export has excessive uncovered pixels"
+}

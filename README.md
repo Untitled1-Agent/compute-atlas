@@ -245,6 +245,10 @@ python src/build.py
 
 Python 3.10+, standard library only. The builder validates original-file hashes and embeds all assets. Neither build command fetches live market or facility data.
 
+The atlas includes a searchable browser for all 122 named countries and territories. Country views lead to local source groups and physical locations within that geography. Breadcrumbs return to the full country scope, and semantic zoom updates the map, heading and rail together. All 6,471 captured records remain available, including records without coordinates.
+
+The [aerial context publication](data/maps/anchor-imagery/README.md) adds 79 source-dated US image windows alongside the three separately reviewed campus scenes. Native outlines and captured map context remain available globally. Imagery retains its acquisition date, original raster metadata, public-domain terms and checksum; it does not establish campus ownership or building capacity. The image library, original-image downloads and native physical bookmarks also work in the offline edition.
+
 `compute_atlas.html` is generated from the source tree. After changing `src/` or `data/`, run `python src/build.py` before publishing a refreshed standalone artifact; `index.html` always uses the checked-in source/data files directly.
 
 ## Testing
@@ -256,6 +260,9 @@ suite publishes its assertion report and screenshots; actual HTTP checks cover
 both hosted and standalone entrypoints, with separate SQLite service runs.
 `qa/inspection.py` also verifies real CDP touch events, source geometry selection,
 research lead exports and a Basic Auth proxy below `/compute/`.
+`qa/global-journeys.py` follows country-to-physical-source journeys on all six
+inhabited continents, checks cross-continent refinements, native physical
+bookmarks, exact image exports and source-version recovery in both editions.
 
 ```sh
 python -m pip install -r requirements-dev.txt

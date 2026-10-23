@@ -2425,3 +2425,235 @@ body.ui-atlas-active {
   .ui-atlas-active .workspace-landscape .atlas-insight-card:not(:first-child) { padding-top: 6px; }
   .ui-atlas-active .workspace-landscape .atlas-kpi-grid { margin-top: 12px; }
 }
+
+/* Global destinations retain the atlas's compact editorial hierarchy. */
+.geo-breadcrumb {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap
+}
+.geo-breadcrumb button {
+  font:inherit;
+  color:#9fb7be;
+  background:none;
+  border:0;
+  padding:4px 0;
+  cursor:pointer;
+  max-width:240px;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+.geo-breadcrumb button:hover {
+  color:#c4f3df
+}
+.geo-breadcrumb>[aria-current] {
+  color:#c5d5d8
+}
+.ua-regions .geo-browse-link {
+  margin-left:auto;
+  color:#b8e6ce;
+  display:flex;
+  align-items:center;
+  gap:5px
+}
+.geo-browse-link svg {
+  width:13px;
+  height:13px
+}
+.geo-browser>p {
+  color:#9aafb8;
+  line-height:1.6
+}
+.geo-browser>label {
+  display:block;
+  margin:24px 0 8px;
+  color:#cad8dc;
+  font-size:12px
+}
+.geo-browser>input {
+  width:100%;
+  background:#0b1a24;
+  border:1px solid #31434c;
+  border-radius:4px;
+  padding:13px;
+  color:#e2efec;
+  font:inherit
+}
+.geo-region-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:14px 0 24px
+}
+.geo-region-tabs button {
+  padding:8px 10px;
+  border:1px solid #2a3d47;
+  background:#0d1b25;
+  color:#a7bac1;
+  border-radius:3px;
+  font-size:11px;
+  cursor:pointer
+}
+.geo-region-tabs button[aria-pressed=true] {
+  color:#cff8e5;
+  border-color:#83b39e;
+  background:#18362f
+}
+.geo-destinations {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px
+}
+.geo-destination {
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+  background:linear-gradient(135deg,#142730,#0c1a24);
+  border:1px solid #2a4149;
+  border-radius:5px;
+  padding:18px;
+  color:#dbe9e6;
+  cursor:pointer;
+  min-height:150px;
+  gap:8px
+}
+.geo-destination:hover {
+  border-color:#6aa18d;
+  background:#19332f
+}
+.geo-destination>span {
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font:9px ui-monospace,monospace;
+  color:#8faaa9
+}
+.geo-destination>strong {
+  font:500 20px/1.2 Georgia,serif
+}
+.geo-destination>div {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:auto;
+  font-size:10px;
+  color:#a8bcbf
+}
+.geo-destination>div b {
+  font-size:18px;
+  color:#bde9d3
+}
+.geo-destination svg {
+  margin-left:auto;
+  width:17px;
+  height:17px
+}
+.geo-destination small {
+  font-size:10px;
+  color:#93a6b0
+}
+.geo-boundary {
+  font-size:11px;
+  margin-top:24px
+}
+.geo-market-list {
+  display:grid;
+  gap:1px;
+  margin:24px 0
+}
+.geo-market-list button {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:15px 8px;
+  text-align:left;
+  color:#d1dfdd;
+  background:none;
+  border:0;
+  border-bottom:1px solid #263c45;
+  cursor:pointer
+}
+.geo-market-list button:hover {
+  background:#142832
+}
+.geo-market-list span {
+  display:grid;
+  gap:6px;
+  flex:1
+}
+.geo-market-list small {
+  color:#94a9b1;
+  font-size:10px
+}
+.geo-market-list svg {
+  width:16px
+}
+.geo-scope-rail>small {
+  display:block;
+  line-height:1.5
+}
+.geo-image-date {
+  position:absolute;
+  top:58px;
+  left:14px;
+  max-width:calc(100% - 80px);
+  color:#d3e8e0;
+  background:#091b22df;
+  padding:5px 8px;
+  border:1px solid #617f7559;
+  font:9px ui-monospace,monospace;
+  pointer-events:none
+}
+.geo-image-date[data-state=error] {
+  color:#e5cbad
+}
+.geo-imagery-source {
+  overflow-wrap:anywhere
+}
+.geo-imagery-source dl {
+  font-size:12px
+}
+.geo-imagery-source dd {
+  margin:3px 0 15px;
+  color:#a9c0c3
+}
+.geo-imagery-source .ua-source-code {
+  font-size:10px
+}
+@media(max-width:700px) {
+  .geo-breadcrumb button {
+    max-width:100px
+  }
+  .geo-breadcrumb {
+    gap:4px;
+    font-size:10px
+  }
+  .ua-regions .geo-browse-link {
+    margin-left:0
+  }
+  .geo-destination {
+    padding:14px;
+    min-height:145px
+  }
+  .geo-destination>strong {
+    font-size:18px
+  }
+  .geo-region-tabs button {
+    min-height:44px
+  }
+  .geo-image-date {
+    top:60px;
+    left:10px;
+    font-size:8px
+  }
+}
+@media(max-width:360px) {
+  .geo-destinations {
+    grid-template-columns:1fr
+  }
+  .geo-destination {
+    min-height:120px
+  }
+}

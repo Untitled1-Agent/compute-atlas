@@ -1,0 +1,500 @@
+{
+  "id": "ff45db8814d2fffbbcc8",
+  "anchor": {
+    "lat": 41.881953,
+    "lon": -87.632362,
+    "ids": [
+      "epoch-4732ac8b180cb54d752c"
+    ],
+    "country": "United States"
+  },
+  "captured_at": "2026-10-23T16:59:35.067025+00:00",
+  "status": "captured",
+  "query_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/query?f=json&where=Category%3D1&geometry=-9756398.744363518%2C5142406.322912183%2C-9753981.085340118%2C5144219.567179734&geometryType=esriGeometryEnvelope&inSR=3857&spatialRel=esriSpatialRelIntersects&outFields=%2A&returnGeometry=true&outSR=3857&orderByFields=acquisition_date+DESC&resultRecordCount=100",
+  "catalog": {
+    "objectIdFieldName": "OBJECTID",
+    "fields": [
+      {
+        "name": "OBJECTID",
+        "type": "esriFieldTypeOID",
+        "alias": "OBJECTID",
+        "domain": null
+      },
+      {
+        "name": "Shape",
+        "type": "esriFieldTypeGeometry",
+        "alias": "Shape",
+        "domain": null
+      },
+      {
+        "name": "Name",
+        "type": "esriFieldTypeString",
+        "alias": "Name",
+        "domain": null,
+        "length": 200
+      },
+      {
+        "name": "MinPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MinPS",
+        "domain": null
+      },
+      {
+        "name": "MaxPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MaxPS",
+        "domain": null
+      },
+      {
+        "name": "Category",
+        "type": "esriFieldTypeInteger",
+        "alias": "Category",
+        "domain": {
+          "type": "codedValue",
+          "name": "MosaicCatalogItemCategoryDomain",
+          "description": "Catalog item categories.",
+          "codedValues": [
+            {
+              "name": "Unknown",
+              "code": 0
+            },
+            {
+              "name": "Primary",
+              "code": 1
+            },
+            {
+              "name": "Overview",
+              "code": 2
+            },
+            {
+              "name": "Unprocessed Overview",
+              "code": 3
+            },
+            {
+              "name": "Partial Overview",
+              "code": 4
+            },
+            {
+              "name": "Inactive",
+              "code": 5
+            },
+            {
+              "name": "Uploaded",
+              "code": 253
+            },
+            {
+              "name": "Incomplete",
+              "code": 254
+            },
+            {
+              "name": "Custom",
+              "code": 255
+            }
+          ],
+          "mergePolicy": "esriMPTDefaultValue",
+          "splitPolicy": "esriSPTDefaultValue"
+        }
+      },
+      {
+        "name": "CenterX",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterX",
+        "domain": null
+      },
+      {
+        "name": "CenterY",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterY",
+        "domain": null
+      },
+      {
+        "name": "State",
+        "type": "esriFieldTypeString",
+        "alias": "State",
+        "domain": null,
+        "length": 2
+      },
+      {
+        "name": "Year",
+        "type": "esriFieldTypeSmallInteger",
+        "alias": "Year",
+        "domain": null
+      },
+      {
+        "name": "raster_name",
+        "type": "esriFieldTypeString",
+        "alias": "raster_name",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "download_url",
+        "type": "esriFieldTypeString",
+        "alias": "download_url",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "acquisition_date",
+        "type": "esriFieldTypeDate",
+        "alias": "acquisition_date",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "agency",
+        "type": "esriFieldTypeString",
+        "alias": "agency",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "vendor",
+        "type": "esriFieldTypeString",
+        "alias": "vendor",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "resolution_value",
+        "type": "esriFieldTypeDouble",
+        "alias": "resolution_value",
+        "domain": null
+      },
+      {
+        "name": "resolution_units",
+        "type": "esriFieldTypeString",
+        "alias": "resolution_units",
+        "domain": null,
+        "length": 5
+      },
+      {
+        "name": "band_count",
+        "type": "esriFieldTypeInteger",
+        "alias": "band_count",
+        "domain": null
+      },
+      {
+        "name": "sensor_type",
+        "type": "esriFieldTypeString",
+        "alias": "sensor_type",
+        "domain": null,
+        "length": 4
+      },
+      {
+        "name": "projection_name",
+        "type": "esriFieldTypeString",
+        "alias": "projection_name",
+        "domain": null,
+        "length": 64
+      },
+      {
+        "name": "projection_zone",
+        "type": "esriFieldTypeString",
+        "alias": "projection_zone",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "datum",
+        "type": "esriFieldTypeString",
+        "alias": "datum",
+        "domain": null,
+        "length": 8
+      }
+    ],
+    "geometryType": "esriGeometryPolygon",
+    "spatialReference": {
+      "wkid": 102100,
+      "latestWkid": 3857
+    },
+    "features": [
+      {
+        "attributes": {
+          "OBJECTID": 56383,
+          "Name": "m_4108703_se_16_060_20190802",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -9757823.072338257,
+          "CenterY": 5146986.638294321,
+          "State": "IL",
+          "Year": 2019,
+          "raster_name": "m_4108703_se_16_060_20190802",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/2895403",
+          "acquisition_date": 1564704000000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "16N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -9761239.3077,
+                5141817.1576000005
+              ],
+              [
+                -9761671.2285,
+                5141813.679499999
+              ],
+              [
+                -9761753.7611,
+                5152097.961800002
+              ],
+              [
+                -9753970.7656,
+                5152157.7782000005
+              ],
+              [
+                -9753896.5783,
+                5141873.288400002
+              ],
+              [
+                -9761239.3077,
+                5141817.1576000005
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 56385,
+          "Name": "m_4108704_sw_16_060_20190802",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -9750865.606848765,
+          "CenterY": 5146986.555392591,
+          "State": "IL",
+          "Year": 2019,
+          "raster_name": "m_4108704_sw_16_060_20190802",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/2895405",
+          "acquisition_date": 1564704000000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "16N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -9754331.7778,
+                5141821.646399997
+              ],
+              [
+                -9754769.4721,
+                5141818.439199999
+              ],
+              [
+                -9754844.56,
+                5152098.002999999
+              ],
+              [
+                -9746957.5379,
+                5152152.8434000015
+              ],
+              [
+                -9746890.9033,
+                5141873.089500003
+              ],
+              [
+                -9754331.7778,
+                5141821.646399997
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 56394,
+          "Name": "m_4108711_ne_16_060_20190802",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -9757823.157451423,
+          "CenterY": 5137642.933291868,
+          "State": "IL",
+          "Year": 2019,
+          "raster_name": "m_4108711_ne_16_060_20190802",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/2895414",
+          "acquisition_date": 1564704000000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "16N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -9761239.2181,
+                5132553.5858
+              ],
+              [
+                -9761671.035,
+                5132550.1127
+              ],
+              [
+                -9761752.1822,
+                5142674.264700003
+              ],
+              [
+                -9753971.201,
+                5142733.992399998
+              ],
+              [
+                -9753898.2572,
+                5132609.636299998
+              ],
+              [
+                -9761239.2181,
+                5132553.5858
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 56398,
+          "Name": "m_4108712_nw_16_060_20190802",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -9750865.62927953,
+          "CenterY": 5137642.838481893,
+          "State": "IL",
+          "Year": 2019,
+          "raster_name": "m_4108712_nw_16_060_20190802",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/2895418",
+          "acquisition_date": 1564704000000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "16N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -9754331.8757,
+                5132558.0559
+              ],
+              [
+                -9754769.5052,
+                5132554.853100002
+              ],
+              [
+                -9754843.3323,
+                5142674.2892
+              ],
+              [
+                -9746957.622,
+                5142729.053300001
+              ],
+              [
+                -9746892.1049,
+                5132609.430200003
+              ],
+              [
+                -9754331.8757,
+                5132558.0559
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      }
+    ]
+  },
+  "selected_raster_ids": [
+    56383,
+    56385,
+    56394,
+    56398
+  ],
+  "export_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?f=json&bbox=-9756398.744363518%2C5142406.322912183%2C-9753981.085340118%2C5144219.567179734&bboxSR=3857&imageSR=3857&size=1024%2C768&format=jpg&compressionQuality=68&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B56383%2C+56385%2C+56394%2C+56398%5D%2C+%22ascending%22%3A+true%7D&renderingRule=%7B%22rasterFunction%22%3A+%22NaturalColor%22%7D",
+  "export": {
+    "href": "https://imagery.nationalmap.gov/arcgis/rest/directories/imagery_output/USGSNAIPImagery_ImageServer/_ags_4e2eb69f_833a_4b3b_9b1d_f46b93702c16.jpg",
+    "width": 1024,
+    "height": 768,
+    "extent": {
+      "xmin": -9756398.744363518,
+      "ymin": 5142406.322912183,
+      "xmax": -9753981.085340116,
+      "ymax": 5144219.567179734,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "scale": 0
+  },
+  "image": {
+    "path": "data/maps/anchor-imagery/ff45db8814d2fffbbcc8.jpg",
+    "sha256": "3eb379019d3e70f8d15c962e1b81105aaee62af8ae5b2e7d348216ad437b9a23",
+    "bytes": 202425,
+    "width": 1024,
+    "height": 768,
+    "extent_3857": {
+      "xmin": -9756398.744363518,
+      "ymin": 5142406.322912183,
+      "xmax": -9753981.085340116,
+      "ymax": 5144219.567179734,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "acquired_at": "2019-08-02",
+    "acquisition_dates": [
+      "2019-08-02"
+    ],
+    "native_resolution_m": [
+      0.6
+    ],
+    "publisher": "USDA NAIP / USGS National Map",
+    "license": "Public domain",
+    "license_url": "https://www.usgs.gov/centers/eros/science/usgs-eros-archive-aerial-photography-national-agriculture-imagery-program-naip"
+  }
+}
