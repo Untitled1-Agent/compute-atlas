@@ -1,0 +1,136 @@
+{
+  "viewports": "Country and aerial captures: 1280 \u00d7 960. Country browser: 390 \u00d7 844.",
+  "browser_acceptance": {
+    "passed": 155,
+    "total": 155
+  },
+  "captures": [
+    {
+      "name": "index.html-germany",
+      "hash": "atlas?scale=region&country=Germany&camera=1%2C24%2C20%2C1%2C5.898529%2C47.659995%2C14.486429%2C54.466352&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-germany-physical",
+      "hash": "atlas?scale=facility&country=Germany&selected=osm-way-922927451&feature=osm-way-922927451&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-13",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-japan",
+      "hash": "atlas?scale=region&country=Japan&mode=3d&camera=1%2C24%2C20%2C1%2C127.619205%2C26.109124%2C141.743232%2C43.272542&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-japan-physical",
+      "hash": "atlas?scale=facility&country=Japan&selected=osm-way-557360778&feature=osm-way-557360778&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-7",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-brazil",
+      "hash": "atlas?scale=region&country=Brazil&mode=3d&camera=1%2C24%2C20%2C1%2C-60.129842%2C-27.539527%2C-35.736185%2C-2.955675&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-brazil-physical",
+      "hash": "atlas?scale=facility&country=Brazil&selected=osm-way-673758679&feature=osm-way-673758679&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-2",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-south-africa",
+      "hash": "atlas?scale=region&country=South+Africa&mode=3d&camera=1%2C24%2C20%2C1%2C18.3249%2C-34.12771%2C31.13261%2C-25.820265&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-south-africa-physical",
+      "hash": "atlas?scale=facility&country=South+Africa&selected=osm-way-706815676&feature=osm-way-706815676&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-7",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-australia",
+      "hash": "atlas?scale=region&country=Australia&mode=3d&camera=1%2C24%2C20%2C1%2C115.658021%2C-42.939243%2C153.564896%2C-12.35628&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-australia-physical",
+      "hash": "atlas?scale=facility&country=Australia&selected=osm-way-1298979786&feature=osm-way-1298979786&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-6",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-united-states",
+      "hash": "atlas?scale=region&country=United+States&mode=3d&camera=1%2C24%2C20%2C1%2C-123.232978%2C25.546562%2C-67.765588%2C48.85726&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-united-states-physical",
+      "hash": "atlas?scale=facility&country=United+States&selected=osm-way-701923203&feature=osm-way-701923203&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.4%2C%22pitch%22%3A0.78%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&featureversion=osm-10",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-native-aerial",
+      "hash": "atlas?scale=facility&selected=osm-way-37947313&feature=osm-way-37947313&mode=aerial&sceneCamera=%7B%22yaw%22%3A0%2C%22pitch%22%3A1.48%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=02cbc967bc68f00ce86541d1d6460321729a7d29996d09d52a32a769ed82ad52&featureversion=osm-3&contextversion=a526f148006dabd9acb1c3011e7259b2c03443475302d1bb8048b5762885bc74",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-native-aerial-390",
+      "hash": "atlas?scale=facility&selected=osm-way-37947313&feature=osm-way-37947313&mode=aerial&sceneCamera=%7B%22yaw%22%3A0%2C%22pitch%22%3A1.48%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=02cbc967bc68f00ce86541d1d6460321729a7d29996d09d52a32a769ed82ad52&featureversion=osm-3&contextversion=a526f148006dabd9acb1c3011e7259b2c03443475302d1bb8048b5762885bc74",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "index.html-native-aerial-320",
+      "hash": "atlas?scale=facility&selected=osm-way-37947313&feature=osm-way-37947313&mode=aerial&sceneCamera=%7B%22yaw%22%3A0%2C%22pitch%22%3A1.48%2C%22zoom%22%3A1%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=02cbc967bc68f00ce86541d1d6460321729a7d29996d09d52a32a769ed82ad52&featureversion=osm-3&contextversion=a526f148006dabd9acb1c3011e7259b2c03443475302d1bb8048b5762885bc74",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      }
+    }
+  ],
+  "phone_aerial_review": {
+    "viewport": {
+      "width": 320,
+      "height": 844
+    },
+    "checks": "Source status and date clear controls and the physical feature label. Native source revision remains pinned."
+  }
+}

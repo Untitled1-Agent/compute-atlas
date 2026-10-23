@@ -1,0 +1,501 @@
+{
+  "id": "d1d367695f9e4a073fef",
+  "anchor": {
+    "lat": 35.881462,
+    "lon": -106.301781,
+    "ids": [
+      "epoch-f0674e2fecbb62c4e5ce",
+      "epoch-2252df2a7074b3c665e3"
+    ],
+    "country": "United States"
+  },
+  "captured_at": "2026-10-23T16:58:43.878044+00:00",
+  "status": "captured",
+  "query_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/query?f=json&where=Category%3D1&geometry=-11834570.925230714%2C4283489.865240624%2C-11832349.337445455%2C4285156.05607957&geometryType=esriGeometryEnvelope&inSR=3857&spatialRel=esriSpatialRelIntersects&outFields=%2A&returnGeometry=true&outSR=3857&orderByFields=acquisition_date+DESC&resultRecordCount=100",
+  "catalog": {
+    "objectIdFieldName": "OBJECTID",
+    "fields": [
+      {
+        "name": "OBJECTID",
+        "type": "esriFieldTypeOID",
+        "alias": "OBJECTID",
+        "domain": null
+      },
+      {
+        "name": "Shape",
+        "type": "esriFieldTypeGeometry",
+        "alias": "Shape",
+        "domain": null
+      },
+      {
+        "name": "Name",
+        "type": "esriFieldTypeString",
+        "alias": "Name",
+        "domain": null,
+        "length": 200
+      },
+      {
+        "name": "MinPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MinPS",
+        "domain": null
+      },
+      {
+        "name": "MaxPS",
+        "type": "esriFieldTypeDouble",
+        "alias": "MaxPS",
+        "domain": null
+      },
+      {
+        "name": "Category",
+        "type": "esriFieldTypeInteger",
+        "alias": "Category",
+        "domain": {
+          "type": "codedValue",
+          "name": "MosaicCatalogItemCategoryDomain",
+          "description": "Catalog item categories.",
+          "codedValues": [
+            {
+              "name": "Unknown",
+              "code": 0
+            },
+            {
+              "name": "Primary",
+              "code": 1
+            },
+            {
+              "name": "Overview",
+              "code": 2
+            },
+            {
+              "name": "Unprocessed Overview",
+              "code": 3
+            },
+            {
+              "name": "Partial Overview",
+              "code": 4
+            },
+            {
+              "name": "Inactive",
+              "code": 5
+            },
+            {
+              "name": "Uploaded",
+              "code": 253
+            },
+            {
+              "name": "Incomplete",
+              "code": 254
+            },
+            {
+              "name": "Custom",
+              "code": 255
+            }
+          ],
+          "mergePolicy": "esriMPTDefaultValue",
+          "splitPolicy": "esriSPTDefaultValue"
+        }
+      },
+      {
+        "name": "CenterX",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterX",
+        "domain": null
+      },
+      {
+        "name": "CenterY",
+        "type": "esriFieldTypeDouble",
+        "alias": "CenterY",
+        "domain": null
+      },
+      {
+        "name": "State",
+        "type": "esriFieldTypeString",
+        "alias": "State",
+        "domain": null,
+        "length": 2
+      },
+      {
+        "name": "Year",
+        "type": "esriFieldTypeSmallInteger",
+        "alias": "Year",
+        "domain": null
+      },
+      {
+        "name": "raster_name",
+        "type": "esriFieldTypeString",
+        "alias": "raster_name",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "download_url",
+        "type": "esriFieldTypeString",
+        "alias": "download_url",
+        "domain": null,
+        "length": 256
+      },
+      {
+        "name": "acquisition_date",
+        "type": "esriFieldTypeDate",
+        "alias": "acquisition_date",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "agency",
+        "type": "esriFieldTypeString",
+        "alias": "agency",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "vendor",
+        "type": "esriFieldTypeString",
+        "alias": "vendor",
+        "domain": null,
+        "length": 16
+      },
+      {
+        "name": "resolution_value",
+        "type": "esriFieldTypeDouble",
+        "alias": "resolution_value",
+        "domain": null
+      },
+      {
+        "name": "resolution_units",
+        "type": "esriFieldTypeString",
+        "alias": "resolution_units",
+        "domain": null,
+        "length": 5
+      },
+      {
+        "name": "band_count",
+        "type": "esriFieldTypeInteger",
+        "alias": "band_count",
+        "domain": null
+      },
+      {
+        "name": "sensor_type",
+        "type": "esriFieldTypeString",
+        "alias": "sensor_type",
+        "domain": null,
+        "length": 4
+      },
+      {
+        "name": "projection_name",
+        "type": "esriFieldTypeString",
+        "alias": "projection_name",
+        "domain": null,
+        "length": 64
+      },
+      {
+        "name": "projection_zone",
+        "type": "esriFieldTypeString",
+        "alias": "projection_zone",
+        "domain": null,
+        "length": 8
+      },
+      {
+        "name": "datum",
+        "type": "esriFieldTypeString",
+        "alias": "datum",
+        "domain": null,
+        "length": 8
+      }
+    ],
+    "geometryType": "esriGeometryPolygon",
+    "spatialReference": {
+      "wkid": 102100,
+      "latestWkid": 3857
+    },
+    "features": [
+      {
+        "attributes": {
+          "OBJECTID": 131789,
+          "Name": "m_3510606_se_13_060_20220614",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -11831148.600546595,
+          "CenterY": 4287765.596631084,
+          "State": "NM",
+          "Year": 2022,
+          "raster_name": "m_3510606_se_13_060_20220614",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3248061",
+          "acquisition_date": 1655164800000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "13N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -11834554.026,
+                4282973.843900003
+              ],
+              [
+                -11834961.943799999,
+                4282968.339299999
+              ],
+              [
+                -11835089.232099999,
+                4292459.272500001
+              ],
+              [
+                -11827331.9235,
+                4292561.5832
+              ],
+              [
+                -11827211.368999999,
+                4283070.303199999
+              ],
+              [
+                -11834554.026,
+                4282973.843900003
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 131790,
+          "Name": "m_3510606_sw_13_060_20220614",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -11838106.33229615,
+          "CenterY": 4287765.363511082,
+          "State": "NM",
+          "Year": 2022,
+          "raster_name": "m_3510606_sw_13_060_20220614",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3248062",
+          "acquisition_date": 1655164800000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "13N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -11841560.5613,
+                4282967.817000002
+              ],
+              [
+                -11841974.580400001,
+                4282961.962099999
+              ],
+              [
+                -11842108.0475,
+                4292458.592100002
+              ],
+              [
+                -11834234.7008,
+                4292567.501599997
+              ],
+              [
+                -11834108.071899999,
+                4283070.502300002
+              ],
+              [
+                -11841560.5613,
+                4282967.817000002
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 131819,
+          "Name": "m_3510614_ne_13_060_20220614",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -11831148.661297426,
+          "CenterY": 4279179.033683641,
+          "State": "NM",
+          "Year": 2022,
+          "raster_name": "m_3510614_ne_13_060_20220614",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3248090",
+          "acquisition_date": 1655164800000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "13N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -11834554.0808,
+                4274459.777999997
+              ],
+              [
+                -11834961.875799999,
+                4274454.283200003
+              ],
+              [
+                -11835087.0315,
+                4283800.431100003
+              ],
+              [
+                -11827332.1712,
+                4283902.554300003
+              ],
+              [
+                -11827213.6345,
+                4274556.065300003
+              ],
+              [
+                -11834554.0808,
+                4274459.777999997
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      },
+      {
+        "attributes": {
+          "OBJECTID": 131820,
+          "Name": "m_3510614_nw_13_060_20220614",
+          "MinPS": 0,
+          "MaxPS": 19.1,
+          "Category": 1,
+          "CenterX": -11838106.104224974,
+          "CenterY": 4279178.872413998,
+          "State": "NM",
+          "Year": 2022,
+          "raster_name": "m_3510614_nw_13_060_20220614",
+          "download_url": "https://earthexplorer.usgs.gov/download/options/naip/3248091",
+          "acquisition_date": 1655164800000,
+          "agency": "USDA",
+          "vendor": "USDA-FSA-APFO",
+          "resolution_value": 0.6,
+          "resolution_units": "METER",
+          "band_count": 4,
+          "sensor_type": "CNIR",
+          "projection_name": "UTM",
+          "projection_zone": "13N",
+          "datum": "NAD83"
+        },
+        "geometry": {
+          "rings": [
+            [
+              [
+                -11841560.3378,
+                4274453.829099998
+              ],
+              [
+                -11841974.2293,
+                4274447.984700002
+              ],
+              [
+                -11842105.4613,
+                4283799.828599997
+              ],
+              [
+                -11834234.6549,
+                4283908.537600003
+              ],
+              [
+                -11834110.1445,
+                4274556.3303999975
+              ],
+              [
+                -11841560.3378,
+                4274453.829099998
+              ]
+            ]
+          ],
+          "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+          }
+        }
+      }
+    ]
+  },
+  "selected_raster_ids": [
+    131789,
+    131790,
+    131819,
+    131820
+  ],
+  "export_url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?f=json&bbox=-11834570.925230714%2C4283489.865240624%2C-11832349.337445455%2C4285156.05607957&bboxSR=3857&imageSR=3857&size=1024%2C768&format=jpg&compressionQuality=68&mosaicRule=%7B%22mosaicMethod%22%3A+%22esriMosaicLockRaster%22%2C+%22lockRasterIds%22%3A+%5B131789%2C+131790%2C+131819%2C+131820%5D%2C+%22ascending%22%3A+true%7D&renderingRule=%7B%22rasterFunction%22%3A+%22NaturalColor%22%7D",
+  "export": {
+    "href": "https://imagery.nationalmap.gov/arcgis/rest/directories/imagery_output/USGSNAIPImagery_ImageServer/_ags_f53c6b7b_a0f9_45fb_b78e_e84a0d370ead.jpg",
+    "width": 1024,
+    "height": 768,
+    "extent": {
+      "xmin": -11834570.925230715,
+      "ymin": 4283489.865240624,
+      "xmax": -11832349.337445455,
+      "ymax": 4285156.05607957,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "scale": 0
+  },
+  "image": {
+    "path": "data/maps/anchor-imagery/d1d367695f9e4a073fef.jpg",
+    "sha256": "959f0103f1d2ca4e2ac2703cf8509b68f561da503dbaa0308325cb2fb44f7a5e",
+    "bytes": 221375,
+    "width": 1024,
+    "height": 768,
+    "extent_3857": {
+      "xmin": -11834570.925230715,
+      "ymin": 4283489.865240624,
+      "xmax": -11832349.337445455,
+      "ymax": 4285156.05607957,
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      }
+    },
+    "acquired_at": "2022-06-14",
+    "acquisition_dates": [
+      "2022-06-14"
+    ],
+    "native_resolution_m": [
+      0.6
+    ],
+    "publisher": "USDA NAIP / USGS National Map",
+    "license": "Public domain",
+    "license_url": "https://www.usgs.gov/centers/eros/science/usgs-eros-archive-aerial-photography-national-agriculture-imagery-program-naip"
+  }
+}

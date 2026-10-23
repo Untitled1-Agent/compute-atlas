@@ -53,7 +53,7 @@ function uaContextSource(){
 class UnifiedAtlasMap extends CatalogMap {
   constructor(canvas){
     super(canvas);this.ua=true;this.skipCatalogSave=true;this.scope={sites:uaRows(false).filter(r=>r.mapped),bounds:[-180,-80,180,80]};this.labels=uaState.layers.labels;this.level=uaState.scale;this.markerLabels=[];
-    const selected=uaRecord(uaState.selected),center=uaState.region==='All'?(uaState.scale===1?[39,-43]:[24,-12]):(catalogCameras[uaState.region]||catalogCameras.All);
+    const selected=uaRecord(uaState.selected),center=uaState.region==='All'?(uaState.scale===1?[39,-43]:[24,20]):(catalogCameras[uaState.region]||catalogCameras.All);
     Object.assign(this,{flat:uaState.scale>=2,lat:center[0],lon:center[1],zoom:uaState.scale===1?1.7:1});
     if(uaState.camera)Object.assign(this,{...uaState.camera,bounds:[...uaState.camera.bounds]});
     else if(this.flat){const span=uaState.scale===2?18:uaState.scale===3?1.6:.035;if(selected?.mapped)this.bounds=[selected.lon-span/2,Math.max(-80,selected.lat-span*.3),selected.lon+span/2,Math.min(80,selected.lat+span*.3)];else this.bounds=uaFitBounds(this.scope.sites,null,.7,.5);}
@@ -66,9 +66,10 @@ class UnifiedAtlasMap extends CatalogMap {
   persistCamera(){
     if(!this.ua)return;
     const level=this.flat?((this.bounds[2]-this.bounds[0])<5?3:2):(this.zoom>=1.5?1:0);
-    if(uaState.scale<4&&uaState.scale!==level){uaState.scale=level;document.querySelectorAll('[data-ua-scale]').forEach(b=>{if(b.tagName==='BUTTON')b.setAttribute('aria-pressed',String(Number(b.dataset.uaScale)===level));});}
+    const levelChanged=uaState.scale<4&&uaState.scale!==level;
+    if(levelChanged){this.semanticRefresh=true;uaState.scale=level;document.querySelectorAll('[data-ua-scale]').forEach(b=>{if(b.tagName==='BUTTON')b.setAttribute('aria-pressed',String(Number(b.dataset.uaScale)===level));});}
     const snapshot=catalogCameraSnapshot(this),token=catalogCameraToken(snapshot);if(token===this.lastCameraToken)return;
-    this.lastCameraToken=token;uaState.camera=snapshot;clearTimeout(this.cameraTimer);this.cameraTimer=setTimeout(()=>{if(this.destroyed||state.view!=='atlas'||state.drawer)return;history.replaceState(null,'',uaURL());if(uaState.scope==='viewport')uaRefreshData();},220);
+    this.lastCameraToken=token;uaState.camera=snapshot;clearTimeout(this.cameraTimer);this.cameraTimer=setTimeout(()=>{if(this.destroyed||state.view!=='atlas'||state.drawer)return;history.replaceState(null,'',uaURL());if(uaState.scope==='viewport'||this.semanticRefresh){this.semanticRefresh=false;uaRefreshData();}},220);
   }
   draw(){
     if(window.ATLAS_BOOTSTRAPPING||!this.w||!this.h)return;

@@ -282,7 +282,7 @@ function uiOverview(r) {
   return `<div class="ui-evidence-deck"><section>${r.collection === "projects" ? uiPowerLadder(r) : `<h3>${uiIcon("power")} Power & compute</h3>${uaPowerContent(r)}`}</section><section><h3>${uiIcon("building")} Facility attributes</h3><dl class="ua-facts"><div><dt>Source identity</dt><dd>${esc(r.id)}</dd></div><div><dt>Country / territory</dt><dd>${esc(r.country)}</dd></div><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Not supplied")}</dd></div><div><dt>Physical evidence</dt><dd>${r.geometry ? "Native mapped footprint" : CAMPUS_SCENES.scenes.some(s => s.project_id === r.id) ? "Historical imagery & reviewed outlines" : "Independent mapped context"}</dd></div></dl></section>${uiEvidenceSources(r)}${takeaways}</div>`;
 }
 function uiCompactDossier(r, rows) {
-  const physical = uaState.scale >= 4, m = uaMeasure(r), scenes = CAMPUS_SCENES.scenes.filter(s => s.project_id === r.id), scene = scenes.find(s => s.id === uaState.scene) || scenes[0];
+  const physical = uaState.scale >= 4, m = uaMeasure(r), scenes = CAMPUS_SCENES.scenes.filter(s => s.project_id === r.id), scene = uaState.scene ? scenes.find(s => s.id === uaState.scene) : scenes[0];
   return `<section id="ua-selection" class="ua-editorial ua-selected ui-compact-dossier">${uiKicker(physical ? "01 / FACILITY DOSSIER" : "01 / SELECTED CLUSTER", `<button class="text-button" data-ua-clear-selection aria-label="Clear selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(r.name)}</h2><p class="ui-place">${uiIcon("pin")}${esc(r.place || r.country)}</p>${!rows.some(x => x.id === r.id) ? '<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>' : ""}<div class="ui-status-row">${uaBadge(r)}${scene ? '<span>Reviewed imagery</span>' : ''}</div><dl class="ua-facts"><div><dt>${esc(m.label)}</dt><dd>${m.value == null ? "Not reported" : compact(m.value) + " " + m.unit}</dd></div>${r.collection === "projects" ? `<div><dt>Target IT model</dt><dd>${r.target_mw == null ? "Not reported" : fmt(r.target_mw) + " MW IT"}</dd></div>` : ""}<div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Undated")}</dd></div>${scene ? `<div><dt>Historical image</dt><dd>${esc(scene.image.acquired_at)}</dd></div><div><dt>Reviewed roof outlines</dt><dd>${scene.features.length} · image interpretation</dd></div>` : ""}</dl><div class="ua-actions"><button class="btn primary" data-ua-dive>${physical ? "Inspect physical features" : "View full site dossier"} ${uiIcon("arrow")}</button><div class="ui-dossier-tools">${researchPin(r.id)}<button class="text-button" data-ua-compare="${esc(r.id)}">${uiIcon("compare")} ${uaState.compare.includes(r.id) ? "Comparing" : "Compare"}</button><button class="text-button" data-ua-export="${esc(r.id)}">Export ↓</button></div></div></section>${physical ? uiPowerLadder(r) : `<section class="ua-editorial">${uiKicker("02 / LOCAL POWER & BUILDOUT")}<h2>Power, land and<br>the development story.</h2><div class="ui-takeaways">${uiTakeaways(r)}</div></section>`}<section class="ua-editorial">${uiKicker("03 / " + (physical ? "ANALYST NOTES" : "DISCLOSED RELATIONSHIPS"))}${physical ? `<label class="ui-note-label" for="ui-campus-note">Your research questions & observations</label><textarea id="ui-campus-note" data-note="${esc(r.id)}" placeholder="Add a note about this campus…">${esc(saved.notes[r.id] || "")}</textarea><div class="ui-note-footer"><small data-storage-status>${storageOK ? "Private · saved in this browser" : "Session only · export before closing"}</small><button class="text-button" data-action="export-session">Export notes ↓</button></div>` : `<div class="ui-partners">${uiPartners(r)}</div>`}</section>`;
 }
 const uiPreviousDetail = uaDetail;
@@ -427,7 +427,7 @@ function uiPreset(id) {
       camera: {
         flat: false,
         lat: 24,
-        lon: -12,
+        lon: 20,
         zoom: .95,
         bounds: [-180, -80, 180, 80],
       },
@@ -855,7 +855,7 @@ function uiVersionProblem() {
   const versions = uiSourceVersions();
   for (const [key, label] of [
     ["imageversion", "Historical image"],
-    ["featureversion", "Reviewed feature"],
+    ["featureversion", "Physical feature"],
     ["contextversion", "Native context capture"],
   ]) {
     if (uaState[key] && uaState[key] !== versions[key])

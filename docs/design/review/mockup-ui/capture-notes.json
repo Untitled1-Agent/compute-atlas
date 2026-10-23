@@ -3,7 +3,7 @@
   "captures": [
     {
       "name": "index.html-reference-world",
-      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C20%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
       "viewport": {
         "width": 1280,
         "height": 960
@@ -51,7 +51,7 @@
     },
     {
       "name": "index.html-world-1280",
-      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C20%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
       "viewport": {
         "width": 1280,
         "height": 720
@@ -67,7 +67,7 @@
     },
     {
       "name": "index.html-world-768",
-      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C20%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
       "viewport": {
         "width": 768,
         "height": 1024
@@ -83,7 +83,7 @@
     },
     {
       "name": "index.html-world-390",
-      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C20%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
       "viewport": {
         "width": 390,
         "height": 844
@@ -99,7 +99,7 @@
     },
     {
       "name": "index.html-world-320",
-      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C20%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
       "viewport": {
         "width": 320,
         "height": 800

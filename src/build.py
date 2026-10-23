@@ -10,7 +10,7 @@ def safe_json(x):
     return json.dumps(x,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
 template=(ROOT/'src/index.html').read_text()
 css='\n'.join((ROOT/p).read_text() for p in ('src/styles.css','src/enhancements.css','src/zoom-explorer.css','src/evidence-desk.css','src/source-health.css','src/global-coverage.css','src/site-identity.css','src/catalog-explorer.css','src/operator-directory.css','src/publisher-explorer.css','src/project-research.css','src/experience.css','src/gpu-clusters.css','src/inventory.css','src/connections.css','src/discovery.css','src/research-workspace.css','src/unified-atlas.css','src/atlas-presentation.css'))
-js='\n'.join((ROOT/p).read_text() for p in ('src/directory-schema.js','src/digital-realty-schema.js','src/spatial-math.js','src/pointer-gestures.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/global-coverage.js','src/site-identity.js','src/responsive-nav.js','src/facility-scene.js','src/catalog-explorer.js','src/operator-directory.js','src/publisher-explorer.js','src/project-research.js','src/atlas-workspace.js','src/campus-scene.js','src/map-layers.js','src/gpu-data.js','src/inventory.js','src/connections.js','src/location-discovery.js','src/models.js','src/discovery.js','src/gpu-clusters.js','src/epoch-centers.js','src/research-workspace.js','src/unified-atlas.js','src/atlas-terrain.js','src/unified-map.js','src/atlas-presentation.js'))
+js='\n'.join((ROOT/p).read_text() for p in ('src/directory-schema.js','src/digital-realty-schema.js','src/spatial-math.js','src/pointer-gestures.js','src/app.js','src/enhancements.js','src/cartography.js','src/zoom-explorer.js','src/evidence-desk.js','src/service-client.js','src/source-health.js','src/global-coverage.js','src/site-identity.js','src/responsive-nav.js','src/facility-scene.js','src/catalog-explorer.js','src/operator-directory.js','src/publisher-explorer.js','src/project-research.js','src/atlas-workspace.js','src/campus-scene.js','src/map-layers.js','src/gpu-data.js','src/inventory.js','src/connections.js','src/location-discovery.js','src/models.js','src/discovery.js','src/gpu-clusters.js','src/epoch-centers.js','src/research-workspace.js','src/unified-atlas.js','src/atlas-terrain.js','src/unified-map.js','src/atlas-presentation.js','src/global-exploration.js','src/anchor-imagery.js'))
 # Source-only updates also change release identity. Native browser integrity checks
 # reject stale HTML receiving changed scripts, styles or publication JSON.
 asset_paths=sorted({str(p.relative_to(ROOT)) for p in (ROOT/'src').iterdir() if p.suffix in ('.css','.js')})
@@ -50,6 +50,16 @@ for scene in campus['scenes']:
         raise ValueError('Campus imagery checksum mismatch: '+image['path'])
     image['data_url']='data:image/jpeg;base64,'+base64.b64encode(content).decode()
 template=template.replace('/*__CAMPUS_SCENES__*/',safe_json(campus))
+imagery=json.loads((ROOT/'data/maps/anchor-imagery.json').read_text())
+for capture in imagery['records']:
+    metadata=capture['metadata'];raw=(ROOT/metadata['path']).read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=metadata['sha256']:raise ValueError('Anchor raster catalog checksum mismatch: '+metadata['path'])
+    capture['native_capture']=json.loads(raw)
+    if capture['status']!='captured':continue
+    image=capture['image'];content=(ROOT/image['path']).read_bytes()
+    if hashlib.sha256(content).hexdigest()!=image['sha256']:raise ValueError('Anchor imagery checksum mismatch: '+image['path'])
+    image['data_url']='data:image/jpeg;base64,'+base64.b64encode(content).decode()
+template=template.replace('/*__ANCHOR_IMAGERY__*/',safe_json(imagery))
 context_index=json.loads((ROOT/'data/layers/global-context-index.json').read_text())
 context_pack='<div hidden id="global-context-pack">'+''.join('<script type="application/octet-stream" id="global-context-'+c['id']+'">'+base64.b64encode((ROOT/c['path']).read_bytes()).decode()+'</script>' for c in context_index['captures'])+'</div>'
 template=template.replace('<script type="application/json" id="global-context-pack">/*__GLOBAL_CONTEXT_PACK__*/</script>',context_pack)
