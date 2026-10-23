@@ -36,11 +36,16 @@ function uaClusterTitle(rows) {
   if (uaState.scale >= 2) {
     const lon = rows.reduce((n, r) => n + r.lon, 0) / rows.length,
       lat = rows.reduce((n, r) => n + r.lat, 0) / rows.length;
-    const city = [...(ATLAS_CONTEXT.places || [])].sort(
-      (a, b) =>
-        spatialDistance(a, { lat, lon }) - spatialDistance(b, { lat, lon }),
-    )[0];
-    if (city && spatialDistance(city, { lat, lon }) < 180) return city.name;
+    let city = null,
+      nearest = 180;
+    for (const place of ATLAS_CONTEXT.places || []) {
+      const distance = spatialDistance(place, { lat, lon });
+      if (distance < nearest) {
+        nearest = distance;
+        city = place;
+      }
+    }
+    if (city) return city.name;
   }
   const country = [...new Set(rows.map((r) => r.country))],
     regions = [...new Set(rows.map((r) => r.region))],

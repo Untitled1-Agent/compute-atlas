@@ -7958,6 +7958,25 @@ const AtlasTerrain = (() => {
     const context = canvas.getContext("2d", { willReadFrequently: true });
     context.drawImage(image, 0, 0);
     pixels = context.getImageData(0, 0, width, height).data;
+    // Tint once per source image, not once per pixel on every camera frame.
+    for (let j = 0; j < pixels.length; j += 4) {
+      const r = pixels[j],
+        g = pixels[j + 1],
+        b = pixels[j + 2];
+      const ocean = b > r * 1.12 && b > g * 1.02,
+        relief = (r * 0.27 + g * 0.58 + b * 0.15) / 255;
+      if (ocean) {
+        pixels[j] = 6;
+        pixels[j + 1] = 18 + relief * 8;
+        pixels[j + 2] = 27 + relief * 9;
+      } else {
+        const v = Math.pow(relief, 1.45);
+        pixels[j] = 9 + v * 21;
+        pixels[j + 1] = 25 + v * 32;
+        pixels[j + 2] = 31 + v * 32;
+      }
+    }
+
     if (globe?.ua) globe.dirty = true;
   };
   image.onerror = () => {
@@ -7996,60 +8015,69 @@ const AtlasTerrain = (() => {
       const rad = Math.PI / 180,
         sl = map.sl0,
         cl = map.cl0;
-      for (let y = 0; y < h; y++)
+      if (map.flat) {
+        // Mercator latitude is constant across a scanline. Reuse both axes.
+        const columns = new Uint32Array(w),
+          source32 = new Uint32Array(pixels.buffer),
+          output32 = new Uint32Array(out.buffer);
         for (let x = 0; x < w; x++) {
-          const px = (x + 0.5) / quality,
-            py = (y + 0.5) / quality,
-            i = (y * w + x) * 4;
-          let lon,
-            lat,
-            z = 1,
-            light = 1;
-          if (map.flat) {
-            lon = (map.mx + (px - map.cx) / map.scale) / rad;
-            lat =
-              (2 * Math.atan(Math.exp(map.my - (py - map.cy) / map.scale)) -
-                Math.PI / 2) /
-              rad;
-          } else {
-            const nx = (px - map.cx) / map.radius,
-              ny = (map.cy - py) / map.radius,
-              r = nx * nx + ny * ny;
-            if (r >= 1) continue;
-            z = Math.sqrt(1 - r);
-            lat = Math.asin(ny * cl + z * sl) / rad;
-            lon = map.lon + Math.atan2(nx, z * cl - ny * sl) / rad;
-            light =
-              0.42 +
-              0.58 *
-                Math.pow(Math.max(0, z * 0.94 + ny * 0.19 - nx * 0.16), 0.6);
-          }
-          const tx = Math.min(
+          const lon =
+            (map.mx + ((x + 0.5) / quality - map.cx) / map.scale) / rad;
+          columns[x] = Math.min(
             width - 1,
             Math.floor((((((lon + 180) % 360) + 360) % 360) / 360) * width),
           );
-          const ty = Math.max(
-            0,
-            Math.min(height - 1, Math.floor(((90 - lat) / 180) * height)),
-          );
-          const j = (ty * width + tx) * 4,
-            r = pixels[j],
-            g = pixels[j + 1],
-            b = pixels[j + 2];
-          const ocean = b > r * 1.12 && b > g * 1.02;
-          const relief = (r * 0.27 + g * 0.58 + b * 0.15) / 255;
-          if (ocean) {
-            out[i] = 6 * light;
-            out[i + 1] = (18 + relief * 8) * light;
-            out[i + 2] = (27 + relief * 9) * light;
-          } else {
-            const v = Math.pow(relief, 1.45);
-            out[i] = (9 + v * 21) * light;
-            out[i + 1] = (25 + v * 32) * light;
-            out[i + 2] = (31 + v * 32) * light;
-          }
-          out[i + 3] = 255;
         }
+        for (let y = 0; y < h; y++) {
+          const lat =
+            (2 *
+              Math.atan(
+                Math.exp(map.my - ((y + 0.5) / quality - map.cy) / map.scale),
+              ) -
+              Math.PI / 2) /
+            rad;
+          const row =
+            Math.max(
+              0,
+              Math.min(height - 1, Math.floor(((90 - lat) / 180) * height)),
+            ) * width;
+          for (let x = 0; x < w; x++)
+            output32[y * w + x] = source32[row + columns[x]];
+        }
+      } else
+        for (let y = 0; y < h; y++)
+          for (let x = 0; x < w; x++) {
+            const px = (x + 0.5) / quality,
+              py = (y + 0.5) / quality,
+              i = (y * w + x) * 4;
+            const nx = (px - map.cx) / map.radius,
+              ny = (map.cy - py) / map.radius,
+              radiusSquared = nx * nx + ny * ny;
+            if (radiusSquared >= 1) continue;
+            const z = Math.sqrt(1 - radiusSquared),
+              lat = Math.asin(ny * cl + z * sl) / rad,
+              lon = map.lon + Math.atan2(nx, z * cl - ny * sl) / rad,
+              light =
+                0.42 +
+                0.58 *
+                  Math.pow(Math.max(0, z * 0.94 + ny * 0.19 - nx * 0.16), 0.6);
+            const tx = Math.min(
+              width - 1,
+              Math.floor((((((lon + 180) % 360) + 360) % 360) / 360) * width),
+            );
+            const ty = Math.max(
+              0,
+              Math.min(height - 1, Math.floor(((90 - lat) / 180) * height)),
+            );
+            const j = (ty * width + tx) * 4,
+              r = pixels[j],
+              g = pixels[j + 1],
+              b = pixels[j + 2];
+            out[i] = r * light;
+            out[i + 1] = g * light;
+            out[i + 2] = b * light;
+            out[i + 3] = 255;
+          }
       context.putImageData(output, 0, 0);
       map.terrainKey = key;
     }
@@ -8325,11 +8353,16 @@ function uaClusterTitle(rows) {
   if (uaState.scale >= 2) {
     const lon = rows.reduce((n, r) => n + r.lon, 0) / rows.length,
       lat = rows.reduce((n, r) => n + r.lat, 0) / rows.length;
-    const city = [...(ATLAS_CONTEXT.places || [])].sort(
-      (a, b) =>
-        spatialDistance(a, { lat, lon }) - spatialDistance(b, { lat, lon }),
-    )[0];
-    if (city && spatialDistance(city, { lat, lon }) < 180) return city.name;
+    let city = null,
+      nearest = 180;
+    for (const place of ATLAS_CONTEXT.places || []) {
+      const distance = spatialDistance(place, { lat, lon });
+      if (distance < nearest) {
+        nearest = distance;
+        city = place;
+      }
+    }
+    if (city) return city.name;
   }
   const country = [...new Set(rows.map((r) => r.country))],
     regions = [...new Set(rows.map((r) => r.region))],
