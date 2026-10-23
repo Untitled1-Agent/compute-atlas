@@ -24,14 +24,14 @@ const AtlasTerrain = (() => {
       const ocean = b > r * 1.12 && b > g * 1.02,
         relief = (r * 0.27 + g * 0.58 + b * 0.15) / 255;
       if (ocean) {
-        pixels[j] = 6;
-        pixels[j + 1] = 18 + relief * 8;
-        pixels[j + 2] = 27 + relief * 9;
+        pixels[j] = 5;
+        pixels[j + 1] = 13 + relief * 4;
+        pixels[j + 2] = 23 + relief * 6;
       } else {
-        const v = Math.pow(relief, 1.45);
-        pixels[j] = 9 + v * 21;
-        pixels[j + 1] = 25 + v * 32;
-        pixels[j + 2] = 31 + v * 32;
+        const v = Math.pow(relief, 2.1);
+        pixels[j] = 5 + v * 12;
+        pixels[j + 1] = 16 + v * 23;
+        pixels[j + 2] = 26 + v * 28;
       }
     }
 

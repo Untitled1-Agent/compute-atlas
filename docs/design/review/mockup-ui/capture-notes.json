@@ -1,226 +1,121 @@
-[
-  {
-    "name": "index.html-world",
-    "url": "atlas?scale=world&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
+{
+  "comparison": "1280 \u00d7 960 production captures match the 4:3 reference aspect ratio. Responsive captures retain their tested viewport.",
+  "captures": [
+    {
+      "name": "index.html-reference-world",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-reference-atlantic",
+      "url": "atlas?scale=continent&region=Atlantic&mode=3d&camera=0%2C39%2C-43%2C1.65%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-reference-region",
+      "url": "atlas?scale=region&country=United+States&scope=viewport&mode=3d&camera=1%2C38%2C-84%2C1%2C-96%2C30%2C-69%2C47&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-reference-metro",
+      "url": "atlas?scale=metro&selected=amazon-anthropic-new-carlisle&scope=viewport&mode=3d&camera=1%2C41.5%2C-87%2C1%2C-88.3%2C40.6%2C-85.5%2C42.5&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-reference-campus",
+      "url": "atlas?scale=campus&selected=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.5%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B445%2C278%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-reference-facility",
+      "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "viewport": {
+        "width": 1280,
+        "height": 960
+      }
+    },
+    {
+      "name": "index.html-world-1280",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "name": "index.html-facility-1280",
+      "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "name": "index.html-world-768",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      }
+    },
+    {
+      "name": "index.html-facility-768",
+      "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      }
+    },
+    {
+      "name": "index.html-world-390",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "index.html-facility-390",
+      "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "index.html-world-320",
+      "url": "atlas?scale=world&mode=3d&camera=0%2C24%2C-12%2C0.95%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      }
+    },
+    {
+      "name": "index.html-facility-320",
+      "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      }
     }
-  },
-  {
-    "name": "index.html-atlantic",
-    "url": "atlas?scale=continent&region=Atlantic&camera=0%2C39%2C-43%2C1.65%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "index.html-region",
-    "url": "atlas?scale=region&country=United+States&scope=viewport&camera=1%2C38%2C-84%2C1%2C-96%2C30%2C-69%2C47&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "index.html-metro",
-    "url": "atlas?scale=metro&selected=amazon-anthropic-new-carlisle&scope=viewport&camera=1%2C41.5%2C-87%2C1%2C-88.3%2C40.6%2C-85.5%2C42.5&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "index.html-campus",
-    "url": "atlas?scale=campus&selected=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.5%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B445%2C278%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "index.html-facility",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "index.html-world-1280",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1280,
-      "height": 720
-    }
-  },
-  {
-    "name": "index.html-facility-1280",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 1280,
-      "height": 720
-    }
-  },
-  {
-    "name": "index.html-world-768",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 768,
-      "height": 1024
-    }
-  },
-  {
-    "name": "index.html-facility-768",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 768,
-      "height": 1024
-    }
-  },
-  {
-    "name": "index.html-world-390",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 390,
-      "height": 844
-    }
-  },
-  {
-    "name": "index.html-facility-390",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 390,
-      "height": 844
-    }
-  },
-  {
-    "name": "index.html-world-320",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 320,
-      "height": 800
-    }
-  },
-  {
-    "name": "index.html-facility-320",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 320,
-      "height": 800
-    }
-  },
-  {
-    "name": "compute_atlas.html-world",
-    "url": "atlas?scale=world&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-atlantic",
-    "url": "atlas?scale=continent&region=Atlantic&camera=0%2C39%2C-43%2C1.65%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-region",
-    "url": "atlas?scale=region&country=United+States&scope=viewport&camera=1%2C38%2C-84%2C1%2C-96%2C30%2C-69%2C47&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-metro",
-    "url": "atlas?scale=metro&selected=amazon-anthropic-new-carlisle&scope=viewport&camera=1%2C41.5%2C-87%2C1%2C-88.3%2C40.6%2C-85.5%2C42.5&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-campus",
-    "url": "atlas?scale=campus&selected=amazon-anthropic-new-carlisle&scene=new-carlisle-sr2-2025&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.5%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B445%2C278%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=5e81f60be78dceda1ef8cdb8026f7d01d1afe2c10a81b42887dcb7a4defe0714",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-facility",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 1440,
-      "height": 1000
-    }
-  },
-  {
-    "name": "compute_atlas.html-world-1280",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 1280,
-      "height": 720
-    }
-  },
-  {
-    "name": "compute_atlas.html-facility-1280",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 1280,
-      "height": 720
-    }
-  },
-  {
-    "name": "compute_atlas.html-world-768",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 768,
-      "height": 1024
-    }
-  },
-  {
-    "name": "compute_atlas.html-facility-768",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 768,
-      "height": 1024
-    }
-  },
-  {
-    "name": "compute_atlas.html-world-390",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 390,
-      "height": 844
-    }
-  },
-  {
-    "name": "compute_atlas.html-facility-390",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 390,
-      "height": 844
-    }
-  },
-  {
-    "name": "compute_atlas.html-world-320",
-    "url": "atlas?scale=world&mode=3d&camera=0%2C35%2C5%2C1%2C-180%2C-80%2C180%2C80&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels",
-    "viewport": {
-      "width": 320,
-      "height": 800
-    }
-  },
-  {
-    "name": "compute_atlas.html-facility-320",
-    "url": "atlas?scale=facility&selected=coreweave-helios&scene=helios-naip-20220905&feature=helios-naip2022-roof-01&mode=3d&sceneCamera=%7B%22yaw%22%3A-0.32%2C%22pitch%22%3A0.84%2C%22zoom%22%3A1.45%2C%22pan%22%3A%7B%22x%22%3A0%2C%22y%22%3A0%7D%2C%22focus_pixel%22%3A%5B600%2C500%5D%7D&layers=roads%2Cbuildings%2Cpower%2Ctelecom%2Clabels&imageversion=ee45886aac8a91469f73e8dc1fee9e2b6d2cdc92befa723a41cc24c5d23154e7&featureversion=ae2086cbfc197ce1a949313fa944cca4d13902b90fbee000490bc08876d33058",
-    "viewport": {
-      "width": 320,
-      "height": 800
-    }
+  ],
+  "browser_acceptance": {
+    "passed": 225,
+    "total": 225
   }
-]
+}

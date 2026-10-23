@@ -3098,6 +3098,225 @@ body.ui-atlas-active {
 /* Original filenames and source URLs must wrap without widening the reader. */
 .report-body { overflow-wrap:anywhere; }
 .report-body .table-wrap { overscroll-behavior-x:contain; }
+
+/* Reference proportions: six distinct editorial compositions, measured at 4:3. */
+.ui-source-ranking .ua-ranks { margin: 10px 0; }
+.ui-editorial-atlas .ui-source-ranking button { min-height: 27px; padding: 6px 0; }
+.ui-market-subtitle { color: #cfddd9 !important; margin-top: -4px !important; }
+.ui-market-card .ua-facts { margin: 18px 0 12px; }
+.ui-market-card .ua-facts dt { display: flex; gap: 8px; align-items: center; }
+.ui-market-card > small { display: block; font-size: 8px; color: #819ba8; line-height: 1.6; }
+.ui-market-points > div { display: flex; gap: 13px; margin: 17px 0; align-items: start; }
+.ui-market-points > div > svg { width: 19px; height: 19px; color: #92b4af; margin-top: 2px; }
+.ui-market-points p { margin: 0; font-size: 10px; line-height: 1.55; }
+.ui-market-points b { display: block; color: #cededc; font-weight: 500; }
+.ui-market-points + .btn { width: 100%; }
+.ui-operator-marks { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px 14px; margin-top: 18px; align-items: center; }
+.ui-operator-marks button { color: #c9d6dc; font-size: 12px; font-weight: 600; letter-spacing: -.3px; padding: 0; text-align: center; overflow-wrap: anywhere; }
+.ui-operator-marks button:nth-child(2n) { font-family: Georgia,serif; font-weight: 400; font-size: 14px; }
+.ui-compact-dossier .ua-facts > div { padding: 6px 0; border: 0; }
+.ui-compact-dossier .ua-facts dd { color: #d4e1df; }
+.ui-compact-dossier .ui-dossier-tools { display: flex; align-items: center; gap: 14px; width: 100%; }
+.ui-compact-dossier .ui-dossier-tools > button { font-size: 8px; min-height: 24px; padding: 0; background: transparent; border: 0; }
+.ui-compact-dossier .ua-actions { gap: 7px; padding: 3px 0 0; }
+.ui-compact-dossier .ua-actions > .btn { width: 100%; }
+.ui-note-label { font-size: 9px; color: #a1b6bf; display: block; margin: 14px 0 9px; }
+#ui-campus-note { resize: vertical; min-height: 85px; padding: 10px; font-size: 10px; border: 1px solid #263b46; border-radius: 2px; background: #0b1823; }
+.ui-note-footer { display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-top: 8px; }
+.ui-note-footer small { font-size: 7px; color: #7996a3; }
+.ui-note-footer .text-button { font-size: 8px; }
+.ui-physical-view .ui-campus-deck .ui-takeaways > button { padding-block: 8px; }
+
+@media (min-width: 1101px) {
+  body.ui-atlas-active { --sidebar: clamp(168px,13.15vw,210px); }
+  .ui-atlas-active .sidebar { padding-inline: 13px; background: #0a1420; }
+  .ui-atlas-active .brand { margin-bottom: 22px; }
+  .ui-atlas-active .app-shell #content { padding-inline: 2.5vw; }
+  .ui-atlas-active .topbar { padding-inline: 2.5vw; }
+  .ui-editorial-atlas { --ui-rail: clamp(292px,23.5vw,370px); --ui-gap: 24px; }
+  .ui-editorial-atlas .ua-intro { margin-bottom: 20px; }
+  .ui-editorial-atlas .ua-rail { max-height: none; overflow: visible; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial,
+  .ui-editorial-atlas .ua-editorial { padding: 15px 0 17px; }
+  .ui-editorial-atlas .ua-editorial:first-child { padding-top: 12px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial h2,
+  .ui-editorial-atlas .ua-editorial h2 { font-size: clamp(23px,1.85vw,29px); line-height: 1.08; margin: 10px 0 9px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial p,
+  .ui-editorial-atlas .ua-editorial p { font-size: 10px; line-height: 1.55; margin: 8px 0; }
+  .ui-editorial-atlas .ua-editorial > .text-button { margin-top: 10px; font-size: 9px; }
+  .ui-editorial-atlas .ua-editorial > small { font-size: 7px; }
+  .ui-editorial-atlas .ua-ranks { margin-block: 10px; }
+  .ui-editorial-atlas .ua-ranks button { font-size: 10px; }
+  .ui-editorial-atlas .ua-rail .ui-kicker { font-size: 7px; }
+  .ui-editorial-atlas .ua-kpis { margin-top: 17px; gap: 26px; border-top: 0; }
+  .ui-editorial-atlas .ua-kpis .ua-metric { border-top: 1px solid #24363f; padding-top: 12px; }
+  .ui-editorial-atlas .ua-metric > strong { font-size: clamp(29px,2.4vw,38px); }
+  .ui-editorial-atlas .ua-map-stage { border-top: 0; }
+  .ui-editorial-atlas .ua-map-stage:after { box-shadow: inset 0 0 45px 4px #07131b66; }
+  .ui-editorial-atlas .ui-map-bottom { border-top-color: transparent; }
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-intro { min-height: 90px; }
+  .ui-editorial-atlas[data-ua-scale="3"] .ui-takeaways > button { padding-block: 7px; }
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-rail .ui-takeaways p { font-size: 9px !important; line-height: 1.5; }
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-rail .ui-partners > button { min-height: 28px; }
+  .ui-physical-view .ua-intro { min-height: 72px; margin-bottom: 7px; align-items: start; }
+  .ui-physical-view .ua-intro h1 { font-size: clamp(30px,2.8vw,43px); letter-spacing: -.9px; margin-top: 8px; }
+  .ui-physical-view .ua-intro .ui-subtitle { font-size: 10px; margin: 6px 0 0; }
+  .ui-physical-view .ua-intro-aside { padding-top: 0; }
+  .ui-physical-view .ua-intro-aside p { font-size: 9px; line-height: 1.5; margin-bottom: 9px; }
+  .ui-physical-view .ua-map-column > .ua-topics { gap: 16px; margin-bottom: 6px; border-bottom: 0; }
+  .ui-physical-view .ua-topics button { font-size: 8px; min-height: 27px; }
+  .ui-physical-view { --ua-map-height: clamp(380px,49dvh,590px); }
+  .ui-physical-view[data-ua-scale="5"] { --ua-map-height: clamp(330px,42dvh,500px); }
+  .ui-physical-view .ua-map-panel { position: relative; }
+  .ui-physical-view .ui-map-bottom { position: absolute; bottom: 30px; left: 12px; z-index: 3; border: 0; padding: 0; }
+  .ui-physical-view .ui-map-bottom > .text-button { display: none; }
+  .ui-physical-view .ua-scales { gap: 2px; }
+  .ui-physical-view .ua-scales button { min-height: 22px; font-size: 7px; padding: 4px 7px; background: #081520a6; }
+  .ui-physical-view .ua-scales button[aria-pressed="true"] { background: #234638d9; }
+  .ui-physical-view .ua-map-attribution { padding-top: 4px; min-height: 20px; font-size: 6px; }
+  .ui-physical-view .ua-map-attribution .text-button { font-size: 6px; }
+  .ui-physical-view #ua-physical-inspector { position: absolute; z-index: 3; left: 12px; bottom: 35px; max-width: 43%; }
+  .ui-physical-view .ua-physical { padding: 0; }
+  .ui-physical-view .ua-physical header h3,
+  .ui-physical-view .ua-physical > p { position: absolute; width: 1px; height: 1px; padding: 0; clip-path: inset(50%); overflow: hidden; }
+  .ui-physical-view .ua-physical label { width: 100%; max-width: 100%; }
+  .ui-physical-view .ua-physical select { width: 100%; min-height: 25px; background: #081720eb; font-size: 8px; }
+  .ui-physical-view .ua-map-legend { bottom: 74px; gap: 4px; }
+  .ui-physical-view .ua-map-legend span { font-size: 7px; }
+  .ui-physical-view .ua-map-legend small { font-size: 6px; }
+  .ui-physical-view .ua-coordinate { display: none; }
+  .ui-physical-view .ua-map-head { top: 12px; }
+  .ui-physical-view .ua-map-head p { font-size: 7px; }
+  .ui-physical-view .ua-scene-choice { top: 47px; padding: 3px; border-color: #23394088; }
+  .ui-physical-view .ua-scene-choice > span { display: none; }
+  .ui-physical-view .ua-layer-control { top: 46px; }
+  .ui-physical-view .ua-context-status { top: 80px; font-size: 6px; background: transparent; }
+  .ui-physical-view .ua-detail { margin-top: 12px; min-height: 0; }
+  .ui-physical-view .ui-evidence-deck { gap: 13px 25px; }
+  .ui-physical-view .ui-evidence-deck > section { padding-top: 10px; }
+  .ui-physical-view .ui-evidence-deck h3 { font-size: 10px !important; margin-bottom: 9px !important; }
+  .ui-physical-view .ui-evidence-deck .ua-facts > div { padding: 4px 0; font-size: 8px; border: 0; }
+  .ui-physical-view .ui-evidence-deck .ui-power-ladder button { font-size: 8px; padding: 6px 0; min-height: 27px; gap: 7px; grid-template-columns: minmax(78px,1fr) minmax(60px,1.3fr) 30px 56px; }
+  .ui-physical-view .ui-evidence-deck .ui-power-ladder .ui-caption { font-size: 7px; margin: 4px 0 8px; }
+  .ui-physical-view .ui-evidence-deck .ui-source-row { font-size: 8px; padding: 7px 0; }
+  .ui-physical-view .ui-evidence-deck .ui-source-row span { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .ui-physical-view .ui-evidence-deck .ui-source-row time { font-size: 7px; }
+  .ui-physical-view .ui-evidence-deck .ui-takeaways > button { padding: 5px 0; gap: 7px; }
+  .ui-physical-view .ui-evidence-deck .ui-takeaways p { font-size: 8px !important; line-height: 1.45 !important; }
+  .ui-physical-view .ui-evidence-deck .text-button { font-size: 8px; margin-top: 8px; }
+  .ui-physical-view .ui-evidence-deck .ui-takeaways > button > span { width: 16px; height: 16px; font-size: 6px; }
+  .ui-physical-view .ua-rail > .ua-editorial { padding-block: 13px; }
+  .ui-physical-view .ua-rail > .ua-editorial:first-child { padding-top: 0; }
+  .ui-physical-view .ua-rail .ua-facts > div { font-size: 9px; padding: 5px 0; }
+  .ui-physical-view .ua-rail .ui-compact-dossier h2 { margin-top: 9px; font-size: 24px; }
+  .ui-physical-view .ua-rail .ui-status-row { margin: 9px 0; }
+  .ui-physical-view .ua-rail > .ui-power-ladder { padding-block: 14px; }
+  .ui-physical-view .ua-rail > .ui-power-ladder button { font-size: 8px; padding: 7px 0; }
+  .ui-physical-view .ua-rail .ui-feature-metrics { margin: 10px 0; padding: 12px 0; }
+  .ui-physical-view .ua-rail .ui-takeaways > div { padding: 7px 0; }
+  .ui-physical-view .ua-rail .ui-takeaways p { font-size: 9px !important; }
+  .ui-physical-view .ua-rail .ui-feature-id { font-size: 7px; }
+  .ui-physical-view .ua-rail .ui-partners > button { min-height: 32px; }
+  .ui-physical-view .ua-rail .ui-partners b { font-family: Georgia,serif; color: #d5e3e0; font-size: 13px; }
+}
+@media (min-width: 1101px) and (max-height: 850px) {
+  .ui-editorial-atlas:not(.ui-physical-view) { --ua-map-height: calc(100dvh - 300px); }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial { padding-block: 8px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial h2 { font-size: 20px; margin-block: 7px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial p { font-size: 8px; line-height: 1.45; }
+  .ui-editorial-atlas .ua-rail .ui-source-ranking button { min-height: 21px; padding: 3px 0; font-size: 8px; }
+  .ui-editorial-atlas .ua-rail .ui-market-points > div { margin-block: 10px; }
+  .ui-editorial-atlas .ua-rail .ui-operator-marks { gap: 8px; margin-top: 10px; }
+  .ui-editorial-atlas .ua-kpis { margin-top: 10px; }
+  .ui-physical-view { --ua-map-height: 360px; }
+  .ui-physical-view[data-ua-scale="5"] { --ua-map-height: 330px; }
+}
+@media (min-width: 641px) and (max-width: 1100px) {
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial h2 { font-size: 22px; }
+  .ui-editorial-atlas .ui-source-ranking button { padding-block: 5px; font-size: 9px; }
+  .ui-editorial-atlas .ua-rail { max-height: none; overflow: visible; }
+  .ui-editorial-atlas .ua-editorial { padding-block: 13px; }
+  .ui-market-points p { font-size: 9px !important; }
+  .ui-operator-marks { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .ui-physical-view #ua-physical-inspector { position: absolute; left: 10px; bottom: 42px; z-index: 3; max-width: 55%; }
+  .ui-physical-view #ua-physical-inspector h3,.ui-physical-view #ua-physical-inspector > section > p { display: none; }
+  .ui-physical-view .ua-physical label { max-width: 100%; }
+  .ui-physical-view .ua-map-legend { bottom: 80px; }
+}
+@media (max-width: 640px) {
+  .ui-physical-view #ua-physical-inspector { position: absolute; left: 8px; right: 8px; bottom: 49px; z-index: 3; }
+  .ui-physical-view #ua-physical-inspector h3,.ui-physical-view #ua-physical-inspector > section > p { display: none; }
+  .ui-physical-view .ua-physical label { max-width: 100%; width: 100%; }
+  .ui-physical-view .ua-physical select { width: 100%; background: #081720ee; }
+  .ui-physical-view .ua-map-legend { bottom: 106px; }
+  .ui-physical-view .ua-coordinate { display: none; }
+  .ui-editorial-atlas .ui-source-ranking button { min-height: 36px; }
+  .ui-compact-dossier .ui-dossier-tools > button { min-height: 36px; font-size: 10px; }
+  .ui-compact-dossier .ua-facts > div { padding: 8px 0; }
+  .ui-operator-marks button { min-height: 38px; }
+}
+/* Market analyses run beside the complete map and its measurements. */
+@media (min-width: 1101px) {
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial,
+  .ui-editorial-atlas .ua-editorial { padding-block: 11px 13px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial h2,
+  .ui-editorial-atlas .ua-editorial h2 { font-size: clamp(22px,1.78vw,28px); line-height: 1.06; margin: 9px 0 7px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial p,
+  .ui-editorial-atlas .ua-editorial p { font-size: 9.5px; line-height: 1.5; margin-block: 7px; }
+  .ui-editorial-atlas .ua-rail .ui-source-ranking { margin-block: 8px; }
+  .ui-editorial-atlas .ua-rail .ui-source-ranking button { min-height: 23px; padding: 4px 0; font-size: 9px; }
+  .ui-editorial-atlas .ui-market-points p { margin: 0 !important; font-size: 9px !important; line-height: 1.45 !important; }
+  .ui-editorial-atlas .ui-market-points > div { margin-block: 13px; }
+  .ui-editorial-atlas .ui-market-card .ua-facts { margin-block: 12px 9px; }
+  .ui-editorial-atlas .ui-market-card .ua-facts > div { font-size: 9px; padding-block: 7px; }
+  .ui-editorial-atlas .ui-takeaways p { margin: 0 !important; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-map-column,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-map-column { grid-column: 1; grid-row: 1; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-rail,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-rail { grid-column: 2; grid-row: 1 / 3; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-kpis,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-kpis { grid-column: 1; grid-row: 2; align-self: start; gap: 15px; margin-top: 12px; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-kpis strong,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-kpis strong { font-size: 28px; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-kpis span,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-kpis span { font-size: 8px; }
+  .ui-editorial-atlas[data-ua-scale="2"] .ua-kpis small,
+  .ui-editorial-atlas[data-ua-scale="3"] .ua-kpis small { font-size: 7px; }
+  .ui-physical-view #ua-physical-inspector.ui-feature-unavailable { bottom: 60px; max-width: 65%; background: #13222cf2; padding: 8px; }
+  .ui-physical-view #ua-physical-inspector.ui-feature-unavailable .ua-physical > p { position: static; clip-path: none; width: auto; height: auto; overflow: visible; display: block; }
+}
+.ui-atlas-active .ui-guide-nav { display: flex; align-items: center; }
+.ui-atlas-active .ui-guide-nav svg { width: 13px; height: 13px; }
+.ui-atlas-active .side-bottom .service-badge { white-space: nowrap; letter-spacing: .8px; }
+@media (min-width: 1101px) and (max-height: 850px) {
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial h2 { font-size: 19px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial { padding-block: 6px 9px; }
+  .ui-editorial-atlas .ua-rail:not(:has(.ua-selected)) .ua-editorial p { font-size: 8px; }
+  .ui-editorial-atlas .ua-rail .ui-source-ranking button { min-height: 20px; padding: 3px 0; font-size: 8px; }
+  .ui-editorial-atlas .ua-rail .ui-market-card .ua-facts { margin-block: 8px; }
+  .ui-editorial-atlas .ua-rail .ui-market-card .ua-facts > div { padding-block: 4px; font-size: 8px; }
+  .ui-editorial-atlas .ui-market-points > div { margin-block: 9px; }
+  .ui-editorial-atlas .ui-market-points p { font-size: 8px !important; }
+}
+@media (max-width: 1100px) {
+  .ui-physical-view #ua-physical-inspector.ui-feature-unavailable { background: #13222cf2; padding: 6px; bottom: 60px; }
+  .ui-physical-view #ua-physical-inspector.ui-feature-unavailable .ua-physical > p { display: block; font-size: 9px; }
+}
+@media (min-width: 1101px) and (max-height: 850px) {
+  .ui-atlas-active .topbar { height: 52px; }
+  .ui-atlas-active .app-shell #content { padding-top: 8px; }
+  .ui-editorial-atlas .ua-intro { min-height: 0; margin-bottom: 10px; }
+  .ui-editorial-atlas .ua-intro h1 { font-size: 32px; line-height: 1.02; margin-top: 6px; }
+  .ui-editorial-atlas .ua-intro .eyebrow { font-size: 7px; line-height: 1.4; }
+  .ui-atlas-active .sidebar .nav-item,
+  .ui-atlas-active .sidebar .nav-button { min-height: 29px; padding-block: 6px; }
+  .ui-atlas-active .sidebar .brand { margin-bottom: 13px; }
+  .ui-atlas-active .workspace-nav-more { margin-top: 12px; padding-top: 7px; }
+  .ui-atlas-active .side-tool { min-height: 24px; }
+  .ui-atlas-active .side-bottom p { display: none; }
+  .ui-physical-view .ua-intro { min-height: 65px; }
+}
+.ui-atlas-active .sidebar { overflow-y: auto; scrollbar-width: thin; }
 </style></head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -7972,14 +8191,14 @@ const AtlasTerrain = (() => {
       const ocean = b > r * 1.12 && b > g * 1.02,
         relief = (r * 0.27 + g * 0.58 + b * 0.15) / 255;
       if (ocean) {
-        pixels[j] = 6;
-        pixels[j + 1] = 18 + relief * 8;
-        pixels[j + 2] = 27 + relief * 9;
+        pixels[j] = 5;
+        pixels[j + 1] = 13 + relief * 4;
+        pixels[j + 2] = 23 + relief * 6;
       } else {
-        const v = Math.pow(relief, 1.45);
-        pixels[j] = 9 + v * 21;
-        pixels[j + 1] = 25 + v * 32;
-        pixels[j + 2] = 31 + v * 32;
+        const v = Math.pow(relief, 2.1);
+        pixels[j] = 5 + v * 12;
+        pixels[j + 1] = 16 + v * 23;
+        pixels[j + 2] = 26 + v * 28;
       }
     }
 
@@ -8149,7 +8368,7 @@ function uaContextSource(){
 class UnifiedAtlasMap extends CatalogMap {
   constructor(canvas){
     super(canvas);this.ua=true;this.skipCatalogSave=true;this.scope={sites:uaRows(false).filter(r=>r.mapped),bounds:[-180,-80,180,80]};this.labels=uaState.layers.labels;this.level=uaState.scale;this.markerLabels=[];
-    const selected=uaRecord(uaState.selected),center=uaState.region==='All'?(uaState.scale===1?[39,-43]:[35,5]):(catalogCameras[uaState.region]||catalogCameras.All);
+    const selected=uaRecord(uaState.selected),center=uaState.region==='All'?(uaState.scale===1?[39,-43]:[24,-12]):(catalogCameras[uaState.region]||catalogCameras.All);
     Object.assign(this,{flat:uaState.scale>=2,lat:center[0],lon:center[1],zoom:uaState.scale===1?1.7:1});
     if(uaState.camera)Object.assign(this,{...uaState.camera,bounds:[...uaState.camera.bounds]});
     else if(this.flat){const span=uaState.scale===2?18:uaState.scale===3?1.6:.035;if(selected?.mapped)this.bounds=[selected.lon-span/2,Math.max(-80,selected.lat-span*.3),selected.lon+span/2,Math.min(80,selected.lat+span*.3)];else this.bounds=uaFitBounds(this.scope.sites,null,.7,.5);}
@@ -8171,18 +8390,18 @@ class UnifiedAtlasMap extends CatalogMap {
     const c=this.ctx,w=this.w,h=this.h;c.setTransform(this.dpr,0,0,this.dpr,0,0);this.prepare();
     c.fillStyle='#08121c';c.fillRect(0,0,w,h);
     const R=this.radius;
-    if(!this.flat){const glow=c.createRadialGradient(this.cx,this.cy,R*.91,this.cx,this.cy,R*1.1);glow.addColorStop(0,'#6fd7c93b');glow.addColorStop(.62,'#287a8e20');glow.addColorStop(1,'#153c5000');c.fillStyle=glow;c.beginPath();c.arc(this.cx,this.cy,R*1.1,0,Math.PI*2);c.fill();}
+    if(!this.flat){const glow=c.createRadialGradient(this.cx,this.cy,R*.94,this.cx,this.cy,R*1.13);glow.addColorStop(0,'#63d5c744');glow.addColorStop(.32,'#3c9eae36');glow.addColorStop(.7,'#194b6415');glow.addColorStop(1,'#153c5000');c.fillStyle=glow;c.beginPath();c.arc(this.cx,this.cy,R*1.13,0,Math.PI*2);c.fill();}
     const terrain=AtlasTerrain.paint(this);
     if(!terrain){c.fillStyle='#0b2029';if(this.flat)c.fillRect(0,0,w,h);else{c.beginPath();c.arc(this.cx,this.cy,R,0,Math.PI*2);c.fill();}}
     c.save();if(!this.flat){c.beginPath();c.arc(this.cx,this.cy,R,0,Math.PI*2);c.clip();}
-    for(const line of (ATLAS_CONTEXT.coast||W.lines||[]))this.path(line,this.flat?'#638c9438':'#6baba533',this.flat?.7:.45);
+    for(const line of (ATLAS_CONTEXT.coast||W.lines||[]))this.path(line,this.flat?'#638c9428':'#6baba51c',this.flat?.65:.4);
     if(this.flat){
-      for(const line of ATLAS_CONTEXT.lakes||[])this.path(line,'#49718450',.7,'#0a1a26');
-      c.setLineDash([2,5]);for(const line of ATLAS_CONTEXT.states||[])this.path(line,'#8db6bc40',.65);c.setLineDash([]);
-      if(uaState.layers.roads)for(const line of ATLAS_CONTEXT.roads||[])this.path(line,this.level>=3?'#9abfc66b':'#6a9ba749',this.level>=3?1:.6);
+      for(const line of ATLAS_CONTEXT.lakes||[])this.path(line,'#49718440',.6,'#081421');
+      c.setLineDash([2,5]);for(const line of ATLAS_CONTEXT.states||[])this.path(line,'#8db6bc30',.6);c.setLineDash([]);
+      if(uaState.layers.roads)for(const line of ATLAS_CONTEXT.roads||[])this.path(line,this.level>=3?'#9abfc64b':'#6a9ba729',this.level>=3?.85:.5);
     }
     c.restore();
-    if(!this.flat){c.strokeStyle='#8ce6dd30';c.lineWidth=.8;c.beginPath();c.arc(this.cx,this.cy,R,0,Math.PI*2);c.stroke();}
+    if(!this.flat){const rim=c.createRadialGradient(this.cx,this.cy,R*.82,this.cx,this.cy,R);rim.addColorStop(0,'#4bafc000');rim.addColorStop(.8,'#4bafc00b');rim.addColorStop(1,'#70d4d536');c.fillStyle=rim;c.beginPath();c.arc(this.cx,this.cy,R,0,Math.PI*2);c.fill();c.strokeStyle='#8ce6dd3b';c.lineWidth=.8;c.stroke();}
     const rect=this.canvas.getBoundingClientRect();this.labelExclusions=[...this.canvas.parentElement.querySelectorAll('.ua-map-legend,.ua-map-buttons,.ua-coordinate,.ua-layer-control,.ua-context-status,.ua-scales')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x-rect.x,y:b.y-rect.y,w:b.width,h:b.height};});
     this.drawMarkers();if(this.flat&&this.labels)this.drawPlaces();
     const signature=JSON.stringify([this.snapshot(),w,h]);if(signature!==this.lastCameraSignature){this.lastCameraSignature=signature;document.dispatchEvent(new CustomEvent('atlas-camera-change',{detail:this}));}
@@ -8190,28 +8409,32 @@ class UnifiedAtlasMap extends CatalogMap {
   drawMarkers(){
     if(!this.ua)return;
     if(this.flat){if(uaState.layers.tiles)this.drawTiles();this.drawContext();}
-    const c=this.ctx,grid=new Map(),selected=uaState.selected;this.groups=[];this.markerLabels=[];
+    const c=this.ctx,grid=new Map(),lightPixels=new Set(),selected=uaState.selected;this.groups=[];this.markerLabels=[];
     const rows=[...this.scope.sites],selection=uaRecord(selected);if(selection?.mapped&&!rows.some(r=>r.id===selected))rows.push(selection);
     const cell=this.flat?(this.bounds[2]-this.bounds[0]<.08?12:30):42;
     for(const r of rows){
       const p=this.project(r.lon,r.lat);if(p.z<.02||p.x<8||p.x>this.w-8||p.y<38||p.y>this.h-48)continue;
-      const color=r.collection==='projects'||r.collection==='epochdc'?'#abf0d1':r.collection==='gpu'?'#a9a9ee':'#94c4db';
-      c.shadowColor=color;c.shadowBlur=r.collection==='osm'?3:7;c.fillStyle=color;c.globalAlpha=.5+.5*Math.max(.1,p.z);c.beginPath();c.arc(p.x,p.y,r.collection==='osm'?.9:1.5,0,Math.PI*2);c.fill();c.shadowBlur=0;c.globalAlpha=1;
+      const color=r.collection==='projects'||r.collection==='epochdc'?'#b9f6e0':r.collection==='gpu'?'#b1b3ff':'#c2e6f3';
+      const lightKey=Math.round(p.x/2.5)+':'+Math.round(p.y/2.5);if(!lightPixels.has(lightKey)){lightPixels.add(lightKey);c.shadowColor=color;c.shadowBlur=r.collection==='osm'?4:7;c.fillStyle=color;c.globalAlpha=.4+.5*Math.max(.1,p.z);c.beginPath();c.arc(p.x,p.y,r.collection==='osm'?.7:1.25,0,Math.PI*2);c.fill();c.shadowBlur=0;c.globalAlpha=1;}
       const key=this.flat?Math.floor(p.x/cell)+':'+Math.floor(p.y/cell):Math.floor((r.lon+180)/(12/this.zoom))+':'+Math.floor((r.lat+90)/(8/this.zoom));let g=grid.get(key);if(!g){g={x:0,y:0,r:3,sites:[],selected:false};grid.set(key,g);}g.x+=p.x;g.y+=p.y;g.sites.push(r);g.selected||=r.id===selected;
     }
     const sorted=[...grid.values()].sort((a,b)=>Number(b.selected)-Number(a.selected)||b.sites.length-a.sites.length);
-    for(const [index,g] of sorted.entries()){
-      g.x/=g.sites.length;g.y/=g.sites.length;g.r=g.selected?12:g.sites.length>5?Math.min(this.w<450?11:17,4+Math.sqrt(g.sites.length)*.4):3;this.groups.push(g);
+    const prominent=[],budget=this.w<450?4:this.flat?6:7;
+    for(const g of sorted){
+      g.x/=g.sites.length;g.y/=g.sites.length;
+      g.prominent=g.selected||g.sites.length>=12&&prominent.length<budget&&prominent.every(p=>Math.hypot(p.x-g.x,p.y-g.y)>Math.min(85,this.w*.115));
+      if(g.prominent)prominent.push(g);
+      g.r=g.selected?13:g.prominent?Math.min(this.w<450?12:19,7+Math.sqrt(g.sites.length)*.42):3;this.groups.push(g);
       g.representative=g.sites.find(r=>r.id===selected)||g.sites.find(r=>r.collection==='projects')||g.sites[0];
-      if(g.sites.length<=5&&!g.selected)continue;
-      const color=g.selected?'#c8ffe7':index<8?'#96f1c5':'#9cb5ee';
-      const light=c.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*2.6);light.addColorStop(0,color+'65');light.addColorStop(.35,color+'25');light.addColorStop(1,color+'00');c.fillStyle=light;c.beginPath();c.arc(g.x,g.y,g.r*2.6,0,Math.PI*2);c.fill();
-      c.fillStyle=color+'28';c.strokeStyle=color+'90';c.lineWidth=g.selected?1.8:1;c.beginPath();c.arc(g.x,g.y,g.r,0,Math.PI*2);c.fill();c.stroke();c.fillStyle='#e1ffed';c.beginPath();c.arc(g.x,g.y,2,0,Math.PI*2);c.fill();
-      c.strokeStyle=color+'30';c.lineWidth=.6;c.beginPath();c.arc(g.x,g.y,g.r+4,0,Math.PI*2);c.stroke();
+      if(!g.prominent){if(g.sites.length>5){c.shadowColor='#b9daff';c.shadowBlur=9;c.fillStyle='#c7e7ffb0';c.fillRect(g.x-1,g.y-1,2,2);c.shadowBlur=0;}continue;}
+      const color=g.selected?'#c8ffe7':'#94f0c8';
+      const light=c.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*2.5);light.addColorStop(0,color+'80');light.addColorStop(.4,color+'30');light.addColorStop(1,color+'00');c.fillStyle=light;c.beginPath();c.arc(g.x,g.y,g.r*2.5,0,Math.PI*2);c.fill();
+      c.fillStyle=color+'45';c.strokeStyle=color+'c5';c.lineWidth=g.selected?1.8:1.1;c.beginPath();c.arc(g.x,g.y,g.r,0,Math.PI*2);c.fill();c.stroke();
+      c.strokeStyle=color+'38';c.lineWidth=.6;c.beginPath();c.arc(g.x,g.y,g.r+4,0,Math.PI*2);c.stroke();
     }
     if(this.labels){
       const budget=this.w<450?3:this.flat?8:7, usedTitles=new Set();
-      for(const g of sorted){
+      for(const g of [...sorted].sort((a,b)=>Number(b.prominent)-Number(a.prominent))){
         if(this.markerLabels.length>=budget)break;if(g.sites.length<3&&!g.selected&&this.level<2)continue;
         const title=g.selected?g.representative.name:uaClusterTitle(g.sites),label=title.length>27?title.slice(0,25)+'…':title;
         if(usedTitles.has(label)&&!g.selected)continue;
@@ -8264,9 +8487,9 @@ class UnifiedFacilityScene extends FacilityScene {
   destroy(){clearTimeout(this.uaTimer);super.destroy();}
 }
 class UnifiedCampusScene extends CampusScene {
-  polygon(rings,z,fill,stroke,width=1){const selected=stroke==='#79e9ca80'||stroke==='#b7ffe9';this.ctx.save();if(selected){this.ctx.shadowColor='#9aebc8';this.ctx.shadowBlur=8;}FacilityScene.prototype.polygon.call(this,rings,z,fill?selected?'#70d5ad33':'#8abfac16':null,stroke?selected?'#b0f9d6':'#7fbca2a0':null,selected?1.7:.8);this.ctx.restore();}
+  polygon(rings,z,fill,stroke,width=1){const selected=stroke==='#79e9ca80'||stroke==='#b7ffe9';this.ctx.save();this.ctx.shadowColor='#9aebc8';this.ctx.shadowBlur=selected?12:4;FacilityScene.prototype.polygon.call(this,rings,z,fill?selected?'#70d5ad40':'#73beaa20':null,stroke?selected?'#c5ffe5':'#94dbb9c0':null,selected?2:1.1);this.ctx.restore();}
   hit(event){const roof=FacilityScene.prototype.hit.call(this,event);if(roof)return roof;if(!uaState.layers.power)return null;const r=this.canvas.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;return (this.powerPaths||[]).find(row=>row.pts.some((b,i)=>{if(!i)return false;const a=row.pts[i-1],dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-a.x-t*dx,y-a.y-t*dy)<7;}))?.feature;}
-  drawGround(){this.ctx.save();this.ctx.filter='saturate(.4) brightness(.68)';CampusScene.prototype.drawGround.call(this);this.ctx.restore();this.powerPaths=[];if(!this.ua||!uaState.layers.power)return;const c=this.ctx;for(const collection of this.powerCollections)for(const row of contextPaths(this,collection)){const feature=this.features.find(f=>f.record.id===row.feature.id);if(!feature)continue;this.powerPaths.push({...row,feature});c.beginPath();row.pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle=this.inspected.id===feature.record.id?'#ffe0a4':'#d9ac68c9';c.lineWidth=1.6;c.stroke();}}
+  drawGround(){this.ctx.save();this.ctx.filter='saturate(.35) brightness(.60)';CampusScene.prototype.drawGround.call(this);this.ctx.restore();this.powerPaths=[];if(!this.ua||!uaState.layers.power)return;const c=this.ctx;for(const collection of this.powerCollections)for(const row of contextPaths(this,collection)){const feature=this.features.find(f=>f.record.id===row.feature.id);if(!feature)continue;this.powerPaths.push({...row,feature});c.beginPath();row.pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle=this.inspected.id===feature.record.id?'#ded1ff':'#b4a7e5a0';c.lineWidth=1.3;c.stroke();}}
 
   constructor(canvas,manifest){const old={mode:campusState.mode,camera:campusState.camera,routeCamera:campusState.routeCamera,feature:campusState.feature};Object.assign(campusState,{mode:uaState.mode==='3d'?'oblique':'aerial',camera:null,routeCamera:null,feature:null});super(canvas,manifest);Object.assign(campusState,old);this.ua=true;this.skipCameraSave=true;this.labels=uaState.layers.labels;
     this.powerCollections=ENERGY_COLLECTIONS.filter(c=>c.scene_id===manifest.id);
@@ -8475,29 +8698,32 @@ uaKpis = function (rows) {
     );
   return `<button class="ua-metric" data-ui-measure="power"><span>Published facility power</span><strong>${uiPower(model.power)}</strong><small>${model.known} quantified centers · Epoch current model</small></button><button class="ua-metric" data-ui-measure="locations"><span>Mapped source records</span><strong>${fmt(mapped.length)}</strong><small>${fmt(rows.length - mapped.length)} additional records without coordinates</small></button><button class="ua-metric" data-ui-measure="hardware"><span>Published GPU clusters</span><strong>${fmt(gpu.length)}</strong><small>Native records, including historical phases</small></button><button class="ua-metric" data-ui-measure="coverage"><span>Countries & territories</span><strong>${fmt(countries.size)}</strong><small>${fmt(rows.length)} records across independent publications</small></button>`;
 };
+function uiSourceRanking(rows, field = "region", count = 5) {
+  return `<div class="ua-ranks ui-source-ranking">${uaRanks(rows, field, count).map(([name, n], i) => `<button ${field === "region" ? "data-ua-region" : "data-ua-country"}="${esc(name)}"><span>${String(i + 1).padStart(2, "0")}</span><b>${esc(name)}</b><strong>${fmt(n)}</strong></button>`).join("")}</div><small>Native source records · publications may overlap</small>`;
+}
+function uiOperatorMarks(rows) {
+  return `<div class="ui-operator-marks" aria-label="Operators in this scope">${uaRanks(rows.filter(r => r.operator && !/unknown|not supplied/i.test(r.operator)), "operator", 6).map(([name]) => `<button data-ui-operator="${esc(name)}">${esc(name)}</button>`).join("")}</div>`;
+}
+function uiRegionalRail(rows) {
+  const local = rows.filter(r => r.mapped && r.lon > -78.5 && r.lon < -76.5 && r.lat > 38 && r.lat < 39.5);
+  if (!local.length) return null;
+  const model = uiModel(local), projects = local.filter(r => r.collection === "projects");
+  return `<section class="ua-editorial ui-market-card">${uiKicker("01 / MARKET FOCUS")}<h2>Northern Virginia</h2><p class="ui-market-subtitle">An established compute market.</p><p>Explore the published facilities around Ashburn and Northern Virginia, from mapped infrastructure to dated project disclosures.</p><dl class="ua-facts"><div><dt>${uiIcon("power")} Published facility power</dt><dd>${uiPower(model.power)}</dd></div><div><dt>${uiIcon("building")} Mapped source records</dt><dd>${fmt(local.length)}</dd></div><div><dt>${uiIcon("source")} Project dossiers</dt><dd>${projects.length}</dd></div><div><dt>${uiIcon("layers")} Source collections</dt><dd>${new Set(local.map(r => r.collection)).size}</dd></div></dl><small>Power: Epoch current model · ${model.known} quantified centers.<br>Records within 38–39.5°N, 76.5–78.5°W; not a market census.</small></section><section class="ua-editorial">${uiKicker("02 / INFRASTRUCTURE ADVANTAGE")}<div class="ui-market-points"><div>${uiIcon("building")}<p><b>Physical infrastructure</b>Inspect native mapped outlines and published facility locations.</p></div><div>${uiIcon("power")}<p><b>Power with a clear boundary</b>Keep facility-power models separate from project IT capacity.</p></div><div>${uiIcon("source")}<p><b>Original evidence</b>Read the disclosures and exact source fields behind each record.</p></div></div><button class="btn primary" data-ui-market="virginia">Explore Northern Virginia ${uiIcon("arrow")}</button></section><section class="ua-editorial">${uiKicker("03 / OPERATORS IN THIS SCOPE")}${uiOperatorMarks(local)}</section>`;
+}
 uaWorldRail = function (rows) {
-  const region =
-      uaState.country !== "All"
-        ? uaState.country
-        : uaState.region === "Atlantic"
-          ? "All"
-          : uaState.region,
-    continent = uaState.scale === 1,
-    regional = uaState.scale >= 2,
+  if (uaState.scale === 2 && uaState.country === "United States") {
+    const market = uiRegionalRail(rows);
+    if (market) return market;
+  }
+  const region = uaState.country !== "All" ? uaState.country : uaState.region,
+    continental = uaState.scale === 1,
+    atlantic = continental && ["All", "Atlantic"].includes(region),
     model = uiModel(rows),
-    rank = uaRanks(rows, "country", 3),
-    gpu = uaSort(
-      rows.filter(
-        (r) =>
-          r.collection === "gpu" &&
-          !r.native.anonymous &&
-          !r.native.superseded_by,
-      ),
-    ).slice(0, 1),
-    projects = rows.filter((r) => r.collection === "projects");
-  return `<section class="ua-editorial">${uiKicker("01 / " + (regional ? "REGIONAL PERSPECTIVE" : "GLOBAL TAKEAWAY"))}<h2>${region !== "All" ? esc(region) + ".<br>A landscape of opportunity." : continent ? "Two continents.<br>One compute economy." : "Compute is a global<br>asset class."}</h2><p>${region !== "All" ? `${fmt(rows.length)} source records connect ${esc(region)}’s mapped facilities, operators and AI infrastructure.` : continent ? "Explore the infrastructure on both sides of the Atlantic, from established markets to new compute clusters." : "From silicon to substations, follow the physical infrastructure behind the AI economy."}</p><button class="text-button" data-ui-preset="${regional ? "metro" : "atlantic"}">${regional ? "Explore Chicago–Northern Indiana" : "Explore the transatlantic view"} ${uiIcon("arrow")}</button></section>
-  <section class="ua-editorial">${uiKicker("02 / " + (regional ? "LOCAL BUILDOUT" : "WHERE COMPUTE LIVES"))}<h2>${regional ? "Read the local<br>development story." : "A global footprint.<br>Local foundations."}</h2>${regional ? `<p>${projects.length} archived project dossiers and ${model.count} AI center records in this scope. Follow each project’s dated power and development evidence.</p><button class="text-button" data-ua-collection="projects">Explore project research ${uiIcon("arrow")}</button>` : `<div class="ua-ranks">${rank.map(([country, count], i) => `<button data-ua-country="${esc(country)}"><span>${String(i + 1).padStart(2, "0")}</span><b>${esc(country)}</b><strong>${fmt(count)}</strong></button>`).join("")}</div><small>Source records by country · overlapping publications</small>`}</section>
-  <section class="ua-editorial ui-buildout-card">${uiKicker("03 / INSIDE THE BUILDOUT")}<h2>From the landscape<br>to a single facility.</h2><p>Inspect the machines, power, counterparties and original evidence behind a location.</p>${gpu.map((r) => `<button class="ui-featured-record" data-ua-select="${esc(r.id)}"><span>${esc(r.name)}</span><small>${compact(r.native.h100_equivalents)} H100e · ${esc(r.native.date || "Undated")}</small>${uiIcon("arrow")}</button>`).join("")}<button class="text-button" data-ui-preset="campus">Enter New Carlisle ${uiIcon("arrow")}</button></section>`;
+    globalModel = uiModel(uaRecords()),
+    share = model.power != null && globalModel.power ? Math.round(model.power / globalModel.power * 100) : null,
+    projects = rows.filter(r => r.collection === "projects"),
+    heading = atlantic ? "North America and Europe.<br>A connected compute economy." : region !== "All" ? esc(region) + ".<br>A landscape of opportunity." : "Compute is a global<br>asset class.";
+  return `<section class="ua-editorial">${uiKicker("01 / " + (continental ? "REGIONAL TAKEAWAY" : "GLOBAL TAKEAWAY"))}<h2>${heading}</h2><p>${atlantic ? `${share == null ? "Explore" : share + "% of the captured current facility-power model is reported in"} these two continents. Follow the places, operators and original evidence behind the footprint.` : "From silicon to substations, the physical infrastructure behind AI connects power, capital and place."}</p><button class="text-button" ${atlantic ? 'data-ui-preset="region"' : 'data-ui-preset="atlantic"'}>${atlantic ? "Explore the regional landscape" : "Explore North America & Europe"} ${uiIcon("arrow")}</button></section><section class="ua-editorial">${uiKicker("02 / " + (atlantic ? "TRANSATLANTIC FOOTPRINT" : "WHERE COMPUTE LIVES"))}<h2>${atlantic ? "Two continents.<br>Local foundations." : "Where the capacity<br>is taking shape."}</h2>${uiSourceRanking(rows, atlantic ? "country" : "region", 5)}</section><section class="ua-editorial ui-buildout-card">${uiKicker("03 / THE NEXT BUILDOUT")}<h2>A more distributed,<br>more connected landscape.</h2><p>${fmt(projects.length)} project dossiers connect this geographic view to disclosed development, dated power scopes and counterparties.</p><button class="text-button" data-ui-preset="campus">Inside a campus ${uiIcon("arrow")}</button></section>`;
 };
 function uiPartners(r) {
   if (r.collection === "projects") {
@@ -8587,23 +8813,23 @@ uaSelectedRail = function (r, rows) {
           date: phase.as_of,
         }
       : m;
+  if (!phase && r.mapped && uaState.scale >= 3) return uiCompactDossier(r, rows);
   return `<section id="ua-selection" class="ua-editorial ua-selected">${uiKicker(physical ? "01 / FACILITY DOSSIER" : "01 / SELECTED LOCATION", `<button class="text-button" data-ua-clear-selection aria-label="Clear selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(phase ? phase.scope : r.name)}</h2><p class="ui-place">${uiIcon("pin")}${esc(r.place || r.country)}</p>${!inside ? '<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>' : ""}<div class="ui-status-row">${uaBadge(r)}${r.collection === "gpu" ? `<span>${esc(r.native.status)}</span>` : ""}</div><div class="ua-selected-number"><b>${metric.value == null ? (r.geometry ? "Mapped footprint" : "Location record") : compact(metric.value) + " " + metric.unit}</b><span>${esc(metric.label)} · ${esc(metric.date || r.date || "Not dated")}</span></div><dl class="ua-facts"><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not disclosed")}</dd></div>${r.collection === "projects" ? `<div><dt>Target IT model</dt><dd>${r.target_mw == null ? "Not quantified" : fmt(r.target_mw) + " MW IT"}</dd></div>` : ""}<div><dt>Location basis</dt><dd>${esc(r.coordinate_basis || "Not supplied")}</dd></div></dl><div class="ua-actions">${r.mapped ? `<button class="btn primary" data-ua-dive>${physical ? "Inspect physical features" : uaState.scale < 3 ? "Explore this market" : "Enter this campus"} ${uiIcon("arrow")}</button>` : "<p>No map location supplied.</p>"}${researchPin(r.id)}<button class="text-button" data-ua-compare="${esc(r.id)}">${uiIcon("compare")}${uaState.compare.includes(r.id) ? "Comparing" : "Compare"}</button><button class="text-button" data-ua-export="${esc(r.id)}">Export ↓</button></div></section>${physical && r.collection === "projects" ? uiPowerLadder(r) : `<section class="ua-editorial">${uiKicker("02 / KEY TAKEAWAYS")}<div class="ui-takeaways">${uiTakeaways(r)}</div><button class="text-button" data-ua-topic="sources">Read original evidence ${uiIcon("arrow")}</button></section>`}<section class="ua-editorial">${uiKicker("03 / COUNTERPARTIES")}<div class="ui-partners">${uiPartners(r)}</div><button class="text-button" data-ua-topic="partners">All disclosed relationships ${uiIcon("arrow")}</button></section>${physical ? `<section class="ua-editorial ui-note-card">${uiKicker("04 / ANALYST NOTES")}<p>Your questions, assumptions and observations stay attached to this source record.</p><button class="text-button" data-ua-topic="notes">${saved.notes[r.id] ? "Read your note" : "Add a research note"} +</button></section>` : ""}`;
 };
+function uiEvidenceSources(r) {
+  const claims = r.collection === "projects" ? atlasResearchProfile(r.native).rows : [];
+  const sources = [...new Map(claims.map(p => [p.source_id, p])).values()].slice(0, 3);
+  return `<section class="ui-deck-sources"><h3>${uiIcon("source")} Sources & evidence</h3>${sources.length ? sources.map(p => `<button class="ui-source-row" data-ui-claim="${esc(p.id)}">${uiIcon("source")}<span>${esc(primarySource(p.source_id)?.title || atlasResearchLabel(p))}</span><time>${esc(p.as_of || "Undated")}</time></button>`).join("") : `<p>${esc(UA_SHORT[r.collection])} retains its original fields and source references.</p>`}<button class="text-button" data-ua-topic="sources">View all source evidence ${uiIcon("arrow")}</button></section>`;
+}
 function uiOverview(r) {
-  const sources =
-      r.collection === "projects" ? atlasResearchProfile(r.native).rows : [],
-    m = uaMeasure(r);
-  return `<div class="ui-evidence-deck"><section>${r.collection === "projects" ? uiPowerLadder(r) : `<h3>${uiIcon("power")} Power & compute</h3>${uaPowerContent(r)}`}</section><section><h3>${uiIcon("building")} Facility attributes</h3><dl class="ua-facts"><div><dt>Source identity</dt><dd>${esc(r.id)}</dd></div><div><dt>Country / territory</dt><dd>${esc(r.country)}</dd></div><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Not supplied")}</dd></div><div><dt>Physical evidence</dt><dd>${r.geometry ? "Native mapped footprint" : CAMPUS_SCENES.scenes.some((s) => s.project_id === r.id) ? "Dated imagery & reviewed roof outlines" : "Independent mapped context"}</dd></div></dl></section><section><h3>${uiIcon("source")} Sources & evidence</h3>${
-    sources.length
-      ? sources
-          .slice(0, 3)
-          .map(
-            (p) =>
-              `<button class="ui-source-row" data-ui-claim="${esc(p.id)}">${uiIcon("source")}<span>${esc(primarySource(p.source_id)?.title || atlasResearchLabel(p))}</span><time>${esc(p.as_of || "Undated")}</time></button>`,
-          )
-          .join("")
-      : `<p>${esc(UA_SHORT[r.collection])} retains the native source fields, reporting date and original references.</p>`
-  }<button class="text-button" data-ua-topic="sources">View all source evidence ${uiIcon("arrow")}</button></section><section><h3>${uiIcon("check")} Key takeaways</h3><div class="ui-takeaways">${uiTakeaways(r)}</div></section></div>`;
+  const m = uaMeasure(r), campus = uaState.scale === 4;
+  const takeaways = `<section class="ui-deck-takeaways"><h3>${uiIcon("check")} Key takeaways</h3><div class="ui-takeaways">${uiTakeaways(r)}</div></section>`;
+  if (campus) return `<div class="ui-evidence-deck ui-campus-deck">${uiEvidenceSources(r)}${takeaways}</div>`;
+  return `<div class="ui-evidence-deck"><section>${r.collection === "projects" ? uiPowerLadder(r) : `<h3>${uiIcon("power")} Power & compute</h3>${uaPowerContent(r)}`}</section><section><h3>${uiIcon("building")} Facility attributes</h3><dl class="ua-facts"><div><dt>Source identity</dt><dd>${esc(r.id)}</dd></div><div><dt>Country / territory</dt><dd>${esc(r.country)}</dd></div><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Not supplied")}</dd></div><div><dt>Physical evidence</dt><dd>${r.geometry ? "Native mapped footprint" : CAMPUS_SCENES.scenes.some(s => s.project_id === r.id) ? "Historical imagery & reviewed outlines" : "Independent mapped context"}</dd></div></dl></section>${uiEvidenceSources(r)}${takeaways}</div>`;
+}
+function uiCompactDossier(r, rows) {
+  const physical = uaState.scale >= 4, m = uaMeasure(r), scenes = CAMPUS_SCENES.scenes.filter(s => s.project_id === r.id), scene = scenes.find(s => s.id === uaState.scene) || scenes[0];
+  return `<section id="ua-selection" class="ua-editorial ua-selected ui-compact-dossier">${uiKicker(physical ? "01 / FACILITY DOSSIER" : "01 / SELECTED CLUSTER", `<button class="text-button" data-ua-clear-selection aria-label="Clear selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(r.name)}</h2><p class="ui-place">${uiIcon("pin")}${esc(r.place || r.country)}</p>${!rows.some(x => x.id === r.id) ? '<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>' : ""}<div class="ui-status-row">${uaBadge(r)}${scene ? '<span>Reviewed imagery</span>' : ''}</div><dl class="ua-facts"><div><dt>${esc(m.label)}</dt><dd>${m.value == null ? "Not reported" : compact(m.value) + " " + m.unit}</dd></div>${r.collection === "projects" ? `<div><dt>Target IT model</dt><dd>${r.target_mw == null ? "Not reported" : fmt(r.target_mw) + " MW IT"}</dd></div>` : ""}<div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Undated")}</dd></div>${scene ? `<div><dt>Historical image</dt><dd>${esc(scene.image.acquired_at)}</dd></div><div><dt>Reviewed roof outlines</dt><dd>${scene.features.length} · image interpretation</dd></div>` : ""}</dl><div class="ua-actions"><button class="btn primary" data-ua-dive>${physical ? "Inspect physical features" : "View full site dossier"} ${uiIcon("arrow")}</button><div class="ui-dossier-tools">${researchPin(r.id)}<button class="text-button" data-ua-compare="${esc(r.id)}">${uiIcon("compare")} ${uaState.compare.includes(r.id) ? "Comparing" : "Compare"}</button><button class="text-button" data-ua-export="${esc(r.id)}">Export ↓</button></div></div></section>${physical ? uiPowerLadder(r) : `<section class="ua-editorial">${uiKicker("02 / LOCAL POWER & BUILDOUT")}<h2>Power, land and<br>the development story.</h2><div class="ui-takeaways">${uiTakeaways(r)}</div></section>`}<section class="ua-editorial">${uiKicker("03 / " + (physical ? "ANALYST NOTES" : "DISCLOSED RELATIONSHIPS"))}${physical ? `<label class="ui-note-label" for="ui-campus-note">Your research questions & observations</label><textarea id="ui-campus-note" data-note="${esc(r.id)}" placeholder="Add a note about this campus…">${esc(saved.notes[r.id] || "")}</textarea><div class="ui-note-footer"><small data-storage-status>${storageOK ? "Private · saved in this browser" : "Session only · export before closing"}</small><button class="text-button" data-action="export-session">Export notes ↓</button></div>` : `<div class="ui-partners">${uiPartners(r)}</div>`}</section>`;
 }
 const uiPreviousDetail = uaDetail;
 uaDetail = function (r) {
@@ -8618,7 +8844,7 @@ uaDetail = function (r) {
   return `<section class="ua-detail" aria-label="Selected record research">${uaState.scale >= 4 ? "" : uiTopics()}<div id="ua-topic-content">${uiOverview(r)}</div></section>`;
 };
 function uiTitle(r) {
-  if (uaState.scale >= 4 && r) return [esc(r.name), r.place || r.country];
+  if (uaState.scale >= 4 && r) return [esc(["coreweave-helios", "amazon-anthropic-new-carlisle"].includes(r.id) ? r.name + " Data Center Campus" : r.name), r.place || r.country];
   if (uaState.scale === 3 && r)
     return [
       r.id === "amazon-anthropic-new-carlisle"
@@ -8659,7 +8885,7 @@ function uiMap(r, rows, physical, scenes) {
   return `<section class="ua-map-panel atlas-map-panel"><div class="ua-map-head"><div><h2>${scope}</h2><p>${fmt(rows.filter((r) => r.mapped).length)} mapped records · ${physical ? "dated physical sources" : "global source coverage"}</p></div><div class="ui-map-actions"><button data-ui-refine aria-label="Refine the atlas">${uiIcon("filter")} Refine</button><button class="text-button" data-ua-share>Share ${uiIcon("arrow")}</button></div></div><div class="ua-map-stage"><canvas id="ua-map" tabindex="0" aria-label="Compute atlas. Drag to rotate or pan, scroll to zoom. Use the directory for keyboard access to every record."></canvas><div class="ua-layer-control"><button class="btn small" data-ua-layers>${uiIcon("layers")} Layers</button>${physical ? `<div class="ua-mode-tabs">${[["plan", "Plan"], ["3d", "3D"], ...(scenes.length ? [["aerial", "Satellite"]] : [])].map(([id, label]) => `<button data-ua-mode="${id}" aria-pressed="${uaState.mode === id}">${label}</button>`).join("")}</div>` : ""}</div>${physical && scenes.length ? `<label class="ua-scene-choice"><span>Image component</span><select data-ua-scene>${uaState.scene && !scenes.some((s) => s.id === uaState.scene) ? `<option selected value="${esc(uaState.scene)}">Requested image unavailable</option>` : ""}${scenes.map((s) => `<option value="${esc(s.id)}" ${uaState.scene === s.id ? "selected" : ""}>${esc(s.component || s.title)} · ${esc(s.image.acquired_at)}</option>`).join("")}</select></label>` : ""}<div class="ua-map-legend">${(physical
     ? [
         ["#9ee5c8", "Reviewed / native outlines"],
-        ["#d5bc82", "Mapped electricity context"],
+        ["#b4a7e5", "Mapped electricity context"],
       ]
     : [
         ["#a3e7c4", "Compute / power publications"],
@@ -8701,7 +8927,20 @@ renderNav = function () {
   uiBaseNav();
   if (state.view !== "atlas" && $("#tour")?.classList.contains("ui-guide"))
     $("#tour").hidden = true;
-  document.body.classList.toggle("ui-atlas-active", state.view === "atlas");
+  document.body.classList.add("ui-atlas-active");
+  const nav = document.querySelector("#navigation"), more = nav.querySelector(".workspace-nav-more");
+  for (const [id, before] of [["costs", "investment"], ["data", null]]) {
+    const item = more?.querySelector(`[data-id="${id}"]`);
+    if (item) nav.insertBefore(item, before ? nav.querySelector(`[data-id="${before}"]`) : more);
+  }
+  const data = nav.querySelector('[data-id="data"]');
+  if (data) data.innerHTML = icon("data") + "Data room & sources";
+  const guide = document.createElement("button");
+  guide.className = "nav-item ui-guide-nav";
+  guide.dataset.uiOpenGuide = "true";
+  guide.innerHTML = uiIcon("globe") + "Guided exploration";
+  nav.insertBefore(guide, nav.querySelector('[data-id="reports"]') || more);
+  if ([...nav.children].some(el => el.dataset.id === state.view) && more) more.open = false;
 };
 const uiBasePhysicalRail = uaPhysicalRail;
 uaPhysicalRail = function (record, source) {
@@ -8732,9 +8971,9 @@ function uiPreset(id) {
       scale: 0,
       camera: {
         flat: false,
-        lat: 35,
-        lon: 5,
-        zoom: 1,
+        lat: 24,
+        lon: -12,
+        zoom: .95,
         bounds: [-180, -80, 180, 80],
       },
     },
@@ -8802,6 +9041,15 @@ document.addEventListener("click", (e) => {
   const button = e.target.closest("button");
   if (!button) return;
   const d = button.dataset;
+  if (d.uiOpenGuide) { uaStartGuide(); return; }
+  if (d.uiOperator) {
+    uaGo({operator: d.uiOperator});
+    return;
+  }
+  if (d.uiMarket === "virginia") {
+    uaGo({scale: 3, country: "United States", scope: "viewport", selected: null, camera: {flat:true,lat:38.75,lon:-77.5,zoom:1,bounds:[-78.5,38,-76.5,39.5]}});
+    return;
+  }
   if (d.uiPreset) {
     uiPreset(d.uiPreset);
     return;
@@ -8952,7 +9200,7 @@ document.addEventListener("click", (e) => {
 let uiTourReturn = null;
 uaStartGuide = function () {
   uaRemember();
-  uiTourReturn = uaURL();
+  uiTourReturn = state.view === "atlas" ? uaURL() : researchCurrentHash();
   uaGuideStep(0);
 };
 uaGuideStep = function (step) {
@@ -9248,6 +9496,22 @@ uaSelectedRail = function (record, rows) {
   )
     return `<section class="ua-editorial ua-selected"><div class="eyebrow">REQUESTED POWER SCOPE</div><h2>Power scope unavailable.</h2><p>${esc(uaState.phase)} is not included in this publication. No other phase has been selected.</p><button class="btn primary" data-ui-clear-phase>Return to ${esc(record.name)} →</button></section>`;
   return uiAvailablePhaseRail(record, rows);
+};
+
+// Keep physical selection controls on the spatial hero; evidence follows immediately.
+const uiSourceInspector = uaPhysicalInspector;
+uaPhysicalInspector = function (id) {
+  uiSourceInspector(id);
+  const article = document.querySelector('.ui-editorial-atlas');
+  if (!article || uaState.scale < 4) return;
+  article.dataset.uaScale = uaState.scale;
+  const controls = document.querySelector('#ua-physical-inspector');
+  const stage = document.querySelector('.ua-map-stage');
+  if (controls && stage && controls.parentElement !== stage) stage.append(controls);
+  if (controls) controls.classList.toggle("ui-feature-unavailable", !!id && !globe?.features?.some(f => f.record.id === id));
+  const detail = document.querySelector('#ua-topic-content');
+  const source = uaRecord(uaState.selected);
+  if (detail && source && uaState.topic === 'overview') detail.innerHTML = uiOverview(source);
 };
 
 window.ATLAS_BOOTSTRAPPING=false;routeFromHash();document.documentElement.classList.add('research-ready','atlas-ready','workspace-ready','campus-ready','layers-ready','catalog-ready','operator-ready','publisher-ready');document.dispatchEvent(new Event('atlas-ready'));</script>

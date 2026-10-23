@@ -152,29 +152,32 @@ uaKpis = function (rows) {
     );
   return `<button class="ua-metric" data-ui-measure="power"><span>Published facility power</span><strong>${uiPower(model.power)}</strong><small>${model.known} quantified centers · Epoch current model</small></button><button class="ua-metric" data-ui-measure="locations"><span>Mapped source records</span><strong>${fmt(mapped.length)}</strong><small>${fmt(rows.length - mapped.length)} additional records without coordinates</small></button><button class="ua-metric" data-ui-measure="hardware"><span>Published GPU clusters</span><strong>${fmt(gpu.length)}</strong><small>Native records, including historical phases</small></button><button class="ua-metric" data-ui-measure="coverage"><span>Countries & territories</span><strong>${fmt(countries.size)}</strong><small>${fmt(rows.length)} records across independent publications</small></button>`;
 };
+function uiSourceRanking(rows, field = "region", count = 5) {
+  return `<div class="ua-ranks ui-source-ranking">${uaRanks(rows, field, count).map(([name, n], i) => `<button ${field === "region" ? "data-ua-region" : "data-ua-country"}="${esc(name)}"><span>${String(i + 1).padStart(2, "0")}</span><b>${esc(name)}</b><strong>${fmt(n)}</strong></button>`).join("")}</div><small>Native source records · publications may overlap</small>`;
+}
+function uiOperatorMarks(rows) {
+  return `<div class="ui-operator-marks" aria-label="Operators in this scope">${uaRanks(rows.filter(r => r.operator && !/unknown|not supplied/i.test(r.operator)), "operator", 6).map(([name]) => `<button data-ui-operator="${esc(name)}">${esc(name)}</button>`).join("")}</div>`;
+}
+function uiRegionalRail(rows) {
+  const local = rows.filter(r => r.mapped && r.lon > -78.5 && r.lon < -76.5 && r.lat > 38 && r.lat < 39.5);
+  if (!local.length) return null;
+  const model = uiModel(local), projects = local.filter(r => r.collection === "projects");
+  return `<section class="ua-editorial ui-market-card">${uiKicker("01 / MARKET FOCUS")}<h2>Northern Virginia</h2><p class="ui-market-subtitle">An established compute market.</p><p>Explore the published facilities around Ashburn and Northern Virginia, from mapped infrastructure to dated project disclosures.</p><dl class="ua-facts"><div><dt>${uiIcon("power")} Published facility power</dt><dd>${uiPower(model.power)}</dd></div><div><dt>${uiIcon("building")} Mapped source records</dt><dd>${fmt(local.length)}</dd></div><div><dt>${uiIcon("source")} Project dossiers</dt><dd>${projects.length}</dd></div><div><dt>${uiIcon("layers")} Source collections</dt><dd>${new Set(local.map(r => r.collection)).size}</dd></div></dl><small>Power: Epoch current model · ${model.known} quantified centers.<br>Records within 38–39.5°N, 76.5–78.5°W; not a market census.</small></section><section class="ua-editorial">${uiKicker("02 / INFRASTRUCTURE ADVANTAGE")}<div class="ui-market-points"><div>${uiIcon("building")}<p><b>Physical infrastructure</b>Inspect native mapped outlines and published facility locations.</p></div><div>${uiIcon("power")}<p><b>Power with a clear boundary</b>Keep facility-power models separate from project IT capacity.</p></div><div>${uiIcon("source")}<p><b>Original evidence</b>Read the disclosures and exact source fields behind each record.</p></div></div><button class="btn primary" data-ui-market="virginia">Explore Northern Virginia ${uiIcon("arrow")}</button></section><section class="ua-editorial">${uiKicker("03 / OPERATORS IN THIS SCOPE")}${uiOperatorMarks(local)}</section>`;
+}
 uaWorldRail = function (rows) {
-  const region =
-      uaState.country !== "All"
-        ? uaState.country
-        : uaState.region === "Atlantic"
-          ? "All"
-          : uaState.region,
-    continent = uaState.scale === 1,
-    regional = uaState.scale >= 2,
+  if (uaState.scale === 2 && uaState.country === "United States") {
+    const market = uiRegionalRail(rows);
+    if (market) return market;
+  }
+  const region = uaState.country !== "All" ? uaState.country : uaState.region,
+    continental = uaState.scale === 1,
+    atlantic = continental && ["All", "Atlantic"].includes(region),
     model = uiModel(rows),
-    rank = uaRanks(rows, "country", 3),
-    gpu = uaSort(
-      rows.filter(
-        (r) =>
-          r.collection === "gpu" &&
-          !r.native.anonymous &&
-          !r.native.superseded_by,
-      ),
-    ).slice(0, 1),
-    projects = rows.filter((r) => r.collection === "projects");
-  return `<section class="ua-editorial">${uiKicker("01 / " + (regional ? "REGIONAL PERSPECTIVE" : "GLOBAL TAKEAWAY"))}<h2>${region !== "All" ? esc(region) + ".<br>A landscape of opportunity." : continent ? "Two continents.<br>One compute economy." : "Compute is a global<br>asset class."}</h2><p>${region !== "All" ? `${fmt(rows.length)} source records connect ${esc(region)}’s mapped facilities, operators and AI infrastructure.` : continent ? "Explore the infrastructure on both sides of the Atlantic, from established markets to new compute clusters." : "From silicon to substations, follow the physical infrastructure behind the AI economy."}</p><button class="text-button" data-ui-preset="${regional ? "metro" : "atlantic"}">${regional ? "Explore Chicago–Northern Indiana" : "Explore the transatlantic view"} ${uiIcon("arrow")}</button></section>
-  <section class="ua-editorial">${uiKicker("02 / " + (regional ? "LOCAL BUILDOUT" : "WHERE COMPUTE LIVES"))}<h2>${regional ? "Read the local<br>development story." : "A global footprint.<br>Local foundations."}</h2>${regional ? `<p>${projects.length} archived project dossiers and ${model.count} AI center records in this scope. Follow each project’s dated power and development evidence.</p><button class="text-button" data-ua-collection="projects">Explore project research ${uiIcon("arrow")}</button>` : `<div class="ua-ranks">${rank.map(([country, count], i) => `<button data-ua-country="${esc(country)}"><span>${String(i + 1).padStart(2, "0")}</span><b>${esc(country)}</b><strong>${fmt(count)}</strong></button>`).join("")}</div><small>Source records by country · overlapping publications</small>`}</section>
-  <section class="ua-editorial ui-buildout-card">${uiKicker("03 / INSIDE THE BUILDOUT")}<h2>From the landscape<br>to a single facility.</h2><p>Inspect the machines, power, counterparties and original evidence behind a location.</p>${gpu.map((r) => `<button class="ui-featured-record" data-ua-select="${esc(r.id)}"><span>${esc(r.name)}</span><small>${compact(r.native.h100_equivalents)} H100e · ${esc(r.native.date || "Undated")}</small>${uiIcon("arrow")}</button>`).join("")}<button class="text-button" data-ui-preset="campus">Enter New Carlisle ${uiIcon("arrow")}</button></section>`;
+    globalModel = uiModel(uaRecords()),
+    share = model.power != null && globalModel.power ? Math.round(model.power / globalModel.power * 100) : null,
+    projects = rows.filter(r => r.collection === "projects"),
+    heading = atlantic ? "North America and Europe.<br>A connected compute economy." : region !== "All" ? esc(region) + ".<br>A landscape of opportunity." : "Compute is a global<br>asset class.";
+  return `<section class="ua-editorial">${uiKicker("01 / " + (continental ? "REGIONAL TAKEAWAY" : "GLOBAL TAKEAWAY"))}<h2>${heading}</h2><p>${atlantic ? `${share == null ? "Explore" : share + "% of the captured current facility-power model is reported in"} these two continents. Follow the places, operators and original evidence behind the footprint.` : "From silicon to substations, the physical infrastructure behind AI connects power, capital and place."}</p><button class="text-button" ${atlantic ? 'data-ui-preset="region"' : 'data-ui-preset="atlantic"'}>${atlantic ? "Explore the regional landscape" : "Explore North America & Europe"} ${uiIcon("arrow")}</button></section><section class="ua-editorial">${uiKicker("02 / " + (atlantic ? "TRANSATLANTIC FOOTPRINT" : "WHERE COMPUTE LIVES"))}<h2>${atlantic ? "Two continents.<br>Local foundations." : "Where the capacity<br>is taking shape."}</h2>${uiSourceRanking(rows, atlantic ? "country" : "region", 5)}</section><section class="ua-editorial ui-buildout-card">${uiKicker("03 / THE NEXT BUILDOUT")}<h2>A more distributed,<br>more connected landscape.</h2><p>${fmt(projects.length)} project dossiers connect this geographic view to disclosed development, dated power scopes and counterparties.</p><button class="text-button" data-ui-preset="campus">Inside a campus ${uiIcon("arrow")}</button></section>`;
 };
 function uiPartners(r) {
   if (r.collection === "projects") {
@@ -264,23 +267,23 @@ uaSelectedRail = function (r, rows) {
           date: phase.as_of,
         }
       : m;
+  if (!phase && r.mapped && uaState.scale >= 3) return uiCompactDossier(r, rows);
   return `<section id="ua-selection" class="ua-editorial ua-selected">${uiKicker(physical ? "01 / FACILITY DOSSIER" : "01 / SELECTED LOCATION", `<button class="text-button" data-ua-clear-selection aria-label="Clear selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(phase ? phase.scope : r.name)}</h2><p class="ui-place">${uiIcon("pin")}${esc(r.place || r.country)}</p>${!inside ? '<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>' : ""}<div class="ui-status-row">${uaBadge(r)}${r.collection === "gpu" ? `<span>${esc(r.native.status)}</span>` : ""}</div><div class="ua-selected-number"><b>${metric.value == null ? (r.geometry ? "Mapped footprint" : "Location record") : compact(metric.value) + " " + metric.unit}</b><span>${esc(metric.label)} · ${esc(metric.date || r.date || "Not dated")}</span></div><dl class="ua-facts"><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not disclosed")}</dd></div>${r.collection === "projects" ? `<div><dt>Target IT model</dt><dd>${r.target_mw == null ? "Not quantified" : fmt(r.target_mw) + " MW IT"}</dd></div>` : ""}<div><dt>Location basis</dt><dd>${esc(r.coordinate_basis || "Not supplied")}</dd></div></dl><div class="ua-actions">${r.mapped ? `<button class="btn primary" data-ua-dive>${physical ? "Inspect physical features" : uaState.scale < 3 ? "Explore this market" : "Enter this campus"} ${uiIcon("arrow")}</button>` : "<p>No map location supplied.</p>"}${researchPin(r.id)}<button class="text-button" data-ua-compare="${esc(r.id)}">${uiIcon("compare")}${uaState.compare.includes(r.id) ? "Comparing" : "Compare"}</button><button class="text-button" data-ua-export="${esc(r.id)}">Export ↓</button></div></section>${physical && r.collection === "projects" ? uiPowerLadder(r) : `<section class="ua-editorial">${uiKicker("02 / KEY TAKEAWAYS")}<div class="ui-takeaways">${uiTakeaways(r)}</div><button class="text-button" data-ua-topic="sources">Read original evidence ${uiIcon("arrow")}</button></section>`}<section class="ua-editorial">${uiKicker("03 / COUNTERPARTIES")}<div class="ui-partners">${uiPartners(r)}</div><button class="text-button" data-ua-topic="partners">All disclosed relationships ${uiIcon("arrow")}</button></section>${physical ? `<section class="ua-editorial ui-note-card">${uiKicker("04 / ANALYST NOTES")}<p>Your questions, assumptions and observations stay attached to this source record.</p><button class="text-button" data-ua-topic="notes">${saved.notes[r.id] ? "Read your note" : "Add a research note"} +</button></section>` : ""}`;
 };
+function uiEvidenceSources(r) {
+  const claims = r.collection === "projects" ? atlasResearchProfile(r.native).rows : [];
+  const sources = [...new Map(claims.map(p => [p.source_id, p])).values()].slice(0, 3);
+  return `<section class="ui-deck-sources"><h3>${uiIcon("source")} Sources & evidence</h3>${sources.length ? sources.map(p => `<button class="ui-source-row" data-ui-claim="${esc(p.id)}">${uiIcon("source")}<span>${esc(primarySource(p.source_id)?.title || atlasResearchLabel(p))}</span><time>${esc(p.as_of || "Undated")}</time></button>`).join("") : `<p>${esc(UA_SHORT[r.collection])} retains its original fields and source references.</p>`}<button class="text-button" data-ua-topic="sources">View all source evidence ${uiIcon("arrow")}</button></section>`;
+}
 function uiOverview(r) {
-  const sources =
-      r.collection === "projects" ? atlasResearchProfile(r.native).rows : [],
-    m = uaMeasure(r);
-  return `<div class="ui-evidence-deck"><section>${r.collection === "projects" ? uiPowerLadder(r) : `<h3>${uiIcon("power")} Power & compute</h3>${uaPowerContent(r)}`}</section><section><h3>${uiIcon("building")} Facility attributes</h3><dl class="ua-facts"><div><dt>Source identity</dt><dd>${esc(r.id)}</dd></div><div><dt>Country / territory</dt><dd>${esc(r.country)}</dd></div><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Not supplied")}</dd></div><div><dt>Physical evidence</dt><dd>${r.geometry ? "Native mapped footprint" : CAMPUS_SCENES.scenes.some((s) => s.project_id === r.id) ? "Dated imagery & reviewed roof outlines" : "Independent mapped context"}</dd></div></dl></section><section><h3>${uiIcon("source")} Sources & evidence</h3>${
-    sources.length
-      ? sources
-          .slice(0, 3)
-          .map(
-            (p) =>
-              `<button class="ui-source-row" data-ui-claim="${esc(p.id)}">${uiIcon("source")}<span>${esc(primarySource(p.source_id)?.title || atlasResearchLabel(p))}</span><time>${esc(p.as_of || "Undated")}</time></button>`,
-          )
-          .join("")
-      : `<p>${esc(UA_SHORT[r.collection])} retains the native source fields, reporting date and original references.</p>`
-  }<button class="text-button" data-ua-topic="sources">View all source evidence ${uiIcon("arrow")}</button></section><section><h3>${uiIcon("check")} Key takeaways</h3><div class="ui-takeaways">${uiTakeaways(r)}</div></section></div>`;
+  const m = uaMeasure(r), campus = uaState.scale === 4;
+  const takeaways = `<section class="ui-deck-takeaways"><h3>${uiIcon("check")} Key takeaways</h3><div class="ui-takeaways">${uiTakeaways(r)}</div></section>`;
+  if (campus) return `<div class="ui-evidence-deck ui-campus-deck">${uiEvidenceSources(r)}${takeaways}</div>`;
+  return `<div class="ui-evidence-deck"><section>${r.collection === "projects" ? uiPowerLadder(r) : `<h3>${uiIcon("power")} Power & compute</h3>${uaPowerContent(r)}`}</section><section><h3>${uiIcon("building")} Facility attributes</h3><dl class="ua-facts"><div><dt>Source identity</dt><dd>${esc(r.id)}</dd></div><div><dt>Country / territory</dt><dd>${esc(r.country)}</dd></div><div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Not supplied")}</dd></div><div><dt>Physical evidence</dt><dd>${r.geometry ? "Native mapped footprint" : CAMPUS_SCENES.scenes.some(s => s.project_id === r.id) ? "Historical imagery & reviewed outlines" : "Independent mapped context"}</dd></div></dl></section>${uiEvidenceSources(r)}${takeaways}</div>`;
+}
+function uiCompactDossier(r, rows) {
+  const physical = uaState.scale >= 4, m = uaMeasure(r), scenes = CAMPUS_SCENES.scenes.filter(s => s.project_id === r.id), scene = scenes.find(s => s.id === uaState.scene) || scenes[0];
+  return `<section id="ua-selection" class="ua-editorial ua-selected ui-compact-dossier">${uiKicker(physical ? "01 / FACILITY DOSSIER" : "01 / SELECTED CLUSTER", `<button class="text-button" data-ua-clear-selection aria-label="Clear selection">${uiIcon("close")}</button>`)}<h2 tabindex="-1">${esc(r.name)}</h2><p class="ui-place">${uiIcon("pin")}${esc(r.place || r.country)}</p>${!rows.some(x => x.id === r.id) ? '<p class="ua-notice">Outside the active filters. <button class="text-button" data-ua-reveal>Show its scope →</button></p>' : ""}<div class="ui-status-row">${uaBadge(r)}${scene ? '<span>Reviewed imagery</span>' : ''}</div><dl class="ua-facts"><div><dt>${esc(m.label)}</dt><dd>${m.value == null ? "Not reported" : compact(m.value) + " " + m.unit}</dd></div>${r.collection === "projects" ? `<div><dt>Target IT model</dt><dd>${r.target_mw == null ? "Not reported" : fmt(r.target_mw) + " MW IT"}</dd></div>` : ""}<div><dt>Operator / owner</dt><dd>${esc(r.operator || "Not supplied")}</dd></div><div><dt>Source observation</dt><dd>${esc(m.date || r.date || "Undated")}</dd></div>${scene ? `<div><dt>Historical image</dt><dd>${esc(scene.image.acquired_at)}</dd></div><div><dt>Reviewed roof outlines</dt><dd>${scene.features.length} · image interpretation</dd></div>` : ""}</dl><div class="ua-actions"><button class="btn primary" data-ua-dive>${physical ? "Inspect physical features" : "View full site dossier"} ${uiIcon("arrow")}</button><div class="ui-dossier-tools">${researchPin(r.id)}<button class="text-button" data-ua-compare="${esc(r.id)}">${uiIcon("compare")} ${uaState.compare.includes(r.id) ? "Comparing" : "Compare"}</button><button class="text-button" data-ua-export="${esc(r.id)}">Export ↓</button></div></div></section>${physical ? uiPowerLadder(r) : `<section class="ua-editorial">${uiKicker("02 / LOCAL POWER & BUILDOUT")}<h2>Power, land and<br>the development story.</h2><div class="ui-takeaways">${uiTakeaways(r)}</div></section>`}<section class="ua-editorial">${uiKicker("03 / " + (physical ? "ANALYST NOTES" : "DISCLOSED RELATIONSHIPS"))}${physical ? `<label class="ui-note-label" for="ui-campus-note">Your research questions & observations</label><textarea id="ui-campus-note" data-note="${esc(r.id)}" placeholder="Add a note about this campus…">${esc(saved.notes[r.id] || "")}</textarea><div class="ui-note-footer"><small data-storage-status>${storageOK ? "Private · saved in this browser" : "Session only · export before closing"}</small><button class="text-button" data-action="export-session">Export notes ↓</button></div>` : `<div class="ui-partners">${uiPartners(r)}</div>`}</section>`;
 }
 const uiPreviousDetail = uaDetail;
 uaDetail = function (r) {
@@ -295,7 +298,7 @@ uaDetail = function (r) {
   return `<section class="ua-detail" aria-label="Selected record research">${uaState.scale >= 4 ? "" : uiTopics()}<div id="ua-topic-content">${uiOverview(r)}</div></section>`;
 };
 function uiTitle(r) {
-  if (uaState.scale >= 4 && r) return [esc(r.name), r.place || r.country];
+  if (uaState.scale >= 4 && r) return [esc(["coreweave-helios", "amazon-anthropic-new-carlisle"].includes(r.id) ? r.name + " Data Center Campus" : r.name), r.place || r.country];
   if (uaState.scale === 3 && r)
     return [
       r.id === "amazon-anthropic-new-carlisle"
@@ -336,7 +339,7 @@ function uiMap(r, rows, physical, scenes) {
   return `<section class="ua-map-panel atlas-map-panel"><div class="ua-map-head"><div><h2>${scope}</h2><p>${fmt(rows.filter((r) => r.mapped).length)} mapped records · ${physical ? "dated physical sources" : "global source coverage"}</p></div><div class="ui-map-actions"><button data-ui-refine aria-label="Refine the atlas">${uiIcon("filter")} Refine</button><button class="text-button" data-ua-share>Share ${uiIcon("arrow")}</button></div></div><div class="ua-map-stage"><canvas id="ua-map" tabindex="0" aria-label="Compute atlas. Drag to rotate or pan, scroll to zoom. Use the directory for keyboard access to every record."></canvas><div class="ua-layer-control"><button class="btn small" data-ua-layers>${uiIcon("layers")} Layers</button>${physical ? `<div class="ua-mode-tabs">${[["plan", "Plan"], ["3d", "3D"], ...(scenes.length ? [["aerial", "Satellite"]] : [])].map(([id, label]) => `<button data-ua-mode="${id}" aria-pressed="${uaState.mode === id}">${label}</button>`).join("")}</div>` : ""}</div>${physical && scenes.length ? `<label class="ua-scene-choice"><span>Image component</span><select data-ua-scene>${uaState.scene && !scenes.some((s) => s.id === uaState.scene) ? `<option selected value="${esc(uaState.scene)}">Requested image unavailable</option>` : ""}${scenes.map((s) => `<option value="${esc(s.id)}" ${uaState.scene === s.id ? "selected" : ""}>${esc(s.component || s.title)} · ${esc(s.image.acquired_at)}</option>`).join("")}</select></label>` : ""}<div class="ua-map-legend">${(physical
     ? [
         ["#9ee5c8", "Reviewed / native outlines"],
-        ["#d5bc82", "Mapped electricity context"],
+        ["#b4a7e5", "Mapped electricity context"],
       ]
     : [
         ["#a3e7c4", "Compute / power publications"],
@@ -378,7 +381,20 @@ renderNav = function () {
   uiBaseNav();
   if (state.view !== "atlas" && $("#tour")?.classList.contains("ui-guide"))
     $("#tour").hidden = true;
-  document.body.classList.toggle("ui-atlas-active", state.view === "atlas");
+  document.body.classList.add("ui-atlas-active");
+  const nav = document.querySelector("#navigation"), more = nav.querySelector(".workspace-nav-more");
+  for (const [id, before] of [["costs", "investment"], ["data", null]]) {
+    const item = more?.querySelector(`[data-id="${id}"]`);
+    if (item) nav.insertBefore(item, before ? nav.querySelector(`[data-id="${before}"]`) : more);
+  }
+  const data = nav.querySelector('[data-id="data"]');
+  if (data) data.innerHTML = icon("data") + "Data room & sources";
+  const guide = document.createElement("button");
+  guide.className = "nav-item ui-guide-nav";
+  guide.dataset.uiOpenGuide = "true";
+  guide.innerHTML = uiIcon("globe") + "Guided exploration";
+  nav.insertBefore(guide, nav.querySelector('[data-id="reports"]') || more);
+  if ([...nav.children].some(el => el.dataset.id === state.view) && more) more.open = false;
 };
 const uiBasePhysicalRail = uaPhysicalRail;
 uaPhysicalRail = function (record, source) {
@@ -409,9 +425,9 @@ function uiPreset(id) {
       scale: 0,
       camera: {
         flat: false,
-        lat: 35,
-        lon: 5,
-        zoom: 1,
+        lat: 24,
+        lon: -12,
+        zoom: .95,
         bounds: [-180, -80, 180, 80],
       },
     },
@@ -479,6 +495,15 @@ document.addEventListener("click", (e) => {
   const button = e.target.closest("button");
   if (!button) return;
   const d = button.dataset;
+  if (d.uiOpenGuide) { uaStartGuide(); return; }
+  if (d.uiOperator) {
+    uaGo({operator: d.uiOperator});
+    return;
+  }
+  if (d.uiMarket === "virginia") {
+    uaGo({scale: 3, country: "United States", scope: "viewport", selected: null, camera: {flat:true,lat:38.75,lon:-77.5,zoom:1,bounds:[-78.5,38,-76.5,39.5]}});
+    return;
+  }
   if (d.uiPreset) {
     uiPreset(d.uiPreset);
     return;
@@ -629,7 +654,7 @@ document.addEventListener("click", (e) => {
 let uiTourReturn = null;
 uaStartGuide = function () {
   uaRemember();
-  uiTourReturn = uaURL();
+  uiTourReturn = state.view === "atlas" ? uaURL() : researchCurrentHash();
   uaGuideStep(0);
 };
 uaGuideStep = function (step) {
@@ -925,4 +950,20 @@ uaSelectedRail = function (record, rows) {
   )
     return `<section class="ua-editorial ua-selected"><div class="eyebrow">REQUESTED POWER SCOPE</div><h2>Power scope unavailable.</h2><p>${esc(uaState.phase)} is not included in this publication. No other phase has been selected.</p><button class="btn primary" data-ui-clear-phase>Return to ${esc(record.name)} →</button></section>`;
   return uiAvailablePhaseRail(record, rows);
+};
+
+// Keep physical selection controls on the spatial hero; evidence follows immediately.
+const uiSourceInspector = uaPhysicalInspector;
+uaPhysicalInspector = function (id) {
+  uiSourceInspector(id);
+  const article = document.querySelector('.ui-editorial-atlas');
+  if (!article || uaState.scale < 4) return;
+  article.dataset.uaScale = uaState.scale;
+  const controls = document.querySelector('#ua-physical-inspector');
+  const stage = document.querySelector('.ua-map-stage');
+  if (controls && stage && controls.parentElement !== stage) stage.append(controls);
+  if (controls) controls.classList.toggle("ui-feature-unavailable", !!id && !globe?.features?.some(f => f.record.id === id));
+  const detail = document.querySelector('#ua-topic-content');
+  const source = uaRecord(uaState.selected);
+  if (detail && source && uaState.topic === 'overview') detail.innerHTML = uiOverview(source);
 };
